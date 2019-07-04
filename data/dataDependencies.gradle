@@ -1,0 +1,5 @@
+dependencies {
+    implementation commonDependencies.kotlin
+    implementation dataDependencies.retrofit
+    implementation appDependencies.coreKTX
+}

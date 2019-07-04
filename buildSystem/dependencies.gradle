@@ -1,0 +1,29 @@
+ext {
+    kotlin = '1.3.41'
+    androidX = '1.0.2'
+    retrofit = '2.6.0'
+    constraint = '1.1.3'
+    crashlytics = '2.8.0@aar'
+
+    commonDependencies = [
+            kotlin : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin",
+            files: fileTree(dir: 'libs', include: ['*.jar'])
+    ]
+
+    appDependencies = [
+            appCompat : "androidx.appcompat:appcompat:$androidX",
+            coreKTX : "androidx.core:core-ktx:$androidX",
+            constraintlayout:"androidx.constraintlayout:constraintlayout:$constraint",
+            crashlytics: "com.crashlytics.sdk.android:crashlytics:$crashlytics"
+
+
+    ]
+
+    domainDependencies = [
+
+    ]
+
+    dataDependencies = [
+        retrofit: "com.squareup.retrofit2:retrofit:$retrofit"
+    ]
+}
