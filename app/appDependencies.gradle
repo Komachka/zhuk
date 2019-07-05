@@ -3,11 +3,7 @@ dependencies {
     implementation appDependencies.appCompat
     implementation appDependencies.coreKTX
     implementation appDependencies.constraintlayout
-    implementation appDependencies.crashlytics /*{
-        transitive = true
-    }*/
-    //TODO paste in in correct place
-
+    implementation appDependencies.crashlytics
     implementation commonDependencies.files
     implementation project(':domain')
 }
