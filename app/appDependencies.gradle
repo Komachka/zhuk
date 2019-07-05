@@ -7,3 +7,4 @@ dependencies {
     implementation commonDependencies.files
     implementation project(':domain')
 }
+

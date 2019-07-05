@@ -4,4 +4,5 @@ dependencies {
     implementation appDependencies.coreKTX
     implementation dataDependencies.room
     implementation dataDependencies.roomKTX
+    implementation dataDependencies.gson
 }
