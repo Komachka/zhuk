@@ -3,7 +3,7 @@ package com.kstorozh.data.network
 import com.kstorozh.data.Device
 import retrofit2.http.*
 
-interface DeviceApiService {
+interface DeviceApi {
     @POST("/devices")
     fun initDevice(@Body device: Device)
 
