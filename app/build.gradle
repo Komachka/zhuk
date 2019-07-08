@@ -8,17 +8,17 @@ apply plugin: 'io.fabric'
 apply from: '../buildSystem/buildData.gradle'
 
 android {
-    compileSdkVersion buildVerswions.targetSdkVersion
-    buildToolsVersion buildVerswions.buildToolsVersion
+    compileSdkVersion buildVersions.targetSdkVersion
+    buildToolsVersion buildVersions.buildToolsVersion
 
 
 
     defaultConfig {
-        applicationId buildVerswions.applicationId
-        minSdkVersion buildVerswions.minSdkVersion
-        targetSdkVersion buildVerswions.targetSdkVersion
-        versionCode buildVerswions.versionCode
-        versionName buildVerswions.versionName
+        applicationId buildVersions.applicationId
+        minSdkVersion buildVersions.minSdkVersion
+        targetSdkVersion buildVersions.targetSdkVersion
+        versionCode buildVersions.versionCode
+        versionName buildVersions.versionName
     }
     buildTypes {
         release {

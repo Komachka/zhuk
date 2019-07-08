@@ -1,5 +1,5 @@
 ext{
-    buildVerswions = [
+    buildVersions = [
             targetSdkVersion : 29,
             buildToolsVersion: "29.0.0",
             minSdkVersion: 16,
