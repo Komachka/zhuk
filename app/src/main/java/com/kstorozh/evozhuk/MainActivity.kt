@@ -17,5 +17,4 @@ class MainActivity : AppCompatActivity() {
     fun forceCrash(view: View) {
         throw RuntimeException("This is a crash")
     }
-
 }
