@@ -4,7 +4,6 @@ import com.kstorozh.data.Device
 
 class LocalDataStorageImpl(private val deviceDao: DeviceDao) : LocalDataStorage {
 
-
     override suspend fun getDeviceInfo(): Device {
         return deviceDao.getDeviceInfo()
     }

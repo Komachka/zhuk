@@ -17,19 +17,19 @@ interface DeviceApi {
     fun updateDevice(
         @Body device: Device,
         @Path("id") deviceId: String,
-        @Header("X-ACCESS-TOKEN") token: String
+        @Header("X-ACCESS-TOKEN") token: String = "?"
     )
 
     @POST(TAKE_DEVISE_URL)
     fun takeDevice(
         @Body bookingBody: BookingBody,
-        @Header("X-ACCESS-TOKEN") token: String
+        @Header("X-ACCESS-TOKEN") token: String = "?"
     )
 
     @PUT(RETURN_DEVISE_URL)
     fun returnDevice(
         @Body status: StatusBody,
         @Path("id") deviceId: String,
-        @Header("X-ACCESS-TOKEN") token: String
+        @Header("X-ACCESS-TOKEN") token: String = "?"
     )
 }
