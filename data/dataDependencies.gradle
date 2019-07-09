@@ -1,0 +1,8 @@
+dependencies {
+    implementation commonDependencies.kotlin
+    implementation dataDependencies.retrofit
+    implementation appDependencies.coreKTX
+    implementation dataDependencies.room
+    implementation dataDependencies.roomKTX
+    implementation dataDependencies.gson
+}
