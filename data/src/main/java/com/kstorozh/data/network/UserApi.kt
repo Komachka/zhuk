@@ -8,17 +8,15 @@ import retrofit2.http.*
 
 internal interface UserApi {
     @GET(GET_USERS_URL)
-    fun getUsers(@Header("X-ACCESS-TOKEN") token: String = "?"): List<User>
+    fun getUsers(): List<User>
 
     @POST(CREATE_USER_URL)
     fun createUser(
-        @Body user: User,
-        @Header("X-ACCESS-TOKEN") token: String = "?"
+        @Body user: User
     )
 
     @GET(REMIND_PIN_URL)
     fun remindPin(
-        @Path("id") userId: String,
-        @Header("X-ACCESS-TOKEN") token: String = "?"
+        @Path("id") userId: String
     )
 }
