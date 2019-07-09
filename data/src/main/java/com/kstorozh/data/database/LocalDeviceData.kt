@@ -7,7 +7,7 @@ class LocalDeviceData(private val deviceDao: DeviceDao) : ILocalDeviceData {
 
     @WorkerThread
     override suspend fun getDevice(): List<Device> {
-       return deviceDao.getDeviceInfo()
+        return deviceDao.getDeviceInfo()
     }
 
     @WorkerThread
@@ -24,5 +24,4 @@ class LocalDeviceData(private val deviceDao: DeviceDao) : ILocalDeviceData {
     override suspend fun deleteAllDeviceInfo() {
         deviceDao.deleteAllDeviceInfo()
     }
-
 }
