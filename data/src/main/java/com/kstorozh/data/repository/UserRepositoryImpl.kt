@@ -1,18 +1,23 @@
 package com.kstorozh.data.repository
 
-import com.kstorozh.data.User
 import com.kstorozh.data.network.RemoteData
+import com.kstorozh.dataimpl.UserParam
 
-internal class UserRepositoryImpl(private val remoteData: RemoteData) : UserRepository {
+internal class UserRepositoryImpl(
+    private val remoteData: RemoteData,
+    private val mapper: UserDataMapper
+) : UserRepository {
     override suspend fun getUsers() {
-        remoteData.getUsers();
+        remoteData.getUsers()
     }
 
-    override suspend fun createUser(user: User) {
-        remoteData.createUser(user)
+    override suspend fun createUser(userParam: UserParam) {
+
+        remoteData.createUser(mapper.mapUserParam(userParam))
     }
 
-    override suspend fun remindPin(user: User) {
-        remoteData.remindPin(user)
+    override suspend fun remindPin(userParam: UserParam) {
+
+        remoteData.remindPin(mapper.mapUserParam(userParam))
     }
 }

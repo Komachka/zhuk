@@ -1,10 +1,10 @@
 package com.kstorozh.dataimpl
 
-data class DeviceParam(
-    val pin: Int,
-    val userId: Int,
-    val deviceId: Int,
-    val startDate: Int,
-    val endDate: Int
-) {
-}
+class DeviceParam(
+    val uid: String,
+    val model: String,
+    val os: String,
+    val osVersion: String,
+    val memory: Int,
+    val storage: Int
+)

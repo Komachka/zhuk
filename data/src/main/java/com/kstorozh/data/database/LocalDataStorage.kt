@@ -1,7 +1,7 @@
 package com.kstorozh.data.database
 
 import androidx.annotation.WorkerThread
-import com.kstorozh.data.Device
+import com.kstorozh.data.models.Device
 
 internal interface LocalDataStorage {
 

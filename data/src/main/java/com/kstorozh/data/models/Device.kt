@@ -1,4 +1,4 @@
-package com.kstorozh.data
+package com.kstorozh.data.models
 
 import DEVICE_INFO_TABLE_NAME
 import androidx.room.ColumnInfo

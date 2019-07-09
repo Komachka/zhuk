@@ -1,4 +1,4 @@
-package com.kstorozh.data
+package com.kstorozh.data.models
 
 import com.google.gson.annotations.SerializedName
 

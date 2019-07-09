@@ -1,9 +1,10 @@
 package com.kstorozh.data.network
 
-import com.kstorozh.data.BookingBody
-import com.kstorozh.data.Device
-import com.kstorozh.data.StatusBody
-import com.kstorozh.data.User
+import com.kstorozh.data.models.*
+import com.kstorozh.data.models.BookingBody
+import com.kstorozh.data.models.Device
+import com.kstorozh.data.models.StatusBody
+import com.kstorozh.data.models.User
 
 internal class RemoteDataImpl(
     private val deviceApi: DeviceApi,
@@ -14,16 +15,16 @@ internal class RemoteDataImpl(
         deviceApi.initDevice(device)
     }
 
-    override suspend fun updateDevice(device: Device) {
-        deviceApi.updateDevice(device = device, deviceId = device.uid)
+    override suspend fun updateDevice(device: DeviceUpdate, deviceId: String) {
+        deviceApi.updateDevice(device, deviceId)
     }
 
-    override suspend fun takeDevise(bookingBody: BookingBody, device: Device) {
+    override suspend fun takeDevise(bookingBody: BookingBody, deviceId: String) {
         deviceApi.takeDevice(bookingBody = bookingBody)
     }
 
-    override suspend fun returnDevice(device: Device) {
-        deviceApi.returnDevice(status = StatusBody(status = true), deviceId = device.uid)
+    override suspend fun returnDevice(deviceId: String) {
+        deviceApi.returnDevice(status = StatusBody(status = true), deviceId = deviceId)
     }
 
     override suspend fun getUsers(): List<User> {

@@ -1,6 +1,6 @@
 package com.kstorozh.data.database
 
-import com.kstorozh.data.Device
+import com.kstorozh.data.models.Device
 
 internal class LocalDataStorageImpl(private val deviceDao: DeviceDao) : LocalDataStorage {
 

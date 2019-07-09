@@ -1,12 +1,10 @@
 package com.kstorozh.data.repository
 
-import com.kstorozh.data.User
+import com.kstorozh.dataimpl.UserParam
 
 interface UserRepository {
 
     suspend fun getUsers()
-    suspend fun createUser(user:User)
-    suspend fun remindPin(user: User)
-
-
+    suspend fun createUser(userParam: UserParam)
+    suspend fun remindPin(userParam: UserParam)
 }
