@@ -3,19 +3,18 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
+apply from: '../buildSystem/buildData.gradle'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.0"
+    compileSdkVersion buildVersions.targetSdkVersion
+    buildToolsVersion buildVersions.buildToolsVersion
 
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        minSdkVersion buildVersions.minSdkVersion
+        targetSdkVersion buildVersions.targetSdkVersion
+        versionCode buildVersions.versionCode
+        versionName buildVersions.versionName
 
     }
 
@@ -29,4 +28,5 @@ android {
 }
 
 apply from: 'domainDependencies.gradle'
+apply from : '../buildSystem/ktlintTasks.gradle'
 
