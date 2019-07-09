@@ -8,7 +8,7 @@ import com.kstorozh.data.Device
 interface DeviceDao {
 
     @Query("SELECT * FROM $DEVICE_INFO_TABLE_NAME LIMIT 1")
-    fun getDeviceInfo(): List<Device>
+    fun getDeviceInfo(): Device
 
     @Insert
     fun insertDevice(device: Device): Long

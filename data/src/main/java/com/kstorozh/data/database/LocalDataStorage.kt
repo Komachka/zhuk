@@ -1,11 +1,19 @@
 package com.kstorozh.data.database
 
+import androidx.annotation.WorkerThread
 import com.kstorozh.data.Device
 
-interface ILocalDeviceData {
+interface LocalDataStorage {
 
-    suspend fun getDevice(): List<Device>
+    @WorkerThread
+    suspend fun getDeviceInfo(): Device
+
+    @WorkerThread
     suspend fun insertDevice(device: Device)
+
+    @WorkerThread
     suspend fun updateDevice(device: Device)
+
+    @WorkerThread
     suspend fun deleteAllDeviceInfo()
 }
