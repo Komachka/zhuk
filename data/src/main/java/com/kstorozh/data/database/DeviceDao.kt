@@ -5,7 +5,7 @@ import androidx.room.*
 import com.kstorozh.data.Device
 
 @Dao
-interface DeviceDao {
+internal interface DeviceDao {
 
     @Query("SELECT * FROM $DEVICE_INFO_TABLE_NAME LIMIT 1")
     fun getDeviceInfo(): Device

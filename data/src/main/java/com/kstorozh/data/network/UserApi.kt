@@ -6,7 +6,7 @@ import REMIND_PIN_URL
 import com.kstorozh.data.User
 import retrofit2.http.*
 
-interface UserApi {
+internal interface UserApi {
     @GET(GET_USERS_URL)
     fun getUsers(@Header("X-ACCESS-TOKEN") token: String = "?"): List<User>
 

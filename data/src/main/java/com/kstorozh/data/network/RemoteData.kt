@@ -5,7 +5,7 @@ import com.kstorozh.data.BookingBody
 import com.kstorozh.data.Device
 import com.kstorozh.data.User
 
-interface RemoteData {
+internal interface RemoteData {
 
     @WorkerThread
     suspend fun initDevice(device: Device)

@@ -5,7 +5,7 @@ import com.kstorozh.data.Device
 import com.kstorozh.data.StatusBody
 import com.kstorozh.data.User
 
-class RemoteDataImpl(
+internal class RemoteDataImpl(
     private val deviceApi: DeviceApi,
     private val userApi: UserApi
 ) : RemoteData {

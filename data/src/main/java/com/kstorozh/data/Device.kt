@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = DEVICE_INFO_TABLE_NAME)
-data class Device(
+internal data class Device(
     @PrimaryKey val uid: String,
     val model: String,
     val os: String,

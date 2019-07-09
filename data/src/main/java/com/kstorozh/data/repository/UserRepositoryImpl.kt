@@ -3,7 +3,7 @@ package com.kstorozh.data.repository
 import com.kstorozh.data.User
 import com.kstorozh.data.network.RemoteData
 
-class UserRepositoryImpl(val remoteData: RemoteData) : UserRepository {
+internal class UserRepositoryImpl(private val remoteData: RemoteData) : UserRepository {
     override suspend fun getUsers() {
         remoteData.getUsers();
     }
