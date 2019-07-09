@@ -9,27 +9,24 @@ import com.kstorozh.data.Device
 import com.kstorozh.data.StatusBody
 import retrofit2.http.*
 
-interface DeviceApi {
+internal interface DeviceApi {
     @POST(INIT_DEVISE_URL)
     fun initDevice(@Body device: Device)
 
     @PUT(UPDATE_DEVISE_URL)
     fun updateDevice(
         @Body device: Device,
-        @Path("id") deviceId: String,
-        @Header("X-ACCESS-TOKEN") token: String = "?"
+        @Path("id") deviceId: String
     )
 
     @POST(TAKE_DEVISE_URL)
     fun takeDevice(
-        @Body bookingBody: BookingBody,
-        @Header("X-ACCESS-TOKEN") token: String = "?"
+        @Body bookingBody: BookingBody
     )
 
     @PUT(RETURN_DEVISE_URL)
     fun returnDevice(
         @Body status: StatusBody,
-        @Path("id") deviceId: String,
-        @Header("X-ACCESS-TOKEN") token: String = "?"
+        @Path("id") deviceId: String
     )
 }

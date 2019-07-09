@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 import com.kstorozh.data.Device
 
 @Database(entities = [Device::class], version = 1)
-abstract class DeviceDatabase : RoomDatabase() {
+internal abstract class DeviceDatabase : RoomDatabase() {
 
     abstract fun deviceDao(): DeviceDao
 

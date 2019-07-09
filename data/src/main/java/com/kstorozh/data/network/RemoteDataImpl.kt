@@ -5,7 +5,7 @@ import com.kstorozh.data.Device
 import com.kstorozh.data.StatusBody
 import com.kstorozh.data.User
 
-class RemoteDataImpl(
+internal class RemoteDataImpl(
     private val deviceApi: DeviceApi,
     private val userApi: UserApi
 ) : RemoteData {
@@ -14,7 +14,7 @@ class RemoteDataImpl(
         deviceApi.initDevice(device)
     }
 
-    override suspend fun updatedevice(device: Device) {
+    override suspend fun updateDevice(device: Device) {
         deviceApi.updateDevice(device = device, deviceId = device.uid)
     }
 
@@ -30,7 +30,7 @@ class RemoteDataImpl(
         return userApi.getUsers()
     }
 
-    override suspend fun createuser(user: User) {
+    override suspend fun createUser(user: User) {
         userApi.createUser(user = user)
     }
 

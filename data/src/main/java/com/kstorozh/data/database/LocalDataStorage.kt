@@ -3,7 +3,7 @@ package com.kstorozh.data.database
 import androidx.annotation.WorkerThread
 import com.kstorozh.data.Device
 
-interface LocalDataStorage {
+internal interface LocalDataStorage {
 
     @WorkerThread
     suspend fun getDeviceInfo(): Device

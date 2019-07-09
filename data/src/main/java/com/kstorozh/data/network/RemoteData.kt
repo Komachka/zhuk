@@ -5,13 +5,13 @@ import com.kstorozh.data.BookingBody
 import com.kstorozh.data.Device
 import com.kstorozh.data.User
 
-interface RemoteData {
+internal interface RemoteData {
 
     @WorkerThread
     suspend fun initDevice(device: Device)
 
     @WorkerThread
-    suspend fun updatedevice(device: Device)
+    suspend fun updateDevice(device: Device)
 
     @WorkerThread
     suspend fun takeDevise(bookingBody: BookingBody, device: Device)
@@ -23,7 +23,7 @@ interface RemoteData {
     suspend fun getUsers(): List<User>
 
     @WorkerThread
-    suspend fun createuser(user: User)
+    suspend fun createUser(user: User)
 
     @WorkerThread
     suspend fun remindPin(user: User)
