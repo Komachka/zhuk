@@ -1,17 +1,12 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'io.fabric'
 apply from: '../buildSystem/buildData.gradle'
 
 android {
     compileSdkVersion buildVersions.targetSdkVersion
     buildToolsVersion buildVersions.buildToolsVersion
-
-
 
     defaultConfig {
         applicationId buildVersions.applicationId

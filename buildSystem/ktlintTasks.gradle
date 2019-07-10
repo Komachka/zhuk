@@ -3,19 +3,12 @@ ext {
     ktlintAdress = 'com.pinterest:ktlint'
 }
 
-repositories {
-    jcenter()
-}
-
 configurations {
     ktlint
 }
 
 dependencies {
     ktlint "$ktlintAdress:$ktlintV"
-    // additional 3rd party ruleset(s) can be specified here
-    // just add them to the classpath (ktlint 'groupId:artifactId:version') and
-    // ktlint will pick them up
 }
 
 task ktlint(type: JavaExec, group: "verification") {
@@ -23,11 +16,7 @@ task ktlint(type: JavaExec, group: "verification") {
     main = "com.pinterest.ktlint.Main"
     classpath = configurations.ktlint
     args "src/**/*.kt"
-    // to generate report in checkstyle format prepend following args:
-    // "--reporter=plain", "--reporter=checkstyle,output=${buildDir}/ktlint.xml"
-    // see https://github.com/pinterest/ktlint#usage for more
 }
-
 
 task ktlintFormat(type: JavaExec, group: "formatting") {
     description = "Fix Kotlin code style deviations."
