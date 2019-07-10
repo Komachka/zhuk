@@ -14,7 +14,6 @@ internal class DeviceRepositoryImpl(
     override suspend fun initDevice(deviceParam: DeviceParam) {
         val device = mapper.mapDeviceData(deviceParam)
         remoteData.initDevice(device)
-
         // TODO remoteData.initDevice(device) return 'device_id': if OK add to db
     }
 

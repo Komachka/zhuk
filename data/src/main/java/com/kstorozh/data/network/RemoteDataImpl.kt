@@ -1,6 +1,5 @@
 package com.kstorozh.data.network
 
-import com.kstorozh.data.models.*
 import com.kstorozh.data.models.BookingBody
 import com.kstorozh.data.models.Device
 import com.kstorozh.data.models.StatusBody
