@@ -10,8 +10,7 @@ ext {
 
     commonDependencies = [
             kotlin : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin",
-            files: fileTree(dir: 'libs', include: ['*.jar']),
-            
+            files: fileTree(dir: 'libs', include: ['*.jar'])
     ]
 
     appDependencies = [

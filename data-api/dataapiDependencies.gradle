@@ -5,6 +5,4 @@ dependencies {
     implementation dataDependencies.room
     implementation dataDependencies.roomKTX
     implementation dataDependencies.gson
-    
-
 }
