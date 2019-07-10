@@ -6,8 +6,8 @@ import TAKE_DEVISE_URL
 import UPDATE_DEVISE_URL
 import com.kstorozh.data.models.BookingBody
 import com.kstorozh.data.models.Device
-import com.kstorozh.data.models.DeviceUpdate
 import com.kstorozh.data.models.StatusBody
+
 import retrofit2.http.*
 
 internal interface DeviceApi {
@@ -16,7 +16,7 @@ internal interface DeviceApi {
 
     @PUT(UPDATE_DEVISE_URL)
     fun updateDevice(
-        @Body deviceUpdate: DeviceUpdate,
+        @Body deviceUpdate: Device,
         @Path("id") deviceId: String
     )
 

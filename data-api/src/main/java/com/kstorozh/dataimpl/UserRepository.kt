@@ -1,6 +1,6 @@
 package com.kstorozh.data.repository
 
-import com.kstorozh.dataimpl.UserParam
+import com.kstorozh.dataimpl.model.UserParam
 
 interface UserRepository {
 

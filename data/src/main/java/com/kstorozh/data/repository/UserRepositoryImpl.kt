@@ -1,7 +1,7 @@
 package com.kstorozh.data.repository
 
 import com.kstorozh.data.network.RemoteData
-import com.kstorozh.dataimpl.UserParam
+import com.kstorozh.dataimpl.model.UserParam
 
 internal class UserRepositoryImpl(
     private val remoteData: RemoteData,

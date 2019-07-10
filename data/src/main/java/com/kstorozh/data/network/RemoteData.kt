@@ -3,7 +3,6 @@ package com.kstorozh.data.network
 import androidx.annotation.WorkerThread
 import com.kstorozh.data.models.BookingBody
 import com.kstorozh.data.models.Device
-import com.kstorozh.data.models.DeviceUpdate
 import com.kstorozh.data.models.User
 
 internal interface RemoteData {
@@ -12,7 +11,7 @@ internal interface RemoteData {
     suspend fun initDevice(device: Device)
 
     @WorkerThread
-    suspend fun updateDevice(device: DeviceUpdate, deviceId: String)
+    suspend fun updateDevice(device: Device, deviceId: String)
 
     @WorkerThread
     suspend fun takeDevise(bookingBody: BookingBody, deviceId: String)

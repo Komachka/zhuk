@@ -15,7 +15,7 @@ internal class RemoteDataImpl(
         deviceApi.initDevice(device)
     }
 
-    override suspend fun updateDevice(device: DeviceUpdate, deviceId: String) {
+    override suspend fun updateDevice(device: Device, deviceId: String) {
         deviceApi.updateDevice(device, deviceId)
     }
 
