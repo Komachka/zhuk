@@ -1,8 +1,8 @@
-package com.kstorozh.data
+package com.kstorozh.data.models
 
 import com.google.gson.annotations.SerializedName
 
-class BookingBody(
+internal class BookingBody(
     val pin: Int,
     @SerializedName("user_id") val userId: Int,
     @SerializedName("device_id") val deviceId: Int,
@@ -10,4 +10,4 @@ class BookingBody(
     @SerializedName("end_date") val endDate: Int
 )
 
-class StatusBody(val status: Boolean)
+internal class StatusBody(val status: Boolean)

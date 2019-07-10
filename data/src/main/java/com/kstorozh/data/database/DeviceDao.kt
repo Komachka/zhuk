@@ -2,7 +2,7 @@ package com.kstorozh.data.database
 
 import DEVICE_INFO_TABLE_NAME
 import androidx.room.*
-import com.kstorozh.data.Device
+import com.kstorozh.data.models.Device
 
 @Dao
 internal interface DeviceDao {

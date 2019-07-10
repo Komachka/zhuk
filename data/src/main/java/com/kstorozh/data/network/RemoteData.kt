@@ -1,9 +1,9 @@
 package com.kstorozh.data.network
 
 import androidx.annotation.WorkerThread
-import com.kstorozh.data.BookingBody
-import com.kstorozh.data.Device
-import com.kstorozh.data.User
+import com.kstorozh.data.models.BookingBody
+import com.kstorozh.data.models.Device
+import com.kstorozh.data.models.User
 
 internal interface RemoteData {
 
@@ -11,13 +11,13 @@ internal interface RemoteData {
     suspend fun initDevice(device: Device)
 
     @WorkerThread
-    suspend fun updateDevice(device: Device)
+    suspend fun updateDevice(device: Device, deviceId: String)
 
     @WorkerThread
-    suspend fun takeDevise(bookingBody: BookingBody, device: Device)
+    suspend fun takeDevise(bookingBody: BookingBody, deviceId: String)
 
     @WorkerThread
-    suspend fun returnDevice(device: Device)
+    suspend fun returnDevice(deviceId: String)
 
     @WorkerThread
     suspend fun getUsers(): List<User>

@@ -1,4 +1,4 @@
 dependencies {
     implementation commonDependencies.kotlin
-    implementation project(':data')
+    implementation project(':data-api')
 }
