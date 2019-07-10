@@ -11,10 +11,14 @@ internal class DeviceRepositoryImpl(
     private val remoteData: RemoteData,
     private val mapper: DeviceDataMapper
 ) : DeviseRepository {
+
     override suspend fun initDevice(deviceParam: DeviceParam) {
         val device = mapper.mapDeviceData(deviceParam)
-        remoteData.initDevice(device)
-        // TODO remoteData.initDevice(device) return 'device_id': if OK add to db
+        val resp = remoteData.initDevice(device)
+        resp?.let {
+            device.id = resp.data.deviceId.toString()
+            localData.insertDevice(device)
+        }
     }
 
     override suspend fun updateDevice(deviceParam: DeviceParam) {

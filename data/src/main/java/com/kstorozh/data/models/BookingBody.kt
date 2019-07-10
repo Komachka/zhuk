@@ -9,5 +9,3 @@ internal class BookingBody(
     @SerializedName("start_date") val startDate: Int,
     @SerializedName("end_date") val endDate: Int
 )
-
-internal class StatusBody(val status: Boolean)

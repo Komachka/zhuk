@@ -4,11 +4,13 @@ import CREATE_USER_URL
 import GET_USERS_URL
 import REMIND_PIN_URL
 import com.kstorozh.data.models.User
+import com.kstorozh.data.models.UsersDataResponce
+import retrofit2.Response
 import retrofit2.http.*
 
 internal interface UserApi {
     @GET(GET_USERS_URL)
-    fun getUsers(): List<User>
+    fun getUsers(): Response<UsersDataResponce>
 
     @POST(CREATE_USER_URL)
     fun createUser(

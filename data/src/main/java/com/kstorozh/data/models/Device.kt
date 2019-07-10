@@ -8,18 +8,24 @@ import com.google.gson.annotations.Expose
 
 @Entity(tableName = DEVICE_INFO_TABLE_NAME)
 internal data class Device(
-    @Expose @PrimaryKey var id: String,
+    @PrimaryKey var id: String,
+
+    @Expose
     val uid: String,
+
+    @Expose
     val model: String,
+
+    @Expose
     val os: String,
-    @ColumnInfo(name = "os_version")val osVersion: String,
+
+    @ColumnInfo(name = "os_version")
+    @Expose
+    val osVersion: String,
+
+    @Expose
     val memory: Int,
+
+    @Expose
     val storage: Int
-)
-
-data class Data(val device_id: String)
-
-data class InitDeviceResponse(
-    val message: String,
-    val data: Data
 )
