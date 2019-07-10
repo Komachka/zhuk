@@ -29,4 +29,3 @@ android {
 }
 
 apply from: 'dataDependencies.gradle'
-apply from : '../buildSystem/ktlintTasks.gradle'
