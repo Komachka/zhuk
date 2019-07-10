@@ -23,7 +23,7 @@ internal class RemoteDataImpl(
     private suspend fun <T : Any> getApiResult(call: suspend () -> Response<T>, errorMessage: String): Result<T> {
         val response = call.invoke()
         if (response.isSuccessful) return Result.Success(response.body()!!)
-        //TODO here we can cast response to error message model deepens on status code an get an error or message
+        // TODO here we can cast response to error message model deepens on status code an get an error or message
         return Result.Error(IOException("Error Occurred during getting safe Api result, Custom ERROR - $errorMessage"))
     }
 
@@ -55,7 +55,7 @@ internal class RemoteDataImpl(
 
     override suspend fun getUsers(): List<User>? {
         val errorMessage = "Can not get list of users"
-        val result = getApiResult({userApi.getUsers()}, errorMessage)
+        val result = getApiResult({ userApi.getUsers() }, errorMessage)
         var data: List<User>? = null
         when (result) {
             is Result.Success ->
@@ -65,7 +65,6 @@ internal class RemoteDataImpl(
             }
         }
         return data
-        
     }
 
     override suspend fun createUser(user: User) {

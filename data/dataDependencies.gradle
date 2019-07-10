@@ -5,5 +5,5 @@ dependencies {
     implementation dataDependencies.room
     implementation dataDependencies.roomKTX
     implementation dataDependencies.gson
-    implementation project(':usersData-api')
+    implementation project(':data-api')
 }

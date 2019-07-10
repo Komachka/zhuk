@@ -28,7 +28,7 @@ internal class UsersData(
     val users: List<User>
 )
 
-internal class UsersDataResponce(
+internal class UsersDataResponse(
 
     @SerializedName("data")
     @Expose
