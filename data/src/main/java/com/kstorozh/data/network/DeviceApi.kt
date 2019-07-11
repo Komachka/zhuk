@@ -4,6 +4,8 @@ import INIT_DEVISE_URL
 import RETURN_DEVISE_URL
 import TAKE_DEVISE_URL
 import UPDATE_DEVISE_URL
+import com.kstorozh.data.models.*
+import com.kstorozh.data.models.BaseResponse
 import com.kstorozh.data.models.BookingBody
 import com.kstorozh.data.models.Device
 import com.kstorozh.data.models.InitDeviceResponse
@@ -20,16 +22,16 @@ internal interface DeviceApi {
     fun updateDevice(
         @Body deviceUpdate: Device,
         @Path("id") deviceId: String
-    )
+    ): Response<BaseResponse>
 
     @POST(TAKE_DEVISE_URL)
     fun takeDevice(
         @Body bookingBody: BookingBody
-    )
+    ): Response<BaseResponse>
 
     @PUT(RETURN_DEVISE_URL)
     fun returnDevice(
         @Body status: StatusBody,
         @Path("id") deviceId: String
-    )
+    ): Response<BaseResponse>
 }

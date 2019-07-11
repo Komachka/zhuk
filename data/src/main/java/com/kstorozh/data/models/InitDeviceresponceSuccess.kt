@@ -11,11 +11,7 @@ internal data class DeviceData(
 
 internal data class InitDeviceResponse(
 
-    @SerializedName("msg")
-    @Expose
-    val message: String,
-
-    @SerializedName("usersData")
+    @SerializedName("data")
     @Expose
     val data: DeviceData
-)
+) : BaseResponse()
