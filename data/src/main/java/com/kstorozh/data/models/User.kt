@@ -34,4 +34,4 @@ internal class UsersDataResponse(
     @Expose
     val usersData: UsersData
 
-)
+) : BaseResponse()
