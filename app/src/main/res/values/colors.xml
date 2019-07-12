@@ -3,4 +3,10 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+
+
+    <color name="background">#1728a6</color>
+    <color name="logoTextColour">#00e9cb</color>
+    <color name="smallTextColour">#ffffff</color>
 </resources>
