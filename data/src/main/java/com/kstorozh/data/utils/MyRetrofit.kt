@@ -20,7 +20,7 @@ internal class MyRetrofit {
                     retrofit = Retrofit.Builder()
                         .addConverterFactory(GsonConverterFactory.create())
                         .baseUrl(BASE_URL)
-                        .client(okHttpClient)
+                        .client(okHttpClient!!)
                         .build()
                 }
             }
