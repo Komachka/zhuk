@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:background="@color/background"
+>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@mipmap/ic_hand" android:id="@+id/imageView2"
+            app:layout_constraintStart_toEndOf="@+id/textView4"
+            android:layout_marginLeft="5dp" android:layout_marginStart="5dp"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="@+id/textView4"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@mipmap/logo_slack" android:id="@+id/imageView"
+            app:layout_constraintEnd_toEndOf="@+id/editText"
+            android:layout_marginEnd="8dp" android:layout_marginRight="8dp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView6"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="#00e9cb"
+            android:text="@string/app_logo"
+            android:layout_marginTop="43dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/textView5" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="34sp"
+            android:fontFamily="sans-serif-medium"
+            android:textStyle="normal"
+            android:textColor="#ffffff"
+            android:text="@string/hello_message"
+            android:layout_marginTop="179dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/textView4"
+            app:layout_constraintEnd_toStartOf="@+id/imageView2"
+            android:layout_marginStart="53dp" app:layout_constraintStart_toStartOf="@+id/editText"
+            android:layout_marginLeft="53dp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView6"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
+            android:textColor="#ffffff"
+            android:text="@string/login_message"
+            android:layout_marginTop="248dp"
+            app:layout_constraintTop_toTopOf="parent" android:id="@+id/textView6" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="@+id/editText" android:layout_marginLeft="8dp"/>
+    <EditText
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="16dp"
+
+            android:textColorHint="@color/editTextColourHint"
+            android:textColor="@color/editTextColour"
+            android:background="@drawable/edittext_modified_states"
+            android:hint="@string/password"
+            android:layout_width="264dp" android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/editText"
+            android:layout_marginTop="16dp" android:id="@+id/editText2" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"/>
+    <EditText
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="16dp"
+            android:hint="@string/login"
+            android:textColorHint="@color/editTextColourHint"
+            android:textColor="@color/editTextColour"
+            android:layout_width="264dp" android:layout_height="wrap_content"
+            android:background="@drawable/edittext_modified_states" android:layout_marginTop="23dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView6" android:id="@+id/editText"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif-medium"
+            android:textStyle="normal"
+            android:textColor="#ffffff"
+            android:text="@string/forgot_pass_message"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/editText2" android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/editText2"
+            android:id="@+id/textView7"/>
+
+
+    <Button
+
+            android:background="@drawable/round_but"
+            android:text="@string/take_bunt_text"
+            android:layout_width="264dp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif-medium"
+            android:textStyle="normal"
+            android:textColor="#ffffff"
+            android:id="@+id/button"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="18dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

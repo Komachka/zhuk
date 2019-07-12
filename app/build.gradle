@@ -25,6 +25,6 @@ android {
 
 apply from: 'appDependencies.gradle'
 
-
-
-
+dependencies {
+    implementation 'androidx.legacy:legacy-support-v4:+'
+}

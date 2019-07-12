@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Evo.Zhuk</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_logo">evozhuk</string>
+    <string name="hello_message">Привет</string>
+    <string name="login_message">Войди с помощью логина</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="forgot_pass_message">Забыли пароль?</string>
+    <string name="take_bunt_text">Войти</string>
+    <string name="welcome_home_message">текст-текст</string>
 </resources>
