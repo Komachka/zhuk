@@ -5,6 +5,7 @@ import com.kstorozh.data.database.LocalDataStorage
 import com.kstorozh.data.models.ApiError
 import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.RemoteData
+import com.kstorozh.data.utils.TokenRepository
 import com.kstorozh.dataimpl.model.BookingParam
 import com.kstorozh.dataimpl.model.DeviceParam
 import com.kstorozh.dataimpl.DeviseRepository
@@ -14,7 +15,8 @@ internal class DeviceRepositoryImpl(
     private val localData: LocalDataStorage,
     private val remoteData: RemoteData,
     private val mapper: DeviceDataMapper,
-    private val apiError: MutableLiveData<ApiError>
+    private val apiError: MutableLiveData<ApiError>,
+    private val tokenRepository: TokenRepository
 ) : DeviseRepository {
 
     override suspend fun initDevice(deviceParam: DeviceParam) {
@@ -24,6 +26,7 @@ internal class DeviceRepositoryImpl(
             is ApiResult.Success -> {
                 device.id = result.data.data.deviceId.toString()
                 localData.insertDevice(device)
+                tokenRepository.setToken(device.id)
             }
             is ApiResult.Error<*> -> {
                 apiError.postValue(ApiError(result.errorResponse.parse(), result.exception))
