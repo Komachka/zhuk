@@ -11,5 +11,5 @@ internal class TokenRepository {
             print(token) // TODO set token to sharedPref? or BD
         }
 
-        fun getToken(): String? = token // TOD get token from shared pref of bd
+        fun getToken(): String? = token // TOD get token from shared pref or bd
 }

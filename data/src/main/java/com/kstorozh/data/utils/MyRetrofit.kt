@@ -8,24 +8,23 @@ import okhttp3.OkHttpClient
 internal class MyRetrofit {
     companion object {
         private var retrofit: Retrofit? = null
-        private var interceptor: AuthInterceptor = AuthInterceptor(TokenRepository())
         private var okHttpClient: OkHttpClient? = null
 
-        init {
+        fun create(interceptor: AuthInterceptor): Retrofit? {
             if (okHttpClient == null) {
                 okHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
             }
 
-            if (retrofit == null) { retrofit = Retrofit.Builder()
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .baseUrl(BASE_URL)
-                    .client(okHttpClient)
-                    .build()
+            if (retrofit == null) {
+                okHttpClient?.let {
+                    retrofit = Retrofit.Builder()
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .baseUrl(BASE_URL)
+                        .client(okHttpClient)
+                        .build()
+                }
             }
-        }
-
-        fun create(): Retrofit? {
-            return retrofit
+        return retrofit
         }
     }
 }
