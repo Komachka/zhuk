@@ -6,6 +6,6 @@
             android:drawable="@drawable/edittext_focus"
     /> <!-- focused -->
     <item
-            android:drawable="@drawable/edittext_normal"
+            android:drawable="@drawable/round_rectangle"
     /> <!-- default -->
 </selector>
