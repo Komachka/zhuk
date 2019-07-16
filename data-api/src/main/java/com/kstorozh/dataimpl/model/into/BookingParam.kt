@@ -1,4 +1,4 @@
-package com.kstorozh.dataimpl.model
+package com.kstorozh.dataimpl.model.into
 
 data class BookingParam(
     val pin: Int,

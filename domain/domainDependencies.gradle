@@ -1,4 +1,7 @@
 dependencies {
     implementation commonDependencies.kotlin
+    implementation domainDependencies.coroutines
+    implementation dataDependencies.livedata
+    implementation domainDependencies.livedataKTX
     implementation project(':data-api')
 }

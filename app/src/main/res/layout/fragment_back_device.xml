@@ -10,7 +10,7 @@
             android:scaleType="centerCrop"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            app:srcCompat="@drawable/faceWithStarEyes"
+            app:srcCompat="@drawable/face_with_star_eyes"
             android:id="@+id/starsImageView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.498" app:layout_constraintEnd_toEndOf="parent"

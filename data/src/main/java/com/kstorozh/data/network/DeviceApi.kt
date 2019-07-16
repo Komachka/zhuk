@@ -16,21 +16,21 @@ import retrofit2.http.*
 
 internal interface DeviceApi {
     @POST(INIT_DEVISE_URL)
-    fun initDevice(@Body device: Device): Response<InitDeviceResponse>
+    suspend fun initDevice(@Body device: Device): Response<InitDeviceResponse>
 
     @PUT(UPDATE_DEVISE_URL)
-    fun updateDevice(
+    suspend fun updateDevice(
         @Body deviceUpdate: Device,
         @Path("id") deviceId: String
     ): Response<BaseResponse>
 
     @POST(TAKE_DEVISE_URL)
-    fun takeDevice(
+    suspend fun takeDevice(
         @Body bookingBody: BookingBody
     ): Response<BaseResponse>
 
     @PUT(RETURN_DEVISE_URL)
-    fun returnDevice(
+    suspend fun returnDevice(
         @Body status: StatusBody,
         @Path("id") deviceId: String
     ): Response<BaseResponse>

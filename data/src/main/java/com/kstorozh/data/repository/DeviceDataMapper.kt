@@ -2,8 +2,8 @@ package com.kstorozh.data.repository
 
 import com.kstorozh.data.models.BookingBody
 import com.kstorozh.data.models.Device
-import com.kstorozh.dataimpl.model.BookingParam
-import com.kstorozh.dataimpl.model.DeviceParam
+import com.kstorozh.dataimpl.model.into.BookingParam
+import com.kstorozh.dataimpl.model.into.DeviceParam
 
 internal class DeviceDataMapper {
 

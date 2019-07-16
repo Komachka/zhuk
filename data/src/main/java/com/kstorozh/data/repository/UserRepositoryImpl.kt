@@ -1,28 +1,34 @@
 package com.kstorozh.data.repository
 
 import androidx.lifecycle.MutableLiveData
-import com.kstorozh.data.models.ApiError
+import com.kstorozh.data.errors.ApiError
 import com.kstorozh.data.models.ApiResult
-import com.kstorozh.data.models.User
 import com.kstorozh.data.network.RemoteData
 import com.kstorozh.data.utils.parse
-import com.kstorozh.dataimpl.model.UserParam
+import com.kstorozh.dataimpl.MyErrors
+import com.kstorozh.dataimpl.model.into.UserParam
+import com.kstorozh.dataimpl.model.out.SlackUser
 
 internal class UserRepositoryImpl(
     private val remoteData: RemoteData,
-    private val mapper: UserDataMapper,
-    private val apiError: MutableLiveData<ApiError>,
-    private val users: MutableLiveData<List<User>>
+    private val mapper: UserDataMapper
 ) : UserRepository {
-    override suspend fun getUsers() {
+    private val myError: MutableLiveData<MyErrors> by lazy { MutableLiveData<MyErrors>() }
+    private val users: MutableLiveData<List<SlackUser>> by lazy { MutableLiveData<List<SlackUser>>() }
+
+    override suspend fun getErrors(): MutableLiveData<MyErrors> {
+        return myError
+    }
+    override suspend fun getUsers(): MutableLiveData<List<SlackUser>> {
         when (val result = remoteData.getUsers()) {
             is ApiResult.Success -> {
-                users.postValue(result.data.usersData.users)
+                users.postValue(mapper.mapSlackUserList(result.data.usersData.users))
             }
             is ApiResult.Error<*> -> {
-                apiError.postValue(ApiError(result.errorResponse.parse(), result.exception))
+                myError.postValue(ApiError(result.errorResponse.parse(), result.exception))
             }
         }
+        return users
     }
 
     override suspend fun createUser(userParam: UserParam) {
@@ -32,19 +38,20 @@ internal class UserRepositoryImpl(
                 // TODO do smth
             }
             is ApiResult.Error<*> -> {
-                apiError.postValue(ApiError(result.errorResponse.parse(), result.exception))
+                myError.postValue(ApiError(result.errorResponse.parse(), result.exception))
             }
         }
     }
 
-    override suspend fun remindPin(userParam: UserParam) {
+    override suspend fun remindPin(userParam: UserParam) : Boolean {
 
-        when (val result = remoteData.remindPin(mapper.mapUserParam(userParam))) {
+        return when (val result = remoteData.remindPin(mapper.mapUserParam(userParam))) {
             is ApiResult.Success -> {
-                // TODO do smth
+               true
             }
             is ApiResult.Error<*> -> {
-                apiError.postValue(ApiError(result.errorResponse.parse(), result.exception))
+                myError.postValue(ApiError(result.errorResponse.parse(), result.exception))
+                false
             }
         }
     }

@@ -2,7 +2,6 @@ package com.kstorozh.data.models
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import java.lang.Exception
 
 internal abstract class ApiErrorBody
 internal data class ApiErrorWithField(
@@ -20,8 +19,3 @@ internal data class ApiErrorBodyWithMessage(
 ) : ApiErrorBody()
 
 internal data class ApiErrorBodyUnexpected(val message: String) : ApiErrorBody()
-
-internal data class ApiError(
-    val body: ApiErrorBody,
-    val exception: Exception
-)

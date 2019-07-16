@@ -1,4 +1,4 @@
-package com.kstorozh.dataimpl.model
+package com.kstorozh.dataimpl.model.into
 
 class DeviceParam(
     val uid: String,
