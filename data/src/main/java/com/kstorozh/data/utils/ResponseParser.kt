@@ -12,7 +12,7 @@ import retrofit2.Response
 internal fun Response<*>.parse(): ApiErrorBody {
 
     val error: ApiErrorBody
-    val retrofit = MyRetrofit.create()
+    val retrofit = MyRetrofit.create(AuthInterceptor(TokenRepository())) ?: return ApiErrorBodyUnexpected("Unexpected error. Retrofit == null")
     when (code()) {
             ERROR_STATUS_CODE -> {
                 val converter = retrofit
