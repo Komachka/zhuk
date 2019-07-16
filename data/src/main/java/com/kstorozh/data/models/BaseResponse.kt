@@ -10,15 +10,12 @@ internal class Errors(
     val fieldName: String
 )
 
-internal class ErrorResponce(
+internal open class BaseResponse(
+    @SerializedName("msg")
+    @Expose
+    val msg: String? = null,
 
     @SerializedName("errors")
     @Expose
-    val errors: Errors
-)
-
-internal class MessageResponce(
-    @SerializedName("msg")
-    @Expose
-    val msg: String
+    val errors: Errors ? = null
 )

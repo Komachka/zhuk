@@ -1,9 +1,12 @@
 dependencies {
     implementation commonDependencies.kotlin
     implementation dataDependencies.retrofit
+    implementation dataDependencies.retrofitgson
     implementation appDependencies.coreKTX
     implementation dataDependencies.room
     implementation dataDependencies.roomKTX
     implementation dataDependencies.gson
+    implementation dataDependencies.livedata
+    implementation dataDependencies.lifecycleKTX
     implementation project(':data-api')
 }
