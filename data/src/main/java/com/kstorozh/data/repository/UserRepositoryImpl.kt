@@ -1,5 +1,6 @@
 package com.kstorozh.data.repository
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.kstorozh.data.errors.ApiError
 import com.kstorozh.data.models.ApiResult
@@ -18,16 +19,19 @@ internal class UserRepositoryImpl(
     private val myError: MutableLiveData<MyErrors> by lazy { MutableLiveData<MyErrors>() }
     private val users: MutableLiveData<List<SlackUser>> by lazy { MutableLiveData<List<SlackUser>>() }
 
-    override suspend fun login(userLoginParam: UserLoginParam): String? {
-        return when (val result = remoteData.login(mapper.mapUserLoginParam(userLoginParam))) {
+    override suspend fun login(userLoginParam: UserLoginParam): MutableLiveData<String?> {
+        val mutableLiveData = MutableLiveData<String?>()
+        when (val result = remoteData.login(mapper.mapUserLoginParam(userLoginParam))) {
             is ApiResult.Success -> {
-                result.data.data.userId.toString()
+                mutableLiveData.postValue(result.data.data.userId.toString())
+
             }
             is ApiResult.Error<*> -> {
+                mutableLiveData.postValue(null)
                 myError.postValue(ApiError(result.errorResponse.parse(), result.exception))
-                return null
             }
         }
+        return mutableLiveData
     }
 
     override suspend fun getErrors(): MutableLiveData<MyErrors> {
@@ -57,16 +61,18 @@ internal class UserRepositoryImpl(
         }
     }
 
-    override suspend fun remindPin(slackUserId: String): Boolean {
+    override suspend fun remindPin(slackUserId: String): MutableLiveData<Boolean> {
 
-        return when (val result = remoteData.remindPin(slackUserId)) {
+        val mutableLiveData = MutableLiveData<Boolean>()
+        when (val result = remoteData.remindPin(slackUserId)) {
             is ApiResult.Success -> {
-                true
+                mutableLiveData.postValue(true)
             }
             is ApiResult.Error<*> -> {
+                mutableLiveData.postValue(false)
                 myError.postValue(ApiError(result.errorResponse.parse(), result.exception))
-                false
             }
         }
+        return mutableLiveData
     }
 }

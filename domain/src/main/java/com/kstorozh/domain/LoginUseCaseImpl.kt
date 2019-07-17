@@ -7,24 +7,24 @@ import com.kstorozh.domain.mapper.UserDataMapper
 import com.kstorozh.domainimpl.model.User
 import com.kstorozh.domainimpl.model.UserLoginInput
 
-class LoginUseCase(
+class LoginUseCaseImpl(
     val repository: UserRepository,
     val mapper: UserDataMapper
-) {
+) : LoginUseCase {
 
-    fun loginUser(user: UserLoginInput): LiveData<String> {
+    override fun loginUser(user: UserLoginInput): LiveData<String> {
         return liveData {
             val userId = repository.login(mapper.mapLoginInputParams(user))
-            userId?.let {
-                emit(it)
+            userId.let {
+                emit(it.value!!)
             }
         }
     }
 
-    fun remindPin(user: User): LiveData<Boolean> {
+    override fun remindPin(user: User): LiveData<Boolean> {
         return liveData {
             val isPinReminded = repository.remindPin(user.id.toString())
-            emit(isPinReminded)
+            emitSource(isPinReminded)
         }
     }
 }

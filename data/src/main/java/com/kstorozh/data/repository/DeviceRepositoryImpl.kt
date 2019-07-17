@@ -24,67 +24,75 @@ internal class DeviceRepositoryImpl(
         return myError
     }
 
-    override suspend fun initDevice(deviceParam: DeviceParam): Boolean {
+    override suspend fun initDevice(deviceParam: DeviceParam): MutableLiveData<Boolean> {
         val device = mapper.mapDeviceData(deviceParam)
+        val mutableLiveData = MutableLiveData<Boolean>()
 
-        return when (val result = remoteData.initDevice(device)) {
+        when (val result = remoteData.initDevice(device)) {
             is ApiResult.Success -> {
                 device.id = result.data.data.deviceId.toString()
                 // TODO add error handling from bd
                 localData.insertDevice(device)
                 tokenRepository.setToken(device.id)
-                true
+                mutableLiveData.postValue(true)
             }
             is ApiResult.Error<*> -> {
                 myError.postValue(ApiError(result.errorResponse.parse(), result.exception))
-                false
+                mutableLiveData.postValue(false)
             }
         }
+        return mutableLiveData
     }
 
-    override suspend fun updateDevice(deviceParam: DeviceParam): Boolean {
+
+    override suspend fun updateDevice(deviceParam: DeviceParam): MutableLiveData<Boolean> {
         val device = mapper.mapDeviceData(deviceParam)
-        return when (val result = remoteData.updateDevice(device, deviceParam.uid)) {
+        val mutableLiveData = MutableLiveData<Boolean>()
+        when (val result = remoteData.updateDevice(device, deviceParam.uid)) {
             is ApiResult.Success -> {
                 // TODO handle bd error
                 localData.updateDevice(device)
-                true
+                mutableLiveData.postValue(true)
             }
             is ApiResult.Error<*> -> {
                 myError.postValue(ApiError(result.errorResponse.parse(), result.exception))
-                false
+                mutableLiveData.postValue(false)
             }
         }
+        return mutableLiveData
     }
 
-    override suspend fun takeDevice(bookingParam: BookingParam): Boolean {
+    override suspend fun takeDevice(bookingParam: BookingParam): MutableLiveData<Boolean> {
 
         val device = localData.getDeviceInfo()
-        return when (val result = remoteData.takeDevise(
+        val mutableLiveData = MutableLiveData<Boolean>()
+        when (val result = remoteData.takeDevise(
             mapper.mapBookingDeviceInfo(bookingParam, device.id),
             device.id
         )) {
             is ApiResult.Success -> {
-                true
+                mutableLiveData.postValue(true)
             }
             is ApiResult.Error<*> -> {
                 myError.postValue(ApiError(result.errorResponse.parse(), result.exception))
-                false
+                mutableLiveData.postValue(false)
             }
         }
+        return mutableLiveData
     }
 
-    override suspend fun returnDevice(bookingParam: BookingParam): Boolean {
+    override suspend fun returnDevice(bookingParam: BookingParam): MutableLiveData<Boolean> {
         val device = localData.getDeviceInfo()
-
-        return when (val result = remoteData.returnDevice(mapper.mapBookingParamForReturn(bookingParam, device.id))) {
+        val mutableLiveData = MutableLiveData<Boolean>()
+        when (val result = remoteData.returnDevice(mapper.mapBookingParamForReturn(bookingParam, device.id))) {
             is ApiResult.Success -> {
-                true
+                mutableLiveData.postValue(true)
             }
             is ApiResult.Error<*> -> {
                 myError.postValue(ApiError(result.errorResponse.parse(), result.exception))
-                false
+                mutableLiveData.postValue(false)
             }
         }
+        return mutableLiveData
     }
 }

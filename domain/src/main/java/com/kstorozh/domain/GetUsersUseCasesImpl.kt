@@ -6,9 +6,10 @@ import com.kstorozh.data.repository.UserRepository
 import com.kstorozh.domain.mapper.UserDataMapper
 import com.kstorozh.domainimpl.model.User
 
-class GetUsersUseCases(val repository: UserRepository, val mapper: UserDataMapper) {
+class GetUsersUseCasesImpl(val repository: UserRepository, val mapper: UserDataMapper) :
+    GetUsersUseCases {
 
-    fun getUsers(): LiveData<List<User>> {
+    override fun getUsers(): LiveData<List<User>> {
         return liveData {
             val users = repository.getUsers()
             emit(mapper.mapListOfSlackUsers(users.value!!))
