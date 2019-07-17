@@ -6,6 +6,7 @@ import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.models.User
 import com.kstorozh.data.network.RemoteData
 import com.kstorozh.data.utils.parse
+import com.kstorozh.dataimpl.model.UserLoginParam
 import com.kstorozh.dataimpl.model.UserParam
 
 internal class UserRepositoryImpl(
@@ -14,6 +15,18 @@ internal class UserRepositoryImpl(
     private val apiError: MutableLiveData<ApiError>,
     private val users: MutableLiveData<List<User>>
 ) : UserRepository {
+    override suspend fun login(userLoginParam: UserLoginParam): String? {
+        return when (val result = remoteData.login(userLoginParam = mapper.mapUserLoginParam(userLoginParam))) {
+            is ApiResult.Success -> {
+                result.data.data.userId.toString()
+            }
+            is ApiResult.Error<*> -> {
+                apiError.postValue(ApiError(result.errorResponse.parse(), result.exception))
+                null
+            }
+        }
+    }
+
     override suspend fun getUsers() {
         when (val result = remoteData.getUsers()) {
             is ApiResult.Success -> {

@@ -31,4 +31,7 @@ internal interface RemoteData {
 
     @WorkerThread
     suspend fun remindPin(user: User): ApiResult<BaseResponse>
+
+    @WorkerThread
+    suspend fun login(userLoginParam: UserLogin): ApiResult<LoginUserResponce>
 }

@@ -15,10 +15,7 @@ internal data class User(
 
     @SerializedName("slack_username")
     @Expose
-    val slackUserName: String,
-
-    @Expose(deserialize = false)
-    val pin: String
+    val slackUserName: String
 )
 
 internal class UsersData(
