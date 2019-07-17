@@ -43,9 +43,9 @@ internal class UserRepositoryImpl(
         }
     }
 
-    override suspend fun remindPin(userParam: UserParam) : Boolean {
+    override suspend fun remindPin(slackUserId: String) : Boolean {
 
-        return when (val result = remoteData.remindPin(mapper.mapUserParam(userParam))) {
+        return when (val result = remoteData.remindPin(slackUserId)) {
             is ApiResult.Success -> {
                true
             }

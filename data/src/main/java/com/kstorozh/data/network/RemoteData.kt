@@ -30,5 +30,5 @@ internal interface RemoteData {
     suspend fun createUser(user: User): ApiResult<BaseResponse>
 
     @WorkerThread
-    suspend fun remindPin(user: User): ApiResult<BaseResponse>
+    suspend fun remindPin(slackId: String): ApiResult<BaseResponse>
 }

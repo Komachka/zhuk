@@ -7,7 +7,7 @@ import com.kstorozh.dataimpl.model.out.SlackUser
 
 interface UserRepository {
     suspend fun getUsers(): MutableLiveData<List<SlackUser>>
-    suspend fun createUser(userParam: UserParam) //
-    suspend fun remindPin(userParam: UserParam) : Boolean
+    suspend fun createUser(userParam: UserParam) // TODO delete later
+    suspend fun remindPin(slackUserId: String) : Boolean
     suspend fun getErrors(): MutableLiveData<MyErrors>
 }

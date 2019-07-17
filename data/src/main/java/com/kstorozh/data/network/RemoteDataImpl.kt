@@ -61,10 +61,10 @@ internal class RemoteDataImpl(
         }
     }
 
-    override suspend fun remindPin(user: User): ApiResult<BaseResponse> {
+    override suspend fun remindPin(slackUserId: String): ApiResult<BaseResponse> {
         val errorMessage = "problem with reminding pin"
         return getApiResult(errorMessage) {
-            userApi.remindPin(userId = user.id.toString())
+            userApi.remindPin(userId = slackUserId)
         }
     }
 }
