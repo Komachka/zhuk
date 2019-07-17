@@ -3,15 +3,15 @@ package com.kstorozh.domain
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.kstorozh.data.repository.UserRepository
-import com.kstorozh.dataimpl.model.out.SlackUser
+import com.kstorozh.domain.mapper.UserDataMapper
+import com.kstorozh.domainimpl.model.User
 
-class GetUsersUseCases(val repository: UserRepository) {
+class GetUsersUseCases(val repository: UserRepository, val mapper: UserDataMapper) {
 
-    fun getUsers() : LiveData<List<SlackUser>>
-    {
+    fun getUsers(): LiveData<List<User>> {
         return liveData {
             val users = repository.getUsers()
-            emitSource(users)
+            emit(mapper.mapListOfSlackUsers(users.value!!))
         }
     }
 }

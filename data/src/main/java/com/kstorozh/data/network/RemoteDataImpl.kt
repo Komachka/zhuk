@@ -3,7 +3,7 @@ package com.kstorozh.data.network
 import com.kstorozh.data.models.*
 import com.kstorozh.data.models.BookingBody
 import com.kstorozh.data.models.Device
-import com.kstorozh.data.models.StatusBody
+import com.kstorozh.data.models.ReturnDeviceBody
 import com.kstorozh.data.models.User
 import retrofit2.Response
 import java.io.IOException
@@ -12,6 +12,12 @@ internal class RemoteDataImpl(
     private val deviceApi: DeviceApi,
     private val userApi: UserApi
 ) : RemoteData {
+    override suspend fun login(userLoginParam: UserLogin): ApiResult<LoginUserResponce> {
+        val errorMessage = "problem with login"
+        return getApiResult(errorMessage) {
+            userApi.login(userLoginParam)
+        }
+    }
 
     private suspend fun <T : Any> getApiResult(errorMessage: String, call: suspend () -> Response<T>): ApiResult<T> {
         val response = call.invoke()
@@ -40,10 +46,10 @@ internal class RemoteDataImpl(
         }
     }
 
-    override suspend fun returnDevice(deviceId: String): ApiResult<BaseResponse> {
+    override suspend fun returnDevice(returnDeviceBody: ReturnDeviceBody): ApiResult<BaseResponse> {
         val errorMessage = "problem with update device"
         return getApiResult(errorMessage) {
-            deviceApi.returnDevice(status = StatusBody(status = true), deviceId = deviceId)
+            deviceApi.returnDevice(returnDeviceBody, returnDeviceBody.deviceId.toString())
         }
     }
 

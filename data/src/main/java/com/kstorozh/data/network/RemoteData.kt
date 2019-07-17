@@ -21,7 +21,7 @@ internal interface RemoteData {
     suspend fun takeDevise(bookingBody: BookingBody, deviceId: String): ApiResult<BaseResponse>
 
     @WorkerThread
-    suspend fun returnDevice(deviceId: String): ApiResult<BaseResponse>
+    suspend fun returnDevice(returnDeviceBody: ReturnDeviceBody): ApiResult<BaseResponse>
 
     @WorkerThread
     suspend fun getUsers(): ApiResult<UsersDataResponse>
@@ -30,5 +30,9 @@ internal interface RemoteData {
     suspend fun createUser(user: User): ApiResult<BaseResponse>
 
     @WorkerThread
+
     suspend fun remindPin(slackId: String): ApiResult<BaseResponse>
+
+    @WorkerThread
+    suspend fun login(userLoginParam: UserLogin): ApiResult<LoginUserResponce>
 }

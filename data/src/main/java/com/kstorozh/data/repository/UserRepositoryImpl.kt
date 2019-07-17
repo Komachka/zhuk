@@ -6,6 +6,7 @@ import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.RemoteData
 import com.kstorozh.data.utils.parse
 import com.kstorozh.dataimpl.MyErrors
+import com.kstorozh.dataimpl.model.UserLoginParam
 import com.kstorozh.dataimpl.model.into.UserParam
 import com.kstorozh.dataimpl.model.out.SlackUser
 
@@ -13,8 +14,21 @@ internal class UserRepositoryImpl(
     private val remoteData: RemoteData,
     private val mapper: UserDataMapper
 ) : UserRepository {
+
     private val myError: MutableLiveData<MyErrors> by lazy { MutableLiveData<MyErrors>() }
     private val users: MutableLiveData<List<SlackUser>> by lazy { MutableLiveData<List<SlackUser>>() }
+
+    override suspend fun login(userLoginParam: UserLoginParam): String? {
+        return when (val result = remoteData.login(mapper.mapUserLoginParam(userLoginParam))) {
+            is ApiResult.Success -> {
+                result.data.data.userId.toString()
+            }
+            is ApiResult.Error<*> -> {
+                myError.postValue(ApiError(result.errorResponse.parse(), result.exception))
+                return null
+            }
+        }
+    }
 
     override suspend fun getErrors(): MutableLiveData<MyErrors> {
         return myError
@@ -43,11 +57,11 @@ internal class UserRepositoryImpl(
         }
     }
 
-    override suspend fun remindPin(slackUserId: String) : Boolean {
+    override suspend fun remindPin(slackUserId: String): Boolean {
 
         return when (val result = remoteData.remindPin(slackUserId)) {
             is ApiResult.Success -> {
-               true
+                true
             }
             is ApiResult.Error<*> -> {
                 myError.postValue(ApiError(result.errorResponse.parse(), result.exception))

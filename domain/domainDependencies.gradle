@@ -4,4 +4,6 @@ dependencies {
     implementation dataDependencies.livedata
     implementation domainDependencies.livedataKTX
     implementation project(':data-api')
+    implementation project(':domain-api')
+
 }

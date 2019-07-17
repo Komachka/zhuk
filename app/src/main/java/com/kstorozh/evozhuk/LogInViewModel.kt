@@ -6,6 +6,6 @@ import com.kstorozh.domain.LoginUseCase
 class LogInViewModel(val loginUseCase: LoginUseCase) : ViewModel() {
 
     fun isLogin(name: String, pass: String) {
-        //loginUseCase.loginUser()
+        // loginUseCase.loginUser()
     }
 }

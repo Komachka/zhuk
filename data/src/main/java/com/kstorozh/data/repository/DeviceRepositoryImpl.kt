@@ -59,7 +59,11 @@ internal class DeviceRepositoryImpl(
 
     override suspend fun takeDevice(bookingParam: BookingParam): Boolean {
 
-        return when (val result = remoteData.takeDevise(mapper.mapBookingDeviceInfo(bookingParam), bookingParam.deviceId.toString())) {
+        val device = localData.getDeviceInfo()
+        return when (val result = remoteData.takeDevise(
+            mapper.mapBookingDeviceInfo(bookingParam, device.id),
+            device.id
+        )) {
             is ApiResult.Success -> {
                 true
             }
@@ -70,8 +74,10 @@ internal class DeviceRepositoryImpl(
         }
     }
 
-    override suspend fun returnDevice(deviceParam: DeviceParam): Boolean {
-        return when (val result = remoteData.returnDevice(deviceParam.uid)) {
+    override suspend fun returnDevice(bookingParam: BookingParam): Boolean {
+        val device = localData.getDeviceInfo()
+
+        return when (val result = remoteData.returnDevice(mapper.mapBookingParamForReturn(bookingParam, device.id))) {
             is ApiResult.Success -> {
                 true
             }

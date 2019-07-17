@@ -3,26 +3,28 @@ package com.kstorozh.domain
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.kstorozh.data.repository.UserRepository
-import com.kstorozh.dataimpl.model.into.UserLoginInput
-import com.kstorozh.dataimpl.model.out.SlackUser
+import com.kstorozh.domain.mapper.UserDataMapper
+import com.kstorozh.domainimpl.model.User
+import com.kstorozh.domainimpl.model.UserLoginInput
 
-class LoginUseCase(val repository: UserRepository) {
+class LoginUseCase(
+    val repository: UserRepository,
+    val mapper: UserDataMapper
+) {
 
     fun loginUser(user: UserLoginInput): LiveData<String> {
-        // TODO handle result of login here
         return liveData {
-
-            emit("id")
+            val userId = repository.login(mapper.mapLoginInputParams(user))
+            userId?.let {
+                emit(it)
+            }
         }
     }
 
-
-    fun remindPin(slackUser:SlackUser) : LiveData<Boolean>
-    {
+    fun remindPin(user: User): LiveData<Boolean> {
         return liveData {
-            val isPinRepinded = repository.remindPin(slackUser.id.toString())
-            emit(isPinRepinded)
+            val isPinReminded = repository.remindPin(user.id.toString())
+            emit(isPinReminded)
         }
-
     }
 }
