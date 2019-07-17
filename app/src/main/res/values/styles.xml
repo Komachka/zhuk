@@ -8,4 +8,25 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="edit_text_field">
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:textColorHint">@color/editTextColourHint</item>
+        <item name="android:textColor">@color/editTextColour</item>
+        <item name="android:background">@drawable/edittext_modified_states</item>
+    </style>
+
+    <style name="label_text_view">
+        <item name="android:textColor">@color/label_colour</item>
+        <item name="android:text">@string/app_logo</item>
+    </style>
+
+    <style name="goInButton">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">"sans-serif-medium"</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/smallTextColour</item>
+    </style>
+
 </resources>
