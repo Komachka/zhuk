@@ -8,10 +8,11 @@ import com.kstorozh.dataimpl.model.out.SlackUser
 
 class LoginUseCase(val repository: UserRepository) {
 
-    fun loginUser(user: UserLoginInput): LiveData<Boolean> {
+    fun loginUser(user: UserLoginInput): LiveData<String> {
         // TODO handle result of login here
         return liveData {
-            emit(false)
+
+            emit("id")
         }
     }
 
@@ -19,8 +20,8 @@ class LoginUseCase(val repository: UserRepository) {
     fun remindPin(slackUser:SlackUser) : LiveData<Boolean>
     {
         return liveData {
-            repository.remindPin(slackUser.id.toString())
-            emit(false)
+            val isPinRepinded = repository.remindPin(slackUser.id.toString())
+            emit(isPinRepinded)
         }
 
     }
