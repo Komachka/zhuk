@@ -10,5 +10,5 @@ interface DeviseRepository {
     suspend fun updateDevice(deviceParam: DeviceParam): LiveData<Boolean>
     suspend fun takeDevice(bookingParam: BookingParam): LiveData<Boolean>
     suspend fun returnDevice(bookingParam: BookingParam): LiveData<Boolean>
-    suspend fun getErrors(): MutableLiveData<MyErrors>
+    suspend fun getErrors(): MutableLiveData<MyErrors<*>>
 }

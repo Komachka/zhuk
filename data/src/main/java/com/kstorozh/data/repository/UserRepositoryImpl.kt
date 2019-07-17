@@ -1,6 +1,5 @@
 package com.kstorozh.data.repository
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.kstorozh.data.errors.ApiError
 import com.kstorozh.data.models.ApiResult
@@ -16,7 +15,7 @@ internal class UserRepositoryImpl(
     private val mapper: UserDataMapper
 ) : UserRepository {
 
-    private val myError: MutableLiveData<MyErrors> by lazy { MutableLiveData<MyErrors>() }
+    private val myError: MutableLiveData<MyErrors<*>> by lazy { MutableLiveData<MyErrors<*>>() }
     private val users: MutableLiveData<List<SlackUser>> by lazy { MutableLiveData<List<SlackUser>>() }
 
     override suspend fun login(userLoginParam: UserLoginParam): MutableLiveData<String?> {
@@ -24,17 +23,16 @@ internal class UserRepositoryImpl(
         when (val result = remoteData.login(mapper.mapUserLoginParam(userLoginParam))) {
             is ApiResult.Success -> {
                 mutableLiveData.postValue(result.data.data.userId.toString())
-
             }
             is ApiResult.Error<*> -> {
                 mutableLiveData.postValue(null)
-                myError.postValue(ApiError(result.errorResponse.parse(), result.exception))
+                myError.postValue(MyErrors(ApiError(result.errorResponse.parse(), result.exception)))
             }
         }
         return mutableLiveData
     }
 
-    override suspend fun getErrors(): MutableLiveData<MyErrors> {
+    override suspend fun getErrors(): MutableLiveData<MyErrors<*>> {
         return myError
     }
     override suspend fun getUsers(): MutableLiveData<List<SlackUser>> {
@@ -43,7 +41,7 @@ internal class UserRepositoryImpl(
                 users.postValue(mapper.mapSlackUserList(result.data.usersData.users))
             }
             is ApiResult.Error<*> -> {
-                myError.postValue(ApiError(result.errorResponse.parse(), result.exception))
+                myError.postValue(MyErrors(ApiError(result.errorResponse.parse(), result.exception)))
             }
         }
         return users
@@ -56,7 +54,7 @@ internal class UserRepositoryImpl(
                 // TODO do smth
             }
             is ApiResult.Error<*> -> {
-                myError.postValue(ApiError(result.errorResponse.parse(), result.exception))
+                myError.postValue(MyErrors(ApiError(result.errorResponse.parse(), result.exception)))
             }
         }
     }
@@ -70,7 +68,7 @@ internal class UserRepositoryImpl(
             }
             is ApiResult.Error<*> -> {
                 mutableLiveData.postValue(false)
-                myError.postValue(ApiError(result.errorResponse.parse(), result.exception))
+                myError.postValue(MyErrors(ApiError(result.errorResponse.parse(), result.exception)))
             }
         }
         return mutableLiveData

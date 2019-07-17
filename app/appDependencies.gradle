@@ -5,6 +5,6 @@ dependencies {
     implementation appDependencies.constraintlayout
     implementation appDependencies.crashlytics
     implementation commonDependencies.files
-    implementation project(':domain')
+    implementation project(':domain-api')
 }
 

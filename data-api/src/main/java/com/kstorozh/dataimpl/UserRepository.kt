@@ -12,6 +12,6 @@ interface UserRepository {
     suspend fun getUsers(): MutableLiveData<List<SlackUser>>
     suspend fun createUser(userParam: UserParam) // TODO delete later
     suspend fun remindPin(slackUserId: String): LiveData<Boolean>
-    suspend fun getErrors(): MutableLiveData<MyErrors>
+    suspend fun getErrors(): MutableLiveData<MyErrors<*>>
     suspend fun login(userLoginParam: UserLoginParam): LiveData<String?>
 }

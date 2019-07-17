@@ -4,11 +4,12 @@ import com.kstorozh.dataimpl.model.into.BookingParam
 import com.kstorozh.dataimpl.model.into.DeviceParam
 import com.kstorozh.domainimpl.model.BookingInputData
 import com.kstorozh.domainimpl.model.DeviceInputData
+
 import java.util.*
 
 class DeviceInfoMapper {
 
-    fun mapDeviceInfoToDeviceParam(deviceInputData: com.kstorozh.domainimpl.model.DeviceInputData) =
+    fun mapDeviceInfoToDeviceParam(deviceInputData: DeviceInputData) =
         DeviceParam(
             deviceInputData.uid,
             deviceInputData.model,
@@ -18,7 +19,7 @@ class DeviceInfoMapper {
             deviceInputData.storage
         )
 
-    fun mapBookingParam(bookingInputData: com.kstorozh.domainimpl.model.BookingInputData, startDate: Date? = null): BookingParam {
+    fun mapBookingParam(bookingInputData: BookingInputData, startDate: Date? = null): BookingParam {
 
         return BookingParam(
             bookingInputData.userId.toInt(),

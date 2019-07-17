@@ -1,8 +1,8 @@
 package com.kstorozh.domain
 
 import androidx.lifecycle.MediatorLiveData
-
+import com.kstorozh.domainimpl.model.DomainErrors
 
 interface HandleErrorUseCase {
-    suspend fun getErrors(): MediatorLiveData<DomainError>
+    fun getErrors(): MediatorLiveData<DomainErrors<*>>
 }

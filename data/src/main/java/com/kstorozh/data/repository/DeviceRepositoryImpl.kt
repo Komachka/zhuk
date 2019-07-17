@@ -16,11 +16,11 @@ internal class DeviceRepositoryImpl(
     private val localData: LocalDataStorage,
     private val remoteData: RemoteData,
     private val mapper: DeviceDataMapper,
-    private val myError: MutableLiveData<MyErrors>,
+    private val myError: MutableLiveData<MyErrors<*>>,
     private val tokenRepository: TokenRepository
 ) : DeviseRepository {
 
-    override suspend fun getErrors(): MutableLiveData<MyErrors> {
+    override suspend fun getErrors(): MutableLiveData<MyErrors<*>> {
         return myError
     }
 
@@ -37,13 +37,12 @@ internal class DeviceRepositoryImpl(
                 mutableLiveData.postValue(true)
             }
             is ApiResult.Error<*> -> {
-                myError.postValue(ApiError(result.errorResponse.parse(), result.exception))
+                myError.postValue(MyErrors(ApiError(result.errorResponse.parse(), result.exception)))
                 mutableLiveData.postValue(false)
             }
         }
         return mutableLiveData
     }
-
 
     override suspend fun updateDevice(deviceParam: DeviceParam): MutableLiveData<Boolean> {
         val device = mapper.mapDeviceData(deviceParam)
@@ -55,7 +54,7 @@ internal class DeviceRepositoryImpl(
                 mutableLiveData.postValue(true)
             }
             is ApiResult.Error<*> -> {
-                myError.postValue(ApiError(result.errorResponse.parse(), result.exception))
+                myError.postValue(MyErrors(ApiError(result.errorResponse.parse(), result.exception)))
                 mutableLiveData.postValue(false)
             }
         }
@@ -74,7 +73,7 @@ internal class DeviceRepositoryImpl(
                 mutableLiveData.postValue(true)
             }
             is ApiResult.Error<*> -> {
-                myError.postValue(ApiError(result.errorResponse.parse(), result.exception))
+                myError.postValue(MyErrors(ApiError(result.errorResponse.parse(), result.exception)))
                 mutableLiveData.postValue(false)
             }
         }
@@ -89,7 +88,7 @@ internal class DeviceRepositoryImpl(
                 mutableLiveData.postValue(true)
             }
             is ApiResult.Error<*> -> {
-                myError.postValue(ApiError(result.errorResponse.parse(), result.exception))
+                myError.postValue(MyErrors(ApiError(result.errorResponse.parse(), result.exception)))
                 mutableLiveData.postValue(false)
             }
         }

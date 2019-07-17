@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import com.kstorozh.domainimpl.model.BookingInputData
 import com.kstorozh.domainimpl.model.DeviceInputData
 
-
 interface ManageDeviceUseCases {
 
     fun initDevice(deviceInputData: DeviceInputData): LiveData<Boolean>
