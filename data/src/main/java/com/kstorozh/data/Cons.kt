@@ -20,4 +20,12 @@ const val BASE_URL = "https//google.com"
 const val ERROR_STATUS_CODE = 422
 const val UNAUTHORIZED_STATUS_CODE = 401
 
+
 const val LOG_TAG = "Test"
+
+
+/**
+ * endpoints
+ */
+
+
