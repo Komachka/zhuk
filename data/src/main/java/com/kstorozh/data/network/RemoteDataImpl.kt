@@ -12,6 +12,12 @@ internal class RemoteDataImpl(
     private val deviceApi: DeviceApi,
     private val userApi: UserApi
 ) : RemoteData {
+    override suspend fun login(userLoginParam: UserLogin): ApiResult<LoginUserResponce> {
+        val errorMessage = "problem with login"
+        return getApiResult(errorMessage) {
+            userApi.login(userLoginParam)
+        }
+    }
 
     private suspend fun <T : Any> getApiResult(errorMessage: String, call: suspend () -> Response<T>): ApiResult<T> {
         val response = call.invoke()
@@ -43,7 +49,7 @@ internal class RemoteDataImpl(
     override suspend fun returnDevice(deviceId: String): ApiResult<BaseResponse> {
         val errorMessage = "problem with update device"
         return getApiResult(errorMessage) {
-            deviceApi.returnDevice(status = StatusBody(status = true), deviceId = deviceId)
+            deviceApi.returnDevice(status = StatusBody(isActive = false), deviceId = deviceId)
         }
     }
 

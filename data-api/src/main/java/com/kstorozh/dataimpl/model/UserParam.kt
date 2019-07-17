@@ -4,5 +4,5 @@ class UserParam(
     val id: Int,
     val slackId: String,
     val slackUserName: String,
-    val pin: String
+    val pin: String? = null
 )
