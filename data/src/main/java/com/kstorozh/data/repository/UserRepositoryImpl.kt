@@ -4,17 +4,19 @@ import androidx.lifecycle.MutableLiveData
 import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.data.network.RemoteData
-import com.kstorozh.data.utils.parse
+import com.kstorozh.data.utils.createError
+import com.kstorozh.data.utils.getError
 import com.kstorozh.dataimpl.MyError
 import com.kstorozh.dataimpl.model.UserLoginParam
 import com.kstorozh.dataimpl.model.out.SlackUser
+import org.koin.core.KoinComponent
 
 internal class UserRepositoryImpl(
     private val remoteData: RemoteData,
     private val mapper: UserDataMapper,
     private val myErrors: MutableLiveData<MyError>,
     private val users: MutableLiveData<List<SlackUser>>
-) : UserRepository {
+) : UserRepository, KoinComponent {
 
     override suspend fun login(userLoginParam: UserLoginParam): MutableLiveData<String?> {
         val mutableLiveData = MutableLiveData<String?>()
@@ -24,7 +26,7 @@ internal class UserRepositoryImpl(
             }
             is ApiResult.Error<*> -> {
                 mutableLiveData.postValue(null)
-                myErrors.postValue(result.errorResponse.parse(Endpoints.LOGIN, result.exception))
+                myErrors.postValue(createError(Endpoints.LOGIN, result, this))
             }
         }
         return mutableLiveData
@@ -39,7 +41,7 @@ internal class UserRepositoryImpl(
                 users.postValue(mapper.mapSlackUserList(result.data.usersData.users))
             }
             is ApiResult.Error<*> -> {
-                myErrors.postValue(result.errorResponse.parse(Endpoints.GET_USERS, result.exception))
+                myErrors.postValue(createError(Endpoints.GET_USERS, result, this))
             }
         }
         return users
@@ -54,7 +56,8 @@ internal class UserRepositoryImpl(
             }
             is ApiResult.Error<*> -> {
                 mutableLiveData.postValue(false)
-                myErrors.postValue(result.errorResponse.parse(Endpoints.REMIND_PIN, result.exception))
+                myErrors.postValue(createError(Endpoints.REMIND_PIN, result, this))
+
             }
         }
         return mutableLiveData

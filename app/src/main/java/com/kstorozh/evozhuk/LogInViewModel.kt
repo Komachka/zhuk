@@ -2,8 +2,8 @@ package com.kstorozh.evozhuk
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.kstorozh.domain.GetUsersUseCases
-import com.kstorozh.domain.LoginUseCase
+import com.kstorozh.domainimpl.GetUsersUseCases
+import com.kstorozh.domainimpl.LoginUseCase
 import com.kstorozh.domainimpl.model.User
 import com.kstorozh.domainimpl.model.UserLoginInput
 

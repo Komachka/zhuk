@@ -1,4 +1,4 @@
-package com.kstorozh.domain
+package com.kstorozh.domainimpl
 
 import androidx.lifecycle.LiveData
 import com.kstorozh.domainimpl.model.User
