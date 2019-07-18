@@ -1,11 +1,14 @@
 package com.kstorozh.dataimpl
 
-import com.kstorozh.dataimpl.model.BookingParam
-import com.kstorozh.dataimpl.model.DeviceParam
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.kstorozh.dataimpl.model.into.BookingParam
+import com.kstorozh.dataimpl.model.into.DeviceParam
 
 interface DeviseRepository {
-    suspend fun initDevice(deviceParam: DeviceParam)
-    suspend fun updateDevice(deviceParam: DeviceParam)
-    suspend fun takeDevice(bookingParam: BookingParam)
-    suspend fun returnDevice(deviceParam: DeviceParam)
+    suspend fun initDevice(deviceParam: DeviceParam): LiveData<Boolean>
+    suspend fun updateDevice(deviceParam: DeviceParam): LiveData<Boolean>
+    suspend fun takeDevice(bookingParam: BookingParam): LiveData<Boolean>
+    suspend fun returnDevice(bookingParam: BookingParam): LiveData<Boolean>
+    suspend fun getErrors(): MutableLiveData<MyError>
 }

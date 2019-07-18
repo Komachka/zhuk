@@ -14,15 +14,15 @@ import retrofit2.http.*
 
 internal interface UserApi {
     @GET(GET_USERS_URL)
-    fun getUsers(): Response<UsersDataResponse>
+    suspend fun getUsers(): Response<UsersDataResponse>
 
     @POST(CREATE_USER_URL)
-    fun createUser(
+    suspend fun createUser(
         @Body user: User
     ): Response<BaseResponse>
 
     @GET(REMIND_PIN_URL)
-    fun remindPin(
+    suspend fun remindPin(
         @Path("id") userId: String
     ): Response<BaseResponse>
 

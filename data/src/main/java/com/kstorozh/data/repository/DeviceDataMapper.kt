@@ -2,8 +2,9 @@ package com.kstorozh.data.repository
 
 import com.kstorozh.data.models.BookingBody
 import com.kstorozh.data.models.Device
-import com.kstorozh.dataimpl.model.BookingParam
-import com.kstorozh.dataimpl.model.DeviceParam
+import com.kstorozh.data.models.ReturnDeviceBody
+import com.kstorozh.dataimpl.model.into.BookingParam
+import com.kstorozh.dataimpl.model.into.DeviceParam
 
 internal class DeviceDataMapper {
 
@@ -16,9 +17,12 @@ internal class DeviceDataMapper {
         deviceParam.memory,
         deviceParam.storage)
 
-    fun mapBookingDeviceInfo(bookingParam: BookingParam): BookingBody = BookingBody(bookingParam.pin,
+    fun mapBookingDeviceInfo(bookingParam: BookingParam, deviceId: String) = BookingBody(
         bookingParam.userId,
-        bookingParam.deviceId,
+        deviceId.toInt(),
         bookingParam.startDate,
-        bookingParam.endDate)
+        bookingParam.endDate,
+        isActive = true)
+
+    fun mapBookingParamForReturn(bookingParam: BookingParam, id: String) = ReturnDeviceBody(bookingParam.userId, id.toInt())
 }

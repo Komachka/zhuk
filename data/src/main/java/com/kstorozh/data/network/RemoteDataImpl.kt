@@ -3,7 +3,7 @@ package com.kstorozh.data.network
 import com.kstorozh.data.models.*
 import com.kstorozh.data.models.BookingBody
 import com.kstorozh.data.models.Device
-import com.kstorozh.data.models.StatusBody
+import com.kstorozh.data.models.ReturnDeviceBody
 import com.kstorozh.data.models.User
 import retrofit2.Response
 import java.io.IOException
@@ -46,10 +46,10 @@ internal class RemoteDataImpl(
         }
     }
 
-    override suspend fun returnDevice(deviceId: String): ApiResult<BaseResponse> {
+    override suspend fun returnDevice(returnDeviceBody: ReturnDeviceBody): ApiResult<BaseResponse> {
         val errorMessage = "problem with update device"
         return getApiResult(errorMessage) {
-            deviceApi.returnDevice(status = StatusBody(isActive = false), deviceId = deviceId)
+            deviceApi.returnDevice(returnDeviceBody, returnDeviceBody.deviceId.toString())
         }
     }
 
@@ -67,10 +67,10 @@ internal class RemoteDataImpl(
         }
     }
 
-    override suspend fun remindPin(user: User): ApiResult<BaseResponse> {
+    override suspend fun remindPin(slackUserId: String): ApiResult<BaseResponse> {
         val errorMessage = "problem with reminding pin"
         return getApiResult(errorMessage) {
-            userApi.remindPin(userId = user.id.toString())
+            userApi.remindPin(userId = slackUserId)
         }
     }
 }

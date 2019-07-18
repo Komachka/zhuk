@@ -1,6 +1,6 @@
-package com.kstorozh.dataimpl.model
+package com.kstorozh.domainimpl.model
 
-class DeviceParam(
+data class DeviceInputData(
     val uid: String,
     val model: String,
     val os: String,

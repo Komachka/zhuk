@@ -5,13 +5,12 @@
         xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        android:id="@+id/fragment_back_device"
->
+        android:id="@+id/fragment_back_device">
     <ImageView
             android:scaleType="centerCrop"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            app:srcCompat="@drawable/faceWithStarEyes"
+            app:srcCompat="@drawable/face_with_star_eyes"
             android:id="@+id/starsImageView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.498" app:layout_constraintEnd_toEndOf="parent"

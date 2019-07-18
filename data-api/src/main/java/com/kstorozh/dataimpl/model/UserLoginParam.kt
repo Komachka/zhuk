@@ -1,6 +1,6 @@
 package com.kstorozh.dataimpl.model
 
-class UserLoginParam(
+data class UserLoginParam(
     val userName: String,
     val pin: String
 )

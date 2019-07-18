@@ -2,12 +2,13 @@ package com.kstorozh.data.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.kstorozh.data.database.LocalDataStorage
-import com.kstorozh.data.models.ApiError
+import com.kstorozh.dataimpl.MyError
 import com.kstorozh.data.models.ApiResult
+import com.kstorozh.data.network.Endpoints
 import com.kstorozh.data.network.RemoteData
 import com.kstorozh.data.utils.TokenRepository
-import com.kstorozh.dataimpl.model.BookingParam
-import com.kstorozh.dataimpl.model.DeviceParam
+import com.kstorozh.dataimpl.model.into.BookingParam
+import com.kstorozh.dataimpl.model.into.DeviceParam
 import com.kstorozh.dataimpl.DeviseRepository
 import com.kstorozh.data.utils.parse
 
@@ -15,57 +16,82 @@ internal class DeviceRepositoryImpl(
     private val localData: LocalDataStorage,
     private val remoteData: RemoteData,
     private val mapper: DeviceDataMapper,
-    private val apiError: MutableLiveData<ApiError>,
+    private val myErrors: MutableLiveData<MyError>,
     private val tokenRepository: TokenRepository
 ) : DeviseRepository {
 
-    override suspend fun initDevice(deviceParam: DeviceParam) {
+    override suspend fun getErrors(): MutableLiveData<MyError> {
+        return myErrors
+    }
+
+    override suspend fun initDevice(deviceParam: DeviceParam): MutableLiveData<Boolean> {
         val device = mapper.mapDeviceData(deviceParam)
+        val mutableLiveData = MutableLiveData<Boolean>()
 
         when (val result = remoteData.initDevice(device)) {
             is ApiResult.Success -> {
                 device.id = result.data.data.deviceId.toString()
+                // TODO add error handling from bd
                 localData.insertDevice(device)
                 tokenRepository.setToken(device.id)
+                mutableLiveData.postValue(true)
             }
             is ApiResult.Error<*> -> {
-                apiError.postValue(ApiError(result.errorResponse.parse(), result.exception))
+                myErrors.postValue(result.errorResponse.parse(Endpoints.INIT_DEVICE, result.exception))
+                mutableLiveData.postValue(false)
             }
         }
+        return mutableLiveData
     }
 
-    override suspend fun updateDevice(deviceParam: DeviceParam) {
+    override suspend fun updateDevice(deviceParam: DeviceParam): MutableLiveData<Boolean> {
         val device = mapper.mapDeviceData(deviceParam)
+        val mutableLiveData = MutableLiveData<Boolean>()
         when (val result = remoteData.updateDevice(device, deviceParam.uid)) {
             is ApiResult.Success -> {
+                // TODO handle bd error
                 localData.updateDevice(device)
+                mutableLiveData.postValue(true)
             }
             is ApiResult.Error<*> -> {
-                apiError.postValue(ApiError(result.errorResponse.parse(), result.exception))
+                myErrors.postValue(result.errorResponse.parse(Endpoints.UPDATE_DEVICE, result.exception))
+                mutableLiveData.postValue(false)
             }
         }
+        return mutableLiveData
     }
 
-    override suspend fun takeDevice(bookingParam: BookingParam) {
+    override suspend fun takeDevice(bookingParam: BookingParam): MutableLiveData<Boolean> {
 
-        when (val result = remoteData.takeDevise(mapper.mapBookingDeviceInfo(bookingParam), bookingParam.deviceId.toString())) {
+        val device = localData.getDeviceInfo()
+        val mutableLiveData = MutableLiveData<Boolean>()
+        when (val result = remoteData.takeDevise(
+            mapper.mapBookingDeviceInfo(bookingParam, device.id),
+            device.id
+        )) {
             is ApiResult.Success -> {
-                // TODO update livedata
+                mutableLiveData.postValue(true)
             }
             is ApiResult.Error<*> -> {
-                apiError.postValue(ApiError(result.errorResponse.parse(), result.exception))
+                myErrors.postValue(result.errorResponse.parse(Endpoints.TAKE_DEVICE, result.exception))
+                mutableLiveData.postValue(false)
             }
         }
+        return mutableLiveData
     }
 
-    override suspend fun returnDevice(deviceParam: DeviceParam) {
-        when (val result = remoteData.returnDevice(deviceParam.uid)) {
+    override suspend fun returnDevice(bookingParam: BookingParam): MutableLiveData<Boolean> {
+        val device = localData.getDeviceInfo()
+        val mutableLiveData = MutableLiveData<Boolean>()
+        when (val result = remoteData.returnDevice(mapper.mapBookingParamForReturn(bookingParam, device.id))) {
             is ApiResult.Success -> {
-                // TODO update livedata
+                mutableLiveData.postValue(true)
             }
             is ApiResult.Error<*> -> {
-                apiError.postValue(ApiError(result.errorResponse.parse(), result.exception))
+                myErrors.postValue(result.errorResponse.parse(Endpoints.RETURN_DEVICE, result.exception))
+                mutableLiveData.postValue(false)
             }
         }
+        return mutableLiveData
     }
 }
