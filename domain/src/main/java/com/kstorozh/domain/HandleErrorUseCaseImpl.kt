@@ -5,6 +5,7 @@ import androidx.lifecycle.liveData
 import com.kstorozh.data.repository.UserRepository
 import com.kstorozh.dataimpl.DeviseRepository
 import com.kstorozh.domain.mapper.ErrorMapper
+import com.kstorozh.domainimpl.HandleErrorUseCase
 import com.kstorozh.domainimpl.model.DomainErrors
 
 class HandleErrorUseCaseImpl(

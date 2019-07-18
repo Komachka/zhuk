@@ -1,7 +1,5 @@
 package com.kstorozh.evozhuk
 
-
-
 class LogInViewModel()
 /*
     val loginUseCase: LoginUseCase,
