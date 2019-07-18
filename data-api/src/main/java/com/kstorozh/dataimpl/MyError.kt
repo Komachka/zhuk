@@ -1,8 +1,8 @@
 package com.kstorozh.dataimpl
 
-class MyError (
-    val errorStatus: ErrorStatus,
-    val message:String,
+class MyError(
+    val errorStatus: ErrorStatus? = null,
+    val message: String,
     val throwable: Throwable
 
 )

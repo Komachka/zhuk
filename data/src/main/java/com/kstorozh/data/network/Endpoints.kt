@@ -8,5 +8,4 @@ enum class Endpoints {
     LOGIN,
     GET_USERS,
     REMIND_PIN
-
 }

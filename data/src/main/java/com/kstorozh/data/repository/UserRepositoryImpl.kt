@@ -1,18 +1,12 @@
 package com.kstorozh.data.repository
 
 import androidx.lifecycle.MutableLiveData
-import com.kstorozh.data.errors.ApiError
-import com.kstorozh.data.models.ApiErrorBodyUnexpected
-import com.kstorozh.data.models.ApiErrorBodyWithMessage
-import com.kstorozh.data.models.ApiErrorWithField
 import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.data.network.RemoteData
 import com.kstorozh.data.utils.parse
-import com.kstorozh.dataimpl.ErrorStatus
 import com.kstorozh.dataimpl.MyError
 import com.kstorozh.dataimpl.model.UserLoginParam
-import com.kstorozh.dataimpl.model.into.UserParam
 import com.kstorozh.dataimpl.model.out.SlackUser
 
 internal class UserRepositoryImpl(
@@ -31,21 +25,7 @@ internal class UserRepositoryImpl(
             }
             is ApiResult.Error<*> -> {
                 mutableLiveData.postValue(null)
-
-                val error = result.errorResponse.parse(Endpoints.LOGIN, result.exception)
-
-
-
-/*
-                val error = when(val errorBody =  result.errorResponse.parse())
-                {
-                    is ApiErrorWithField -> MyError(ErrorStatus.INVALID_PASSWORD, errorBody.errors.fieldName, result.exception)
-                    is ApiErrorBodyWithMessage -> MyError(ErrorStatus.INVALID_LOGIN, errorBody.msg, result.exception)
-                    is ApiErrorBodyUnexpected -> MyError(ErrorStatus.UNEXPECTED_ERROR, errorBody.message, result.exception)
-                    else -> MyError(ErrorStatus.UNEXPECTED_ERROR, "something went wrong", result.exception)
-                }
-*/
-                myErrors.postValue(error)
+                myErrors.postValue(result.errorResponse.parse(Endpoints.LOGIN, result.exception))
             }
         }
         return mutableLiveData
@@ -60,22 +40,10 @@ internal class UserRepositoryImpl(
                 users.postValue(mapper.mapSlackUserList(result.data.usersData.users))
             }
             is ApiResult.Error<*> -> {
-                myErrors.postValue(MyError(ApiError(result.errorResponse.parse(), result.exception)))
+                myErrors.postValue(result.errorResponse.parse(Endpoints.GET_USERS, result.exception))
             }
         }
         return users
-    }
-
-    override suspend fun createUser(userParam: UserParam) {
-
-        when (val result = remoteData.createUser(mapper.mapUserParam(userParam))) {
-            is ApiResult.Success -> {
-                // TODO do smth
-            }
-            is ApiResult.Error<*> -> {
-                myErrors.postValue(MyError(ApiError(result.errorResponse.parse(), result.exception)))
-            }
-        }
     }
 
     override suspend fun remindPin(slackUserId: String): MutableLiveData<Boolean> {
@@ -87,7 +55,7 @@ internal class UserRepositoryImpl(
             }
             is ApiResult.Error<*> -> {
                 mutableLiveData.postValue(false)
-                myErrors.postValue(MyError(ApiError(result.errorResponse.parse(), result.exception)))
+                myErrors.postValue(result.errorResponse.parse(Endpoints.REMIND_PIN, result.exception))
             }
         }
         return mutableLiveData

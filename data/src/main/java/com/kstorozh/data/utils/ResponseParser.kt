@@ -1,9 +1,8 @@
 package com.kstorozh.data.utils
 
 import ERROR_STATUS_CODE
+import NOT_FOUND_STATUS_CODE
 import UNAUTHORIZED_STATUS_CODE
-import com.kstorozh.data.models.ApiErrorBody
-import com.kstorozh.data.models.ApiErrorBodyUnexpected
 import com.kstorozh.data.models.ApiErrorWithField
 import com.kstorozh.data.models.ApiErrorBodyWithMessage
 import com.kstorozh.data.network.Endpoints
@@ -11,39 +10,71 @@ import com.kstorozh.dataimpl.ErrorStatus
 import com.kstorozh.dataimpl.MyError
 import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.Retrofit
 import java.lang.Exception
 
-internal fun Response<*>.parse(endpoint:Endpoints, exception: Exception): MyError {
+internal fun Response<*>.parse(endpoint: Endpoints, exception: Exception): MyError {
 
-    val error: MyError
-    val retrofit = MyRetrofit.create(AuthInterceptor(TokenRepository()))
-        ?: return MyError(ErrorStatus.UNEXPECTED_ERROR,"Unexpected error. Retrofit == null",exception)
-
-    error = when(endpoint)
-    {
+    return when (endpoint) {
         Endpoints.INIT_DEVICE ->
         {
-            when(code())
-            {
-                ERROR_STATUS_CODE -> MyError(ErrorStatus.CAN_NOT_INI_DEVICE, getErrorMessage(retrofit), exception)
+            when (code()) {
+                ERROR_STATUS_CODE -> MyError(ErrorStatus.CAN_NOT_INI_DEVICE, getErrorMessage(), exception)
+                UNAUTHORIZED_STATUS_CODE -> MyError(ErrorStatus.UNAUTHORIZED, getErrorMessage(), exception)
+                else -> MyError(ErrorStatus.UNEXPECTED_ERROR, "Exception occurred during init ", exception)
             }
         }
         Endpoints.UPDATE_DEVICE ->
+        {
+            when (code()) {
+                ERROR_STATUS_CODE -> MyError(ErrorStatus.CAN_NOT_UPDATE_DEVICE, getErrorMessage(), exception)
+                UNAUTHORIZED_STATUS_CODE -> MyError(ErrorStatus.UNAUTHORIZED, getErrorMessage(), exception)
+                else -> MyError(ErrorStatus.UNEXPECTED_ERROR, "Exception occurred during update ", exception)
+            }
+        }
         Endpoints.TAKE_DEVICE ->
+        {
+            when (code()) {
+                ERROR_STATUS_CODE -> MyError(ErrorStatus.CAN_NOT_BOOK_DEVICE, getErrorMessage(), exception)
+                UNAUTHORIZED_STATUS_CODE -> MyError(ErrorStatus.UNAUTHORIZED, getErrorMessage(), exception)
+                else -> MyError(ErrorStatus.UNEXPECTED_ERROR, "Exception occurred during booking ", exception)
+            }
+        }
         Endpoints.RETURN_DEVICE ->
+        {
+            when (code()) {
+                ERROR_STATUS_CODE -> MyError(ErrorStatus.CAN_NOT_RETURN_DEVICE, getErrorMessage(), exception)
+                UNAUTHORIZED_STATUS_CODE -> MyError(ErrorStatus.UNAUTHORIZED, getErrorMessage(), exception)
+                else -> MyError(ErrorStatus.UNEXPECTED_ERROR, "Exception occurred during booking ", exception)
+            }
+        }
         Endpoints.LOGIN ->
+            when (code()) {
+                ERROR_STATUS_CODE -> MyError(ErrorStatus.INVALID_PASSWORD, getErrorMessage(), exception)
+                NOT_FOUND_STATUS_CODE -> MyError(ErrorStatus.INVALID_LOGIN, getErrorMessage(), exception)
+                UNAUTHORIZED_STATUS_CODE -> MyError(ErrorStatus.UNAUTHORIZED, getErrorMessage(), exception)
+                else -> MyError(ErrorStatus.UNEXPECTED_ERROR, "Exception occurred during login ", exception)
+            }
         Endpoints.GET_USERS ->
+        {
+            when (code()) {
+                ERROR_STATUS_CODE -> MyError(ErrorStatus.CAN_NOT_GET_USERS, getErrorMessage(), exception)
+                UNAUTHORIZED_STATUS_CODE -> MyError(ErrorStatus.UNAUTHORIZED, getErrorMessage(), exception)
+                else -> MyError(ErrorStatus.UNEXPECTED_ERROR, "Exception occurred during getting users ", exception)
+            }
+        }
         Endpoints.REMIND_PIN ->
-
+            when (code()) {
+                ERROR_STATUS_CODE -> MyError(ErrorStatus.CAN_NOT_REMIND_PIN, getErrorMessage(), exception)
+                UNAUTHORIZED_STATUS_CODE -> MyError(ErrorStatus.UNAUTHORIZED, getErrorMessage(), exception)
+                else -> MyError(ErrorStatus.UNEXPECTED_ERROR, "Exception occurred during reminding pin ", exception)
+            }
     }
-
 }
 
-
-private fun Response<*>.getErrorMessage(retrofit:Retrofit) : String
-{
-    val errorMessage : String
+private fun Response<*>.getErrorMessage(): String {
+    val errorMessage: String
+    val retrofit = MyRetrofit.create(AuthInterceptor(TokenRepository()))
+        ?: return "Unexpected error. Retrofit == null"
     when (code()) {
         ERROR_STATUS_CODE -> {
             val converter = retrofit
