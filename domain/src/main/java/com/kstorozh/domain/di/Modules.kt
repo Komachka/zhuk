@@ -9,6 +9,17 @@ import com.kstorozh.data.repository.*
 import com.kstorozh.dataimpl.DeviseRepository
 import com.kstorozh.dataimpl.MyError
 import com.kstorozh.dataimpl.model.out.SlackUser
+import com.kstorozh.domain.GetUsersUseCasesImpl
+import com.kstorozh.domain.HandleErrorUseCaseImpl
+import com.kstorozh.domain.LoginUseCaseImpl
+import com.kstorozh.domain.ManageDeviceUseCasesImpl
+import com.kstorozh.domain.mapper.DeviceInfoMapper
+import com.kstorozh.domain.mapper.ErrorMapper
+import com.kstorozh.domain.mapper.UserDataMapper
+import com.kstorozh.domainimpl.GetUsersUseCases
+import com.kstorozh.domainimpl.HandleErrorUseCase
+import com.kstorozh.domainimpl.LoginUseCase
+import com.kstorozh.domainimpl.ManageDeviceUseCases
 
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -18,32 +29,8 @@ import org.koin.dsl.module
 
 val useCaseModules = module(override = true) {
 
-    factory { provideOkHttpClient(get()) }
-    factory { provideDeviceApi(get()) }
-    factory { provideUserApi(get()) }
-    single { provideRetrofit(get()) }
-    factory<RemoteData> { RemoteDataImpl(get(), get()) }
+    factory<GetUsersUseCases> { GetUsersUseCasesImpl(get<UserRepository>(), UserDataMapper() ) }
+    factory<HandleErrorUseCase> {HandleErrorUseCaseImpl(get(), get(), ErrorMapper())  }
+    factory<LoginUseCase> { LoginUseCaseImpl(get(),  UserDataMapper()) }
+    factory<ManageDeviceUseCases> { ManageDeviceUseCasesImpl(get(),  DeviceInfoMapper())  }
 }
-
-val dbModule = module(override = true) {
-    single {
-        DeviceDatabase.getDatabase(androidContext())
-    }
-    factory { get<DeviceDatabase>().deviceDao() }
-    factory<LocalDataStorage> { LocalDataStorageImpl(get()) }
-}
-
-val repositoryModule = module(override = true) {
-    single<DeviseRepository> { DeviceRepositoryImpl(get(), get(), DeviceDataMapper(), MutableLiveData(), get()) }
-    single<UserRepository> { UserRepositoryImpl(get(), UserDataMapper(), MutableLiveData<MyError>(), MutableLiveData<List<SlackUser>>()) }
-}
-
-fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-    return Retrofit.Builder().baseUrl(BASE_URL).client(okHttpClient)
-        .addConverterFactory(GsonConverterFactory.create()).build()
-}
-fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
-    return OkHttpClient().newBuilder().addInterceptor(authInterceptor).build()
-}
-private fun provideDeviceApi(retrofit: Retrofit): DeviceApi = retrofit.create(DeviceApi::class.java)
-private fun provideUserApi(retrofit: Retrofit): UserApi = retrofit.create(UserApi::class.java)
