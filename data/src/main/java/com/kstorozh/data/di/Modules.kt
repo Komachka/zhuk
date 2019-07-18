@@ -25,7 +25,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-//The module is marked as override, which means that its content will override any other definition within the application.
+// The module is marked as override, which means that its content will override any other definition within the application.
 
 val networkModule = module(override = true) {
     factory { TokenRepository() }
@@ -37,21 +37,18 @@ val networkModule = module(override = true) {
     factory<RemoteData> { RemoteDataImpl(get(), get()) }
 }
 
-
 val dbModule = module(override = true) {
     single {
         DeviceDatabase.getDatabase(androidContext())
     }
-    factory { get<DeviceDatabase>().deviceDao()}
+    factory { get<DeviceDatabase>().deviceDao() }
     factory<LocalDataStorage> { LocalDataStorageImpl(get()) }
 }
 
-
 val repositoryModule = module(override = true) {
     single<DeviseRepository> { DeviceRepositoryImpl(get(), get(), DeviceDataMapper(), MutableLiveData(), get()) }
-    single<UserRepository> { UserRepositoryImpl(get(), UserDataMapper(), MutableLiveData<MyError>(), MutableLiveData<List<SlackUser>>()}
+    single<UserRepository> { UserRepositoryImpl(get(), UserDataMapper(), MutableLiveData<MyError>(), MutableLiveData<List<SlackUser>>()) }
 }
-
 
 fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder().baseUrl(BASE_URL).client(okHttpClient)
@@ -62,8 +59,3 @@ fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
 }
 private fun provideDeviceApi(retrofit: Retrofit): DeviceApi = retrofit.create(DeviceApi::class.java)
 private fun provideUserApi(retrofit: Retrofit): UserApi = retrofit.create(UserApi::class.java)
-
-
-
-
-
