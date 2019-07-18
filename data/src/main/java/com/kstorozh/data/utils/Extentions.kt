@@ -103,7 +103,6 @@ internal fun Response<*>.parseErrorMessage(koin: KoinComponent): String {
     return errorMessage
 }
 
-
 internal fun createError(endpoints: Endpoints, result: ApiResult.Error<*>, component: KoinComponent): MyError{
     val errorStatus = result.errorResponse.getErrorStatus(endpoints)
     val message = result.errorResponse.parseErrorMessage(component)
