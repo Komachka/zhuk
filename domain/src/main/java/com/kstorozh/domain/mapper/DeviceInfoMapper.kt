@@ -2,8 +2,8 @@ package com.kstorozh.domain.mapper
 
 import com.kstorozh.dataimpl.model.into.BookingParam
 import com.kstorozh.dataimpl.model.into.DeviceParam
-import com.kstorozh.domainimpl.model.BookingInputData
-import com.kstorozh.domainimpl.model.DeviceInputData
+import com.kstorozh.domainapi.model.BookingInputData
+import com.kstorozh.domainapi.model.DeviceInputData
 
 import java.util.*
 

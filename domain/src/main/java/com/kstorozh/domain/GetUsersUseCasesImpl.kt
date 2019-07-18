@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.kstorozh.data.repository.UserRepository
 import com.kstorozh.domain.mapper.UserDataMapper
-import com.kstorozh.domainimpl.GetUsersUseCases
-import com.kstorozh.domainimpl.model.User
+import com.kstorozh.domainapi.model.GetUsersUseCases
+import com.kstorozh.domainapi.model.User
 
 class GetUsersUseCasesImpl(val repository: UserRepository, val mapper: UserDataMapper) :
     GetUsersUseCases {

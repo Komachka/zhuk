@@ -2,10 +2,11 @@ package com.kstorozh.evozhuk
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.kstorozh.domainimpl.GetUsersUseCases
-import com.kstorozh.domainimpl.LoginUseCase
-import com.kstorozh.domainimpl.model.User
-import com.kstorozh.domainimpl.model.UserLoginInput
+import com.kstorozh.domainapi.LoginUseCase
+import com.kstorozh.domainapi.model.GetUsersUseCases
+import com.kstorozh.domainapi.model.User
+import com.kstorozh.domainapi.model.UserLoginInput
+
 
 class LogInViewModel(
     val loginUseCase: LoginUseCase,

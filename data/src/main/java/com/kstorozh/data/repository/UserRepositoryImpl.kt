@@ -5,7 +5,6 @@ import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.data.network.RemoteData
 import com.kstorozh.data.utils.createError
-import com.kstorozh.data.utils.getError
 import com.kstorozh.dataimpl.MyError
 import com.kstorozh.dataimpl.model.UserLoginParam
 import com.kstorozh.dataimpl.model.out.SlackUser
@@ -57,7 +56,6 @@ internal class UserRepositoryImpl(
             is ApiResult.Error<*> -> {
                 mutableLiveData.postValue(false)
                 myErrors.postValue(createError(Endpoints.REMIND_PIN, result, this))
-
             }
         }
         return mutableLiveData

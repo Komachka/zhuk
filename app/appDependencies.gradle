@@ -5,6 +5,9 @@ dependencies {
     implementation appDependencies.constraintlayout
     implementation appDependencies.crashlytics
     implementation commonDependencies.files
-    implementation project(':domain-api')
+    implementation commonDependencies.koin
+    implementation commonDependencies.koinAX
+    implementation project(':domainapi')
+    implementation project(':di')
 }
 

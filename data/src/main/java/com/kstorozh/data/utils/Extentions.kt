@@ -16,7 +16,6 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import java.lang.Exception
 
-
 internal fun Response<*>.getErrorStatus(endpoint: Endpoints): ErrorStatus {
     return when (endpoint) {
         Endpoints.INIT_DEVICE -> {
@@ -50,7 +49,7 @@ internal fun Response<*>.getErrorStatus(endpoint: Endpoints): ErrorStatus {
         Endpoints.LOGIN ->
             when (code()) {
                 ERROR_STATUS_CODE -> ErrorStatus.INVALID_PASSWORD
-                NOT_FOUND_STATUS_CODE ->ErrorStatus.INVALID_LOGIN
+                NOT_FOUND_STATUS_CODE -> ErrorStatus.INVALID_LOGIN
                 UNAUTHORIZED_STATUS_CODE -> ErrorStatus.UNAUTHORIZED
                 else -> ErrorStatus.UNEXPECTED_ERROR
             }
@@ -70,9 +69,7 @@ internal fun Response<*>.getErrorStatus(endpoint: Endpoints): ErrorStatus {
     }
 }
 
-
-
-internal fun getError(errorStatus: ErrorStatus, message: String, exception:Exception): MyError {
+internal fun getError(errorStatus: ErrorStatus, message: String, exception: Exception): MyError {
 
     return MyError(errorStatus, message, exception)
 }
@@ -103,10 +100,9 @@ internal fun Response<*>.parseErrorMessage(koin: KoinComponent): String {
     return errorMessage
 }
 
-internal fun createError(endpoints: Endpoints, result: ApiResult.Error<*>, component: KoinComponent): MyError{
+internal fun createError(endpoints: Endpoints, result: ApiResult.Error<*>, component: KoinComponent): MyError {
     val errorStatus = result.errorResponse.getErrorStatus(endpoints)
     val message = result.errorResponse.parseErrorMessage(component)
     val exception = result.exception
     return getError(errorStatus, message, exception)
 }
-

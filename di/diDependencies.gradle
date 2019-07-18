@@ -1,0 +1,14 @@
+dependencies {
+    implementation commonDependencies.kotlin
+    implementation appDependencies.appCompat
+    implementation appDependencies.coreKTX
+    implementation appDependencies.constraintlayout
+    implementation appDependencies.crashlytics
+    implementation commonDependencies.files
+    implementation commonDependencies.koin
+    implementation commonDependencies.koinAX
+    implementation project(':domain')
+    implementation project(':data')
+
+}
+
