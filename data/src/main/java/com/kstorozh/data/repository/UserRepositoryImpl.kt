@@ -14,8 +14,8 @@ internal class UserRepositoryImpl(
     private val mapper: UserDataMapper
 ) : UserRepository {
 
-    private val myErrors: MutableLiveData<MyError> by lazy { MutableLiveData() }
-    private val users: MutableLiveData<List<SlackUser>> by lazy { MutableLiveData() }
+    private val myErrors: MutableLiveData<MyError> by lazy { MutableLiveData<MyError> () }
+    private val users: MutableLiveData<List<SlackUser>> by lazy { MutableLiveData<List<SlackUser>>() }
 
     override suspend fun login(userLoginParam: UserLoginParam): MutableLiveData<String?> {
         val mutableLiveData = MutableLiveData<String?>()
