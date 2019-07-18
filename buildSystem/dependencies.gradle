@@ -41,6 +41,7 @@ ext {
         gson: "com.google.code.gson:gson:$gson",
         livedata : "androidx.lifecycle:lifecycle-extensions:$lifecycle_version",
         lifecycleKTX : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version",
-        koinRoomCompiler: "androidx.room:room-compiler:$room"
+        koinRoomCompiler: "androidx.room:room-compiler:$room",
+        logginInterseptor : "com.squareup.okhttp3:logging-interceptor:3.12.1"
     ]
 }

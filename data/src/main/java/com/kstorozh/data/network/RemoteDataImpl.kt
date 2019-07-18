@@ -7,6 +7,7 @@ import com.kstorozh.data.models.ReturnDeviceBody
 import com.kstorozh.data.models.User
 import retrofit2.Response
 import java.io.IOException
+import java.lang.Exception
 
 internal class RemoteDataImpl(
     private val deviceApi: DeviceApi,
@@ -20,9 +21,13 @@ internal class RemoteDataImpl(
     }
 
     private suspend fun <T : Any> getApiResult(errorMessage: String, call: suspend () -> Response<T>): ApiResult<T> {
-        val response = call.invoke()
-        if (response.isSuccessful) return ApiResult.Success(response.body()!!)
-        return ApiResult.Error(IOException("Api error $errorMessage"), response)
+        try {
+            val response = call.invoke()
+            if (response.isSuccessful) return ApiResult.Success(response.body()!!)
+            else return ApiResult.Error(IOException("Api error $errorMessage"), response)
+        } catch (ex: Exception) {
+            return ApiResult.Error<Exception>(ex)
+        }
     }
 
     override suspend fun initDevice(device: Device): ApiResult<InitDeviceResponse> {

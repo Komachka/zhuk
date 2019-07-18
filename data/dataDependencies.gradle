@@ -10,6 +10,7 @@ dependencies {
     implementation dataDependencies.lifecycleKTX
     implementation commonDependencies.koin
     implementation commonDependencies.koinAX
+    implementation dataDependencies.logginInterseptor
     kapt dataDependencies.koinRoomCompiler
     implementation project(':data-api')
 

@@ -2,6 +2,7 @@ package com.kstorozh.evozhuk
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -34,6 +35,12 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
             }
         )
+
+        handleErrors.getErrors().observe(this,
+            Observer {
+                Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
+                Log.d(LOG_TAG, it.throwable.message)
+            })
     }
 
     fun forceCrash(view: View) {
