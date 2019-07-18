@@ -14,7 +14,7 @@ internal interface DeviceDao {
     fun insertDevice(device: Device): Long
 
     @Update
-    fun updateDevice(device: Device): Boolean
+    fun updateDevice(device: Device): Int
 
     @Query("DELETE FROM $DEVICE_INFO_TABLE_NAME")
     fun deleteAllDeviceInfo()

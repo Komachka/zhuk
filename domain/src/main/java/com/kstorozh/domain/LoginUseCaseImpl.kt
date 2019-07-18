@@ -7,11 +7,12 @@ import com.kstorozh.domain.mapper.UserDataMapper
 import com.kstorozh.domainapi.LoginUseCase
 import com.kstorozh.domainapi.model.User
 import com.kstorozh.domainapi.model.UserLoginInput
+import org.koin.core.KoinComponent
 
 class LoginUseCaseImpl(
     val repository: UserRepository,
     val mapper: UserDataMapper
-) : LoginUseCase {
+) : LoginUseCase, KoinComponent {
 
     override fun loginUser(user: UserLoginInput): LiveData<String> {
         return liveData {

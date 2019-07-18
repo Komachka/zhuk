@@ -7,7 +7,6 @@ import com.kstorozh.domainapi.model.GetUsersUseCases
 import com.kstorozh.domainapi.model.User
 import com.kstorozh.domainapi.model.UserLoginInput
 
-
 class LogInViewModel(
     val loginUseCase: LoginUseCase,
     val getUserUseCase: GetUsersUseCases

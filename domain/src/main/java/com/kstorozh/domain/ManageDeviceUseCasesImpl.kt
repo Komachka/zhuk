@@ -7,11 +7,12 @@ import com.kstorozh.domain.mapper.DeviceInfoMapper
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.BookingInputData
 import com.kstorozh.domainapi.model.DeviceInputData
+import org.koin.core.KoinComponent
 
 import java.util.*
 
 class ManageDeviceUseCasesImpl(private val repository: DeviseRepository, val mapper: DeviceInfoMapper) :
-    ManageDeviceUseCases {
+    ManageDeviceUseCases, KoinComponent {
 
     override fun initDevice(deviceInputData: DeviceInputData): LiveData<Boolean> {
         return liveData {

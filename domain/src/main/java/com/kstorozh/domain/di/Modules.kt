@@ -14,7 +14,6 @@ import com.kstorozh.domainapi.LoginUseCase
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.GetUsersUseCases
 
-
 import org.koin.dsl.module
 
 // The module is marked as override, which means that its content will override any other definition within the application.

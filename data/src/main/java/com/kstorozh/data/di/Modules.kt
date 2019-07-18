@@ -1,7 +1,9 @@
 package com.kstorozh.data.di
 
 import BASE_URL
+import DEVICE_INFO_DB_NAME
 import androidx.lifecycle.MutableLiveData
+import androidx.room.Room
 import com.kstorozh.data.database.DeviceDatabase
 import com.kstorozh.data.database.LocalDataStorage
 import com.kstorozh.data.database.LocalDataStorageImpl
@@ -14,13 +16,12 @@ import com.kstorozh.data.repository.DeviceDataMapper
 import com.kstorozh.data.repository.DeviceRepositoryImpl
 import com.kstorozh.data.repository.UserDataMapper
 import com.kstorozh.data.repository.UserRepositoryImpl
-import com.kstorozh.data.utils.AuthInterceptor
 import com.kstorozh.data.utils.TokenRepository
 import com.kstorozh.dataimpl.DeviseRepository
 import com.kstorozh.dataimpl.MyError
 import com.kstorozh.dataimpl.model.out.SlackUser
 import okhttp3.OkHttpClient
-import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -29,8 +30,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val networkModule = module(override = true) {
     factory { TokenRepository() }
-    factory { AuthInterceptor(get()) }
-    factory { provideOkHttpClient(get()) }
+    // factory { AuthInterceptor(get()) }
+    // factory { provideOkHttpClient(get()) }
+
+    factory { provideOkHttpClient() }
+
     factory { provideDeviceApi(get()) }
     factory { provideUserApi(get()) }
     single { provideRetrofit(get()) }
@@ -39,7 +43,8 @@ val networkModule = module(override = true) {
 
 val dbModule = module(override = true) {
     single {
-        DeviceDatabase.getDatabase(androidContext())
+        Room.databaseBuilder(androidApplication(), DeviceDatabase::class.java, DEVICE_INFO_DB_NAME)
+            .build()
     }
     factory { get<DeviceDatabase>().deviceDao() }
     factory<LocalDataStorage> { LocalDataStorageImpl(get()) }
@@ -54,8 +59,8 @@ fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder().baseUrl(BASE_URL).client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create()).build()
 }
-fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
-    return OkHttpClient().newBuilder().addInterceptor(authInterceptor).build()
+fun provideOkHttpClient(): OkHttpClient {
+    return OkHttpClient().newBuilder().build()
 }
 private fun provideDeviceApi(retrofit: Retrofit): DeviceApi = retrofit.create(DeviceApi::class.java)
 private fun provideUserApi(retrofit: Retrofit): UserApi = retrofit.create(UserApi::class.java)

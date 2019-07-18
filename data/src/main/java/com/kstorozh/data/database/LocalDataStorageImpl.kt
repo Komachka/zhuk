@@ -1,8 +1,9 @@
 package com.kstorozh.data.database
 
 import com.kstorozh.data.models.Device
+import org.koin.core.KoinComponent
 
-internal class LocalDataStorageImpl(private val deviceDao: DeviceDao) : LocalDataStorage {
+internal class LocalDataStorageImpl(private val deviceDao: DeviceDao) : LocalDataStorage, KoinComponent {
 
     override suspend fun getDeviceInfo(): Device {
         return deviceDao.getDeviceInfo()

@@ -26,6 +26,6 @@ internal interface UserApi {
         @Path("id") userId: String
     ): Response<BaseResponse>
 
-    @GET(LOGIN_URL)
+    @POST(LOGIN_URL)
     suspend fun login(@Body userLogin: UserLogin): Response<LoginUserResponce>
 }
