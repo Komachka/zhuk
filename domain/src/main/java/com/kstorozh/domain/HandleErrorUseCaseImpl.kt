@@ -12,9 +12,9 @@ class HandleErrorUseCaseImpl(
     val deviceRepository: DeviseRepository,
     val mapper: ErrorMapper
 ) : HandleErrorUseCase {
-    val mediatorLiveData: MediatorLiveData<DomainErrors<*>> = MediatorLiveData()
+    val mediatorLiveData: MediatorLiveData<DomainErrors> = MediatorLiveData()
 
-    override fun getErrors(): MediatorLiveData<DomainErrors<*>> {
+    override fun getErrors(): MediatorLiveData<DomainErrors> {
 
         mediatorLiveData.addSource(liveData { emitSource(userRepository.getErrors()) }) {
             mediatorLiveData.postValue(mapper.mapToDomainError(it))
