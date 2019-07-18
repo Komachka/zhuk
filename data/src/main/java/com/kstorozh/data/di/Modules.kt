@@ -28,6 +28,11 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import com.google.gson.FieldNamingPolicy
+import com.google.gson.GsonBuilder
+import com.google.gson.Gson
+
+
 
 // The module is marked as override, which means that its content will override any other definition within the application.
 
@@ -57,16 +62,21 @@ val repositoryModule = module(override = true) {
 }
 
 fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+
+    val gson = GsonBuilder()
+        .excludeFieldsWithoutExposeAnnotation()
+        .create()
+
     return Retrofit.Builder().baseUrl(BASE_URL).client(okHttpClient)
-        .addConverterFactory(GsonConverterFactory.create()).build()
+        .addConverterFactory(GsonConverterFactory.create(gson)).build()
 }
 
 fun provideOkHttpClient(authInterceptor: AuthInterceptor, loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
 
     return OkHttpClient()
         .newBuilder()
-        .readTimeout(60, TimeUnit.SECONDS)
-        .connectTimeout(60, TimeUnit.SECONDS)
+       /* .readTimeout(60, TimeUnit.SECONDS)
+        .connectTimeout(60, TimeUnit.SECONDS)*/
         .addInterceptor(authInterceptor)
         .addInterceptor(loggingInterceptor)
         .build()

@@ -16,6 +16,7 @@ class GetUsersUseCasesImpl(val repository: UserRepository, val mapper: UserDataM
     override fun getUsers(): LiveData<List<User>> {
         return liveData {
             val users = repository.getUsers()
+            //TODO need to handle null
             emit(mapper.mapListOfSlackUsers(users.value!!))
         }
     }
