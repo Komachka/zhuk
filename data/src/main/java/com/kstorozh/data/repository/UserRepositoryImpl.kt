@@ -11,11 +11,10 @@ import com.kstorozh.dataimpl.model.out.SlackUser
 
 internal class UserRepositoryImpl(
     private val remoteData: RemoteData,
-    private val mapper: UserDataMapper
+    private val mapper: UserDataMapper,
+    private val myErrors: MutableLiveData<MyError>,
+    private val users: MutableLiveData<List<SlackUser>>
 ) : UserRepository {
-
-    private val myErrors: MutableLiveData<MyError> by lazy { MutableLiveData() }
-    private val users: MutableLiveData<List<SlackUser>> by lazy { MutableLiveData() }
 
     override suspend fun login(userLoginParam: UserLoginParam): MutableLiveData<String?> {
         val mutableLiveData = MutableLiveData<String?>()

@@ -1,6 +1,6 @@
 package com.kstorozh.data.utils
 
-internal class TokenRepository {
+class TokenRepository {
 
         companion object {
                 private var token: String? = null

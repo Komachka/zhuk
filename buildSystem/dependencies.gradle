@@ -9,12 +9,16 @@ ext {
     lifecycle_version = '2.0.0'
     coroutines = '0.30.1-eap13'
     livedataKTX = '2.2.0-alpha01'
+    koin_version = '2.0.1'
+
 
 
 
     commonDependencies = [
             kotlin : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin",
-            files: fileTree(dir: 'libs', include: ['*.jar'])
+            files: fileTree(dir: 'libs', include: ['*.jar']),
+            koin: "org.koin:koin-core:$koin_version",
+            koinAX: "org.koin:koin-androidx-scope:$koin_version"
     ]
 
     appDependencies = [
