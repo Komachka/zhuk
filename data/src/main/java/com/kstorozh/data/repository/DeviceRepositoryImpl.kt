@@ -6,11 +6,11 @@ import com.kstorozh.dataimpl.MyError
 import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.data.network.RemoteData
-import com.kstorozh.data.utils.TokenRepository
+import com.kstorozh.data.utils.*
 import com.kstorozh.dataimpl.model.into.BookingParam
 import com.kstorozh.dataimpl.model.into.DeviceParam
 import com.kstorozh.dataimpl.DeviseRepository
-import com.kstorozh.data.utils.parse
+import org.koin.core.KoinComponent
 
 internal class DeviceRepositoryImpl(
     private val localData: LocalDataStorage,
@@ -18,7 +18,7 @@ internal class DeviceRepositoryImpl(
     private val mapper: DeviceDataMapper,
     private val myErrors: MutableLiveData<MyError>,
     private val tokenRepository: TokenRepository
-) : DeviseRepository {
+) : DeviseRepository, KoinComponent {
 
     override suspend fun getErrors(): MutableLiveData<MyError> {
         return myErrors
@@ -37,8 +37,7 @@ internal class DeviceRepositoryImpl(
                 mutableLiveData.postValue(true)
             }
             is ApiResult.Error<*> -> {
-                myErrors.postValue(result.errorResponse.parse(Endpoints.INIT_DEVICE, result.exception))
-                mutableLiveData.postValue(false)
+                myErrors.postValue(createError(Endpoints.INIT_DEVICE, result, this))
             }
         }
         return mutableLiveData
@@ -54,7 +53,7 @@ internal class DeviceRepositoryImpl(
                 mutableLiveData.postValue(true)
             }
             is ApiResult.Error<*> -> {
-                myErrors.postValue(result.errorResponse.parse(Endpoints.UPDATE_DEVICE, result.exception))
+                myErrors.postValue(createError(Endpoints.UPDATE_DEVICE, result, this))
                 mutableLiveData.postValue(false)
             }
         }
@@ -73,7 +72,7 @@ internal class DeviceRepositoryImpl(
                 mutableLiveData.postValue(true)
             }
             is ApiResult.Error<*> -> {
-                myErrors.postValue(result.errorResponse.parse(Endpoints.TAKE_DEVICE, result.exception))
+                myErrors.postValue(createError(Endpoints.TAKE_DEVICE, result, this))
                 mutableLiveData.postValue(false)
             }
         }
@@ -88,7 +87,7 @@ internal class DeviceRepositoryImpl(
                 mutableLiveData.postValue(true)
             }
             is ApiResult.Error<*> -> {
-                myErrors.postValue(result.errorResponse.parse(Endpoints.RETURN_DEVICE, result.exception))
+                myErrors.postValue(createError(Endpoints.RETURN_DEVICE, result, this))
                 mutableLiveData.postValue(false)
             }
         }

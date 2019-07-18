@@ -5,14 +5,17 @@ import androidx.lifecycle.liveData
 import com.kstorozh.data.repository.UserRepository
 import com.kstorozh.dataimpl.DeviseRepository
 import com.kstorozh.domain.mapper.ErrorMapper
-import com.kstorozh.domainimpl.HandleErrorUseCase
-import com.kstorozh.domainimpl.model.DomainErrors
+
+import com.kstorozh.domainapi.HandleErrorUseCase
+import com.kstorozh.domainapi.model.DomainErrors
+import org.koin.core.KoinComponent
+
 
 class HandleErrorUseCaseImpl(
     val userRepository: UserRepository,
     val deviceRepository: DeviseRepository,
     val mapper: ErrorMapper
-) : HandleErrorUseCase {
+) : HandleErrorUseCase, KoinComponent {
     val mediatorLiveData: MediatorLiveData<DomainErrors> = MediatorLiveData()
 
     override fun getErrors(): MediatorLiveData<DomainErrors> {

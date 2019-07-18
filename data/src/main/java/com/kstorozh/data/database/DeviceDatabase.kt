@@ -1,18 +1,16 @@
 package com.kstorozh.data.database
 
-import DEVICE_INFO_DB_NAME
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.kstorozh.data.models.Device
 
 @Database(entities = [Device::class], version = 1)
+
 internal abstract class DeviceDatabase : RoomDatabase() {
 
     abstract fun deviceDao(): DeviceDao
 
-    companion object {
+    /*companion object {
         @Volatile
         private var INSTANCE: DeviceDatabase? = null
 
@@ -31,5 +29,5 @@ internal abstract class DeviceDatabase : RoomDatabase() {
                 return instance
             }
         }
-    }
+    }*/
 }

@@ -3,7 +3,9 @@ dependencies {
     implementation domainDependencies.coroutines
     implementation dataDependencies.livedata
     implementation domainDependencies.livedataKTX
+    implementation commonDependencies.koin
+    implementation commonDependencies.koinAX
     implementation project(':data-api')
-    implementation project(':domain-api')
+    implementation project(':domainapi')
 
 }

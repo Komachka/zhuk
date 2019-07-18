@@ -5,7 +5,8 @@ ext{
             minSdkVersion: 16,
             versionCode: 1,
             versionName : "1.0",
-            applicationId : "com.kstorozh.evozhuk"
+            applicationId : "com.kstorozh.evozhuk",
+            baseUrl : "www.google.com"
     ]
     buildGradle = '3.4.1'
     fabricGradle = '1.29.0'

@@ -1,8 +1,8 @@
 package com.kstorozh.domain.mapper
 
 import com.kstorozh.dataimpl.MyError
-import com.kstorozh.domainimpl.ErrorStatus
-import com.kstorozh.domainimpl.model.DomainErrors
+import com.kstorozh.domainapi.model.DomainErrors
+import com.kstorozh.domainapi.model.ErrorStatus
 
 class ErrorMapper {
     fun mapToDomainError(error: MyError): DomainErrors {

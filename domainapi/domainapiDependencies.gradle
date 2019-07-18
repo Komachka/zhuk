@@ -1,0 +1,10 @@
+dependencies {
+    implementation commonDependencies.kotlin
+    implementation domainDependencies.coroutines
+    implementation dataDependencies.livedata
+    implementation domainDependencies.livedataKTX
+    implementation commonDependencies.koin
+    implementation commonDependencies.koinAX
+
+
+}
