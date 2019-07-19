@@ -1,7 +1,5 @@
 package com.kstorozh.domain
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
 import com.kstorozh.data.repository.UserRepository
 import com.kstorozh.domain.mapper.UserDataMapper
 
@@ -15,19 +13,12 @@ class LoginUseCaseImpl(
     val mapper: UserDataMapper
 ) : LoginUseCase, KoinComponent {
 
-    override fun loginUser(user: UserLoginInput): LiveData<String> {
-        return liveData {
-            val userId = repository.login(mapper.mapLoginInputParams(user))
-            userId.let {
-                emit(it.value!!)
-            }
-        }
+    override suspend fun loginUser(user: UserLoginInput): String? {
+
+            return repository.login(mapper.mapLoginInputParams(user))
     }
 
-    override fun remindPin(user: User): LiveData<Boolean> {
-        return liveData {
-            val isPinReminded = repository.remindPin(user.id.toString())
-            emitSource(isPinReminded)
-        }
+    override suspend fun remindPin(user: User): Boolean {
+        return repository.remindPin(user.id.toString())
     }
 }

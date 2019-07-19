@@ -1,14 +1,13 @@
 package com.kstorozh.domainapi
 
-import androidx.lifecycle.LiveData
 import com.kstorozh.domainapi.model.BookingInputData
 import com.kstorozh.domainapi.model.DeviceInputData
 
 interface ManageDeviceUseCases {
 
-    fun initDevice(deviceInputData: DeviceInputData): LiveData<Boolean>
+    suspend fun initDevice(deviceInputData: DeviceInputData): Boolean
 
-    fun takeDevice(bookingParam: BookingInputData): LiveData<Boolean>
+    suspend fun takeDevice(bookingParam: BookingInputData): Boolean
 
-    fun returnDevice(bookingParam: BookingInputData): LiveData<Boolean>
+    suspend fun returnDevice(bookingParam: BookingInputData): Boolean
 }

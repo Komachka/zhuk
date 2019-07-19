@@ -13,9 +13,10 @@ import org.koin.core.KoinComponent
 internal class UserRepositoryImpl(
     private val remoteData: RemoteData,
     private val mapper: UserDataMapper,
-    private val myErrors: MutableLiveData<MyError>,
-    private val users: MutableLiveData<List<SlackUser>>
+    private val users: ArrayList<SlackUser>
 ) : UserRepository, KoinComponent {
+
+    private lateinit var myError: MyError
 
     override suspend fun login(userLoginParam: UserLoginParam): MutableLiveData<String?> {
         val mutableLiveData = MutableLiveData<String?>()
@@ -25,39 +26,37 @@ internal class UserRepositoryImpl(
             }
             is ApiResult.Error<*> -> {
                 mutableLiveData.postValue(null)
-                myErrors.postValue(createError(Endpoints.LOGIN, result, this))
+                myError = createError(Endpoints.LOGIN, result, this)
             }
         }
         return mutableLiveData
     }
 
-    override suspend fun getErrors(): MutableLiveData<MyError> {
-        return myErrors
+    override suspend fun getErrors(): MyError? {
+        return myError
     }
-    override suspend fun getUsers(): MutableLiveData<List<SlackUser>> {
+    override suspend fun getUsers(): List<SlackUser> {
         when (val result = remoteData.getUsers()) {
             is ApiResult.Success -> {
-                users.postValue(mapper.mapSlackUserList(result.data.usersData.users))
+                users.addAll(mapper.mapSlackUserList(result.data.usersData.users))
             }
             is ApiResult.Error<*> -> {
-                myErrors.postValue(createError(Endpoints.GET_USERS, result, this))
+                myError = createError(Endpoints.GET_USERS, result, this)
             }
         }
         return users
     }
 
-    override suspend fun remindPin(slackUserId: String): MutableLiveData<Boolean> {
+    override suspend fun remindPin(slackUserId: String): Boolean {
 
-        val mutableLiveData = MutableLiveData<Boolean>()
-        when (val result = remoteData.remindPin(slackUserId)) {
+        return when (val result = remoteData.remindPin(slackUserId)) {
             is ApiResult.Success -> {
-                mutableLiveData.postValue(true)
+                true
             }
             is ApiResult.Error<*> -> {
-                mutableLiveData.postValue(false)
-                myErrors.postValue(createError(Endpoints.REMIND_PIN, result, this))
+                myError = createError(Endpoints.REMIND_PIN, result, this)
+                false
             }
         }
-        return mutableLiveData
     }
 }

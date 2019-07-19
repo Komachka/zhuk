@@ -1,8 +1,5 @@
 package com.kstorozh.domain
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
 import com.kstorozh.dataimpl.DeviseRepository
 import com.kstorozh.domain.mapper.DeviceInfoMapper
 import com.kstorozh.domainapi.ManageDeviceUseCases
@@ -15,27 +12,18 @@ import java.util.*
 class ManageDeviceUseCasesImpl(private val repository: DeviseRepository, val mapper: DeviceInfoMapper) :
     ManageDeviceUseCases, KoinComponent {
 
-    override fun initDevice(deviceInputData: DeviceInputData): LiveData<Boolean> {
-        return liveData {
-            Log.d("MainActivity", "HERE")
-            val isDeviceInit = repository.initDevice(mapper.mapDeviceInfoToDeviceParam(deviceInputData))
-            Log.d("MainActivity", "is device init ${isDeviceInit.value}")
-            emitSource(isDeviceInit)
-        }
+    override suspend fun initDevice(deviceInputData: DeviceInputData): Boolean {
+
+            return repository.initDevice(mapper.mapDeviceInfoToDeviceParam(deviceInputData))
     }
 
-    override fun takeDevice(bookingParam: BookingInputData): LiveData<Boolean> {
+    override suspend fun takeDevice(bookingParam: BookingInputData): Boolean {
         val startDate = Date()
-        return liveData {
-            val isDeviceTaken = repository.takeDevice(mapper.mapBookingParam(bookingParam, startDate))
-            emitSource(isDeviceTaken)
-        }
+        return repository.takeDevice(mapper.mapBookingParam(bookingParam, startDate))
     }
 
-    override fun returnDevice(bookingParam: BookingInputData): LiveData<Boolean> {
-        return liveData {
-            val isDeviceReturned = repository.returnDevice(mapper.mapBookingParam(bookingParam))
-            emitSource(isDeviceReturned)
-        }
+    override suspend fun returnDevice(bookingParam: BookingInputData): Boolean {
+
+            return repository.returnDevice(mapper.mapBookingParam(bookingParam))
     }
 }

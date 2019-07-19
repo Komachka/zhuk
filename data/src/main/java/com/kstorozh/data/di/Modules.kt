@@ -2,7 +2,6 @@ package com.kstorozh.data.di
 
 import BASE_URL
 import DEVICE_INFO_DB_NAME
-import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
 import com.kstorozh.data.database.DeviceDatabase
 import com.kstorozh.data.database.LocalDataStorage
@@ -19,7 +18,6 @@ import com.kstorozh.data.repository.UserRepositoryImpl
 import com.kstorozh.data.utils.AuthInterceptor
 import com.kstorozh.data.utils.TokenRepository
 import com.kstorozh.dataimpl.DeviseRepository
-import com.kstorozh.dataimpl.MyError
 import com.kstorozh.dataimpl.model.out.SlackUser
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -52,8 +50,8 @@ val dbModule = module(override = true) {
 }
 
 val repositoryModule = module(override = true) {
-    single<DeviseRepository> { DeviceRepositoryImpl(get(), get(), DeviceDataMapper(), MutableLiveData(), get()) }
-    single<UserRepository> { UserRepositoryImpl(get(), UserDataMapper(), MutableLiveData<MyError>(), MutableLiveData<List<SlackUser>>()) }
+    single<DeviseRepository> { DeviceRepositoryImpl(get(), get(), DeviceDataMapper(), get()) }
+    single<UserRepository> { UserRepositoryImpl(get(), UserDataMapper(), ArrayList<SlackUser>()) }
 }
 
 fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {

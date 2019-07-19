@@ -1,7 +1,5 @@
 package com.kstorozh.domain
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
 import com.kstorozh.data.repository.UserRepository
 import com.kstorozh.domain.mapper.UserDataMapper
 
@@ -12,11 +10,8 @@ import org.koin.core.KoinComponent
 class GetUsersUseCasesImpl(val repository: UserRepository, val mapper: UserDataMapper) :
     GetUsersUseCases, KoinComponent {
 
-    override fun getUsers(): LiveData<List<User>> {
-        return liveData {
-            val users = repository.getUsers()
-            // TODO need to handle null
-            emit(mapper.mapListOfSlackUsers(users.value!!))
-        }
+    override suspend fun getUsers(): List<User> {
+
+        return mapper.mapListOfSlackUsers(repository.getUsers())
     }
 }
