@@ -10,7 +10,6 @@ import com.crashlytics.android.Crashlytics
 import com.kstorozh.domainapi.HandleErrorUseCase
 import com.kstorozh.domainapi.LoginUseCase
 import com.kstorozh.domainapi.ManageDeviceUseCases
-import com.kstorozh.domainapi.model.DeviceInputData
 import com.kstorozh.domainapi.model.GetUsersUseCases
 
 import io.fabric.sdk.android.Fabric
@@ -24,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     val initDeviceUseCases: ManageDeviceUseCases by inject()
 
-    val getUsersUseCases:GetUsersUseCases by inject ()
+    val getUsersUseCases: GetUsersUseCases by inject()
 
     val LOG_TAG = "MainActivity"
 
@@ -33,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_main)
 
-       /* initDeviceUseCases.initDevice(DeviceInputData("007", "sumsung", "android", "s8", 300, 300)).observe(
+        /*initDeviceUseCases.initDevice(DeviceInputData("007", "sumsung", "android", "s8", 300, 300)).observe(
             this, Observer {
                 Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
             }
@@ -45,15 +44,14 @@ class MainActivity : AppCompatActivity() {
                 Log.d(LOG_TAG, it.throwable.message)
             })
 
-
-        getUsersUseCases.getUsers().observe(this,
+        /*getUsersUseCases.getUsers().observe(this,
             Observer {
 
                 it.forEach {
                     Log.d(LOG_TAG, it.slackUserName)
                 }
 
-            })
+            })*/
     }
 
     fun forceCrash(view: View) {

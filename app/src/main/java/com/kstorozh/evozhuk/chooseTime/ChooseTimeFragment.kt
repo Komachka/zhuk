@@ -1,18 +1,19 @@
-package com.kstorozh.evozhuk
+package com.kstorozh.evozhuk.chooseTime
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.kstorozh.evozhuk.R
 
-class LoginFragment : Fragment() {
+class ChooseTimeFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_login, container, false)
-    }
+            return inflater.inflate(R.layout.fragment_time_choose, container, false)
+        }
 }

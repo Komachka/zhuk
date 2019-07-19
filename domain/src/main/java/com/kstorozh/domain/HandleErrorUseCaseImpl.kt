@@ -10,7 +10,6 @@ import com.kstorozh.domainapi.HandleErrorUseCase
 import com.kstorozh.domainapi.model.DomainErrors
 import org.koin.core.KoinComponent
 
-
 class HandleErrorUseCaseImpl(
     val userRepository: UserRepository,
     val deviceRepository: DeviseRepository,
