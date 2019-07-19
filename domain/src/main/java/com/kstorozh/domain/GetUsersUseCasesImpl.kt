@@ -9,14 +9,13 @@ import com.kstorozh.domainapi.model.GetUsersUseCases
 import com.kstorozh.domainapi.model.User
 import org.koin.core.KoinComponent
 
-
 class GetUsersUseCasesImpl(val repository: UserRepository, val mapper: UserDataMapper) :
     GetUsersUseCases, KoinComponent {
 
     override fun getUsers(): LiveData<List<User>> {
         return liveData {
             val users = repository.getUsers()
-            //TODO need to handle null
+            // TODO need to handle null
             emit(mapper.mapListOfSlackUsers(users.value!!))
         }
     }

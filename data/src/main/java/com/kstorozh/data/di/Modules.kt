@@ -27,12 +27,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
-import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
-import com.google.gson.Gson
-
-
 
 // The module is marked as override, which means that its content will override any other definition within the application.
 
@@ -75,8 +70,6 @@ fun provideOkHttpClient(authInterceptor: AuthInterceptor, loggingInterceptor: Ht
 
     return OkHttpClient()
         .newBuilder()
-       /* .readTimeout(60, TimeUnit.SECONDS)
-        .connectTimeout(60, TimeUnit.SECONDS)*/
         .addInterceptor(authInterceptor)
         .addInterceptor(loggingInterceptor)
         .build()

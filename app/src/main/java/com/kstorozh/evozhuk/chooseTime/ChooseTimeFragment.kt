@@ -10,10 +10,10 @@ import com.kstorozh.evozhuk.R
 class ChooseTimeFragment : Fragment() {
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View? {
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
             return inflater.inflate(R.layout.fragment_time_choose, container, false)
         }
 }

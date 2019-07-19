@@ -10,7 +10,6 @@ import com.crashlytics.android.Crashlytics
 import com.kstorozh.domainapi.HandleErrorUseCase
 import com.kstorozh.domainapi.LoginUseCase
 import com.kstorozh.domainapi.ManageDeviceUseCases
-import com.kstorozh.domainapi.model.DeviceInputData
 import com.kstorozh.domainapi.model.GetUsersUseCases
 
 import io.fabric.sdk.android.Fabric
@@ -24,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     val initDeviceUseCases: ManageDeviceUseCases by inject()
 
-    val getUsersUseCases:GetUsersUseCases by inject ()
+    val getUsersUseCases: GetUsersUseCases by inject()
 
     val LOG_TAG = "MainActivity"
 
@@ -44,7 +43,6 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, it.throwable.message, Toast.LENGTH_LONG).show()
                 Log.d(LOG_TAG, it.throwable.message)
             })
-
 
         /*getUsersUseCases.getUsers().observe(this,
             Observer {
