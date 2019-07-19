@@ -10,11 +10,11 @@
             android:scaleType="centerCrop"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            app:srcCompat="@drawable/face_with_star_eyes"
+            app:srcCompat="@drawable/alarm_clock"
             android:id="@+id/starsImageView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.498" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="128dp" app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_marginTop="83dp" app:layout_constraintTop_toTopOf="parent"/>
     <TextView
             style="@style/label_text_view"
             android:layout_width="wrap_content"
@@ -22,9 +22,9 @@
             android:textSize="16sp"
             android:id="@+id/logoTv"
             android:textStyle="bold"
-            android:layout_marginEnd="5dp"
-            app:layout_constraintEnd_toStartOf="@+id/lineTv" android:layout_marginRight="5dp"
-            android:layout_marginTop="23dp" app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="16dp"
+            android:layout_marginTop="19dp" app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
             android:textColor="@color/label_colour"
@@ -33,9 +33,9 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:id="@+id/lineTv"
-            android:layout_marginEnd="5dp"
-            app:layout_constraintEnd_toStartOf="@+id/deviceNameTv" android:layout_marginRight="5dp"
-            app:layout_constraintTop_toTopOf="@+id/deviceNameTv"/>
+            app:layout_constraintStart_toEndOf="@+id/logoTv"
+            android:layout_marginStart="4dp" android:layout_marginLeft="4dp"
+            app:layout_constraintTop_toTopOf="@+id/logoTv"/>
     <TextView
             android:textColor="@color/label_colour"
             android:text="@string/deviceName"
@@ -45,8 +45,9 @@
             android:fontFamily="sans-serif"
             android:textStyle="normal"
             android:id="@+id/deviceNameTv"
-            app:layout_constraintTop_toTopOf="@+id/logoTv" android:layout_marginEnd="110dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginRight="110dp"/>
+            app:layout_constraintStart_toEndOf="@+id/lineTv"
+            android:layout_marginStart="4dp" android:layout_marginLeft="4dp" android:layout_marginTop="19dp"
+            app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -55,62 +56,61 @@
             android:fontFamily="sans-serif"
             android:textStyle="normal"
             android:textColor="@color/smallTextColour"
-            android:text="@string/youTableDeviceLabel"
+            android:text="@string/time_choose_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="7dp"
             app:layout_constraintTop_toBottomOf="@+id/starsImageView" app:layout_constraintHorizontal_bias="0.5"
             android:id="@+id/youTakeDeviceLabelTv"/>
 
-    <LinearLayout
-            android:id="@+id/dataLinerL"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/round_rectangle"
-            android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/youTakeDeviceLabelTv"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:paddingLeft="65dp"
-                android:paddingRight="65dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="34sp"
-                android:fontFamily="sans-serif-medium"
-                android:textStyle="normal"
-                android:textColor="@color/smallTextColour"
-                android:gravity="center_horizontal"
-                android:text="19:00\n14 июля"/>
-    </LinearLayout>
+    <Button
+            android:text="@string/oneHour"
+            style="@style/timePickBut"
+
+            android:id="@+id/oneHourBut"
+            app:layout_constraintEnd_toStartOf="@+id/starsImageView" android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp" android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/youTakeDeviceLabelTv"/>
+    <Button
+            android:text="@string/twoHour"
+            style="@style/timePickBut"
+            android:id="@+id/twoHourBut"
+            android:layout_marginTop="32dp" app:layout_constraintTop_toBottomOf="@+id/youTakeDeviceLabelTv"
+            app:layout_constraintStart_toEndOf="@+id/oneHourBut" android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"/>
+    <Button
+            style="@style/timePickBut"
+            android:text="@string/foutHour"
+            android:id="@+id/fourHourBut" app:layout_constraintStart_toStartOf="@+id/oneHourBut"
+            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/oneHourBut"/>
+    <Button
+            style="@style/timePickBut"
+            android:text="@string/tillSevenOClock"
+            android:id="@+id/allDayBut" app:layout_constraintEnd_toEndOf="@+id/twoHourBut"
+            app:layout_constraintTop_toTopOf="@+id/fourHourBut"/>
+    <Button
+
+            android:text="@string/twoDays"
+            style="@style/timePickBut"
+            android:id="@+id/twoDaysBut" app:layout_constraintStart_toStartOf="@+id/fourHourBut"
+            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/fourHourBut"/>
+    <Button
+            style="@style/timePickBut"
+            android:text="@string/anotherTime"
+            android:id="@+id/anotherTimeBut" app:layout_constraintEnd_toEndOf="@+id/allDayBut"
+            app:layout_constraintTop_toTopOf="@+id/twoDaysBut"/>
 
 
     <Button
             android:background="@drawable/round_but"
-            android:text="@string/give_back_bunt_text"
+            android:text="@string/take_bunt_text"
             android:layout_width="264dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             style="@style/goInButton"
-            android:id="@+id/giveBackBut"
-            tools:layout_editor_absoluteY="407dp"
-            android:layout_marginTop="40dp"
-            app:layout_constraintTop_toBottomOf="@+id/dataLinerL"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="29dp"
-            android:textSize="14sp"
-            android:fontFamily="sans-serif"
-            android:textStyle="normal"
-            android:textColor="@color/smallTextColour"
-            android:text="@string/returnMessage"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/giveBackBut" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"/>
+            android:id="@+id/takeDevice"
+            app:layout_constraintStart_toStartOf="@+id/twoDaysBut" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/anotherTimeBut" android:layout_marginRight="8dp"
+            android:layout_marginTop="40dp" app:layout_constraintTop_toBottomOf="@+id/twoDaysBut"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

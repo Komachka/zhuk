@@ -1,4 +1,4 @@
-package com.kstorozh.evozhuk
+package com.kstorozh.evozhuk.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

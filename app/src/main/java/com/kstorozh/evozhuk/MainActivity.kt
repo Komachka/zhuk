@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_main)
 
-       /* initDeviceUseCases.initDevice(DeviceInputData("007", "sumsung", "android", "s8", 300, 300)).observe(
+        /*initDeviceUseCases.initDevice(DeviceInputData("007", "sumsung", "android", "s8", 300, 300)).observe(
             this, Observer {
                 Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
             }
@@ -46,14 +46,14 @@ class MainActivity : AppCompatActivity() {
             })
 
 
-        getUsersUseCases.getUsers().observe(this,
+        /*getUsersUseCases.getUsers().observe(this,
             Observer {
 
                 it.forEach {
                     Log.d(LOG_TAG, it.slackUserName)
                 }
 
-            })
+            })*/
     }
 
     fun forceCrash(view: View) {

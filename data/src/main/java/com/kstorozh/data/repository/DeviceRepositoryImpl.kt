@@ -37,6 +37,7 @@ internal class DeviceRepositoryImpl(
                 mutableLiveData.postValue(true)
             }
             is ApiResult.Error<*> -> {
+                mutableLiveData.postValue(false)
                 myErrors.postValue(createError(Endpoints.INIT_DEVICE, result, this))
             }
         }

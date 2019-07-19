@@ -1,5 +1,6 @@
 package com.kstorozh.domain
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.kstorozh.dataimpl.DeviseRepository
@@ -16,7 +17,9 @@ class ManageDeviceUseCasesImpl(private val repository: DeviseRepository, val map
 
     override fun initDevice(deviceInputData: DeviceInputData): LiveData<Boolean> {
         return liveData {
+            Log.d("MainActivity", "HERE")
             val isDeviceInit = repository.initDevice(mapper.mapDeviceInfoToDeviceParam(deviceInputData))
+            Log.d("MainActivity", "is device init ${isDeviceInit.value}")
             emitSource(isDeviceInit)
         }
     }

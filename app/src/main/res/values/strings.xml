@@ -9,11 +9,20 @@
     <string name="login">Логин</string>
     <string name="password">Пароль</string>
     <string name="forgot_pass_message">Забыли пароль?</string>
-    <string name="take_bunt_text">Войти</string>
-    <string name="welcome_home_message">текст-текст</string>
+    <string name="login_bunt_text">Войти</string>
+    <string name="device_name">Sumsung S8</string>
     <string name="returnMessage">Не забудь вернуть во время</string>
     <string name="give_back_bunt_text">Отдать</string>
     <string name="deviceName">Sumsung S8</string>
     <string name="youTableDeviceLabel">Ты взял Samsung S8 до</string>
+    <string name="time_choose_label">Cколько времени\nнужен Samsung S8?</string>
+    <string name="take_bunt_text">Взять устройство</string>
+    <string name="button_label_custom">text</string>
+    <string name="oneHour">1 час</string>
+    <string name="twoHour">2 часа</string>
+    <string name="foutHour">4 часа</string>
+    <string name="tillSevenOClock">до 19:00</string>
+    <string name="twoDays">2 дня</string>
+    <string name="anotherTime">другое</string>
 
 </resources>

@@ -98,7 +98,7 @@
 
     <Button
             android:background="@drawable/round_but"
-            android:text="@string/take_bunt_text"
+            android:text="@string/login_bunt_text"
             android:layout_width="264dp"
             android:layout_height="40dp"
             style="@style/goInButton"

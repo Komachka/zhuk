@@ -7,7 +7,7 @@ const val DEVICE_INFO_DB_NAME = "Devices_database"
 /**
  * API constance
  */
-const val INIT_DEVISE_URL = " api/devices"
+const val INIT_DEVISE_URL = " /api/devices"
 const val UPDATE_DEVISE_URL = "/api/devices/:{id}"
 const val TAKE_DEVISE_URL = "/api/booking"
 const val RETURN_DEVISE_URL = "/api/booking"
