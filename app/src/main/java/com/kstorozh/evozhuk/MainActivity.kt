@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.crashlytics.android.Crashlytics
 import com.kstorozh.domainapi.HandleErrorUseCase
@@ -40,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         handleErrors.getErrors().observe(this,
             Observer {
-                Toast.makeText(this, it.throwable.message, Toast.LENGTH_LONG).show()
+                // Toast.makeText(this, it.throwable.message, Toast.LENGTH_LONG).show()
                 Log.d(LOG_TAG, it.throwable.message)
             })
 
