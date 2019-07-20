@@ -1,10 +1,8 @@
 package com.kstorozh.data.utils
 
 import ERROR_STATUS_CODE
-import LOG_TAG
 import NOT_FOUND_STATUS_CODE
 import UNAUTHORIZED_STATUS_CODE
-import android.util.Log
 import com.kstorozh.data.models.ApiErrorWithField
 import com.kstorozh.data.models.ApiErrorBodyWithMessage
 import com.kstorozh.data.models.ApiResult
@@ -77,13 +75,12 @@ internal fun getError(errorStatus: ErrorStatus, message: String, exception: Exce
 }
 
 internal fun Response<*>.parseErrorMessage(koin: KoinComponent): String {
-    var errorMessage =  "Unexpected error. Status code ${code()}"
+    var errorMessage = "Unexpected error. Status code ${code()}"
     val retrofit: Retrofit = koin.get()
     when (code()) {
         ERROR_STATUS_CODE -> {
             val converter = retrofit
                 .responseBodyConverter<ApiErrorWithField>(ApiErrorWithField::class.java, arrayOfNulls<Annotation>(0))
-
 
             body()?.let {
                 val body: ResponseBody = body() as ResponseBody
@@ -95,7 +92,6 @@ internal fun Response<*>.parseErrorMessage(koin: KoinComponent): String {
                 val error = converter.convert(body)!!
                 errorMessage = error.errors.fieldName
             }
-
         }
         UNAUTHORIZED_STATUS_CODE -> {
             val converter = retrofit
@@ -114,7 +110,6 @@ internal fun Response<*>.parseErrorMessage(koin: KoinComponent): String {
                 val error = converter.convert(body)!!
                 errorMessage = error.msg
             }
-
         }
     }
     return errorMessage

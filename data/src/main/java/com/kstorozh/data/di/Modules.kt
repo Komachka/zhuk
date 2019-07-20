@@ -29,8 +29,22 @@ import com.google.gson.GsonBuilder
 
 // The module is marked as override, which means that its content will override any other definition within the application.
 
+
+val dbModule = module(override = true) {
+    single {
+        Room.databaseBuilder(androidApplication(), DeviceDatabase::class.java, DEVICE_INFO_DB_NAME)
+            .build()
+    }
+    factory { get<DeviceDatabase>().deviceDao() }
+    factory { get<DeviceDatabase>().tokenDao() }
+    factory<LocalDataStorage> { LocalDataStorageImpl(get()) }
+}
+
+
+
+
 val networkModule = module(override = true) {
-    factory { TokenRepository() }
+    factory { TokenRepository(get()) }
     factory { AuthInterceptor(get()) }
     factory { HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY) }
     factory { provideOkHttpClient(get(), get()) }
@@ -40,14 +54,7 @@ val networkModule = module(override = true) {
     factory<RemoteData> { RemoteDataImpl(get(), get()) }
 }
 
-val dbModule = module(override = true) {
-    single {
-        Room.databaseBuilder(androidApplication(), DeviceDatabase::class.java, DEVICE_INFO_DB_NAME)
-            .build()
-    }
-    factory { get<DeviceDatabase>().deviceDao() }
-    factory<LocalDataStorage> { LocalDataStorageImpl(get()) }
-}
+
 
 val repositoryModule = module(override = true) {
     single<DeviseRepository> { DeviceRepositoryImpl(get(), get(), DeviceDataMapper(), get()) }
@@ -64,7 +71,7 @@ fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         .addConverterFactory(GsonConverterFactory.create(gson)).build()
 }
 
-fun provideOkHttpClient(authInterceptor: AuthInterceptor, loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+internal fun provideOkHttpClient(authInterceptor: AuthInterceptor, loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
 
     return OkHttpClient()
         .newBuilder()

@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = DEVICE_INFO_TABLE_NAME)
 internal data class Device(
@@ -19,6 +20,7 @@ internal data class Device(
     @Expose
     val os: String,
 
+    @SerializedName("os_version")
     @ColumnInfo(name = "os_version")
     @Expose
     val osVersion: String,

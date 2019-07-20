@@ -9,4 +9,6 @@ interface DeviseRepository {
     suspend fun takeDevice(bookingParam: BookingParam): Boolean
     suspend fun returnDevice(bookingParam: BookingParam): Boolean
     suspend fun getErrors(): MyError?
+    suspend fun deviceAlreadyInited(deviceParam: DeviceParam): Boolean
+
 }

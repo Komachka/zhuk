@@ -9,15 +9,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
-import com.kstorozh.domainapi.ManageDeviceUseCases
-import com.kstorozh.domainapi.model.DeviceInputData
 import com.kstorozh.evozhuk.R
-import org.koin.android.ext.android.inject
+import com.kstorozh.evozhuk.getInfoAboutDevice
 
 class HomeFragment : Fragment() {
 
-    val initDeviceUseCases: ManageDeviceUseCases by inject()
     val LOG_TAG = "MainActivity"
 
     override fun onCreateView(
@@ -26,11 +24,20 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_at_home, container, false)
-        initDeviceUseCases.initDevice(DeviceInputData("007", "sumsung", "android", "s8", 300, 300)).observe(
+
+        val model = ViewModelProviders.of(this)[HomeViewModel::class.java]
+
+        Log.d(LOG_TAG, context.getInfoAboutDevice().toString())
+        val info = context.getInfoAboutDevice()
+        val textViewText = view.findViewById<TextView>(R.id.welcomeMessageTv)
+        textViewText.setText(info.model)
+        model.isDeviceInited(info).observe(
             this, Observer {
-                Log.d(LOG_TAG, "in init device result is $it")
-                Toast.makeText(this.context, it.toString(), Toast.LENGTH_LONG).show()
-            })
+                Log.d(LOG_TAG, "isDeviceInited =   $it")
+                Toast.makeText(this.context, "isDeviceInited =   $it", Toast.LENGTH_LONG).show()
+            }
+        )
+
         val textView: TextView = view.findViewById(R.id.logoTv)
         textView.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_loginFragment)

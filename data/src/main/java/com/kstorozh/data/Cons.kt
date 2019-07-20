@@ -4,6 +4,8 @@
 const val DEVICE_INFO_TABLE_NAME = "device_info"
 const val DEVICE_INFO_DB_NAME = "Devices_database"
 
+const val TOKEN_TABLE_NAME = "token_table"
+
 /**
  * API constance
  */
@@ -21,7 +23,7 @@ const val ERROR_STATUS_CODE = 422
 const val UNAUTHORIZED_STATUS_CODE = 401
 const val NOT_FOUND_STATUS_CODE = 400
 
-const val LOG_TAG = "Test"
+const val LOG_TAG = "MainActivity"
 
 /**
  * endpoints

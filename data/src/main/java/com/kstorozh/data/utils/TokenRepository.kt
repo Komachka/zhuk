@@ -1,15 +1,26 @@
 package com.kstorozh.data.utils
 
-class TokenRepository {
+import LOG_TAG
+import android.util.Log
+import com.kstorozh.data.database.TokenDao
+import com.kstorozh.data.models.Token
 
-        companion object {
-                private var token: String? = null
+ internal class TokenRepository(val tokenDao: TokenDao) {
+
+     companion object {
+         var token: String = "token"
+     }
+
+    suspend fun setToken(tokenFromDb: String) {
+            tokenDao.insertToken(token = Token("1", tokenFromDb))
+            token = tokenFromDb
+            Log.d(LOG_TAG, "token in set token $token")
         }
 
-        fun setToken(token: String) {
-                TokenRepository.token = token
-            print(token) // TODO set token to sharedPref? or BD
+        suspend fun getToken() : String?
+        {
+                val tokenDb = tokenDao.getToken()
+                token = (tokenDb?.token?: null) as String
+                return token
         }
-
-        fun getToken(): String? = token // TOD get token from shared pref or bd
 }

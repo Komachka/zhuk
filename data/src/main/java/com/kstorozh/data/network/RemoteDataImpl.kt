@@ -1,5 +1,7 @@
 package com.kstorozh.data.network
 
+import LOG_TAG
+import android.util.Log
 import com.kstorozh.data.models.*
 import com.kstorozh.data.models.BookingBody
 import com.kstorozh.data.models.Device
@@ -15,6 +17,7 @@ internal class RemoteDataImpl(
 ) : RemoteData {
     override suspend fun login(userLoginParam: UserLogin): ApiResult<LoginUserResponce> {
         val errorMessage = "problem with login"
+        Log.d(LOG_TAG, userLoginParam.toString())
         return getApiResult(errorMessage) {
             userApi.login(userLoginParam)
         }

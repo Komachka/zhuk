@@ -1,5 +1,7 @@
 package com.kstorozh.data.repository
 
+import LOG_TAG
+import android.util.Log
 import com.kstorozh.data.database.LocalDataStorage
 import com.kstorozh.dataimpl.MyError
 import com.kstorozh.data.models.ApiResult
@@ -18,11 +20,24 @@ internal class DeviceRepositoryImpl(
     private val tokenRepository: TokenRepository
 ) : DeviseRepository, KoinComponent {
 
-    private lateinit var myError: MyError
+
+    private var myError: MyError? = null
 
     override suspend fun getErrors(): MyError? {
         return myError
     }
+
+
+    override suspend fun deviceAlreadyInited(deviceParam: DeviceParam): Boolean {
+
+        val device = mapper.mapDeviceData(deviceParam)
+        val res =  tokenRepository.getToken()?.let {true} ?: false
+        Log.d(LOG_TAG, "is device inited in DeviceRepositoryImpl -  ${tokenRepository.getToken()}")
+        return res
+
+    }
+
+
 
     override suspend fun initDevice(deviceParam: DeviceParam): Boolean {
         val device = mapper.mapDeviceData(deviceParam)
@@ -30,7 +45,7 @@ internal class DeviceRepositoryImpl(
         return when (val result = remoteData.initDevice(device)) {
             is ApiResult.Success -> {
                 device.id = result.data.data.deviceId.toString()
-                // TODO add error handling from bd
+                // TODO add error handling from bd and check if data exists do not write
                 localData.insertDevice(device)
                 tokenRepository.setToken(device.id)
                 true

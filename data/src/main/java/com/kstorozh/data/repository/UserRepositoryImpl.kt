@@ -1,6 +1,7 @@
 package com.kstorozh.data.repository
 
-import androidx.lifecycle.MutableLiveData
+import LOG_TAG
+import android.util.Log
 import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.data.network.RemoteData
@@ -16,20 +17,19 @@ internal class UserRepositoryImpl(
     private val users: ArrayList<SlackUser>
 ) : UserRepository, KoinComponent {
 
-    private lateinit var myError: MyError
+    private var myError: MyError? = null
 
-    override suspend fun login(userLoginParam: UserLoginParam): MutableLiveData<String?> {
-        val mutableLiveData = MutableLiveData<String?>()
-        when (val result = remoteData.login(mapper.mapUserLoginParam(userLoginParam))) {
+    override suspend fun login(userLoginParam: UserLoginParam): String? {
+        Log.d(LOG_TAG, userLoginParam.toString())
+        return when (val result = remoteData.login(mapper.mapUserLoginParam(userLoginParam))) {
             is ApiResult.Success -> {
-                mutableLiveData.postValue(result.data.data.userId.toString())
+                result.data.data.userId.toString()
             }
             is ApiResult.Error<*> -> {
-                mutableLiveData.postValue(null)
                 myError = createError(Endpoints.LOGIN, result, this)
+                null
             }
         }
-        return mutableLiveData
     }
 
     override suspend fun getErrors(): MyError? {

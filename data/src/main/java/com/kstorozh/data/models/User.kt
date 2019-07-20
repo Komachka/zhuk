@@ -18,14 +18,14 @@ internal data class User(
     val slackUserName: String
 )
 
-internal class UsersData(
+internal data class UsersData(
 
     @SerializedName("users")
     @Expose
     val users: List<User>
 )
 
-internal class UsersDataResponse(
+internal data class UsersDataResponse(
 
     @SerializedName("data")
     @Expose

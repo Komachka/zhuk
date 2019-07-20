@@ -14,7 +14,10 @@ class ManageDeviceUseCasesImpl(private val repository: DeviseRepository, val map
 
     override suspend fun initDevice(deviceInputData: DeviceInputData): Boolean {
 
-            return repository.initDevice(mapper.mapDeviceInfoToDeviceParam(deviceInputData))
+        val deviceParam = mapper.mapDeviceInfoToDeviceParam(deviceInputData)
+        if(!repository.deviceAlreadyInited(deviceParam))
+            return repository.initDevice(deviceParam)
+        else return true
     }
 
     override suspend fun takeDevice(bookingParam: BookingInputData): Boolean {

@@ -4,9 +4,12 @@ dependencies {
     implementation appDependencies.coreKTX
     implementation appDependencies.constraintlayout
     implementation appDependencies.crashlytics
+    implementation appDependencies.viewModel
+    implementation appDependencies.livecycleExtansion
     implementation commonDependencies.files
     implementation commonDependencies.koin
     implementation commonDependencies.koinAX
+    implementation domainDependencies.livedataKTX
     implementation project(':domainapi')
     implementation project(':di')
 }

@@ -12,6 +12,7 @@ dependencies {
     implementation commonDependencies.koinAX
     implementation dataDependencies.logginInterseptor
     kapt dataDependencies.koinRoomCompiler
+    implementation domainDependencies.coroutines
     implementation project(':data-api')
 
 }
