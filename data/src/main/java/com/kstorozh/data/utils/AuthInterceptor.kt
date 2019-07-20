@@ -1,7 +1,6 @@
 package com.kstorozh.data.utils
 
 import INIT_DEVISE_URL
-import android.util.Log
 import kotlinx.coroutines.*
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -13,7 +12,7 @@ internal class AuthInterceptor(private val tokenRepository: TokenRepository) : I
         val original = chain.request()
         if (original.url().encodedPath() != INIT_DEVISE_URL) {
 
-            val currentToken:String? = TokenRepository.token
+            val currentToken: String? = TokenRepository.token
             currentToken?.let {
                 val request = original.newBuilder()
                     .addHeaders(currentToken!!)

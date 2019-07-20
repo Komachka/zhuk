@@ -10,7 +10,7 @@ internal data class Errors(
     val fieldName: String
 )
 
-internal open  class BaseResponse(
+internal open class BaseResponse(
     @SerializedName("msg")
     @Expose
     val msg: String? = null,

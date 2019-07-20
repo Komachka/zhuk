@@ -29,7 +29,6 @@ import com.google.gson.GsonBuilder
 
 // The module is marked as override, which means that its content will override any other definition within the application.
 
-
 val dbModule = module(override = true) {
     single {
         Room.databaseBuilder(androidApplication(), DeviceDatabase::class.java, DEVICE_INFO_DB_NAME)
@@ -39,9 +38,6 @@ val dbModule = module(override = true) {
     factory { get<DeviceDatabase>().tokenDao() }
     factory<LocalDataStorage> { LocalDataStorageImpl(get()) }
 }
-
-
-
 
 val networkModule = module(override = true) {
     factory { TokenRepository(get()) }
@@ -53,8 +49,6 @@ val networkModule = module(override = true) {
     single { provideRetrofit(get()) }
     factory<RemoteData> { RemoteDataImpl(get(), get()) }
 }
-
-
 
 val repositoryModule = module(override = true) {
     single<DeviseRepository> { DeviceRepositoryImpl(get(), get(), DeviceDataMapper(), get()) }

@@ -20,24 +20,19 @@ internal class DeviceRepositoryImpl(
     private val tokenRepository: TokenRepository
 ) : DeviseRepository, KoinComponent {
 
-
     private var myError: MyError? = null
 
     override suspend fun getErrors(): MyError? {
         return myError
     }
 
-
     override suspend fun deviceAlreadyInited(deviceParam: DeviceParam): Boolean {
 
         val device = mapper.mapDeviceData(deviceParam)
-        val res =  tokenRepository.getToken()?.let {true} ?: false
+        val res = tokenRepository.getToken()?.let { true } ?: false
         Log.d(LOG_TAG, "is device inited in DeviceRepositoryImpl -  ${tokenRepository.getToken()}")
         return res
-
     }
-
-
 
     override suspend fun initDevice(deviceParam: DeviceParam): Boolean {
         val device = mapper.mapDeviceData(deviceParam)

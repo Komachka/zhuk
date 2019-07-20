@@ -15,7 +15,7 @@ class ManageDeviceUseCasesImpl(private val repository: DeviseRepository, val map
     override suspend fun initDevice(deviceInputData: DeviceInputData): Boolean {
 
         val deviceParam = mapper.mapDeviceInfoToDeviceParam(deviceInputData)
-        if(!repository.deviceAlreadyInited(deviceParam))
+        if (!repository.deviceAlreadyInited(deviceParam))
             return repository.initDevice(deviceParam)
         else return true
     }
