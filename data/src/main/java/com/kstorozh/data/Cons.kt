@@ -16,7 +16,7 @@ const val CREATE_USER_URL = "/api/users"
 const val REMIND_PIN_URL = "/api/users/{id}/pin/remind"
 const val LOGIN_URL = "/api/login"
 
-const val BASE_URL = "https://evozhuk.tk"
+const val BASE_URL = "http://evozhuk.tk"
 const val ERROR_STATUS_CODE = 422
 const val UNAUTHORIZED_STATUS_CODE = 401
 const val NOT_FOUND_STATUS_CODE = 400
