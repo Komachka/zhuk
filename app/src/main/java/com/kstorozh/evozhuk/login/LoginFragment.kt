@@ -9,7 +9,6 @@ import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.kstorozh.evozhuk.R
-
 import androidx.lifecycle.ViewModelProviders
 import android.widget.LinearLayout
 import android.widget.EditText
@@ -17,17 +16,14 @@ import androidx.appcompat.app.AlertDialog
 import android.widget.Toast
 import com.kstorozh.domainapi.model.User
 
-
 class LoginFragment : Fragment() {
 
-
-    lateinit var model:LogInViewModel
+    lateinit var model: LogInViewModel
     lateinit var loginBut: Button
-    lateinit var loginEt : AutoCompleteTextView
-    lateinit var passEt:EditText
-    lateinit var forgotPassTv:TextView
-    private val userNames = arrayOf("storozhkateryna","thesickboii", "dmitriy.senchik", "katya", "petro", "vasa", "boris", "natasha", "ibragim", "qwerty", "qwertyqwe", "qwerty67868")
-
+    lateinit var loginEt: AutoCompleteTextView
+    lateinit var passEt: EditText
+    lateinit var forgotPassTv: TextView
+    private val userNames = arrayOf("storozhkateryna", "thesickboii", "dmitriy.senchik", "katya", "petro", "vasa", "boris", "natasha", "ibragim", "qwerty", "qwertyqwe", "qwerty67868")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,17 +31,15 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val view: View = inflater.inflate(R.layout.fragment_login, container, false)
-        loginBut = view.findViewById(R.id.goInBut)
+        val fragment: View = inflater.inflate(R.layout.fragment_login, container, false)
+        loginBut = fragment.findViewById(R.id.goInBut)
 
-        loginEt = view.findViewById(R.id.loginEt) as AutoCompleteTextView
-        passEt = view.findViewById(R.id.passwordEt) as EditText
+        loginEt = fragment.findViewById(R.id.loginEt) as AutoCompleteTextView
+        passEt = fragment.findViewById(R.id.passwordEt) as EditText
 
-        forgotPassTv = view.findViewById(R.id.forgotPassTv)
+        forgotPassTv = fragment.findViewById(R.id.forgotPassTv)
 
-
-
-        forgotPassTv.setOnClickListener{
+        forgotPassTv.setOnClickListener {
             showDialog()
         }
 
@@ -55,9 +49,7 @@ class LoginFragment : Fragment() {
 
         model = ViewModelProviders.of(activity!!).get(LogInViewModel::class.java)
 
-
         loginEt.setAdapter(ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, userNames))
-
 
         loginBut.setOnClickListener {
 
@@ -71,11 +63,11 @@ class LoginFragment : Fragment() {
         }
 
         model.userIdLiveData.observe(this, Observer {
-            Navigation.findNavController(view!!).navigate(R.id.action_loginFragment_to_chooseTimeFragment)
+            if (!it.isNullOrEmpty())
+                Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_chooseTimeFragment)
         })
 
-
-        return view
+        return fragment
     }
 
     private fun showDialog() {
@@ -91,7 +83,6 @@ class LoginFragment : Fragment() {
         input.layoutParams = lp
         alertDialog.setView(input)
 
-
         alertDialog.setPositiveButton("Send") { dialog, which ->
             if (input.text.isNotEmpty() && userNames.contains<String>(input.text.toString().toLowerCase())) {
                 model.remindPin(User(5, "ULHRKV56C", "storozhkateryna")).observe(
@@ -102,14 +93,10 @@ class LoginFragment : Fragment() {
                             Toast.makeText(context, "Request for reset pin was not sent", Toast.LENGTH_LONG).show()
                     }
                 )
-            }
-            else {
+            } else {
                 Toast.makeText(context, "Incorrect input", Toast.LENGTH_SHORT).show()
             }
         }
         alertDialog.show()
-
-
     }
-
 }

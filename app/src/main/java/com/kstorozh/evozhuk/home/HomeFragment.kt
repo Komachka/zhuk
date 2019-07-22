@@ -40,8 +40,10 @@ class HomeFragment : Fragment() {
 
         val textView: TextView = view.findViewById(R.id.logoTv)
         textView.setOnClickListener {
-            model.isDeviceBooked(info)
-            Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_loginFragment)
+            model.isDeviceBooked(info).observe(this, Observer {
+                if (!it) Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_loginFragment)
+                else Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_backDeviceFragment)
+            })
         }
         return view
     }

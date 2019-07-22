@@ -15,24 +15,20 @@ class ChooseTimeSharedViewModel : ViewModel(), KoinComponent {
 
     private val manageDeviceUseCases: ManageDeviceUseCases by inject()
 
+    val choosenData: MutableLiveData<Calendar> by lazy { MutableLiveData<Calendar>() }
+    val userId: MutableLiveData<String> by lazy { MutableLiveData<String>() }
 
-    val choosenData:MutableLiveData<Calendar> by lazy { MutableLiveData<Calendar>() }
-
-    fun setData(calendar: Calendar)
-    {
+    fun setData(calendar: Calendar) {
         choosenData.value = calendar
     }
 
-    fun getData(): MutableLiveData<Calendar> {
-        return choosenData
+    fun setUserId(id: String) {
+        userId.value = id
     }
 
-
-    fun tryBookDevice(userId:String) : LiveData<Boolean>
-    {
+    fun tryBookDevice(): LiveData<Boolean> {
         return liveData<Boolean> {
-            emit(manageDeviceUseCases.takeDevice(BookingInputData(userId, choosenData.value!!)))
+            emit(manageDeviceUseCases.takeDevice(BookingInputData(userId.value!!, choosenData.value!!)))
         }
-
     }
 }

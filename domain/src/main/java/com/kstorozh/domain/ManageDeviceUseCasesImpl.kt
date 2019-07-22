@@ -6,12 +6,18 @@ import com.kstorozh.domain.mapper.DeviceInfoMapper
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.BookingInputData
 import com.kstorozh.domainapi.model.DeviceInputData
+import com.kstorozh.domainapi.model.SessionData
 import org.koin.core.KoinComponent
 
 import java.util.*
 
 class ManageDeviceUseCasesImpl(private val repository: DeviseRepository, val mapper: DeviceInfoMapper) :
     ManageDeviceUseCases, KoinComponent {
+
+    override suspend fun getSession(): SessionData? {
+        val result = repository.getBookingSession()
+        if (result != null) return mapper.mapBookingSession(result) else return null
+    }
 
     override suspend fun initDevice(deviceInputData: DeviceInputData): Boolean {
 
@@ -25,12 +31,13 @@ class ManageDeviceUseCasesImpl(private val repository: DeviseRepository, val map
 
         val startDate = Calendar.getInstance()
         val res = repository.takeDevice(mapper.mapBookingParam(bookingParam, startDate))
-        Log.d("MainActivity", "is device taken ${res.toString()}")
+        Log.d("MainActivity", "is device taken $res")
         return res
     }
 
     override suspend fun returnDevice(bookingParam: BookingInputData): Boolean {
-
-            return repository.returnDevice(mapper.mapBookingParam(bookingParam))
+            val booking = mapper.mapBookingParam(bookingParam)
+            val res = repository.returnDevice(booking)
+            return res
     }
 }

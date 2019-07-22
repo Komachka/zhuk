@@ -18,11 +18,12 @@ internal class DeviceDataMapper {
         deviceParam.storage)
 
     fun mapBookingDeviceInfo(bookingParam: BookingParam, deviceId: String) = BookingBody(
+        "1",
         bookingParam.userId,
         deviceId.toInt(),
         bookingParam.startDate,
         bookingParam.endDate,
         isActive = true)
 
-    fun mapBookingParamForReturn(bookingParam: BookingParam, id: String) = ReturnDeviceBody(bookingParam.userId, id.toInt())
+    fun mapBookingParamForReturn(bookingParam: BookingParam, id: String) = ReturnDeviceBody(bookingParam.userId.toInt(), id.toInt())
 }

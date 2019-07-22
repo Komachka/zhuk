@@ -56,8 +56,9 @@ internal class RemoteDataImpl(
 
     override suspend fun returnDevice(returnDeviceBody: ReturnDeviceBody): ApiResult<BaseResponse> {
         val errorMessage = "problem with update device"
+        Log.d(LOG_TAG, "returnDeviceBody $returnDeviceBody")
         return getApiResult(errorMessage) {
-            deviceApi.returnDevice(returnDeviceBody, returnDeviceBody.deviceId.toString())
+            deviceApi.returnDevice(returnDeviceBody)
         }
     }
 

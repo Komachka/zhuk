@@ -36,7 +36,9 @@ val dbModule = module(override = true) {
     }
     factory { get<DeviceDatabase>().deviceDao() }
     factory { get<DeviceDatabase>().tokenDao() }
-    factory<LocalDataStorage> { LocalDataStorageImpl(get()) }
+    factory { get<DeviceDatabase>().bookingDao() }
+
+    factory<LocalDataStorage> { LocalDataStorageImpl(get(), get()) }
 }
 
 val networkModule = module(override = true) {

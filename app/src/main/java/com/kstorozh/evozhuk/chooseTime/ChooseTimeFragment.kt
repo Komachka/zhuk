@@ -16,7 +16,7 @@ import java.util.*
 class ChooseTimeFragment : Fragment() {
 
     var selectedButton: Button? = null
-    lateinit var calendar:GregorianCalendar
+    lateinit var calendar: GregorianCalendar
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,8 +24,8 @@ class ChooseTimeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-
         val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeSharedViewModel::class.java)
+        val modelLogin = ViewModelProviders.of(activity!!).get(LogInViewModel::class.java)
 
         val view: View = inflater.inflate(R.layout.fragment_time_choose, container, false)
         val button: Button = view.findViewById(R.id.takeDevice)
@@ -49,7 +49,7 @@ class ChooseTimeFragment : Fragment() {
                 }
                 selectedButton = it
                 calendar = GregorianCalendar.getInstance() as GregorianCalendar
-                    when((it as Button).id) {
+                    when ((it as Button).id) {
                         R.id.oneHourBut -> calendar.add(Calendar.HOUR, 1)
                         R.id.twoHourBut -> calendar.add(Calendar.HOUR, 2)
                         R.id.fourHourBut -> calendar.add(Calendar.HOUR, 4)
@@ -58,21 +58,19 @@ class ChooseTimeFragment : Fragment() {
                         else -> calendar.add(Calendar.SECOND, 1) // TODO change it later
                     }
                 calendar?.let { it1 -> modelChooseTime.setData(it1) }
+                modelLogin.userIdLiveData.value?.let { modelChooseTime.setUserId(modelLogin.userIdLiveData.value!!) }
             }
         }
 
-        val modelLogin = ViewModelProviders.of(activity!!).get(LogInViewModel::class.java)
         button.setOnClickListener {
-            val userId = modelLogin.userIdLiveData.value!!
-            modelChooseTime.tryBookDevice(userId).observe(this, androidx.lifecycle.Observer {
+            modelChooseTime.tryBookDevice().observe(this, androidx.lifecycle.Observer {
 
                 Toast.makeText(context, "Is device booked? $it", Toast.LENGTH_LONG).show()
-                if (it == true)
+                if (it == true) {
                     Navigation.findNavController(view).navigate(R.id.action_chooseTimeFragment_to_backDeviceFragment)
-                else
+                } else
                     Toast.makeText(context, "Can not book", Toast.LENGTH_LONG).show()
             })
-
         }
         return view
         }

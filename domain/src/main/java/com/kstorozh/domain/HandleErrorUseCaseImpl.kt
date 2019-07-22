@@ -17,9 +17,9 @@ class HandleErrorUseCaseImpl(
     override suspend fun getErrors(): Pair<DomainErrors?, DomainErrors?> {
 
         val userInput = userRepository.getErrors()
-        val userError = if (userInput != null) { mapper.mapToDomainError(userInput) } else null
+        val userError = if (userInput.isNotEmpty()) { mapper.mapToDomainError(userInput[0]) } else null
         val deviceInput = deviceRepository.getErrors()
-        val deviceError = if (deviceInput != null) { mapper.mapToDomainError(deviceInput) } else null
+        val deviceError = if (userInput.isNotEmpty()) { mapper.mapToDomainError(deviceInput[0]) } else null
         return userError to deviceError
     }
 }

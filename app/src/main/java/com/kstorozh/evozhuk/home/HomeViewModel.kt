@@ -21,10 +21,13 @@ class HomeViewModel : ViewModel(), KoinComponent {
         }
     }
 
-    fun isDeviceBooked(deviceInputData: DeviceInputData) : LiveData<Boolean> {
+    fun isDeviceBooked(deviceInputData: DeviceInputData): LiveData<Boolean> {
         return liveData {
-            //val result = initDeviceUseCases.isSessionExist(deviceInputData)
-            emit(false)
+            val result = initDeviceUseCases.getSession()
+            if (result != null)
+                emit(true)
+            else
+                emit(false)
         }
     }
 }

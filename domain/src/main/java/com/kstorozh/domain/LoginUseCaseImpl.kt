@@ -20,8 +20,8 @@ class LoginUseCaseImpl(
     }
 
     override suspend fun remindPin(user: User): Boolean {
-        Log.d("MainActivity", "In use case remind pin user = ${user}")
-        val res =  repository.remindPin(user.id.toString())
+        Log.d("MainActivity", "In use case remind pin user = $user")
+        val res = repository.remindPin(user.id.toString())
         Log.d("MainActivity", "Result remind pin $res")
         return res
     }

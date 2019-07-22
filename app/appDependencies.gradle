@@ -5,6 +5,8 @@ dependencies {
     implementation appDependencies.constraintlayout
     implementation appDependencies.crashlytics
     implementation appDependencies.viewModel
+    implementation appDependencies.navigation
+    implementation appDependencies.navigationktx
     implementation appDependencies.livecycleExtansion
     implementation commonDependencies.files
     implementation commonDependencies.koin

@@ -13,6 +13,8 @@ ext {
     livedataKTX = '2.2.0-alpha01'
     koin_version = '2.0.1'
     material_version = '1.1.0-alpha05'
+    login_interseptor_okhttp = '3.12.1'
+    navigation = "1.0.0"
 
     commonDependencies = [
             kotlin : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin",
@@ -31,7 +33,9 @@ ext {
             lifecycleKTX : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version",
             material: "com.google.android.material:material:$material_version",
             livecycleExtansion: "android.arch.lifecycle:extensions:$lifecycle_version",
-            viewModel: "android.arch.lifecycle:viewmodel:$lifecycle_version"
+            viewModel: "android.arch.lifecycle:viewmodel:$lifecycle_version",
+            navigation: "android.arch.navigation:navigation-fragment-ktx:$navigation",
+            navigationktx: "android.arch.navigation:navigation-ui-ktx:$navigation"
     ]
 
     domainDependencies = [
@@ -44,11 +48,10 @@ ext {
         retrofitgson: "com.squareup.retrofit2:converter-gson:$retrofit",
         room: "androidx.room:room-runtime:$room",
         roomKTX: "androidx.room:room-ktx:$room",
-        //roomCor: "androidx.room:room-coroutines:$room",
         gson: "com.google.code.gson:gson:$gson",
         livedata : "androidx.lifecycle:lifecycle-extensions:$lifecycle_version",
         lifecycleKTX : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version",
         koinRoomCompiler: "androidx.room:room-compiler:$room",
-        logginInterseptor : "com.squareup.okhttp3:logging-interceptor:3.12.1"
+        logginInterseptor : "com.squareup.okhttp3:logging-interceptor:$login_interseptor_okhttp"
     ]
 }

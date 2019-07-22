@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var modelLogin: LogInViewModel
     lateinit var modelChooseTime: ChooseTimeSharedViewModel
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
@@ -37,8 +36,6 @@ class MainActivity : AppCompatActivity() {
 
         modelLogin = ViewModelProviders.of(this)[LogInViewModel::class.java]
         modelChooseTime = ViewModelProviders.of(this)[ChooseTimeSharedViewModel::class.java]
-
-
     }
 
     fun forceCrash(view: View) {

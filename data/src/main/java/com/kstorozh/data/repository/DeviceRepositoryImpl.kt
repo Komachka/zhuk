@@ -11,6 +11,7 @@ import com.kstorozh.data.utils.*
 import com.kstorozh.dataimpl.model.into.BookingParam
 import com.kstorozh.dataimpl.model.into.DeviceParam
 import com.kstorozh.dataimpl.DeviseRepository
+import com.kstorozh.dataimpl.model.out.BookingSessionData
 import org.koin.core.KoinComponent
 
 internal class DeviceRepositoryImpl(
@@ -20,9 +21,9 @@ internal class DeviceRepositoryImpl(
     private val tokenRepository: TokenRepository
 ) : DeviseRepository, KoinComponent {
 
-    private var myError: MyError? = null
+    private val myError: ArrayList<MyError> = ArrayList()
 
-    override suspend fun getErrors(): MyError? {
+    override suspend fun getErrors(): List<MyError> {
         return myError
     }
 
@@ -34,26 +35,32 @@ internal class DeviceRepositoryImpl(
         return res
     }
 
+    override suspend fun getBookingSession(): BookingSessionData? {
+        val device = localData.getDeviceInfo()
+        Log.d(LOG_TAG, "Device info $device")
+        val booking = localData.getBookingByDeviceId(device.id)
+        return if (booking != null) { BookingSessionData(booking.userId, booking.endDate) } else null
+    }
+
     override suspend fun initDevice(deviceParam: DeviceParam): Boolean {
         val device = mapper.mapDeviceData(deviceParam)
 
         return when (val result = remoteData.initDevice(device)) {
             is ApiResult.Success -> {
                 device.id = result.data.data.deviceId.toString()
-                // TODO add error handling from bd and check if data exists do not write
                 localData.insertDevice(device)
                 tokenRepository.setToken(device.id)
                 true
             }
             is ApiResult.Error<*> -> {
-                myError = createError(Endpoints.INIT_DEVICE, result, this)
+                myError.add(0, createError(Endpoints.INIT_DEVICE, result, this))
                 false
             }
         }
     }
 
     override suspend fun updateDevice(deviceParam: DeviceParam): Boolean {
-        val device = mapper.mapDeviceData(deviceParam)
+        val device = mapper.mapDeviceData(deviceParam) // TODO this device need to take from db
         return when (val result = remoteData.updateDevice(device, deviceParam.uid)) {
             is ApiResult.Success -> {
                 // TODO handle bd error
@@ -61,7 +68,7 @@ internal class DeviceRepositoryImpl(
                 true
             }
             is ApiResult.Error<*> -> {
-                myError = createError(Endpoints.UPDATE_DEVICE, result, this)
+                myError.add(0, createError(Endpoints.UPDATE_DEVICE, result, this))
                 false
             }
         }
@@ -70,15 +77,18 @@ internal class DeviceRepositoryImpl(
     override suspend fun takeDevice(bookingParam: BookingParam): Boolean {
 
         val device = localData.getDeviceInfo()
+        val bookingBody = mapper.mapBookingDeviceInfo(bookingParam, device.id)
         return when (val result = remoteData.takeDevise(
-            mapper.mapBookingDeviceInfo(bookingParam, device.id),
+            bookingBody,
             device.id
         )) {
             is ApiResult.Success -> {
+                localData.saveBooking(bookingBody)
+                Log.d(LOG_TAG, "save booking to db $bookingBody")
                 true
             }
             is ApiResult.Error<*> -> {
-                myError = createError(Endpoints.TAKE_DEVICE, result, this)
+                myError.add(0, createError(Endpoints.TAKE_DEVICE, result, this))
                 false
             }
         }
@@ -88,10 +98,11 @@ internal class DeviceRepositoryImpl(
         val device = localData.getDeviceInfo()
         return when (val result = remoteData.returnDevice(mapper.mapBookingParamForReturn(bookingParam, device.id))) {
             is ApiResult.Success -> {
+                localData.deleteBookingInfo()
                 true
             }
             is ApiResult.Error<*> -> {
-                myError = createError(Endpoints.RETURN_DEVICE, result, this)
+                myError.add(0, createError(Endpoints.RETURN_DEVICE, result, this))
                 false
             }
         }

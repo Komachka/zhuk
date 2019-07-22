@@ -5,6 +5,7 @@ const val DEVICE_INFO_TABLE_NAME = "device_info"
 const val DEVICE_INFO_DB_NAME = "Devices_database"
 
 const val TOKEN_TABLE_NAME = "token_table"
+const val BOOKING_TABLE_NAME = "booking_table"
 
 /**
  * API constance

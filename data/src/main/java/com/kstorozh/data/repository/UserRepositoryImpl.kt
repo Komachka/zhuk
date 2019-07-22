@@ -17,7 +17,7 @@ internal class UserRepositoryImpl(
     private val users: ArrayList<SlackUser>
 ) : UserRepository, KoinComponent {
 
-    private var myError: MyError? = null
+    private var myError: ArrayList<MyError> = ArrayList()
 
     override suspend fun login(userLoginParam: UserLoginParam): String? {
         Log.d(LOG_TAG, userLoginParam.toString())
@@ -26,13 +26,13 @@ internal class UserRepositoryImpl(
                 result.data.data.userId.toString()
             }
             is ApiResult.Error<*> -> {
-                myError = createError(Endpoints.LOGIN, result, this)
+                myError.add(0, createError(Endpoints.LOGIN, result, this))
                 null
             }
         }
     }
 
-    override suspend fun getErrors(): MyError? {
+    override suspend fun getErrors(): List<MyError> {
         return myError
     }
     override suspend fun getUsers(): List<SlackUser> {
@@ -41,7 +41,7 @@ internal class UserRepositoryImpl(
                 users.addAll(mapper.mapSlackUserList(result.data.usersData.users))
             }
             is ApiResult.Error<*> -> {
-                myError = createError(Endpoints.GET_USERS, result, this)
+                myError.add(0, createError(Endpoints.GET_USERS, result, this))
             }
         }
         return users
@@ -54,7 +54,7 @@ internal class UserRepositoryImpl(
                 true
             }
             is ApiResult.Error<*> -> {
-                myError = createError(Endpoints.REMIND_PIN, result, this)
+                myError.add(0, createError(Endpoints.REMIND_PIN, result, this))
                 false
             }
         }
