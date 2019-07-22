@@ -64,11 +64,12 @@
             app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"/>
 
 
-    <EditText
+    <com.kstorozh.evozhuk.login.EditTextPassword
             android:textSize="14sp"
             style="@style/edit_text_field"
-            android:drawableRight="@mipmap/ic_hide"
-            android:drawableEnd="@mipmap/ic_hide"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
+            android:layout_gravity = "start"
+            android:textAlignment="viewStart"
             android:hint="@string/password"
             android:maxLength="4"
             android:inputType="textPassword"
