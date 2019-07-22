@@ -31,5 +31,4 @@ class ChooseTimeSharedViewModel : ViewModel(), KoinComponent {
             emit(manageDeviceUseCases.takeDevice(BookingInputData(userId.value!!, choosenData.value!!)))
         }
     }
-
 }
