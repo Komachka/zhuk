@@ -33,7 +33,7 @@ class BackDeviceFragment : Fragment() {
 
         modelBackDevice.getSessionData().observe(this, Observer {
             it?.let {
-                val format = SimpleDateFormat("dd MMMMM\nHH:mm")
+                val format = SimpleDateFormat("HH:mm\ndd MMMM")
                 textView.setText(format.format(it.endData.time))
             }
             Toast.makeText(context, "WTF", Toast.LENGTH_LONG).show()
@@ -49,8 +49,9 @@ class BackDeviceFragment : Fragment() {
 
             modelBackDevice.tryReturnDevice().observe(this, Observer {
                 Toast.makeText(context, "is device returned $it", Toast.LENGTH_LONG).show()
-                if (it)
+                if (it) {
                     Navigation.findNavController(view).navigate(R.id.action_backDeviceFragment_to_loginFragment)
+                }
             })
         }
         return view

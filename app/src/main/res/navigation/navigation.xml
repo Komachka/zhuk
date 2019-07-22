@@ -18,6 +18,8 @@
     </fragment>
     <fragment android:id="@+id/backDeviceFragment" android:name="com.kstorozh.evozhuk.backDevice.BackDeviceFragment"
               android:label="BackDeviceFragment">
-        <action android:id="@+id/action_backDeviceFragment_to_loginFragment" app:destination="@id/loginFragment"/>
+        <action android:id="@+id/action_backDeviceFragment_to_loginFragment" app:destination="@id/loginFragment"
+                app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_enter_anim"
+                app:popUpTo="@+id/loginFragment"/>
     </fragment>
 </navigation>
