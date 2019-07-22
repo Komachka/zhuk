@@ -72,6 +72,7 @@
             app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
+                android:id="@+id/dateToBack"
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp"
                 android:paddingLeft="65dp"

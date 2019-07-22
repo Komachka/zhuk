@@ -1,5 +1,6 @@
 package com.kstorozh.domain
 
+import android.util.Log
 import com.kstorozh.data.repository.UserRepository
 import com.kstorozh.domain.mapper.UserDataMapper
 
@@ -19,6 +20,9 @@ class LoginUseCaseImpl(
     }
 
     override suspend fun remindPin(user: User): Boolean {
-        return repository.remindPin(user.id.toString())
+        Log.d("MainActivity", "In use case remind pin user = ${user}")
+        val res =  repository.remindPin(user.id.toString())
+        Log.d("MainActivity", "Result remind pin $res")
+        return res
     }
 }

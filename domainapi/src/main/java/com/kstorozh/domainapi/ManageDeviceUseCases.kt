@@ -10,4 +10,5 @@ interface ManageDeviceUseCases {
     suspend fun takeDevice(bookingParam: BookingInputData): Boolean
 
     suspend fun returnDevice(bookingParam: BookingInputData): Boolean
+    //suspend fun isSessionExist(deviceInputData: DeviceInputData): Boolean
 }

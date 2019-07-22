@@ -1,5 +1,6 @@
 package com.kstorozh.domain
 
+import android.util.Log
 import com.kstorozh.dataimpl.DeviseRepository
 import com.kstorozh.domain.mapper.DeviceInfoMapper
 import com.kstorozh.domainapi.ManageDeviceUseCases
@@ -21,8 +22,11 @@ class ManageDeviceUseCasesImpl(private val repository: DeviseRepository, val map
     }
 
     override suspend fun takeDevice(bookingParam: BookingInputData): Boolean {
-        val startDate = Date()
-        return repository.takeDevice(mapper.mapBookingParam(bookingParam, startDate))
+
+        val startDate = Calendar.getInstance()
+        val res = repository.takeDevice(mapper.mapBookingParam(bookingParam, startDate))
+        Log.d("MainActivity", "is device taken ${res.toString()}")
+        return res
     }
 
     override suspend fun returnDevice(bookingParam: BookingInputData): Boolean {

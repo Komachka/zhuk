@@ -43,4 +43,11 @@ class LogInViewModel : ViewModel(), KoinComponent {
             }
         }
     }
+
+    fun remindPin(user:User) : LiveData<Boolean> {
+        return liveData {
+            emit(loginUseCase.remindPin(user))
+        }
+
+    }
 }

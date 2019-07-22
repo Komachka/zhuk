@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.crashlytics.android.Crashlytics
+import com.kstorozh.evozhuk.chooseTime.ChooseTimeSharedViewModel
+import com.kstorozh.evozhuk.login.LogInViewModel
 
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -15,6 +17,9 @@ import kotlinx.android.synthetic.main.fragment_login.*
 class MainActivity : AppCompatActivity() {
 
     val LOG_TAG = "MainActivity"
+    lateinit var modelLogin: LogInViewModel
+    lateinit var modelChooseTime: ChooseTimeSharedViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +34,11 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Exception message ${it.throwable.message}", Toast.LENGTH_LONG).show()
             }
         )
+
+        modelLogin = ViewModelProviders.of(this)[LogInViewModel::class.java]
+        modelChooseTime = ViewModelProviders.of(this)[ChooseTimeSharedViewModel::class.java]
+
+
     }
 
     fun forceCrash(view: View) {

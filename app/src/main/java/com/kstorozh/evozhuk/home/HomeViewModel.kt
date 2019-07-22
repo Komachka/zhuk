@@ -20,4 +20,11 @@ class HomeViewModel : ViewModel(), KoinComponent {
             emit(result)
         }
     }
+
+    fun isDeviceBooked(deviceInputData: DeviceInputData) : LiveData<Boolean> {
+        return liveData {
+            //val result = initDeviceUseCases.isSessionExist(deviceInputData)
+            emit(false)
+        }
+    }
 }

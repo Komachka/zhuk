@@ -5,6 +5,7 @@
     <fragment android:id="@+id/homeFragment" android:name="com.kstorozh.evozhuk.home.HomeFragment"
               android:label="HomeFragment">
         <action android:id="@+id/action_homeFragment_to_loginFragment" app:destination="@id/loginFragment"/>
+        <action android:id="@+id/action_homeFragment_to_backDeviceFragment" app:destination="@id/backDeviceFragment"/>
     </fragment>
     <fragment android:id="@+id/loginFragment" android:name="com.kstorozh.evozhuk.login.LoginFragment"
               android:label="LoginFragment">
