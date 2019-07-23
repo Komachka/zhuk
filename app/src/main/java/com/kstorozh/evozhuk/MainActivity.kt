@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         errorModel.getErrors().observe(
             this, Observer {
                 Log.d(LOG_TAG, "Exception message ${it.throwable.message}")
-                Toast.makeText(this,  "${it.throwable.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "${it.throwable.message}", Toast.LENGTH_LONG).show()
             }
         )
 

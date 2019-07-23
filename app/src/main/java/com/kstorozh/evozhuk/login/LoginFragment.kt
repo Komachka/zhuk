@@ -15,8 +15,6 @@ import android.widget.LinearLayout
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import android.widget.Toast
-import com.kstorozh.domainapi.model.User
-import com.kstorozh.evozhuk.ErrorViewModel
 
 class LoginFragment : Fragment() {
 
@@ -26,14 +24,13 @@ class LoginFragment : Fragment() {
     lateinit var passEt: EditText
     lateinit var forgotPassTv: TextView
 
-    private lateinit var userNames:ArrayList<String>
+    private lateinit var userNames: ArrayList<String>
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
 
         val fragment: View = inflater.inflate(R.layout.fragment_login, container, false)
         loginBut = fragment.findViewById(R.id.goInBut)
@@ -47,14 +44,11 @@ class LoginFragment : Fragment() {
             showDialog()
         }
 
-
         model = ViewModelProviders.of(activity!!).get(LogInViewModel::class.java)
-
 
         model.users.observe(this, Observer {
             Log.d("MainActivity", it.toString())
         })
-
 
         model.getUserNames().observe(this, Observer {
             Log.d("MainActivity", it.toString())
@@ -62,19 +56,14 @@ class LoginFragment : Fragment() {
             loginEt.setAdapter(ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, it.toTypedArray()))
         })
 
-
-
-
-
-        //loginEt.setAdapter(ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, userNames))
+        // loginEt.setAdapter(ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, userNames))
 
         loginBut.setOnClickListener {
 
             if (passEt.text.isNotEmpty() && loginEt.text.isNotEmpty())
                 // TODO delete this observation
                 model.tryLogin(loginEt.text.toString(), passEt.text.toString()).observe(this, Observer {
-                    //Toast.makeText(context, it ?: "Did not login", Toast.LENGTH_LONG).show()
-
+                    // Toast.makeText(context, it ?: "Did not login", Toast.LENGTH_LONG).show()
                 })
             /*else if (!userNames.contains<String>(loginEt.text.toString().toLowerCase()))
                 Toast.makeText(context, "This user is not consists in users list", Toast.LENGTH_LONG).show()*/
@@ -87,7 +76,6 @@ class LoginFragment : Fragment() {
                 Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_chooseTimeFragment)
             else {
                 Toast.makeText(context, "Can not login. Invalid password", Toast.LENGTH_LONG).show()
-
             }
         })
 

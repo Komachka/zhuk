@@ -29,7 +29,7 @@ internal class UserRepositoryImpl(
             is ApiResult.Error<*> -> {
 
                 myError.postValue(createError(Endpoints.LOGIN, result, this))
-                Log.d(LOG_TAG, "My error ${myError}")
+                Log.d(LOG_TAG, "My error $myError")
                 null
             }
         }
@@ -44,7 +44,7 @@ internal class UserRepositoryImpl(
                 users.addAll(mapper.mapSlackUserList(result.data.users))
             }
             is ApiResult.Error<*> -> {
-                myError.postValue( createError(Endpoints.GET_USERS, result, this))
+                myError.postValue(createError(Endpoints.GET_USERS, result, this))
             }
         }
         return users

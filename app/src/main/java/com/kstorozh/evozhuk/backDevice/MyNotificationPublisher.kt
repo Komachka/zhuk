@@ -9,7 +9,6 @@ import android.app.NotificationChannel
 import android.os.Build
 import com.kstorozh.evozhuk.R
 
-
 class MyNotificationPublisher : BroadcastReceiver() {
 
     companion object {
@@ -20,11 +19,10 @@ class MyNotificationPublisher : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
 
-
         val notificationManager = context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notification = intent!!.getParcelableExtra<Notification>(NOTIFICATION)
         val notificationId = intent.getIntExtra(NOTIFICATION_ID, 0)
-        val name = context.getResources().getString(R.string.app_name);// The user-visible name of the channel.
+        val name = context.getResources().getString(R.string.app_name) // The user-visible name of the channel.
         val importance = NotificationManager.IMPORTANCE_HIGH
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

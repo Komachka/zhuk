@@ -14,7 +14,6 @@ import androidx.navigation.Navigation
 import com.kstorozh.evozhuk.ErrorViewModel
 import com.kstorozh.evozhuk.R
 import com.kstorozh.evozhuk.getInfoAboutDevice
-import com.kstorozh.evozhuk.login.LogInViewModel
 
 class HomeFragment : Fragment() {
 
@@ -30,9 +29,6 @@ class HomeFragment : Fragment() {
         val model = ViewModelProviders.of(this)[HomeViewModel::class.java]
         val errorModel = ViewModelProviders.of(activity!!).get(ErrorViewModel::class.java)
 
-
-
-
         Log.d(LOG_TAG, context.getInfoAboutDevice().toString())
         val info = context.getInfoAboutDevice()
         val textViewText = view.findViewById<TextView>(R.id.welcomeMessageTv)
@@ -42,7 +38,6 @@ class HomeFragment : Fragment() {
                 Log.d(LOG_TAG, "isDeviceInited =   $it")
                 if (it)
                     Toast.makeText(this.context, "Device is registered in database.", Toast.LENGTH_LONG).show()
-
             }
         )
 

@@ -28,11 +28,9 @@ import com.kstorozh.evozhuk.MainActivity
 import com.kstorozh.evozhuk.backDevice.MyNotificationPublisher.Companion.CHANNEL_ID
 import java.util.*
 
-
 class BackDeviceFragment : Fragment() {
 
-    lateinit var modelBackDevice:BackDeviceViewModel
-
+    lateinit var modelBackDevice: BackDeviceViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,9 +38,7 @@ class BackDeviceFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-
         val errorModel = ViewModelProviders.of(activity!!).get(ErrorViewModel::class.java)
-
 
         val view: View = inflater.inflate(R.layout.fragment_back_device, container, false)
         val textView: TextView = view.findViewById(R.id.dateToBack)
@@ -78,8 +74,7 @@ class BackDeviceFragment : Fragment() {
         return view
     }
 
-
-    fun scheduleNotification(context: Context, delay: Long, endTime:Calendar) {//delay is after how much time(in millis) from current time you want to schedule the notification
+    fun scheduleNotification(context: Context, delay: Long, endTime: Calendar) { // delay is after how much time(in millis) from current time you want to schedule the notification
 
         val notificationId = 1
 
@@ -87,7 +82,7 @@ class BackDeviceFragment : Fragment() {
         val builder = NotificationCompat.Builder(context)
             .setContentTitle("You need to back device")
             .setContentText("in ${format.format(endTime.time)}")
-            //.setAutoCancel(true)
+            // .setAutoCancel(true)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
             .setChannelId(CHANNEL_ID)
@@ -105,11 +100,8 @@ class BackDeviceFragment : Fragment() {
             PendingIntent.getBroadcast(context, notificationId, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT)
 
         val futureInMillis = SystemClock.elapsedRealtime()
-        //val futureInMillis = SystemClock.elapsedRealtime() + delay
+        // val futureInMillis = SystemClock.elapsedRealtime() + delay
         val alarmManager = context!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
     }
-
-
-
 }

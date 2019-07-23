@@ -11,7 +11,6 @@ import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.dataimpl.ErrorStatus
 import com.kstorozh.dataimpl.MyError
-import okhttp3.ResponseBody
 import org.koin.core.KoinComponent
 import org.koin.core.get
 import retrofit2.Response
@@ -83,14 +82,9 @@ internal fun Response<*>.parseErrorMessage(koin: KoinComponent): String {
         ERROR_STATUS_CODE -> {
             val converter = retrofit
                 .responseBodyConverter<ApiErrorWithField>(ApiErrorWithField::class.java, arrayOfNulls<Annotation>(0))
-/*
-            body()?.let {
-                val body: ResponseBody = body() as ResponseBody
-                val error = converter.convert(body)!!
-                errorMessage = error.errors.fieldName
-            }*/
+
             errorBody().let {
-                val body  = errorBody()
+                val body = errorBody()
                 val error = converter.convert(body)!!
                 Log.d(LOG_TAG, "error $error")
                 errorMessage = error.errors.fieldName
@@ -102,12 +96,6 @@ internal fun Response<*>.parseErrorMessage(koin: KoinComponent): String {
                     ApiErrorBodyWithMessage::class.java,
                     arrayOfNulls<Annotation>(0)
                 )
-
-           /* body()?.let {
-                val body: ResponseBody = body() as ResponseBody
-                val error = converter.convert(body)!!
-                errorMessage = error.msg
-            }*/
             errorBody()?.let {
                 val body = errorBody()
                 val error = converter.convert(body)!!

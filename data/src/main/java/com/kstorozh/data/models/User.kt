@@ -3,7 +3,7 @@ package com.kstorozh.data.models
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-internal data class User (
+internal data class User(
 
     @SerializedName("id")
     @Expose
@@ -22,12 +22,9 @@ internal data class User (
     var role: String? = null
 )
 
-
-
 internal data class UsersData(
 
     @SerializedName("data")
     @Expose
     val users: List<User>
 ) : BaseResponse()
-

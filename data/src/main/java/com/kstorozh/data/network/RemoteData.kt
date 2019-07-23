@@ -8,7 +8,6 @@ import com.kstorozh.data.models.Device
 import com.kstorozh.data.models.InitDeviceResponse
 import com.kstorozh.data.models.User
 
-
 internal interface RemoteData {
 
     @WorkerThread

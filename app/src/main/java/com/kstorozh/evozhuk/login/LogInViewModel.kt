@@ -1,6 +1,5 @@
 package com.kstorozh.evozhuk.login
 
-import android.util.Log
 import androidx.arch.core.util.Function
 import androidx.lifecycle.*
 import com.kstorozh.domainapi.LoginUseCase
@@ -19,47 +18,37 @@ class LogInViewModel : ViewModel(), KoinComponent {
 
     val userIdLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
 
-    val users: MutableLiveData<List<User>> by lazy {MutableLiveData<List<User>>(). also {
+    val users: MutableLiveData<List<User>> by lazy { MutableLiveData<List<User>>().also {
         loadUsers()
     } }
 
-
-
-
-
     fun getUserNames(): LiveData<ArrayList<String>> {
-
-
         return Transformations.map(users, Function<List<User>, ArrayList<String>> {
-            val names:ArrayList<String> = ArrayList()
-            it.forEach{
+            val names: ArrayList<String> = ArrayList()
+            it.forEach {
                 names.add(it.slackUserName)
             }
             return@Function names
         })
     }
 
-    fun getUserByName(login:String):LiveData<User?>
-    {
+    fun getUserByName(login: String): LiveData<User?> {
 
         return Transformations.map(users, Function<List<User>, User?> {
-            var user:User? = null
-            it.forEach{
-
-                if(it.slackUserName == login) user =  it
+            var user: User? = null
+            it.forEach {
+                if (it.slackUserName == login) user = it
             }
-            Log.d("MainActivity","user ${user}")
             return@Function user
         })
     }
 
-    private fun loadUsers()  {
+    private fun loadUsers() {
 
         GlobalScope.launch {
-            val data =  getUserUseCase.getUsers()
+            val data = getUserUseCase.getUsers()
             users.postValue(data)
         }
-
     }
 
     fun tryLogin(name: String, pass: String): LiveData<String> {
@@ -77,9 +66,5 @@ class LogInViewModel : ViewModel(), KoinComponent {
         return liveData {
             emit(loginUseCase.remindPin(user))
         }
-
-
-
-
     }
 }

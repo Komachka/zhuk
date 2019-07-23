@@ -16,7 +16,6 @@ import com.kstorozh.evozhuk.R
 import com.kstorozh.evozhuk.login.LogInViewModel
 import java.util.*
 
-
 class ChooseTimeFragment : Fragment() {
 
     var selectedButton: Button? = null
@@ -29,9 +28,6 @@ class ChooseTimeFragment : Fragment() {
     ): View? {
 
         val errorModel = ViewModelProviders.of(activity!!).get(ErrorViewModel::class.java)
-
-
-
 
         val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeSharedViewModel::class.java)
         val modelLogin = ViewModelProviders.of(activity!!).get(LogInViewModel::class.java)
@@ -58,7 +54,7 @@ class ChooseTimeFragment : Fragment() {
                 }
                 selectedButton = it
                 calendar = GregorianCalendar.getInstance() as GregorianCalendar
-                calendar.timeZone  = TimeZone.getTimeZone("EEST")
+                calendar.timeZone = TimeZone.getTimeZone("EEST")
                 Log.d("MainActivity", calendar.time.toString())
                     when ((it as Button).id) {
                         R.id.oneHourBut -> calendar.add(Calendar.HOUR, 1)
@@ -79,16 +75,13 @@ class ChooseTimeFragment : Fragment() {
         button.setOnClickListener {
             modelChooseTime.tryBookDevice().observe(this, androidx.lifecycle.Observer {
 
-
                 if (it == true) {
                     Toast.makeText(context, "Device successfully booked", Toast.LENGTH_LONG).show()
                     modelLogin.userIdLiveData.value = null // TODO we do this to if we go back to login screen don navigate to took device always
                     Navigation.findNavController(view).navigate(R.id.action_chooseTimeFragment_to_backDeviceFragment)
-                } else{
+                } else {
                     Toast.makeText(context, "Can not book the device", Toast.LENGTH_LONG).show()
-
                 }
-
             })
         }
         return view
