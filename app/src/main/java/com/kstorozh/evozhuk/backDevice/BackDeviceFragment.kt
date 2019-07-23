@@ -16,6 +16,7 @@ import com.kstorozh.evozhuk.R
 import com.kstorozh.evozhuk.chooseTime.ChooseTimeSharedViewModel
 import java.text.SimpleDateFormat
 import android.app.AlarmManager
+import android.app.NotificationManager
 import android.os.SystemClock
 import android.app.PendingIntent
 import android.content.Context
@@ -66,12 +67,18 @@ class BackDeviceFragment : Fragment() {
             modelBackDevice.tryReturnDevice().observe(this, Observer {
                 Toast.makeText(context, "is device returned $it", Toast.LENGTH_LONG).show()
                 if (it) {
+                    clearAllNotification(context)
                     Navigation.findNavController(view).navigate(R.id.action_backDeviceFragment_to_loginFragment)
                 }
             })
         }
 
         return view
+    }
+
+    private fun clearAllNotification(context: Context?) {
+        val notificationManager:NotificationManager = context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancelAll()
     }
 
     fun scheduleNotification(context: Context, delay: Long, endTime: Calendar) { // delay is after how much time(in millis) from current time you want to schedule the notification
