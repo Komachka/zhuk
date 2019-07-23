@@ -62,7 +62,7 @@ internal class RemoteDataImpl(
         }
     }
 
-    override suspend fun getUsers(): ApiResult<UsersDataResponse> {
+    override suspend fun getUsers(): ApiResult<UsersData> {
         val errorMessage = "problem with getting list of users"
         return getApiResult(errorMessage) {
             userApi.getUsers()

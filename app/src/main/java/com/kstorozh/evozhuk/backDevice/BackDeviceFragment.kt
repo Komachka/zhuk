@@ -15,8 +15,24 @@ import com.kstorozh.domainapi.model.SessionData
 import com.kstorozh.evozhuk.R
 import com.kstorozh.evozhuk.chooseTime.ChooseTimeSharedViewModel
 import java.text.SimpleDateFormat
+import android.app.AlarmManager
+import android.os.SystemClock
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.media.RingtoneManager
+
+import androidx.core.app.NotificationCompat
+import com.kstorozh.evozhuk.ErrorViewModel
+import com.kstorozh.evozhuk.MainActivity
+import com.kstorozh.evozhuk.backDevice.MyNotificationPublisher.Companion.CHANNEL_ID
+import java.util.*
+
 
 class BackDeviceFragment : Fragment() {
+
+    lateinit var modelBackDevice:BackDeviceViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,25 +40,29 @@ class BackDeviceFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+
+        val errorModel = ViewModelProviders.of(activity!!).get(ErrorViewModel::class.java)
+
+
         val view: View = inflater.inflate(R.layout.fragment_back_device, container, false)
         val textView: TextView = view.findViewById(R.id.dateToBack)
         val button: Button = view.findViewById(R.id.giveBackBut)
 
         val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeSharedViewModel::class.java)
-        val modelBackDevice = ViewModelProviders.of(activity!!).get(BackDeviceViewModel::class.java)
-
+        modelBackDevice = ViewModelProviders.of(activity!!).get(BackDeviceViewModel::class.java)
         modelBackDevice.getSessionData().observe(this, Observer {
             it?.let {
-                val format = SimpleDateFormat("HH:mm\ndd MMMM")
+                val format = SimpleDateFormat("hh:mm\ndd MMMM") // TODO move it from here
                 textView.setText(format.format(it.endData.time))
+                scheduleNotification(context!!, 100, it.endData)
             }
-            Toast.makeText(context, "WTF", Toast.LENGTH_LONG).show()
         })
 
         modelChooseTime.choosenData.value?.let {
             val endDate = modelChooseTime.choosenData.value
             val userId = modelChooseTime.userId.value
             modelBackDevice.setBookingSession(SessionData(userId!!, endDate!!))
+            scheduleNotification(context!!, 100, endDate)
         }
 
         button.setOnClickListener {
@@ -54,6 +74,42 @@ class BackDeviceFragment : Fragment() {
                 }
             })
         }
+
         return view
     }
+
+
+    fun scheduleNotification(context: Context, delay: Long, endTime:Calendar) {//delay is after how much time(in millis) from current time you want to schedule the notification
+
+        val notificationId = 1
+
+        val format = SimpleDateFormat("hh:mm dd MMMM")
+        val builder = NotificationCompat.Builder(context)
+            .setContentTitle("You need to back device")
+            .setContentText("in ${format.format(endTime.time)}")
+            //.setAutoCancel(true)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+            .setChannelId(CHANNEL_ID)
+
+        val intent = Intent(context, MainActivity::class.java)
+        val activity = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+        builder.setContentIntent(activity)
+
+        val notification = builder.build()
+
+        val notificationIntent = Intent(context, MyNotificationPublisher::class.java)
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION_ID, notificationId)
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION, notification)
+        val pendingIntent =
+            PendingIntent.getBroadcast(context, notificationId, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT)
+
+        val futureInMillis = SystemClock.elapsedRealtime()
+        //val futureInMillis = SystemClock.elapsedRealtime() + delay
+        val alarmManager = context!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
+    }
+
+
+
 }

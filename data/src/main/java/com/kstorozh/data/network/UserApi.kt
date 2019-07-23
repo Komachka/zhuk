@@ -8,13 +8,12 @@ import com.kstorozh.data.models.*
 import com.kstorozh.data.models.BaseResponse
 import com.kstorozh.data.models.LoginUserResponce
 import com.kstorozh.data.models.User
-import com.kstorozh.data.models.UsersDataResponse
 import retrofit2.Response
 import retrofit2.http.*
 
 internal interface UserApi {
     @GET(GET_USERS_URL)
-    suspend fun getUsers(): Response<UsersDataResponse>
+    suspend fun getUsers(): Response<UsersData>
 
     @POST(CREATE_USER_URL)
     suspend fun createUser(

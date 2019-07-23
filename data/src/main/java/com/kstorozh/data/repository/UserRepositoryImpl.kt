@@ -2,6 +2,7 @@ package com.kstorozh.data.repository
 
 import LOG_TAG
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.data.network.RemoteData
@@ -17,7 +18,7 @@ internal class UserRepositoryImpl(
     private val users: ArrayList<SlackUser>
 ) : UserRepository, KoinComponent {
 
-    private var myError: ArrayList<MyError> = ArrayList()
+    private val myError: MutableLiveData<MyError> = MutableLiveData()
 
     override suspend fun login(userLoginParam: UserLoginParam): String? {
         Log.d(LOG_TAG, userLoginParam.toString())
@@ -26,22 +27,24 @@ internal class UserRepositoryImpl(
                 result.data.data.userId.toString()
             }
             is ApiResult.Error<*> -> {
-                myError.add(0, createError(Endpoints.LOGIN, result, this))
+
+                myError.postValue(createError(Endpoints.LOGIN, result, this))
+                Log.d(LOG_TAG, "My error ${myError}")
                 null
             }
         }
     }
 
-    override suspend fun getErrors(): List<MyError> {
+    override suspend fun getErrors(): MutableLiveData<MyError> {
         return myError
     }
     override suspend fun getUsers(): List<SlackUser> {
         when (val result = remoteData.getUsers()) {
             is ApiResult.Success -> {
-                users.addAll(mapper.mapSlackUserList(result.data.usersData.users))
+                users.addAll(mapper.mapSlackUserList(result.data.users))
             }
             is ApiResult.Error<*> -> {
-                myError.add(0, createError(Endpoints.GET_USERS, result, this))
+                myError.postValue( createError(Endpoints.GET_USERS, result, this))
             }
         }
         return users
@@ -54,7 +57,7 @@ internal class UserRepositoryImpl(
                 true
             }
             is ApiResult.Error<*> -> {
-                myError.add(0, createError(Endpoints.REMIND_PIN, result, this))
+                myError.postValue(createError(Endpoints.REMIND_PIN, result, this))
                 false
             }
         }

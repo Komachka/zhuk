@@ -17,7 +17,7 @@ internal class UserDataMapper {
     fun mapSlackUserList(users: List<User>): List<SlackUser> {
         val slackUsers = mutableListOf<SlackUser>()
         users.forEach {
-            slackUsers.add(SlackUser(it.id, it.slackId, it.slackUserName))
+            slackUsers.add(SlackUser(it.id, it.slackUid, it.slackUsername))
         }
         return slackUsers
     }

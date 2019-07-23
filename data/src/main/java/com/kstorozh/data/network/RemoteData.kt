@@ -7,7 +7,7 @@ import com.kstorozh.data.models.BookingBody
 import com.kstorozh.data.models.Device
 import com.kstorozh.data.models.InitDeviceResponse
 import com.kstorozh.data.models.User
-import com.kstorozh.data.models.UsersDataResponse
+
 
 internal interface RemoteData {
 
@@ -24,7 +24,7 @@ internal interface RemoteData {
     suspend fun returnDevice(returnDeviceBody: ReturnDeviceBody): ApiResult<BaseResponse>
 
     @WorkerThread
-    suspend fun getUsers(): ApiResult<UsersDataResponse>
+    suspend fun getUsers(): ApiResult<UsersData>
 
     @WorkerThread
     suspend fun createUser(user: User): ApiResult<BaseResponse>

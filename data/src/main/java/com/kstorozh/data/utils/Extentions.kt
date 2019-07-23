@@ -1,8 +1,10 @@
 package com.kstorozh.data.utils
 
 import ERROR_STATUS_CODE
+import LOG_TAG
 import NOT_FOUND_STATUS_CODE
 import UNAUTHORIZED_STATUS_CODE
+import android.util.Log
 import com.kstorozh.data.models.ApiErrorWithField
 import com.kstorozh.data.models.ApiErrorBodyWithMessage
 import com.kstorozh.data.models.ApiResult
@@ -81,15 +83,16 @@ internal fun Response<*>.parseErrorMessage(koin: KoinComponent): String {
         ERROR_STATUS_CODE -> {
             val converter = retrofit
                 .responseBodyConverter<ApiErrorWithField>(ApiErrorWithField::class.java, arrayOfNulls<Annotation>(0))
-
+/*
             body()?.let {
                 val body: ResponseBody = body() as ResponseBody
                 val error = converter.convert(body)!!
                 errorMessage = error.errors.fieldName
-            }
+            }*/
             errorBody().let {
-                val body: ResponseBody = errorBody() as ResponseBody
+                val body  = errorBody()
                 val error = converter.convert(body)!!
+                Log.d(LOG_TAG, "error $error")
                 errorMessage = error.errors.fieldName
             }
         }
@@ -100,15 +103,16 @@ internal fun Response<*>.parseErrorMessage(koin: KoinComponent): String {
                     arrayOfNulls<Annotation>(0)
                 )
 
-            body()?.let {
+           /* body()?.let {
                 val body: ResponseBody = body() as ResponseBody
                 val error = converter.convert(body)!!
                 errorMessage = error.msg
-            }
+            }*/
             errorBody()?.let {
-                val body: ResponseBody = errorBody() as ResponseBody
+                val body = errorBody()
                 val error = converter.convert(body)!!
-                errorMessage = error.msg
+                Log.d(LOG_TAG, "error $error")
+                errorMessage = "UNAUTHORIZED"
             }
         }
     }
@@ -117,7 +121,7 @@ internal fun Response<*>.parseErrorMessage(koin: KoinComponent): String {
 
 internal fun createError(endpoints: Endpoints, result: ApiResult.Error<*>, component: KoinComponent): MyError {
     val errorStatus = result.errorResponse?.getErrorStatus(endpoints) ?: ErrorStatus.UNEXPECTED_ERROR
-    val message = result.errorResponse?.parseErrorMessage(component) ?: "Undefine"
+    val message = result.errorResponse?.parseErrorMessage(component) ?: "Undefine error"
     val exception = result.exception
     return getError(errorStatus, message, exception)
 }

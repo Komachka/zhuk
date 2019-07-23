@@ -1,5 +1,7 @@
 package com.kstorozh.domain
 
+import android.util.Log
+import androidx.lifecycle.MediatorLiveData
 import com.kstorozh.data.repository.UserRepository
 import com.kstorozh.dataimpl.DeviseRepository
 import com.kstorozh.domain.mapper.ErrorMapper
@@ -14,12 +16,17 @@ class HandleErrorUseCaseImpl(
     val mapper: ErrorMapper
 ) : HandleErrorUseCase, KoinComponent {
 
-    override suspend fun getErrors(): Pair<DomainErrors?, DomainErrors?> {
+    private val errors:MediatorLiveData<DomainErrors> = MediatorLiveData()
 
-        val userInput = userRepository.getErrors()
-        val userError = if (userInput.isNotEmpty()) { mapper.mapToDomainError(userInput[0]) } else null
-        val deviceInput = deviceRepository.getErrors()
-        val deviceError = if (userInput.isNotEmpty()) { mapper.mapToDomainError(deviceInput[0]) } else null
-        return userError to deviceError
+    override suspend fun getErrors(): MediatorLiveData<DomainErrors> {
+
+        errors.addSource(userRepository.getErrors()) {
+            errors.postValue( mapper.mapToDomainError(it))
+        }
+
+        errors.addSource(deviceRepository.getErrors()) {
+            errors.postValue(mapper.mapToDomainError(it))
+        }
+        return errors
     }
 }

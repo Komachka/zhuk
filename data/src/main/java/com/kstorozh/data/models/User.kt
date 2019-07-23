@@ -3,32 +3,31 @@ package com.kstorozh.data.models
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-internal data class User(
+internal data class User (
 
     @SerializedName("id")
     @Expose
-    val id: Int,
-
-    @SerializedName("slack_id")
+    var id: Int,
+    @SerializedName("slack_uid")
     @Expose
-    val slackId: String,
-
+    var slackUid: String,
     @SerializedName("slack_username")
     @Expose
-    val slackUserName: String
+    var slackUsername: String,
+    @SerializedName("pin")
+    @Expose
+    var pin: String? = null,
+    @SerializedName("role")
+    @Expose
+    var role: String? = null
 )
+
+
 
 internal data class UsersData(
 
-    @SerializedName("users")
-    @Expose
-    val users: List<User>
-)
-
-internal data class UsersDataResponse(
-
     @SerializedName("data")
     @Expose
-    val usersData: UsersData
-
+    val users: List<User>
 ) : BaseResponse()
+

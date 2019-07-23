@@ -2,6 +2,7 @@ package com.kstorozh.data.repository
 
 import LOG_TAG
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.kstorozh.data.database.LocalDataStorage
 import com.kstorozh.dataimpl.MyError
 import com.kstorozh.data.models.ApiResult
@@ -21,9 +22,9 @@ internal class DeviceRepositoryImpl(
     private val tokenRepository: TokenRepository
 ) : DeviseRepository, KoinComponent {
 
-    private val myError: ArrayList<MyError> = ArrayList()
+    private val myError: MutableLiveData<MyError> = MutableLiveData()
 
-    override suspend fun getErrors(): List<MyError> {
+    override suspend fun getErrors(): MutableLiveData<MyError> {
         return myError
     }
 
@@ -53,7 +54,7 @@ internal class DeviceRepositoryImpl(
                 true
             }
             is ApiResult.Error<*> -> {
-                myError.add(0, createError(Endpoints.INIT_DEVICE, result, this))
+                myError.postValue(createError(Endpoints.INIT_DEVICE, result, this))
                 false
             }
         }
@@ -68,7 +69,7 @@ internal class DeviceRepositoryImpl(
                 true
             }
             is ApiResult.Error<*> -> {
-                myError.add(0, createError(Endpoints.UPDATE_DEVICE, result, this))
+                myError.postValue(createError(Endpoints.UPDATE_DEVICE, result, this))
                 false
             }
         }
@@ -88,7 +89,7 @@ internal class DeviceRepositoryImpl(
                 true
             }
             is ApiResult.Error<*> -> {
-                myError.add(0, createError(Endpoints.TAKE_DEVICE, result, this))
+                myError.postValue(createError(Endpoints.TAKE_DEVICE, result, this))
                 false
             }
         }
@@ -102,7 +103,7 @@ internal class DeviceRepositoryImpl(
                 true
             }
             is ApiResult.Error<*> -> {
-                myError.add(0, createError(Endpoints.RETURN_DEVICE, result, this))
+                myError.postValue(createError(Endpoints.RETURN_DEVICE, result, this))
                 false
             }
         }

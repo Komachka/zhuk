@@ -1,13 +1,14 @@
 package com.kstorozh.evozhuk.login
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
+import android.util.Log
+import androidx.arch.core.util.Function
+import androidx.lifecycle.*
 import com.kstorozh.domainapi.LoginUseCase
 import com.kstorozh.domainapi.model.GetUsersUseCases
 import com.kstorozh.domainapi.model.User
 import com.kstorozh.domainapi.model.UserLoginInput
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -18,20 +19,47 @@ class LogInViewModel : ViewModel(), KoinComponent {
 
     val userIdLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
 
-    private val users: MutableLiveData<List<User>> by lazy {
-        MutableLiveData<List<User>>().also {
-            loadUsers()
-        }
+    val users: MutableLiveData<List<User>> by lazy {MutableLiveData<List<User>>(). also {
+        loadUsers()
+    } }
+
+
+
+
+
+    fun getUserNames(): LiveData<ArrayList<String>> {
+
+
+        return Transformations.map(users, Function<List<User>, ArrayList<String>> {
+            val names:ArrayList<String> = ArrayList()
+            it.forEach{
+                names.add(it.slackUserName)
+            }
+            return@Function names
+        })
     }
 
-    fun getUsers(): LiveData<List<User>> {
-        return users
+    fun getUserByName(login:String):LiveData<User?>
+    {
+
+        return Transformations.map(users, Function<List<User>, User?> {
+            var user:User? = null
+            it.forEach{
+
+                if(it.slackUserName == login) user =  it
+            }
+            Log.d("MainActivity","user ${user}")
+            return@Function user
+        })
     }
 
-    private fun loadUsers() {
-        liveData<List<User>> {
-            getUserUseCase.getUsers()
+    private fun loadUsers()  {
+
+        GlobalScope.launch {
+            val data =  getUserUseCase.getUsers()
+            users.postValue(data)
         }
+
     }
 
     fun tryLogin(name: String, pass: String): LiveData<String> {
@@ -45,8 +73,13 @@ class LogInViewModel : ViewModel(), KoinComponent {
     }
 
     fun remindPin(user: User): LiveData<Boolean> {
+
         return liveData {
             emit(loginUseCase.remindPin(user))
         }
+
+
+
+
     }
 }

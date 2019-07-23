@@ -32,14 +32,6 @@ class BackDeviceViewModel : ViewModel(), KoinComponent {
     }
 
     fun getSessionData(): MutableLiveData<SessionData> {
-        /*liveData<SessionData> {
-
-            val data =manageDeviceUseCases.getSession()
-            Log.d("MainActivity", "data is ${data?.let { data }}")
-            data?.let {
-                bookingSession.postValue(data)
-            }
-        }*/
 
         GlobalScope.launch {
             val data = manageDeviceUseCases.getSession()

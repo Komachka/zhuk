@@ -1,17 +1,21 @@
 package com.kstorozh.evozhuk.chooseTime
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import com.kstorozh.evozhuk.ErrorViewModel
 import com.kstorozh.evozhuk.R
 import com.kstorozh.evozhuk.login.LogInViewModel
 import java.util.*
+
 
 class ChooseTimeFragment : Fragment() {
 
@@ -23,6 +27,11 @@ class ChooseTimeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        val errorModel = ViewModelProviders.of(activity!!).get(ErrorViewModel::class.java)
+
+
+
 
         val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeSharedViewModel::class.java)
         val modelLogin = ViewModelProviders.of(activity!!).get(LogInViewModel::class.java)
@@ -49,12 +58,17 @@ class ChooseTimeFragment : Fragment() {
                 }
                 selectedButton = it
                 calendar = GregorianCalendar.getInstance() as GregorianCalendar
+                calendar.timeZone  = TimeZone.getTimeZone("EEST")
+                Log.d("MainActivity", calendar.time.toString())
                     when ((it as Button).id) {
                         R.id.oneHourBut -> calendar.add(Calendar.HOUR, 1)
                         R.id.twoHourBut -> calendar.add(Calendar.HOUR, 2)
                         R.id.fourHourBut -> calendar.add(Calendar.HOUR, 4)
-                        R.id.allDayBut -> calendar.add(Calendar.HOUR, 9)
-                        R.id.twoDaysBut -> calendar.add(Calendar.DATE, 1)
+                        R.id.allDayBut ->
+                        {
+                            calendar.add(Calendar.DATE, 1)
+                        }
+                        R.id.twoDaysBut -> calendar.add(Calendar.DATE, 2)
                         else -> calendar.add(Calendar.SECOND, 1) // TODO change it later
                     }
                 calendar?.let { it1 -> modelChooseTime.setData(it1) }
@@ -65,11 +79,16 @@ class ChooseTimeFragment : Fragment() {
         button.setOnClickListener {
             modelChooseTime.tryBookDevice().observe(this, androidx.lifecycle.Observer {
 
-                Toast.makeText(context, "Is device booked? $it", Toast.LENGTH_LONG).show()
+
                 if (it == true) {
+                    Toast.makeText(context, "Device successfully booked", Toast.LENGTH_LONG).show()
+                    modelLogin.userIdLiveData.value = null // TODO we do this to if we go back to login screen don navigate to took device always
                     Navigation.findNavController(view).navigate(R.id.action_chooseTimeFragment_to_backDeviceFragment)
-                } else
-                    Toast.makeText(context, "Can not book", Toast.LENGTH_LONG).show()
+                } else{
+                    Toast.makeText(context, "Can not book the device", Toast.LENGTH_LONG).show()
+
+                }
+
             })
         }
         return view

@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
+
     <application
             android:name=".App"
             android:allowBackup="true"
@@ -15,6 +16,15 @@
             android:vmSafeMode="true"
             android:usesCleartextTraffic="true"
             android:theme="@style/AppTheme">
+
+        <receiver android:name=".backDevice.MyNotificationPublisher"  android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+
         <activity android:name=".MainActivity"
                   android:configChanges="orientation"
                   android:screenOrientation="portrait">

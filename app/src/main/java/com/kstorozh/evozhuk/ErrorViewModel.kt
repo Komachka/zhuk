@@ -1,5 +1,6 @@
 package com.kstorozh.evozhuk
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
@@ -15,12 +16,7 @@ class ErrorViewModel : ViewModel(), KoinComponent {
     fun getErrors(): LiveData<DomainErrors> {
         return liveData {
             val errros = errorHandler.getErrors()
-            errros.first?.let {
-                emit(it)
-            }
-            errros.second?.let {
-                emit(it)
-            }
+            emitSource(errros)
         }
     }
 }

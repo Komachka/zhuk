@@ -12,7 +12,6 @@ import com.kstorozh.evozhuk.chooseTime.ChooseTimeSharedViewModel
 import com.kstorozh.evozhuk.login.LogInViewModel
 
 import io.fabric.sdk.android.Fabric
-import kotlinx.android.synthetic.main.fragment_login.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,12 +24,12 @@ class MainActivity : AppCompatActivity() {
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_main)
 
-        val model = ViewModelProviders.of(this)[ErrorViewModel::class.java]
+        val errorModel = ViewModelProviders.of(this)[ErrorViewModel::class.java]
 
-        model.getErrors().observe(
+        errorModel.getErrors().observe(
             this, Observer {
                 Log.d(LOG_TAG, "Exception message ${it.throwable.message}")
-                Toast.makeText(this, "Exception message ${it.throwable.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this,  "${it.throwable.message}", Toast.LENGTH_LONG).show()
             }
         )
 
