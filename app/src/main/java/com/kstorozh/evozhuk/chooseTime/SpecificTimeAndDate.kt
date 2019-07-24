@@ -68,6 +68,7 @@ class SpecificTimeAndDate : Fragment() {
         (activity as AppCompatActivity).setSupportActionBar(mToolbar)
         mToolbar.setNavigationIcon(resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp))
         mToolbar.setTitle("Выбор времени")
+        mToolbar.setTitleTextColor(0x00e9cb)
         mToolbar.setNavigationOnClickListener{
             val milisec = getMilisec()
             val action = SpecificTimeAndDateDirections.actionSpecificTimeAndDateToChooseTimeFragment()

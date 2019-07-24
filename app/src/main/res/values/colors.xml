@@ -16,4 +16,7 @@
     <color name="but_time_focus">#1828a7</color>
     <color name="but_time_def">#FFFFFF</color>
 
+    <color name="tool_bar_background">#11239a</color>
+    <color name="tool_bar_text">#00e9cb</color>
+
 </resources>
