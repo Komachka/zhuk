@@ -31,8 +31,15 @@ class HomeFragment : Fragment() {
 
         Log.d(LOG_TAG, context.getInfoAboutDevice().toString())
         val info = context.getInfoAboutDevice()
-        val textViewText = view.findViewById<TextView>(R.id.welcomeMessageTv)
-        textViewText.setText(info.model)
+        val welcomeMessageTv = view.findViewById<TextView>(R.id.welcomeMessageTv)
+        welcomeMessageTv.setText(info.model)
+
+
+        //TODO delete it
+        welcomeMessageTv.setOnClickListener{
+            Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_specificTimeAndDate)
+        }
+
         model.isDeviceInited(info).observe(
             this, Observer {
                 Log.d(LOG_TAG, "isDeviceInited =   $it")
@@ -48,6 +55,8 @@ class HomeFragment : Fragment() {
                 else Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_backDeviceFragment)
             })
         }
+
+
         return view
     }
 }

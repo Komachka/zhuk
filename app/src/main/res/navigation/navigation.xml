@@ -6,6 +6,7 @@
               android:label="HomeFragment">
         <action android:id="@+id/action_homeFragment_to_loginFragment" app:destination="@id/loginFragment"/>
         <action android:id="@+id/action_homeFragment_to_backDeviceFragment" app:destination="@id/backDeviceFragment"/>
+        <action android:id="@+id/action_homeFragment_to_specificTimeAndDate" app:destination="@id/specificTimeAndDate"/>
     </fragment>
     <fragment android:id="@+id/loginFragment" android:name="com.kstorozh.evozhuk.login.LoginFragment"
               android:label="LoginFragment">
@@ -22,4 +23,6 @@
                 app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_enter_anim"
                 app:popUpTo="@+id/loginFragment"/>
     </fragment>
+    <fragment android:id="@+id/specificTimeAndDate" android:name="com.kstorozh.evozhuk.chooseTime.SpecificTimeAndDate"
+              android:label="SpecificTimeAndDate"/>
 </navigation>

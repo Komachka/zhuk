@@ -22,11 +22,12 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
-
 import androidx.core.app.NotificationCompat
-import com.kstorozh.evozhuk.ErrorViewModel
+import androidx.core.content.ContextCompat
 import com.kstorozh.evozhuk.MainActivity
 import com.kstorozh.evozhuk.backDevice.MyNotificationPublisher.Companion.CHANNEL_ID
+import com.kstorozh.evozhuk.notifications.INTENT_DATA_MILISEC
+import com.kstorozh.evozhuk.notifications.NotificationService
 import java.util.*
 
 class BackDeviceFragment : Fragment() {
@@ -39,8 +40,6 @@ class BackDeviceFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val errorModel = ViewModelProviders.of(activity!!).get(ErrorViewModel::class.java)
-
         val view: View = inflater.inflate(R.layout.fragment_back_device, container, false)
         val textView: TextView = view.findViewById(R.id.dateToBack)
         val button: Button = view.findViewById(R.id.giveBackBut)
@@ -51,7 +50,7 @@ class BackDeviceFragment : Fragment() {
             it?.let {
                 val format = SimpleDateFormat("hh:mm\ndd MMMM") // TODO move it from here
                 textView.setText(format.format(it.endData.time))
-                scheduleNotification(context!!, 100, it.endData)
+                //scheduleNotification(context!!, 1000, it.endData)
             }
         })
 
@@ -59,7 +58,8 @@ class BackDeviceFragment : Fragment() {
             val endDate = modelChooseTime.choosenData.value
             val userId = modelChooseTime.userId.value
             modelBackDevice.setBookingSession(SessionData(userId!!, endDate!!))
-            scheduleNotification(context!!, 100, endDate)
+            scheduleNotification(context!!, 20000, endDate)
+            startForegroundService(endDate)
         }
 
         button.setOnClickListener {
@@ -68,6 +68,7 @@ class BackDeviceFragment : Fragment() {
                 Toast.makeText(context, "is device returned $it", Toast.LENGTH_LONG).show()
                 if (it) {
                     clearAllNotification(context)
+                    stopForegroundService()
                     Navigation.findNavController(view).navigate(R.id.action_backDeviceFragment_to_loginFragment)
                 }
             })
@@ -86,13 +87,14 @@ class BackDeviceFragment : Fragment() {
         val notificationId = 1
 
         val format = SimpleDateFormat("hh:mm dd MMMM")
+        val color = ContextCompat.getColor(context, R.color.background)
         val builder = NotificationCompat.Builder(context)
             .setContentTitle("You need to back device")
             .setContentText("in ${format.format(endTime.time)}")
-            // .setAutoCancel(true)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
             .setChannelId(CHANNEL_ID)
+            .setColor(color) //TODO does not work
 
         val intent = Intent(context, MainActivity::class.java)
         val activity = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT)
@@ -106,9 +108,22 @@ class BackDeviceFragment : Fragment() {
         val pendingIntent =
             PendingIntent.getBroadcast(context, notificationId, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT)
 
-        val futureInMillis = SystemClock.elapsedRealtime()
-        // val futureInMillis = SystemClock.elapsedRealtime() + delay
+         val futureInMillis = SystemClock.elapsedRealtime() + delay
         val alarmManager = context!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
+    }
+
+
+    private fun startForegroundService(calendar: Calendar) {
+        val serviceIntent = Intent(context, NotificationService::class.java)
+        serviceIntent.putExtra(INTENT_DATA_MILISEC, calendar.time.time)
+        context!!.startService(serviceIntent)
+    }
+
+
+    private fun stopForegroundService()
+    {
+        val serviceIntent = Intent(context, NotificationService::class.java)
+        context!!.stopService(serviceIntent)
     }
 }

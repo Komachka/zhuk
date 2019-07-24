@@ -46,9 +46,9 @@ class LoginFragment : Fragment() {
 
         model = ViewModelProviders.of(activity!!).get(LogInViewModel::class.java)
 
-        model.users.observe(this, Observer {
+      /*  model.users.observe(this, Observer {
             Log.d("MainActivity", it.toString())
-        })
+        })*/
 
         model.getUserNames().observe(this, Observer {
             Log.d("MainActivity", it.toString())
