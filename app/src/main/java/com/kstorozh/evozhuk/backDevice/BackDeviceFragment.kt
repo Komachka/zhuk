@@ -30,9 +30,12 @@ import com.kstorozh.evozhuk.notifications.INTENT_DATA_MILISEC
 import com.kstorozh.evozhuk.notifications.NotificationService
 import java.util.*
 
+
+
 class BackDeviceFragment : Fragment() {
 
     lateinit var modelBackDevice: BackDeviceViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

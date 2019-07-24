@@ -13,6 +13,6 @@ class App : Application() {
             androidContext(this@App)
             KoinLoader.loadKoin()
         }
-        //NotificationUtil.createNotificationChanal(this)
+        NotificationUtil.createNotificationChanal(this)
     }
 }

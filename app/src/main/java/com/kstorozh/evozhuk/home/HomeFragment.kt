@@ -34,12 +34,6 @@ class HomeFragment : Fragment() {
         val welcomeMessageTv = view.findViewById<TextView>(R.id.welcomeMessageTv)
         welcomeMessageTv.setText(info.model)
 
-
-        //TODO delete it
-        welcomeMessageTv.setOnClickListener{
-            Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_specificTimeAndDate)
-        }
-
         model.isDeviceInited(info).observe(
             this, Observer {
                 Log.d(LOG_TAG, "isDeviceInited =   $it")

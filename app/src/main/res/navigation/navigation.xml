@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/navigation" app:startDestination="@id/homeFragment">
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/navigation" app:startDestination="@id/homeFragment">
     <fragment android:id="@+id/homeFragment" android:name="com.kstorozh.evozhuk.home.HomeFragment"
               android:label="HomeFragment">
         <action android:id="@+id/action_homeFragment_to_loginFragment" app:destination="@id/loginFragment"/>
         <action android:id="@+id/action_homeFragment_to_backDeviceFragment" app:destination="@id/backDeviceFragment"/>
-        <action android:id="@+id/action_homeFragment_to_specificTimeAndDate" app:destination="@id/specificTimeAndDate"/>
     </fragment>
     <fragment android:id="@+id/loginFragment" android:name="com.kstorozh.evozhuk.login.LoginFragment"
               android:label="LoginFragment">
@@ -16,13 +15,25 @@
               android:label="ChooseTimeFragment">
         <action android:id="@+id/action_chooseTimeFragment_to_backDeviceFragment"
                 app:destination="@id/backDeviceFragment"/>
+        <argument android:name="milisec" app:argType="long" android:defaultValue="0L"/>
+        <action android:id="@+id/action_chooseTimeFragment_to_specificTimeAndDate"
+                app:destination="@id/specificTimeAndDate"/>
     </fragment>
+
+
     <fragment android:id="@+id/backDeviceFragment" android:name="com.kstorozh.evozhuk.backDevice.BackDeviceFragment"
               android:label="BackDeviceFragment">
         <action android:id="@+id/action_backDeviceFragment_to_loginFragment" app:destination="@id/loginFragment"
                 app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_enter_anim"
                 app:popUpTo="@+id/loginFragment"/>
     </fragment>
+
+
     <fragment android:id="@+id/specificTimeAndDate" android:name="com.kstorozh.evozhuk.chooseTime.SpecificTimeAndDate"
-              android:label="SpecificTimeAndDate"/>
+              android:label="SpecificTimeAndDate">
+
+        <action android:id="@+id/action_specificTimeAndDate_to_chooseTimeFragment"
+                app:destination="@id/chooseTimeFragment">
+        </action>
+    </fragment>
 </navigation>

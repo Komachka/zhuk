@@ -26,9 +26,9 @@ class ChooseTimeSharedViewModel : ViewModel(), KoinComponent {
         userId.value = id
     }
 
-    fun tryBookDevice(): LiveData<Boolean> {
+    fun tryBookDevice(calendar: Calendar, userId:String): LiveData<Boolean> {
         return liveData<Boolean> {
-            emit(manageDeviceUseCases.takeDevice(BookingInputData(userId.value!!, choosenData.value!!)))
+            emit(manageDeviceUseCases.takeDevice(BookingInputData(userId, calendar)))
         }
     }
 }
