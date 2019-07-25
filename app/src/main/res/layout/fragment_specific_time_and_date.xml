@@ -10,11 +10,10 @@
 
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:minHeight="?attr/actionBarSize"
-            android:background="?attr/colorAccent"
+            android:background="@color/tool_bar_background"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
