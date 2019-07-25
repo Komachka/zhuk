@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         errorModel.getErrors().observe(
             this, Observer {
                 Log.d(LOG_TAG, "Exception message ${it.throwable.message}")
-                (this as View).showErrorMessage(it)
+                findViewById<View>(R.id.main).showErrorMessage(it)
             }
         )
         modelChooseTime = ViewModelProviders.of(this)[ChooseTimeSharedViewModel::class.java]

@@ -109,6 +109,7 @@ internal fun Response<*>.parseErrorMessage(koin: KoinComponent): String {
 
 internal fun createError(endpoints: Endpoints, result: ApiResult.Error<*>, component: KoinComponent): MyError {
     val errorStatus = result.errorResponse?.getErrorStatus(endpoints) ?: ErrorStatus.UNEXPECTED_ERROR
+    //TODO errorResponce does not parse correctly
     val message = result.errorResponse?.parseErrorMessage(component) ?: "Undefine error"
     val exception = result.exception
     return getError(errorStatus, message, exception)

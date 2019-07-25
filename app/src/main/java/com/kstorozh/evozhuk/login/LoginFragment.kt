@@ -13,7 +13,8 @@ import androidx.lifecycle.ViewModelProviders
 import android.widget.LinearLayout
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import android.widget.Toast
+
+import com.kstorozh.evozhuk.showSnackbar
 
 class LoginFragment : Fragment() {
 
@@ -33,24 +34,18 @@ class LoginFragment : Fragment() {
 
         val fragment: View = inflater.inflate(R.layout.fragment_login, container, false)
         loginBut = fragment.findViewById(R.id.goInBut)
-
         loginEt = fragment.findViewById(R.id.loginEt) as AutoCompleteTextView
         passEt = fragment.findViewById(R.id.passwordEt) as EditText
-
         forgotPassTv = fragment.findViewById(R.id.forgotPassTv)
-
         forgotPassTv.setOnClickListener {
             showRemindPinDialog()
         }
-
         model = ViewModelProviders.of(this)[LogInViewModel::class.java]
-
         model.getUserNames().observe(this, Observer {
             userNames = it
             loginEt.setAdapter(ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, it.toTypedArray()))
         })
-
-        loginBut.setOnClickListener {
+        loginBut.setOnClickListener { view ->
 
             if (passEt.text.isNotEmpty() && loginEt.text.isNotEmpty())
                     model.tryLogin(loginEt.text.toString(), passEt.text.toString()).observe(this, Observer {
@@ -58,19 +53,20 @@ class LoginFragment : Fragment() {
                             val action = LoginFragmentDirections.actionLoginFragmentToChooseTimeFragment(it)
                             Navigation.findNavController(fragment).navigate(action)
                         } else {
-                            Toast.makeText(context, "Can not login. Invalid password", Toast.LENGTH_LONG).show()
+                            view.showSnackbar(resources.getString(R.string.invalid_pass_error_message))
                         }
                 })
             else
-                Toast.makeText(context, "The pass is empty", Toast.LENGTH_LONG).show()
+                view.showSnackbar(resources.getString(R.string.pass_is_empty_error_message))
         }
         return fragment
     }
 
     private fun showRemindPinDialog() {
         val alertDialog = AlertDialog.Builder(context!!)
-        alertDialog.setTitle("Reset pass")
-        alertDialog.setMessage("Enter slack login")
+
+        alertDialog.setTitle(resources.getString(R.string.reset_pass_dealog_title))
+        alertDialog.setMessage(resources.getString(R.string.reset_pass_dealog_message))
 
         val input = AutoCompleteTextView(context)
         input.setAdapter(ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, userNames.toTypedArray()))
@@ -82,24 +78,24 @@ class LoginFragment : Fragment() {
         input.layoutParams = lp
         alertDialog.setView(input)
 
-        alertDialog.setPositiveButton("Send") { dialog, which ->
-            Toast.makeText(context, "Request for reset pin was not sent", Toast.LENGTH_LONG).show()
+        alertDialog.setPositiveButton(resources.getString(R.string.reset_pass_dealog_pos_but)) { dialog, which ->
             if (input.text.isNotEmpty()) {
                 model.getUserByName(input.text.toString()).observe(this, Observer {
                     it?.let {
-                        Toast.makeText(context, "$it", Toast.LENGTH_LONG).show()
                         model.remindPin(it).observe(
                             this, Observer {
+                                var message: String
                                 if (it)
-                                    Toast.makeText(context, "Request for reset pin was sent", Toast.LENGTH_LONG).show()
+                                    message = resources.getString(R.string.request_for_reset_success_message)
                                 else
-                                    Toast.makeText(context, "Request for reset pin was not sent", Toast.LENGTH_LONG).show()
+                                    message = resources.getString(R.string.request_for_reset_error_message)
+                                view!!.showSnackbar(message)
                             }
                         )
                     }
                 })
             } else {
-                Toast.makeText(context, "Incorrect input", Toast.LENGTH_SHORT).show()
+                view!!.showSnackbar(resources.getString(R.string.input_error_message))
             }
         }
         alertDialog.show()

@@ -68,7 +68,9 @@ fun View.showErrorMessage(domainErrors: DomainErrors) {
             else -> resources.getString(R.string.unexpected_error_message) + " " + domainErrors.throwable.message
         }
         this.showSnackbar(message)
-        Log.d(LOG_TAG, message)
-    } else
+        Log.d(LOG_TAG, "Message $message")
+    } else {
         this.showSnackbar(domainErrors.message)
+        Log.d(LOG_TAG, "Domain message ${domainErrors.message}")
+    }
 }

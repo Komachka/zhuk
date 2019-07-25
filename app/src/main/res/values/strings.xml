@@ -39,6 +39,8 @@
     <string name="device_is_not_booked_message">Can not book the device</string>
     <string name="device_returned_message">Device successfully returned</string>
     <string name="device_not_returned_message">Device was not successfully returned</string>
+    <string name="device_registered_message">Device is registered in database</string>
+    <string name="request_for_reset_success_message">Request for reset pin was sent</string>
 
 
 
@@ -53,6 +55,20 @@
     <string name="can_not_get_users_error_message">Users list is unavailable</string>
     <string name="can_not_remind_pin_error_message">Can not remind pin</string>
     <string name="unexpected_error_message">There is some unexpected error occurred</string>
+    <string name="pass_is_empty_error_message">The password or login field is empty</string>
+    <string name="request_for_reset_error_message">Request for reset pin was not sent</string>
+    <string name="input_error_message">"Incorrect input"</string>
+
+
+
+
+    <!-- Reset pass dialog -->
+    <string name="reset_pass_dealog_title">Reset password</string>
+    <string name="reset_pass_dealog_message">Enter slack login please</string>
+    <string name="reset_pass_dealog_pos_but">Send</string>
+
+
+
 
     <!-- Notification messages-->
 
