@@ -19,13 +19,13 @@ class ChooseTimeSharedViewModel : ViewModel(), KoinComponent {
 
     private val manageDeviceUseCases: ManageDeviceUseCases by inject()
 
-    val choosenCalendar: MutableLiveData<Calendar> by lazy { MutableLiveData<Calendar>().also {
+    val chooseCalendar: MutableLiveData<Calendar> by lazy { MutableLiveData<Calendar>().also {
         it.value = GregorianCalendar.getInstance()
     } }
     val userId: MutableLiveData<String> by lazy { MutableLiveData<String>() }
 
     fun setCalendar(millisec: Long) {
-        choosenCalendar.value?.timeInMillis = millisec
+        chooseCalendar.value?.timeInMillis = millisec
     }
 
     fun setUserId(id: String) {
@@ -34,9 +34,9 @@ class ChooseTimeSharedViewModel : ViewModel(), KoinComponent {
 
     @SuppressLint("SimpleDateFormat")
     fun tryBookDevice(): LiveData<Boolean> {
-        Log.d(LOG_TAG, SimpleDateFormat(TimeUtils.dateFormat).format(choosenCalendar.value?.timeInMillis) + " user id ${userId.value}")
+        Log.d(LOG_TAG, SimpleDateFormat(TimeUtils.dateFormat).format(chooseCalendar.value?.timeInMillis) + " user id ${userId.value}")
         return liveData<Boolean> {
-            emit(manageDeviceUseCases.takeDevice(BookingInputData(userId.value!!, choosenCalendar.value)))
+            emit(manageDeviceUseCases.takeDevice(BookingInputData(userId.value!!, chooseCalendar.value)))
         }
     }
 }

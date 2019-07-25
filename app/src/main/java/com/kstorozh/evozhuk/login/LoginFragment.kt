@@ -55,8 +55,7 @@ class LoginFragment : Fragment() {
             if (passEt.text.isNotEmpty() && loginEt.text.isNotEmpty())
                     model.tryLogin(loginEt.text.toString(), passEt.text.toString()).observe(this, Observer {
                         if (!it.isNullOrEmpty()) {
-                            val action = LoginFragmentDirections.actionLoginFragmentToChooseTimeFragment()
-                            action.userId = it
+                            val action = LoginFragmentDirections.actionLoginFragmentToChooseTimeFragment(it)
                             Navigation.findNavController(fragment).navigate(action)
                         } else {
                             Toast.makeText(context, "Can not login. Invalid password", Toast.LENGTH_LONG).show()

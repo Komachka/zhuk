@@ -3,9 +3,12 @@ package com.kstorozh.evozhuk
 import android.app.ActivityManager
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import com.kstorozh.domainapi.model.DeviceInputData
+import com.kstorozh.domainapi.model.DomainErrors
+import com.kstorozh.domainapi.model.ErrorStatus
 
 fun Context?.getInfoAboutDevice(): DeviceInputData {
 
@@ -45,7 +48,27 @@ private fun Context?.getMemoryInfo(): Pair<Long, Long> {
     return availableMegs to totalMegs
 }
 
-public fun View.showSnackbar(textMessage: String, length: Int = Snackbar.LENGTH_LONG) {
+fun View.showSnackbar(textMessage: String, length: Int = Snackbar.LENGTH_LONG) {
 
     Snackbar.make(this, textMessage, length).show()
+}
+
+fun View.showErrorMessage(domainErrors: DomainErrors) {
+    if (domainErrors.message.isNullOrEmpty()) {
+        val message = when (domainErrors.errorStatus) {
+            ErrorStatus.INVALID_PASSWORD -> resources.getString(R.string.invalid_pass_error_message)
+            ErrorStatus.INVALID_LOGIN -> resources.getString(R.string.invalid_login_error_message)
+            ErrorStatus.UNAUTHORIZED -> resources.getString(R.string.device_is_not_authorized_error_message)
+            ErrorStatus.CAN_NOT_INI_DEVICE -> resources.getString(R.string.can_not_init_error_message)
+            ErrorStatus.CAN_NOT_UPDATE_DEVICE -> resources.getString(R.string.can_not_update_error_message)
+            ErrorStatus.CAN_NOT_BOOK_DEVICE -> resources.getString(R.string.can_not_book_error_message)
+            ErrorStatus.CAN_NOT_RETURN_DEVICE -> resources.getString(R.string.can_not_return_error_message)
+            ErrorStatus.CAN_NOT_GET_USERS -> resources.getString(R.string.can_not_get_users_error_message)
+            ErrorStatus.CAN_NOT_REMIND_PIN -> resources.getString(R.string.can_not_remind_pin_error_message)
+            else -> resources.getString(R.string.unexpected_error_message) + " " + domainErrors.throwable.message
+        }
+        this.showSnackbar(message)
+        Log.d(LOG_TAG, message)
+    } else
+        this.showSnackbar(domainErrors.message)
 }

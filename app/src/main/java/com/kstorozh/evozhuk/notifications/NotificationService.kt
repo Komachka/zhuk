@@ -9,13 +9,8 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.kstorozh.evozhuk.MainActivity
+import com.kstorozh.evozhuk.*
 import java.util.concurrent.TimeUnit
-import com.kstorozh.evozhuk.R
-
-const val INTENT_DATA_MILISEC = "INTENT_DATA_MILISEC"
-const val DATE_FORMAT = "%02d:%02d:%02d"
-const val LOG_TAG: String = "MainActivity"
 
 class NotificationService : IntentService("Hello intent service") {
 
@@ -27,11 +22,9 @@ class NotificationService : IntentService("Hello intent service") {
         val intent = Intent(this, MainActivity::class.java)
         val activity = PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT)
         val hms = createFormattedDateString(endTime)
-
         val builder = createBuilderNotification(hms)
         builder.setContentIntent(activity)
         startForeground(notificationId, builder.build())
-
         updateNotificationInLoop(endTime, builder, notificationId)
     }
 
@@ -40,18 +33,16 @@ class NotificationService : IntentService("Hello intent service") {
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
         val builder = NotificationCompat.Builder(this, CHANEL_ID)
-                .setContentTitle("You need to back device in next")
+                .setContentTitle(resources.getString(R.string.you_need_to_back_device_in_next_notif_message))
                 .setContentText(hms)
                 .setSmallIcon(R.drawable.ic_timer_black_24dp)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setOngoing(false)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(hms)
-                    .setBigContentTitle("You need to return device in next")
-                    .setSummaryText("Summary text"))
-
+                    .setBigContentTitle(resources.getString(R.string.you_need_to_back_device_in_next_notif_message))
+                )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                builder.setColor(Color.RED)
-                .setChannelId(CHANEL_ID)
+            builder.color = Color.RED
 
         return builder
     }
@@ -60,12 +51,11 @@ class NotificationService : IntentService("Hello intent service") {
         while (System.currentTimeMillis() < endTime) {
             synchronized(this) {
                 try {
-                    Log.d(LOG_TAG, "in try $endTime ${System.currentTimeMillis()} ${System.currentTimeMillis() - endTime} ")
                     Thread.sleep(1000)
                     val millis = endTime - System.currentTimeMillis()
                     val hms = createFormattedDateString(millis)
                     builder.setContentText(hms)
-                    builder.setStyle(NotificationCompat.BigTextStyle().bigText(hms).setBigContentTitle("You need to return device").setSummaryText("Summary text"))
+                    builder.setStyle(NotificationCompat.BigTextStyle().bigText(hms).setBigContentTitle(resources.getString(R.string.you_need_to_back_device_in_next_notif_message)))
                     startForeground(notificationId, builder.build())
                 } catch (e: Exception) {
                     Log.e(LOG_TAG, e.message!!)
@@ -76,7 +66,7 @@ class NotificationService : IntentService("Hello intent service") {
 
     private fun createFormattedDateString(millis: Long): String {
         return String.format(
-            DATE_FORMAT, TimeUnit.MILLISECONDS.toHours(millis),
+            DATE_FORMAT_TIMER, TimeUnit.MILLISECONDS.toHours(millis),
             TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(
                 TimeUnit.MILLISECONDS.toHours(
                     millis
