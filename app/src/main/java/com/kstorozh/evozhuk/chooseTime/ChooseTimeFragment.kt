@@ -1,7 +1,6 @@
 package com.kstorozh.evozhuk.chooseTime
 
 import android.os.Bundle
-import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,24 +17,21 @@ import java.util.*
 
 class ChooseTimeFragment : Fragment() {
 
-    var selectedButton: Button?=null
+    var selectedButton: Button? = null
         private set(value) {
             field = value
             value!!.setBackgroundResource(R.drawable.time_but_pressed)
             value.setTextColor(getResources().getColor(R.color.but_time_def))
-
         }
 
-
-    private var milisec:Long = 0
-    private lateinit var userId:String
-
+    private var milisec: Long = 0
+    private lateinit var userId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         milisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
-        if(milisec == 0L)
+        if (milisec == 0L)
             milisec = System.currentTimeMillis() + 3600000L * 4
     }
 
@@ -81,7 +77,7 @@ class ChooseTimeFragment : Fragment() {
                     resetButton(it)
                 }
                 selectedButton = it
-                milisec =     when (it.id) {
+                milisec = when (it.id) {
                         R.id.oneHourBut -> System.currentTimeMillis() + 3600000L
                         R.id.twoHourBut -> System.currentTimeMillis() + 3600000L * 2
                         R.id.fourHourBut -> System.currentTimeMillis() + 3600000L * 4
@@ -90,9 +86,9 @@ class ChooseTimeFragment : Fragment() {
                         {
 
                             val currentime = GregorianCalendar.getInstance()
-                            val mCalendar =  GregorianCalendar(currentime.get(Calendar.YEAR),
+                            val mCalendar = GregorianCalendar(currentime.get(Calendar.YEAR),
                                 currentime.get(Calendar.MONTH),
-                                currentime.get(Calendar.DAY_OF_MONTH), 19, 0, 0);
+                                currentime.get(Calendar.DAY_OF_MONTH), 19, 0, 0)
                             mCalendar.timeZone = TimeZone.getTimeZone("Europe/Kiev")
                             mCalendar.timeInMillis
                         }
@@ -104,7 +100,6 @@ class ChooseTimeFragment : Fragment() {
                     }
 
                 modelChooseTime.setCalendar(milisec)
-
             }
         }
 
@@ -127,5 +122,4 @@ class ChooseTimeFragment : Fragment() {
         button.setBackgroundResource(R.drawable.round_rectangle)
         button.setTextColor(getResources().getColor(R.color.but_time_def))
     }
-
 }

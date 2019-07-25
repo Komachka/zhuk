@@ -30,12 +30,9 @@ import com.kstorozh.evozhuk.notifications.INTENT_DATA_MILISEC
 import com.kstorozh.evozhuk.notifications.NotificationService
 import java.util.*
 
-
-
 class BackDeviceFragment : Fragment() {
 
     lateinit var modelBackDevice: BackDeviceViewModel
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +50,7 @@ class BackDeviceFragment : Fragment() {
             it?.let {
                 val format = SimpleDateFormat("hh:mm\ndd MMMM") // TODO move it from here
                 textView.setText(format.format(it.endData.time))
-                //scheduleNotification(context!!, 1000, it.endData)
+                // scheduleNotification(context!!, 1000, it.endData)
             }
         })
 
@@ -81,7 +78,7 @@ class BackDeviceFragment : Fragment() {
     }
 
     private fun clearAllNotification(context: Context?) {
-        val notificationManager:NotificationManager = context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager: NotificationManager = context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancelAll()
     }
 
@@ -97,7 +94,7 @@ class BackDeviceFragment : Fragment() {
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
             .setChannelId(CHANNEL_ID)
-            .setColor(color) //TODO does not work
+            .setColor(color) // TODO does not work
 
         val intent = Intent(context, MainActivity::class.java)
         val activity = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT)
@@ -111,11 +108,10 @@ class BackDeviceFragment : Fragment() {
         val pendingIntent =
             PendingIntent.getBroadcast(context, notificationId, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT)
 
-         val futureInMillis = SystemClock.elapsedRealtime() + delay
+        val futureInMillis = SystemClock.elapsedRealtime() + delay
         val alarmManager = context!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
     }
-
 
     private fun startForegroundService(calendar: Calendar) {
         val serviceIntent = Intent(context, NotificationService::class.java)
@@ -123,9 +119,7 @@ class BackDeviceFragment : Fragment() {
         context!!.startService(serviceIntent)
     }
 
-
-    private fun stopForegroundService()
-    {
+    private fun stopForegroundService() {
         val serviceIntent = Intent(context, NotificationService::class.java)
         context!!.stopService(serviceIntent)
     }

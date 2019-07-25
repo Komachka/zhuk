@@ -13,7 +13,6 @@ import com.kstorozh.evozhuk.MainActivity
 import java.util.concurrent.TimeUnit
 import com.kstorozh.evozhuk.R
 
-
 const val INTENT_DATA_MILISEC = "INTENT_DATA_MILISEC"
 const val DATE_FORMAT = "%02d:%02d:%02d"
 const val LOG_TAG: String = "MainActivity"
@@ -57,7 +56,7 @@ class NotificationService : IntentService("Hello intent service") {
         return builder
     }
 
-    private fun updateNotificationInLoop(endTime: Long, builder:NotificationCompat.Builder, notificationId:Int) {
+    private fun updateNotificationInLoop(endTime: Long, builder: NotificationCompat.Builder, notificationId: Int) {
         while (System.currentTimeMillis() < endTime) {
             synchronized(this) {
                 try {
@@ -68,12 +67,9 @@ class NotificationService : IntentService("Hello intent service") {
                     builder.setContentText(hms)
                     builder.setStyle(NotificationCompat.BigTextStyle().bigText(hms).setBigContentTitle("You need to return device").setSummaryText("Summary text"))
                     startForeground(notificationId, builder.build())
-
-                }
-                catch (e: Exception) {
+                } catch (e: Exception) {
                     Log.e(LOG_TAG, e.message!!)
                 }
-
             }
         }
     }
@@ -94,14 +90,10 @@ class NotificationService : IntentService("Hello intent service") {
         )
     }
 
-
-
-
     override fun onCreate() {
         super.onCreate()
         Log.d(LOG_TAG, "on create service")
     }
-
 
     override fun onDestroy() {
         Log.d(LOG_TAG, "on destroy service")

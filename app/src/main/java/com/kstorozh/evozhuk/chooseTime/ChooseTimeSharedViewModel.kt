@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.BookingInputData
-import com.kstorozh.evozhuk.notifications.LOG_TAG
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.text.SimpleDateFormat
@@ -30,8 +29,6 @@ class ChooseTimeSharedViewModel : ViewModel(), KoinComponent {
     fun setUserId(id: String) {
         userId.value = id
     }
-
-
 
     fun tryBookDevice(): LiveData<Boolean> {
         Log.d("MainActivity", SimpleDateFormat("HH:mm dd MMMM").format(choosenCalendar.value?.timeInMillis) + " user id ${userId.value}")
