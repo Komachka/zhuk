@@ -29,7 +29,7 @@
     </fragment>
 
 
-    <fragment android:id="@+id/specificTimeAndDate" android:name="com.kstorozh.evozhuk.chooseTime.SpecificTimeAndDate"
+    <fragment android:id="@+id/specificTimeAndDate" android:name="com.kstorozh.evozhuk.chooseTime.SpecificTimeAndDateFragment"
               android:label="SpecificTimeAndDate">
 
         <action android:id="@+id/action_specificTimeAndDate_to_chooseTimeFragment"

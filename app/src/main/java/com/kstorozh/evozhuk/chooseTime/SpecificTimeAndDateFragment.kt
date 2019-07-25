@@ -13,7 +13,7 @@ import androidx.navigation.Navigation
 import java.util.*
 
 
-class SpecificTimeAndDate : Fragment() {
+class SpecificTimeAndDateFragment : Fragment() {
 
 
     companion object Time{
@@ -67,11 +67,10 @@ class SpecificTimeAndDate : Fragment() {
         val mToolbar = fragment.findViewById(R.id.toolbar) as Toolbar
         (activity as AppCompatActivity).setSupportActionBar(mToolbar)
         mToolbar.setNavigationIcon(resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp))
-        mToolbar.setTitle("Выбор времени")
-        mToolbar.setTitleTextColor(0x00e9cb)
+        mToolbar.title = "Выбор времени"
         mToolbar.setNavigationOnClickListener{
             val milisec = getMilisec()
-            val action = SpecificTimeAndDateDirections.actionSpecificTimeAndDateToChooseTimeFragment()
+            val action = SpecificTimeAndDateFragmentDirections.actionSpecificTimeAndDateToChooseTimeFragment()
             action.milisec = milisec
             Navigation.findNavController(fragment).navigate(action)
         }

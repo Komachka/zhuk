@@ -26,7 +26,7 @@ class ChooseTimeFragment : Fragment() {
 
         }
 
-    private lateinit var calendar: GregorianCalendar
+
     private var milisec:Long = 0
     private lateinit var userId:String
 
@@ -37,9 +37,6 @@ class ChooseTimeFragment : Fragment() {
         milisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
         if(milisec == 0L)
             milisec = System.currentTimeMillis() + 3600000L * 4
-        //calendar = GregorianCalendar.getInstance() as GregorianCalendar
-        //calendar.timeZone = TimeZone.getTimeZone("Europe/Kiev")
-        //calendar.set(Calendar.HOUR, 4)
     }
 
     override fun onCreateView(
@@ -55,6 +52,7 @@ class ChooseTimeFragment : Fragment() {
             userId = modelLogin.userIdLiveData.value!!
             modelChooseTime.setUserId(modelLogin.userIdLiveData.value!!) }
 
+        modelChooseTime.setCalendar(milisec)
 
         val view: View = inflater.inflate(R.layout.fragment_time_choose, container, false)
         val button: Button = view.findViewById(R.id.takeDevice)
@@ -69,6 +67,7 @@ class ChooseTimeFragment : Fragment() {
             view.findViewById(R.id.twoDaysBut),
             (view.findViewById(R.id.anotherTimeBut) as Button).also {
                 if (ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec != 0L) {
+                    selectedButton?.let { it1 -> resetButton(it1) }
                     selectedButton = it
                 }
             }
@@ -82,32 +81,7 @@ class ChooseTimeFragment : Fragment() {
                     resetButton(it)
                 }
                 selectedButton = it
-                /*calendar = GregorianCalendar.getInstance() as GregorianCalendar
-                calendar.timeZone = TimeZone.getTimeZone("Europe/Kiev")
-                Log.d("MainActivity", calendar.time.toString())
-                    when ((it as Button).id) {
-                        R.id.oneHourBut -> calendar.add(Calendar.HOUR, 1)
-                        R.id.twoHourBut -> calendar.add(Calendar.HOUR, 2)
-                        R.id.fourHourBut -> calendar.add(Calendar.HOUR, 4)
-                        R.id.twoDaysBut -> calendar.add(Calendar.HOUR, 48)
-                        R.id.allDayBut ->
-                        {
-                            calendar.add(Calendar.DATE, 1)
-                            calendar =  GregorianCalendar(calendar.get(Calendar.YEAR),
-                                calendar.get(Calendar.MONTH),
-                                calendar.get(Calendar.DATE), 19, 0, 0);
-                            calendar.timeZone = TimeZone.getTimeZone("Europe/Kiev")
-
-                        }
-
-                        else -> {
-                            Navigation.findNavController(view).navigate(R.id.action_chooseTimeFragment_to_specificTimeAndDate)
-                        }
-                    }*/
-
-
-                //Log.d("MainActivity", calendar.time.toString())
-                milisec =     when ((it as Button).id) {
+                milisec =     when (it.id) {
                         R.id.oneHourBut -> System.currentTimeMillis() + 3600000L
                         R.id.twoHourBut -> System.currentTimeMillis() + 3600000L * 2
                         R.id.fourHourBut -> System.currentTimeMillis() + 3600000L * 4
@@ -129,15 +103,14 @@ class ChooseTimeFragment : Fragment() {
                         }
                     }
 
-
-                //calendar.let { it1 -> modelChooseTime.setData(it1) }
+                modelChooseTime.setCalendar(milisec)
 
             }
         }
 
         button.setOnClickListener {
-            Log.d("MainActivity", SimpleDateFormat("hh:mm dd MMMM").format(milisec))
-            /*modelChooseTime.tryBookDevice(calendar, userId).observe(this, androidx.lifecycle.Observer {
+            Log.d("MainActivity", SimpleDateFormat("HH:mm dd MMMM").format(modelChooseTime.choosenCalendar.value?.timeInMillis))
+            modelChooseTime.tryBookDevice().observe(this, androidx.lifecycle.Observer {
                 if (it == true) {
                     Toast.makeText(context, "Device successfully booked", Toast.LENGTH_LONG).show()
                     modelLogin.userIdLiveData.value = null // TODO we do this to if we go back to login screen don navigate to took device always
@@ -145,7 +118,7 @@ class ChooseTimeFragment : Fragment() {
                 } else {
                     Toast.makeText(context, "Can not book the device", Toast.LENGTH_LONG).show()
                 }
-            })*/
+            })
         }
         return view
         }

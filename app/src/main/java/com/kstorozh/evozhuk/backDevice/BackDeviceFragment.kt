@@ -57,8 +57,8 @@ class BackDeviceFragment : Fragment() {
             }
         })
 
-        modelChooseTime.choosenData.value?.let {
-            val endDate = modelChooseTime.choosenData.value
+        modelChooseTime.choosenCalendar.value?.let {
+            val endDate = modelChooseTime.choosenCalendar.value
             val userId = modelChooseTime.userId.value
             modelBackDevice.setBookingSession(SessionData(userId!!, endDate!!))
             scheduleNotification(context!!, 20000, endDate)
