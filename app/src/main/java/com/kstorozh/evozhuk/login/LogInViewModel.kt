@@ -16,9 +16,7 @@ class LogInViewModel : ViewModel(), KoinComponent {
     private val loginUseCase: LoginUseCase by inject()
     private val getUserUseCase: GetUsersUseCases by inject()
 
-    val userIdLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
-
-    val users: MutableLiveData<List<User>> by lazy { MutableLiveData<List<User>>().also {
+    private val users: MutableLiveData<List<User>> by lazy { MutableLiveData<List<User>>().also {
         loadUsers()
     } }
 
@@ -55,7 +53,6 @@ class LogInViewModel : ViewModel(), KoinComponent {
         return liveData<String> {
             val userId = loginUseCase.loginUser(UserLoginInput(name, pass))
             userId?.let {
-                userIdLiveData.value = userId
                 emit(userId)
             }
         }

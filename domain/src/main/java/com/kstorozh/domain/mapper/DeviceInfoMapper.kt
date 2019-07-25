@@ -26,7 +26,7 @@ class DeviceInfoMapper {
     @SuppressLint("SimpleDateFormat")
     fun mapBookingParam(bookingInputData: BookingInputData, startDate: Calendar? = null): BookingParam {
 
-        val format = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         return BookingParam(
             bookingInputData.userId,
             startDate?.let { format.format(startDate.time) } ?: "2019-07-07 00:00:00",
@@ -37,7 +37,7 @@ class DeviceInfoMapper {
     @SuppressLint("SimpleDateFormat")
     fun mapBookingSession(bookingSession: BookingSessionData): SessionData {
         val endDateCalendar = Calendar.getInstance()
-        val format = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         endDateCalendar.setTime(format.parse(bookingSession.endDate)!!)
         return SessionData(bookingSession.userId, endDateCalendar)
     }

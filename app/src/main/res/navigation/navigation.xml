@@ -16,8 +16,10 @@
         <action android:id="@+id/action_chooseTimeFragment_to_backDeviceFragment"
                 app:destination="@id/backDeviceFragment"/>
         <argument android:name="milisec" app:argType="long" android:defaultValue="0L"/>
+
         <action android:id="@+id/action_chooseTimeFragment_to_specificTimeAndDate"
                 app:destination="@id/specificTimeAndDate"/>
+        <argument android:name="userId" app:argType="string" android:defaultValue="no name"/>
     </fragment>
 
 

@@ -9,14 +9,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.crashlytics.android.Crashlytics
 import com.kstorozh.evozhuk.chooseTime.ChooseTimeSharedViewModel
-import com.kstorozh.evozhuk.login.LogInViewModel
 
 import io.fabric.sdk.android.Fabric
 
 class MainActivity : AppCompatActivity() {
 
     val LOG_TAG = "MainActivity"
-    lateinit var modelLogin: LogInViewModel
+    // lateinit var modelLogin: LogInViewModel
     lateinit var modelChooseTime: ChooseTimeSharedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +32,6 @@ class MainActivity : AppCompatActivity() {
             }
         )
 
-        modelLogin = ViewModelProviders.of(this)[LogInViewModel::class.java]
         modelChooseTime = ViewModelProviders.of(this)[ChooseTimeSharedViewModel::class.java]
     }
 

@@ -1,7 +1,6 @@
 package com.kstorozh.evozhuk.login
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -41,44 +40,35 @@ class LoginFragment : Fragment() {
         forgotPassTv = fragment.findViewById(R.id.forgotPassTv)
 
         forgotPassTv.setOnClickListener {
-            showDialog()
+            showRemindPinDialog()
         }
 
-        model = ViewModelProviders.of(activity!!).get(LogInViewModel::class.java)
+        model = ViewModelProviders.of(this)[LogInViewModel::class.java]
 
         model.getUserNames().observe(this, Observer {
-            Log.d("MainActivity", it.toString())
             userNames = it
             loginEt.setAdapter(ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, it.toTypedArray()))
         })
 
-        // loginEt.setAdapter(ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, userNames))
-
         loginBut.setOnClickListener {
 
             if (passEt.text.isNotEmpty() && loginEt.text.isNotEmpty())
-                // TODO delete this observation
-                model.tryLogin(loginEt.text.toString(), passEt.text.toString()).observe(this, Observer {
-                    // Toast.makeText(context, it ?: "Did not login", Toast.LENGTH_LONG).show()
+                    model.tryLogin(loginEt.text.toString(), passEt.text.toString()).observe(this, Observer {
+                        if (!it.isNullOrEmpty()) {
+                            val action = LoginFragmentDirections.actionLoginFragmentToChooseTimeFragment()
+                            action.userId = it
+                            Navigation.findNavController(fragment).navigate(action)
+                        } else {
+                            Toast.makeText(context, "Can not login. Invalid password", Toast.LENGTH_LONG).show()
+                        }
                 })
-            /*else if (!userNames.contains<String>(loginEt.text.toString().toLowerCase()))
-                Toast.makeText(context, "This user is not consists in users list", Toast.LENGTH_LONG).show()*/
             else
                 Toast.makeText(context, "The pass is empty", Toast.LENGTH_LONG).show()
         }
-
-        model.userIdLiveData.observe(this, Observer {
-            if (!it.isNullOrEmpty())
-                Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_chooseTimeFragment)
-            else {
-                Toast.makeText(context, "Can not login. Invalid password", Toast.LENGTH_LONG).show()
-            }
-        })
-
         return fragment
     }
 
-    private fun showDialog() {
+    private fun showRemindPinDialog() {
         val alertDialog = AlertDialog.Builder(context!!)
         alertDialog.setTitle("Reset pass")
         alertDialog.setMessage("Enter slack login")

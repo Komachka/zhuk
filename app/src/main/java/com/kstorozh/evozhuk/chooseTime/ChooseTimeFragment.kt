@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.kstorozh.evozhuk.R
-import com.kstorozh.evozhuk.login.LogInViewModel
 import com.kstorozh.evozhuk.showSnackbar
 import java.util.*
 
@@ -22,17 +21,6 @@ class ChooseTimeFragment : Fragment() {
             value.setTextColor(resources.getColor(R.color.but_time_def))
         }
 
-    private var milisec: Long = 0
-    private lateinit var userId: String
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        milisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
-        if (milisec == 0L)
-            milisec = TimeUtils.setHours(4)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,12 +28,13 @@ class ChooseTimeFragment : Fragment() {
     ): View? {
 
         val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeSharedViewModel::class.java)
-        val modelLogin = ViewModelProviders.of(activity!!).get(LogInViewModel::class.java)
 
-        modelLogin.userIdLiveData.value?.let {
-            userId = modelLogin.userIdLiveData.value!!
-            modelChooseTime.setUserId(modelLogin.userIdLiveData.value!!) }
+        var milisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
+        if (milisec == 0L)
+            milisec = TimeUtils.setHours(4)
 
+        val userId = ChooseTimeFragmentArgs.fromBundle(arguments!!).userId
+        modelChooseTime.setUserId(userId)
         modelChooseTime.setCalendar(milisec)
 
         val view: View = inflater.inflate(R.layout.fragment_time_choose, container, false)
@@ -83,10 +72,10 @@ class ChooseTimeFragment : Fragment() {
                         R.id.allDayBut ->
                         {
 
-                            val currentime = GregorianCalendar.getInstance()
-                            val mCalendar = GregorianCalendar(currentime.get(Calendar.YEAR),
-                                currentime.get(Calendar.MONTH),
-                                currentime.get(Calendar.DAY_OF_MONTH), 19, 0, 0)
+                            val currenTime = GregorianCalendar.getInstance()
+                            val mCalendar = GregorianCalendar(currenTime.get(Calendar.YEAR),
+                                currenTime.get(Calendar.MONTH),
+                                currenTime.get(Calendar.DAY_OF_MONTH), 19, 0, 0)
                             mCalendar.timeZone = TimeUtils.getCurrentTimeZone()
                             mCalendar.timeInMillis
                         }
@@ -105,7 +94,6 @@ class ChooseTimeFragment : Fragment() {
             modelChooseTime.tryBookDevice().observe(this, androidx.lifecycle.Observer {
                 if (it == true) {
                     view.showSnackbar(resources.getString(R.string.device_booked_message))
-                    modelLogin.userIdLiveData.value = null // TODO we do this to if we go back to login screen don navigate to took device always
                     Navigation.findNavController(view).navigate(R.id.action_chooseTimeFragment_to_backDeviceFragment)
                 } else {
                     view.showSnackbar(resources.getString(R.string.device_is_not_booked_message))

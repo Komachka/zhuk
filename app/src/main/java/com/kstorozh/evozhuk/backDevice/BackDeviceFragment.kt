@@ -85,7 +85,7 @@ class BackDeviceFragment : Fragment() {
 
         val notificationId = 1
 
-        val format = SimpleDateFormat("hh:mm dd MMMM")
+        val format = SimpleDateFormat("HH:mm dd MMMM")
         val color = ContextCompat.getColor(context, R.color.background)
         val builder = NotificationCompat.Builder(context)
             .setContentTitle("You need to back device")
