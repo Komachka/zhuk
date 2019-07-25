@@ -10,6 +10,7 @@
     <fragment android:id="@+id/loginFragment" android:name="com.kstorozh.evozhuk.login.LoginFragment"
               android:label="LoginFragment">
         <action android:id="@+id/action_loginFragment_to_chooseTimeFragment" app:destination="@id/chooseTimeFragment"/>
+        <action android:id="@+id/action_loginFragment_to_infoFragment" app:destination="@id/infoFragment"/>
     </fragment>
     <fragment android:id="@+id/chooseTimeFragment" android:name="com.kstorozh.evozhuk.chooseTime.ChooseTimeFragment"
               android:label="ChooseTimeFragment">
@@ -20,6 +21,7 @@
         <action android:id="@+id/action_chooseTimeFragment_to_specificTimeAndDate"
                 app:destination="@id/specificTimeAndDate"/>
         <argument android:name="userId" app:argType="string"/>
+        <action android:id="@+id/action_chooseTimeFragment_to_infoFragment" app:destination="@id/infoFragment"/>
     </fragment>
 
 
@@ -29,6 +31,7 @@
         <argument android:name="endTime" app:argType="long"/>
         <action android:id="@+id/action_backDeviceFragment_to_returnDeviceFragment"
                 app:destination="@id/returnDeviceFragment"/>
+        <action android:id="@+id/action_backDeviceFragment_to_infoFragment" app:destination="@id/infoFragment"/>
     </fragment>
 
 
@@ -44,4 +47,6 @@
               android:label="ReturnDeviceFragment">
         <action android:id="@+id/action_returnDeviceFragment_to_loginFragment" app:destination="@id/loginFragment"/>
     </fragment>
+    <fragment android:id="@+id/infoFragment" android:name="com.kstorozh.evozhuk.info.InfoFragment"
+              android:label="fragment_info" tools:layout="@layout/fragment_info"/>
 </navigation>

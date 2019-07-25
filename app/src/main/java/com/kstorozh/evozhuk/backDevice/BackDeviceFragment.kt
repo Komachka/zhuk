@@ -16,7 +16,9 @@ import java.text.SimpleDateFormat
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.widget.ImageView
 import com.kstorozh.evozhuk.DATE_FORMAT_BACK_DEVICE_SCREEN_TV
+import com.kstorozh.evozhuk.getInfoAboutDevice
 import com.kstorozh.evozhuk.notifications.NotificationService
 import com.kstorozh.evozhuk.showSnackbar
 import java.util.*
@@ -32,6 +34,14 @@ class BackDeviceFragment : Fragment() {
     ): View? {
 
         val view: View = inflater.inflate(R.layout.fragment_back_device, container, false)
+        view.findViewById<ImageView>(R.id.infoImageBut)
+            .setOnClickListener {
+                Navigation.findNavController(view).navigate(BackDeviceFragmentDirections.actionBackDeviceFragmentToInfoFragment())
+            }
+
+        val info = context.getInfoAboutDevice()
+        view.findViewById<TextView>(R.id.deviceNameTv).text = info.model + " " + info.os
+
         val dateToBackTv: TextView = view.findViewById(R.id.dateToBack)
         val giveBackBut: Button = view.findViewById(R.id.giveBackBut)
 

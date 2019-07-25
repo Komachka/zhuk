@@ -2,11 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        android:id="@+id/loginFragment"
->
+        android:id="@+id/loginFragment">
+
+
     <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -24,7 +25,7 @@
             app:layout_constraintTop_toTopOf="@+id/loginWithSlackTv"
             app:layout_constraintStart_toEndOf="@+id/loginWithSlackTv" android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"/>
-    <TextView
+<!--    <TextView
             style="@style/label_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +36,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintEnd_toEndOf="parent"
-    />
+    />-->
+
+
+
+    <include
+        layout="@layout/logo_and_info"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -122,6 +128,7 @@
             android:layout_marginStart="16dp"
             app:layout_constraintStart_toStartOf="@+id/loginEt" android:layout_marginLeft="16dp"
             android:layout_marginBottom="23dp" app:layout_constraintBottom_toTopOf="@+id/loginEt"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

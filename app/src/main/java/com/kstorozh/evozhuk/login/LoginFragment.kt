@@ -1,10 +1,8 @@
 package com.kstorozh.evozhuk.login
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -13,10 +11,13 @@ import androidx.lifecycle.ViewModelProviders
 import android.widget.LinearLayout
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import com.kstorozh.evozhuk.getInfoAboutDevice
 
 import com.kstorozh.evozhuk.showSnackbar
 
 class LoginFragment : Fragment() {
+
+    // TODO move it inside method
 
     lateinit var model: LogInViewModel
     lateinit var loginBut: Button
@@ -33,6 +34,14 @@ class LoginFragment : Fragment() {
     ): View? {
 
         val fragment: View = inflater.inflate(R.layout.fragment_login, container, false)
+        fragment.findViewById<ImageView>(R.id.infoImageBut)
+            .setOnClickListener {
+                Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_infoFragment)
+            }
+
+        val info = context.getInfoAboutDevice()
+        fragment.findViewById<TextView>(R.id.deviceNameTv).text = info.model + " " + info.os
+
         loginBut = fragment.findViewById(R.id.goInBut)
         loginEt = fragment.findViewById(R.id.loginEt) as AutoCompleteTextView
         passEt = fragment.findViewById(R.id.passwordEt) as EditText

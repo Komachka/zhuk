@@ -72,6 +72,12 @@
 
     <string name="you_need_to_back_device_in_next_notif_message">You need to back device in next</string>
     <string name="chargeDeviceMessage">Поставь меня на зарядку, если надо</string>
+    <string name="model">Model</string>
+    <string name="version">Version</string>
+    <string name="id">id</string>
+    <string name="memory">Memory</string>
+    <string name="storage">Storage</string>
+    <string name="info">Information</string>
 
 
 </resources>
