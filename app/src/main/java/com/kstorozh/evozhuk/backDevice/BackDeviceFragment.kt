@@ -60,7 +60,7 @@ class BackDeviceFragment : Fragment() {
                     view.showSnackbar(resources.getString(R.string.device_returned_message))
                     clearAllNotification(context)
                     stopForegroundService()
-                    Navigation.findNavController(view).navigate(R.id.action_backDeviceFragment_to_loginFragment)
+                    Navigation.findNavController(view).navigate(R.id.action_backDeviceFragment_to_returnDeviceFragment)
                 } else
                     view.showSnackbar(resources.getString(R.string.device_not_returned_message))
             })

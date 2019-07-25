@@ -11,7 +11,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             app:srcCompat="@mipmap/ic_hand"
-            android:id="@+id/starsImageView"
+            android:id="@+id/thanksView"
             app:layout_constraintStart_toEndOf="@+id/helloTv"
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"

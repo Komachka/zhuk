@@ -25,11 +25,10 @@
 
     <fragment android:id="@+id/backDeviceFragment" android:name="com.kstorozh.evozhuk.backDevice.BackDeviceFragment"
               android:label="BackDeviceFragment">
-        <action android:id="@+id/action_backDeviceFragment_to_loginFragment" app:destination="@id/loginFragment"
-                app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_enter_anim"
-                app:popUpTo="@+id/loginFragment"/>
         <argument android:name="userId" app:argType="string"/>
         <argument android:name="endTime" app:argType="long"/>
+        <action android:id="@+id/action_backDeviceFragment_to_returnDeviceFragment"
+                app:destination="@id/returnDeviceFragment"/>
     </fragment>
 
 
@@ -39,5 +38,10 @@
         <action android:id="@+id/action_specificTimeAndDate_to_chooseTimeFragment"
                 app:destination="@id/chooseTimeFragment">
         </action>
+    </fragment>
+    <fragment android:id="@+id/returnDeviceFragment"
+              android:name="com.kstorozh.evozhuk.returnDevice.ReturnDeviceFragment"
+              android:label="ReturnDeviceFragment">
+        <action android:id="@+id/action_returnDeviceFragment_to_loginFragment" app:destination="@id/loginFragment"/>
     </fragment>
 </navigation>
