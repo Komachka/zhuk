@@ -1,18 +1,16 @@
 package com.kstorozh.evozhuk.chooseTime
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.kstorozh.evozhuk.R
 import com.kstorozh.evozhuk.login.LogInViewModel
-import java.text.SimpleDateFormat
+import com.kstorozh.evozhuk.showSnackbar
 import java.util.*
 
 class ChooseTimeFragment : Fragment() {
@@ -21,7 +19,7 @@ class ChooseTimeFragment : Fragment() {
         private set(value) {
             field = value
             value!!.setBackgroundResource(R.drawable.time_but_pressed)
-            value.setTextColor(getResources().getColor(R.color.but_time_def))
+            value.setTextColor(resources.getColor(R.color.but_time_def))
         }
 
     private var milisec: Long = 0
@@ -32,7 +30,7 @@ class ChooseTimeFragment : Fragment() {
 
         milisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
         if (milisec == 0L)
-            milisec = System.currentTimeMillis() + 3600000L * 4
+            milisec = TimeUtils.setHours(4)
     }
 
     override fun onCreateView(
@@ -78,10 +76,10 @@ class ChooseTimeFragment : Fragment() {
                 }
                 selectedButton = it
                 milisec = when (it.id) {
-                        R.id.oneHourBut -> System.currentTimeMillis() + 3600000L
-                        R.id.twoHourBut -> System.currentTimeMillis() + 3600000L * 2
-                        R.id.fourHourBut -> System.currentTimeMillis() + 3600000L * 4
-                        R.id.twoDaysBut -> System.currentTimeMillis() + 3600000L * 48
+                        R.id.oneHourBut -> TimeUtils.setHours(1)
+                        R.id.twoHourBut -> TimeUtils.setHours(2)
+                        R.id.fourHourBut -> TimeUtils.setHours(4)
+                        R.id.twoDaysBut -> TimeUtils.setHours(48)
                         R.id.allDayBut ->
                         {
 
@@ -89,7 +87,7 @@ class ChooseTimeFragment : Fragment() {
                             val mCalendar = GregorianCalendar(currentime.get(Calendar.YEAR),
                                 currentime.get(Calendar.MONTH),
                                 currentime.get(Calendar.DAY_OF_MONTH), 19, 0, 0)
-                            mCalendar.timeZone = TimeZone.getTimeZone("Europe/Kiev")
+                            mCalendar.timeZone = TimeUtils.getCurrentTimeZone()
                             mCalendar.timeInMillis
                         }
 
@@ -103,15 +101,14 @@ class ChooseTimeFragment : Fragment() {
             }
         }
 
-        button.setOnClickListener {
-            Log.d("MainActivity", SimpleDateFormat("HH:mm dd MMMM").format(modelChooseTime.choosenCalendar.value?.timeInMillis))
+        button.setOnClickListener { view ->
             modelChooseTime.tryBookDevice().observe(this, androidx.lifecycle.Observer {
                 if (it == true) {
-                    Toast.makeText(context, "Device successfully booked", Toast.LENGTH_LONG).show()
+                    view.showSnackbar(resources.getString(R.string.device_booked_message))
                     modelLogin.userIdLiveData.value = null // TODO we do this to if we go back to login screen don navigate to took device always
                     Navigation.findNavController(view).navigate(R.id.action_chooseTimeFragment_to_backDeviceFragment)
                 } else {
-                    Toast.makeText(context, "Can not book the device", Toast.LENGTH_LONG).show()
+                    view.showSnackbar(resources.getString(R.string.device_is_not_booked_message))
                 }
             })
         }
@@ -120,6 +117,6 @@ class ChooseTimeFragment : Fragment() {
 
     private fun resetButton(button: Button) {
         button.setBackgroundResource(R.drawable.round_rectangle)
-        button.setTextColor(getResources().getColor(R.color.but_time_def))
+        button.setTextColor(resources.getColor(R.color.but_time_def))
     }
 }

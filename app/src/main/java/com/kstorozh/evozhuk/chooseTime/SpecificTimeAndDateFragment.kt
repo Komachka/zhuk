@@ -31,18 +31,12 @@ class SpecificTimeAndDateFragment : Fragment() {
         val fragment = inflater.inflate(R.layout.fragment_specific_time_and_date, container, false)
 
         val dateAndTimeNow = Calendar.getInstance()
-        dateAndTimeNow.setTimeZone(TimeZone.getTimeZone("Europe/Kiev"))
-
-        Time.year = dateAndTimeNow.get(Calendar.YEAR)
-        Time.month = dateAndTimeNow.get(Calendar.MONTH)
-        Time.day = dateAndTimeNow.get(Calendar.DAY_OF_MONTH)
-        Time.hour = dateAndTimeNow.get(Calendar.HOUR_OF_DAY)
-        Time.minute = dateAndTimeNow.get(Calendar.MINUTE)
-        Time.seconds = dateAndTimeNow.get(Calendar.SECOND)
+        dateAndTimeNow.timeZone = TimeUtils.getCurrentTimeZone()
+        initTimeObject(dateAndTimeNow)
 
         val datePicker = fragment.findViewById<DatePicker>(R.id.datepicker)
-
         val timePicker = fragment.findViewById<TimePicker>(R.id.timepicker)
+
         timePicker.setIs24HourView(true)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             timePicker.minute = minute
@@ -61,25 +55,30 @@ class SpecificTimeAndDateFragment : Fragment() {
 
         val mToolbar = fragment.findViewById(R.id.toolbar) as Toolbar
         (activity as AppCompatActivity).setSupportActionBar(mToolbar)
-        mToolbar.setNavigationIcon(resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp))
-        mToolbar.title = "Выбор времени"
+        mToolbar.navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
+        mToolbar.title = resources.getString(R.string.time_choose_tool_bar)
         mToolbar.setNavigationOnClickListener {
-            val milisec = getMilisec()
+            val millisec = getMillisec()
             val action = SpecificTimeAndDateFragmentDirections.actionSpecificTimeAndDateToChooseTimeFragment()
-            action.milisec = milisec
+            action.milisec = millisec
             Navigation.findNavController(fragment).navigate(action)
         }
 
         return fragment
     }
 
-    private fun getMilisec(): Long {
-        val calendar = GregorianCalendar(year, month, day, hour, minute, seconds)
-        calendar.setTimeZone(TimeZone.getTimeZone("Europe/Kiev"))
-        return calendar.time.time
+    private fun initTimeObject(dateAndTimeNow: Calendar) {
+        Time.year = dateAndTimeNow.get(Calendar.YEAR)
+        Time.month = dateAndTimeNow.get(Calendar.MONTH)
+        Time.day = dateAndTimeNow.get(Calendar.DAY_OF_MONTH)
+        Time.hour = dateAndTimeNow.get(Calendar.HOUR_OF_DAY)
+        Time.minute = dateAndTimeNow.get(Calendar.MINUTE)
+        Time.seconds = dateAndTimeNow.get(Calendar.SECOND)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        super.onCreateOptionsMenu(menu, inflater)
+    private fun getMillisec(): Long {
+        val calendar = GregorianCalendar(year, month, day, hour, minute, seconds)
+        calendar.timeZone = TimeUtils.getCurrentTimeZone()
+        return calendar.time.time
     }
 }

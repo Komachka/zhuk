@@ -25,4 +25,16 @@
     <string name="twoDays">2 дня</string>
     <string name="anotherTime">другое</string>
 
+
+
+
+    <string name="time_choose_tool_bar">Выбор времени</string>
+
+
+
+
+    <!-- Toast messages-->
+
+    <string name="device_booked_message">Device successfully booked</string>
+    <string name="device_is_not_booked_message">Can not book the device</string>
 </resources>

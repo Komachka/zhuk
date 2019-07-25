@@ -3,6 +3,8 @@ package com.kstorozh.evozhuk
 import android.app.ActivityManager
 import android.content.Context
 import android.os.Build
+import android.view.View
+import com.google.android.material.snackbar.Snackbar
 import com.kstorozh.domainapi.model.DeviceInputData
 
 fun Context?.getInfoAboutDevice(): DeviceInputData {
@@ -41,4 +43,9 @@ private fun Context?.getMemoryInfo(): Pair<Long, Long> {
     val availableMegs = mi.availMem / 0x100000L
     val totalMegs = mi.totalMem / 0x100000L
     return availableMegs to totalMegs
+}
+
+public fun View.showSnackbar(textMessage: String, length: Int = Snackbar.LENGTH_LONG) {
+
+    Snackbar.make(this, textMessage, length).show()
 }

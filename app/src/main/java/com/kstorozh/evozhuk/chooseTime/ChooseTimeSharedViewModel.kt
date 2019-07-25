@@ -1,5 +1,6 @@
 package com.kstorozh.evozhuk.chooseTime
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.BookingInputData
+import com.kstorozh.evozhuk.notifications.LOG_TAG
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.text.SimpleDateFormat
@@ -22,16 +24,17 @@ class ChooseTimeSharedViewModel : ViewModel(), KoinComponent {
     } }
     val userId: MutableLiveData<String> by lazy { MutableLiveData<String>() }
 
-    fun setCalendar(milisec: Long) {
-        choosenCalendar.value?.timeInMillis = milisec
+    fun setCalendar(millisec: Long) {
+        choosenCalendar.value?.timeInMillis = millisec
     }
 
     fun setUserId(id: String) {
         userId.value = id
     }
 
+    @SuppressLint("SimpleDateFormat")
     fun tryBookDevice(): LiveData<Boolean> {
-        Log.d("MainActivity", SimpleDateFormat("HH:mm dd MMMM").format(choosenCalendar.value?.timeInMillis) + " user id ${userId.value}")
+        Log.d(LOG_TAG, SimpleDateFormat(TimeUtils.dateFormat).format(choosenCalendar.value?.timeInMillis) + " user id ${userId.value}")
         return liveData<Boolean> {
             emit(manageDeviceUseCases.takeDevice(BookingInputData(userId.value!!, choosenCalendar.value)))
         }

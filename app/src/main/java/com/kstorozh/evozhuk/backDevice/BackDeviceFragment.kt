@@ -48,13 +48,12 @@ class BackDeviceFragment : Fragment() {
         modelBackDevice = ViewModelProviders.of(activity!!).get(BackDeviceViewModel::class.java)
         modelBackDevice.getSessionData().observe(this, Observer {
             it?.let {
-                val format = SimpleDateFormat("hh:mm\ndd MMMM") // TODO move it from here
-                textView.setText(format.format(it.endData.time))
-                // scheduleNotification(context!!, 1000, it.endData)
+                val format = SimpleDateFormat("HH:mm\ndd MMMM") // TODO move it from here
+                textView.text = format.format(it.endData.time)
             }
         })
 
-        modelChooseTime.choosenCalendar.value?.let {
+        modelChooseTime.userId.value?.let {
             val endDate = modelChooseTime.choosenCalendar.value
             val userId = modelChooseTime.userId.value
             modelBackDevice.setBookingSession(SessionData(userId!!, endDate!!))
