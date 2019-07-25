@@ -1,7 +1,6 @@
 package com.kstorozh.evozhuk.login
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,8 @@ import androidx.lifecycle.ViewModelProviders
 import android.widget.LinearLayout
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import android.widget.Toast
+
+import com.kstorozh.evozhuk.showSnackbar
 
 class LoginFragment : Fragment() {
 
@@ -34,54 +34,39 @@ class LoginFragment : Fragment() {
 
         val fragment: View = inflater.inflate(R.layout.fragment_login, container, false)
         loginBut = fragment.findViewById(R.id.goInBut)
-
         loginEt = fragment.findViewById(R.id.loginEt) as AutoCompleteTextView
         passEt = fragment.findViewById(R.id.passwordEt) as EditText
-
         forgotPassTv = fragment.findViewById(R.id.forgotPassTv)
-
         forgotPassTv.setOnClickListener {
-            showDialog()
+            showRemindPinDialog()
         }
-
-        model = ViewModelProviders.of(activity!!).get(LogInViewModel::class.java)
-
+        model = ViewModelProviders.of(this)[LogInViewModel::class.java]
         model.getUserNames().observe(this, Observer {
-            Log.d("MainActivity", it.toString())
             userNames = it
             loginEt.setAdapter(ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, it.toTypedArray()))
         })
-
-        // loginEt.setAdapter(ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, userNames))
-
-        loginBut.setOnClickListener {
+        loginBut.setOnClickListener { view ->
 
             if (passEt.text.isNotEmpty() && loginEt.text.isNotEmpty())
-                // TODO delete this observation
-                model.tryLogin(loginEt.text.toString(), passEt.text.toString()).observe(this, Observer {
-                    // Toast.makeText(context, it ?: "Did not login", Toast.LENGTH_LONG).show()
+                    model.tryLogin(loginEt.text.toString(), passEt.text.toString()).observe(this, Observer {
+                        if (!it.isNullOrEmpty()) {
+                            val action = LoginFragmentDirections.actionLoginFragmentToChooseTimeFragment(it)
+                            Navigation.findNavController(fragment).navigate(action)
+                        } else {
+                            view.showSnackbar(resources.getString(R.string.invalid_pass_error_message))
+                        }
                 })
-            /*else if (!userNames.contains<String>(loginEt.text.toString().toLowerCase()))
-                Toast.makeText(context, "This user is not consists in users list", Toast.LENGTH_LONG).show()*/
             else
-                Toast.makeText(context, "The pass is empty", Toast.LENGTH_LONG).show()
+                view.showSnackbar(resources.getString(R.string.pass_is_empty_error_message))
         }
-
-        model.userIdLiveData.observe(this, Observer {
-            if (!it.isNullOrEmpty())
-                Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_chooseTimeFragment)
-            else {
-                Toast.makeText(context, "Can not login. Invalid password", Toast.LENGTH_LONG).show()
-            }
-        })
-
         return fragment
     }
 
-    private fun showDialog() {
+    private fun showRemindPinDialog() {
         val alertDialog = AlertDialog.Builder(context!!)
-        alertDialog.setTitle("Reset pass")
-        alertDialog.setMessage("Enter slack login")
+
+        alertDialog.setTitle(resources.getString(R.string.reset_pass_dealog_title))
+        alertDialog.setMessage(resources.getString(R.string.reset_pass_dealog_message))
 
         val input = AutoCompleteTextView(context)
         input.setAdapter(ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, userNames.toTypedArray()))
@@ -93,24 +78,24 @@ class LoginFragment : Fragment() {
         input.layoutParams = lp
         alertDialog.setView(input)
 
-        alertDialog.setPositiveButton("Send") { dialog, which ->
-            Toast.makeText(context, "Request for reset pin was not sent", Toast.LENGTH_LONG).show()
+        alertDialog.setPositiveButton(resources.getString(R.string.reset_pass_dealog_pos_but)) { dialog, which ->
             if (input.text.isNotEmpty()) {
                 model.getUserByName(input.text.toString()).observe(this, Observer {
                     it?.let {
-                        Toast.makeText(context, "$it", Toast.LENGTH_LONG).show()
                         model.remindPin(it).observe(
                             this, Observer {
+                                var message: String
                                 if (it)
-                                    Toast.makeText(context, "Request for reset pin was sent", Toast.LENGTH_LONG).show()
+                                    message = resources.getString(R.string.request_for_reset_success_message)
                                 else
-                                    Toast.makeText(context, "Request for reset pin was not sent", Toast.LENGTH_LONG).show()
+                                    message = resources.getString(R.string.request_for_reset_error_message)
+                                view!!.showSnackbar(message)
                             }
                         )
                     }
                 })
             } else {
-                Toast.makeText(context, "Incorrect input", Toast.LENGTH_SHORT).show()
+                view!!.showSnackbar(resources.getString(R.string.input_error_message))
             }
         }
         alertDialog.show()

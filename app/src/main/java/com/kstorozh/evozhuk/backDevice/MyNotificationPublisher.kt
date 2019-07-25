@@ -8,13 +8,13 @@ import android.app.NotificationManager
 import android.app.NotificationChannel
 import android.os.Build
 import com.kstorozh.evozhuk.R
+import com.kstorozh.evozhuk.notifications.CHANEL_ID
 
 class MyNotificationPublisher : BroadcastReceiver() {
 
     companion object {
         var NOTIFICATION_ID = "notification_id"
         var NOTIFICATION = "notification"
-        var CHANNEL_ID = "CHANEL_ID"
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -26,7 +26,7 @@ class MyNotificationPublisher : BroadcastReceiver() {
         val importance = NotificationManager.IMPORTANCE_HIGH
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
+            val mChannel = NotificationChannel(CHANEL_ID, name, importance)
             notificationManager.createNotificationChannel(mChannel)
         }
         notificationManager.notify(notificationId, notification)

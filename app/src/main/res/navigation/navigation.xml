@@ -16,8 +16,10 @@
         <action android:id="@+id/action_chooseTimeFragment_to_backDeviceFragment"
                 app:destination="@id/backDeviceFragment"/>
         <argument android:name="milisec" app:argType="long" android:defaultValue="0L"/>
+
         <action android:id="@+id/action_chooseTimeFragment_to_specificTimeAndDate"
                 app:destination="@id/specificTimeAndDate"/>
+        <argument android:name="userId" app:argType="string"/>
     </fragment>
 
 
@@ -26,6 +28,8 @@
         <action android:id="@+id/action_backDeviceFragment_to_loginFragment" app:destination="@id/loginFragment"
                 app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_enter_anim"
                 app:popUpTo="@+id/loginFragment"/>
+        <argument android:name="userId" app:argType="string"/>
+        <argument android:name="endTime" app:argType="long"/>
     </fragment>
 
 

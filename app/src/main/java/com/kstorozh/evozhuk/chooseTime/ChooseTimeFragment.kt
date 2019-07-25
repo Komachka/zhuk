@@ -1,16 +1,27 @@
 package com.kstorozh.evozhuk.chooseTime
 
+import android.app.AlarmManager
+import android.app.Notification
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.media.RingtoneManager
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
-import com.kstorozh.evozhuk.R
-import com.kstorozh.evozhuk.login.LogInViewModel
-import com.kstorozh.evozhuk.showSnackbar
+import com.kstorozh.evozhuk.*
+import com.kstorozh.evozhuk.backDevice.MyNotificationPublisher
+import com.kstorozh.evozhuk.notifications.CHANEL_ID
+import com.kstorozh.evozhuk.notifications.NotificationService
+import java.text.SimpleDateFormat
 import java.util.*
 
 class ChooseTimeFragment : Fragment() {
@@ -22,17 +33,6 @@ class ChooseTimeFragment : Fragment() {
             value.setTextColor(resources.getColor(R.color.but_time_def))
         }
 
-    private var milisec: Long = 0
-    private lateinit var userId: String
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        milisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
-        if (milisec == 0L)
-            milisec = TimeUtils.setHours(4)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,12 +40,14 @@ class ChooseTimeFragment : Fragment() {
     ): View? {
 
         val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeSharedViewModel::class.java)
-        val modelLogin = ViewModelProviders.of(activity!!).get(LogInViewModel::class.java)
 
-        modelLogin.userIdLiveData.value?.let {
-            userId = modelLogin.userIdLiveData.value!!
-            modelChooseTime.setUserId(modelLogin.userIdLiveData.value!!) }
+        var milisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
+        if (milisec == 0L)
+            milisec = TimeUtils.setHours(4)
 
+        val userId = ChooseTimeFragmentArgs.fromBundle(arguments!!).userId
+        if (userId != USER_ID_NOT_SET)
+            modelChooseTime.setUserId(userId)
         modelChooseTime.setCalendar(milisec)
 
         val view: View = inflater.inflate(R.layout.fragment_time_choose, container, false)
@@ -83,10 +85,10 @@ class ChooseTimeFragment : Fragment() {
                         R.id.allDayBut ->
                         {
 
-                            val currentime = GregorianCalendar.getInstance()
-                            val mCalendar = GregorianCalendar(currentime.get(Calendar.YEAR),
-                                currentime.get(Calendar.MONTH),
-                                currentime.get(Calendar.DAY_OF_MONTH), 19, 0, 0)
+                            val currenTime = GregorianCalendar.getInstance()
+                            val mCalendar = GregorianCalendar(currenTime.get(Calendar.YEAR),
+                                currenTime.get(Calendar.MONTH),
+                                currenTime.get(Calendar.DAY_OF_MONTH), 19, 0, 0)
                             mCalendar.timeZone = TimeUtils.getCurrentTimeZone()
                             mCalendar.timeInMillis
                         }
@@ -105,8 +107,13 @@ class ChooseTimeFragment : Fragment() {
             modelChooseTime.tryBookDevice().observe(this, androidx.lifecycle.Observer {
                 if (it == true) {
                     view.showSnackbar(resources.getString(R.string.device_booked_message))
-                    modelLogin.userIdLiveData.value = null // TODO we do this to if we go back to login screen don navigate to took device always
-                    Navigation.findNavController(view).navigate(R.id.action_chooseTimeFragment_to_backDeviceFragment)
+                    val action =
+                        ChooseTimeFragmentDirections.actionChooseTimeFragmentToBackDeviceFragment(
+                            modelChooseTime.userId.value!!,
+                            modelChooseTime.chooseCalendar.value!!.timeInMillis)
+                    startForegroundServiceNotification(modelChooseTime.chooseCalendar.value!!.timeInMillis)
+                    context!!.startScheduleNotification(modelChooseTime.chooseCalendar.value!!)
+                    Navigation.findNavController(view).navigate(action)
                 } else {
                     view.showSnackbar(resources.getString(R.string.device_is_not_booked_message))
                 }
@@ -118,5 +125,47 @@ class ChooseTimeFragment : Fragment() {
     private fun resetButton(button: Button) {
         button.setBackgroundResource(R.drawable.round_rectangle)
         button.setTextColor(resources.getColor(R.color.but_time_def))
+    }
+
+    private fun startForegroundServiceNotification(millisec: Long) {
+        val serviceIntent = Intent(context, NotificationService::class.java)
+        serviceIntent.putExtra(INTENT_DATA_MILISEC, millisec)
+        context!!.startService(serviceIntent)
+    }
+
+    fun Context.startScheduleNotification(endTime: Calendar) {
+
+        val deltaTime = GregorianCalendar.getInstance()
+        deltaTime.timeInMillis = endTime.timeInMillis
+        deltaTime.set(Calendar.MINUTE, -10)
+        var delay: Long = if (deltaTime.timeInMillis < System.currentTimeMillis()) 1000L else deltaTime.timeInMillis
+        val notificationId = 1
+        val notification = createNotification(endTime, notificationId)
+        val notificationIntentBroadcast = Intent(context, MyNotificationPublisher::class.java)
+        notificationIntentBroadcast.putExtra(MyNotificationPublisher.NOTIFICATION_ID, notificationId)
+        notificationIntentBroadcast.putExtra(MyNotificationPublisher.NOTIFICATION, notification)
+        val pendingIntent =
+            PendingIntent.getBroadcast(context, notificationId, notificationIntentBroadcast, PendingIntent.FLAG_CANCEL_CURRENT)
+        val futureInMillis = SystemClock.elapsedRealtime() + delay
+        val alarmManager = context!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
+    }
+
+    private fun createNotification(endTime: Calendar, notificationId: Int): Notification {
+
+        val format = SimpleDateFormat(DATE_FORMAT_NOTIFICATION_MESSAGE)
+        val color = ContextCompat.getColor(context!!, R.color.background)
+        val builder = NotificationCompat.Builder(context!!, CHANEL_ID)
+            .setContentTitle(resources.getString(R.string.dont_forget_notification_title))
+            .setContentText("${resources.getString(R.string.time_is_up_notification_title)} ${format.format(endTime.time)}")
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+            .setColor(color)
+            .setAutoCancel(false)
+        val intent = Intent(context, MainActivity::class.java)
+
+        val pendingIntentActivity = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+        builder.setContentIntent(pendingIntentActivity)
+        return builder.build()
     }
 }

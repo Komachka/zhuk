@@ -10,6 +10,7 @@ import com.kstorozh.evozhuk.R
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.Navigation
+import com.kstorozh.evozhuk.USER_ID_NOT_SET
 import java.util.*
 
 class SpecificTimeAndDateFragment : Fragment() {
@@ -59,7 +60,8 @@ class SpecificTimeAndDateFragment : Fragment() {
         mToolbar.title = resources.getString(R.string.time_choose_tool_bar)
         mToolbar.setNavigationOnClickListener {
             val millisec = getMillisec()
-            val action = SpecificTimeAndDateFragmentDirections.actionSpecificTimeAndDateToChooseTimeFragment()
+            val action = SpecificTimeAndDateFragmentDirections.actionSpecificTimeAndDateToChooseTimeFragment(
+                USER_ID_NOT_SET)
             action.milisec = millisec
             Navigation.findNavController(fragment).navigate(action)
         }
