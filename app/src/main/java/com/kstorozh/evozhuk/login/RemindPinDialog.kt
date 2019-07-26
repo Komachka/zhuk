@@ -48,5 +48,4 @@ interface RemindPinDialog {
         }
         alertDialog.show()
     }
-
 }

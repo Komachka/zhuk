@@ -68,7 +68,6 @@ class LogInViewModel : ViewModel(), KoinComponent {
         }
     }
 
-
     fun isDeviceBooked(deviceInputData: DeviceInputData): LiveData<Boolean> {
         return liveData {
             val result = initDeviceUseCases.getSession()
@@ -78,5 +77,4 @@ class LogInViewModel : ViewModel(), KoinComponent {
                 emit(false)
         }
     }
-
 }

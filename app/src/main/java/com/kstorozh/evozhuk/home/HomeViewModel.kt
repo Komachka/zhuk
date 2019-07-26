@@ -20,6 +20,4 @@ class HomeViewModel : ViewModel(), KoinComponent {
             emit(result)
         }
     }
-
-
 }

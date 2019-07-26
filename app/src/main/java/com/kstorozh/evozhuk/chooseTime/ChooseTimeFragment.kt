@@ -8,6 +8,7 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -147,7 +148,11 @@ class ChooseTimeFragment : Fragment() {
         val deltaTime = GregorianCalendar.getInstance()
         deltaTime.timeInMillis = endTime.timeInMillis
         deltaTime.set(Calendar.MINUTE, -10)
-        var delay: Long = if (deltaTime.timeInMillis < System.currentTimeMillis()) 1000L else deltaTime.timeInMillis
+
+        Log.d(LOG_TAG, " System.currentTimeMillis() ${System.currentTimeMillis()}  deltaTime.timeInMillis ${deltaTime.timeInMillis}")
+        var delay: Long = if (deltaTime.timeInMillis < System.currentTimeMillis())1000L else deltaTime.timeInMillis - System.currentTimeMillis()
+
+        Log.d(LOG_TAG, "delay $delay")
         val notificationId = 1
         val notification = createNotification(endTime, notificationId)
         val notificationIntentBroadcast = Intent(context, MyNotificationPublisher::class.java)

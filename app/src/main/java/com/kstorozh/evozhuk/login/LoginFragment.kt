@@ -8,9 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.kstorozh.evozhuk.R
 import androidx.lifecycle.ViewModelProviders
-import android.widget.LinearLayout
 import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
 import com.kstorozh.evozhuk.getDeviceName
 import com.kstorozh.evozhuk.getInfoAboutDevice
 
@@ -41,13 +39,12 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
                 Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_infoFragment)
             }
 
-
         fragment.findViewById<TextView>(R.id.deviceNameTv).text = context.getDeviceName()
         loginBut = fragment.findViewById(R.id.goInBut)
         loginEt = fragment.findViewById(R.id.loginEt) as AutoCompleteTextView
         passEt = fragment.findViewById(R.id.passwordEt) as EditText
         forgotPassTv = fragment.findViewById(R.id.forgotPassTv)
-        forgotPassTv.setOnClickListener {show() }
+        forgotPassTv.setOnClickListener { show() }
         model = ViewModelProviders.of(this)[LogInViewModel::class.java]
         subscribeNamesLiveData()
 
