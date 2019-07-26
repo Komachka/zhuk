@@ -1,7 +1,7 @@
 package com.kstorozh.data.utils
 
+import ACCESS_TOKEN
 import INIT_DEVISE_URL
-import kotlinx.coroutines.*
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -11,11 +11,10 @@ internal class AuthInterceptor(private val tokenRepository: TokenRepository) : I
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
         if (original.url().encodedPath() != INIT_DEVISE_URL) {
-
             val currentToken: String? = TokenRepository.token
             currentToken?.let {
                 val request = original.newBuilder()
-                    .addHeaders(currentToken!!)
+                    .applyAuthorizationHeader(it)
                     .method(original.method(), original.body())
                     .build()
                 return chain.proceed(request)
@@ -24,7 +23,7 @@ internal class AuthInterceptor(private val tokenRepository: TokenRepository) : I
         return chain.proceed(original)
     }
 
-    private fun Request.Builder.addHeaders(currentToken: String) = this.apply {
-        header("X-ACCESS-TOKEN", currentToken)
+    private fun Request.Builder.applyAuthorizationHeader(currentToken: String) = this.apply {
+        header(ACCESS_TOKEN, currentToken)
     }
 }
