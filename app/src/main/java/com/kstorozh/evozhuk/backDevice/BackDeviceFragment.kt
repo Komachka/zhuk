@@ -11,16 +11,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.kstorozh.domainapi.model.SessionData
-import com.kstorozh.evozhuk.R
 import java.text.SimpleDateFormat
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.hardware.usb.UsbDevice.getDeviceName
 import android.widget.ImageView
-import com.kstorozh.evozhuk.DATE_FORMAT_BACK_DEVICE_SCREEN_TV
-import com.kstorozh.evozhuk.getInfoAboutDevice
+import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.notifications.NotificationService
-import com.kstorozh.evozhuk.showSnackbar
 import java.util.*
 
 class BackDeviceFragment : Fragment() {
@@ -39,8 +37,13 @@ class BackDeviceFragment : Fragment() {
                 Navigation.findNavController(view).navigate(BackDeviceFragmentDirections.actionBackDeviceFragmentToInfoFragment())
             }
 
-        val info = context.getInfoAboutDevice()
-        view.findViewById<TextView>(R.id.deviceNameTv).text = info.model + " " + info.os
+        //val info = context.getInfoAboutDevice()
+        view.findViewById<TextView>(R.id.deviceNameTv).text = context.getDeviceName()
+
+        view.findViewById<TextView>(R.id.youTakeDeviceLabelTv).text =
+            "${resources.getString(R.string.youTableDeviceLabel)} ${context.getDeviceName()}"
+
+
 
         val dateToBackTv: TextView = view.findViewById(R.id.dateToBack)
         val giveBackBut: Button = view.findViewById(R.id.giveBackBut)

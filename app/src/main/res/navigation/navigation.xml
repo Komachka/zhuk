@@ -30,7 +30,8 @@
         <argument android:name="userId" app:argType="string"/>
         <argument android:name="endTime" app:argType="long"/>
         <action android:id="@+id/action_backDeviceFragment_to_returnDeviceFragment"
-                app:destination="@id/returnDeviceFragment"/>
+                app:destination="@id/returnDeviceFragment"
+                app:popUpToInclusive="false"/>
         <action android:id="@+id/action_backDeviceFragment_to_infoFragment" app:destination="@id/infoFragment"/>
     </fragment>
 

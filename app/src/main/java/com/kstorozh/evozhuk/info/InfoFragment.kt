@@ -48,7 +48,7 @@ class InfoFragment : Fragment() {
         }
 
         val dividerItemDecoration = DividerItemDecoration(
-            infoRecView.getContext(),
+            infoRecView.context,
             (viewManager as LinearLayoutManager).orientation
         )
         infoRecView.addItemDecoration(dividerItemDecoration)
