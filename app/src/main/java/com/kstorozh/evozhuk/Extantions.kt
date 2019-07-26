@@ -39,7 +39,6 @@ fun Context?.getInfoAboutDevice(): DeviceInputData {
     return DeviceInputData(Build.ID, "${Build.BRAND} ${Build.MODEL}", "android", Build.VERSION.SDK_INT.toString(), memory.first.toInt(), memory.second.toInt())
 }
 
-
 fun Context?.getDeviceName(): String {
     return "${Build.BRAND} ${Build.MODEL}"
 }

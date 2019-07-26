@@ -37,13 +37,11 @@ class BackDeviceFragment : Fragment() {
                 Navigation.findNavController(view).navigate(BackDeviceFragmentDirections.actionBackDeviceFragmentToInfoFragment())
             }
 
-        //val info = context.getInfoAboutDevice()
+        // val info = context.getInfoAboutDevice()
         view.findViewById<TextView>(R.id.deviceNameTv).text = context.getDeviceName()
 
         view.findViewById<TextView>(R.id.youTakeDeviceLabelTv).text =
             "${resources.getString(R.string.youTableDeviceLabel)} ${context.getDeviceName()}"
-
-
 
         val dateToBackTv: TextView = view.findViewById(R.id.dateToBack)
         val giveBackBut: Button = view.findViewById(R.id.giveBackBut)

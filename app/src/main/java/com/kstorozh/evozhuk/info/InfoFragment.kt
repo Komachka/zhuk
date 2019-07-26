@@ -14,7 +14,6 @@ import com.kstorozh.evozhuk.R
 import com.kstorozh.evozhuk.getInfoPairs
 import androidx.recyclerview.widget.DividerItemDecoration
 
-
 class InfoFragment : Fragment() {
 
     private lateinit var infoRecView: RecyclerView
@@ -33,7 +32,6 @@ class InfoFragment : Fragment() {
         (activity as AppCompatActivity).setSupportActionBar(mToolbar)
         mToolbar.navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
         mToolbar.title = resources.getString(R.string.info)
-
 
         mToolbar.setNavigationOnClickListener {
             (activity as AppCompatActivity).getFragmentManager().popBackStack()

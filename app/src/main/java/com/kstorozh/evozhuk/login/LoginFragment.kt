@@ -12,7 +12,6 @@ import android.widget.LinearLayout
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import com.kstorozh.evozhuk.getDeviceName
-import com.kstorozh.evozhuk.getInfoAboutDevice
 
 import com.kstorozh.evozhuk.showSnackbar
 
@@ -40,7 +39,7 @@ class LoginFragment : Fragment() {
                 Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_infoFragment)
             }
 
-        //val info = context.getInfoAboutDevice()
+        // val info = context.getInfoAboutDevice()
         fragment.findViewById<TextView>(R.id.deviceNameTv).text = context.getDeviceName()
 
         loginBut = fragment.findViewById(R.id.goInBut)

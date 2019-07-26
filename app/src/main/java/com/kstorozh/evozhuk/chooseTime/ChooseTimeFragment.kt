@@ -47,7 +47,7 @@ class ChooseTimeFragment : Fragment() {
                 Navigation.findNavController(view).navigate(ChooseTimeFragmentDirections.actionChooseTimeFragmentToInfoFragment())
             }
 
-        //val info = context.getInfoAboutDevice()
+        // val info = context.getInfoAboutDevice()
         view.findViewById<TextView>(R.id.deviceNameTv).text = context.getDeviceName()
 
         val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeSharedViewModel::class.java)
