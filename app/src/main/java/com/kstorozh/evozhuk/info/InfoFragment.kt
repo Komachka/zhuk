@@ -28,7 +28,6 @@ class InfoFragment : Fragment() {
     ): View? {
 
         val fragment = inflater.inflate(R.layout.fragment_info, container, false)
-
         val mToolbar = fragment.findViewById(R.id.toolbar) as Toolbar
         (activity as AppCompatActivity).setSupportActionBar(mToolbar)
         mToolbar.navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)

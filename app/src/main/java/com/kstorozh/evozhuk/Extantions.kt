@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.kstorozh.domainapi.model.DeviceInputData
 import com.kstorozh.domainapi.model.DomainErrors
 import com.kstorozh.domainapi.model.ErrorStatus
+import java.text.DecimalFormat
 
 fun Context?.getInfoAboutDevice(): DeviceInputData {
 
@@ -51,8 +52,10 @@ fun Context?.getInfoPairs(): List<Pair<String, String>> {
     list.add("MODEL" to "${Build.BRAND} ${Build.MODEL}")
     list.add("ID" to Build.ID)
     val memory = getMemoryInfo()
-    list.add("MEMORY" to "${memory.first * 0.001}") // from Mg tu Gb
-    list.add("STORAGE" to "${memory.second * 0.001}") // from Mg tu Gb
+
+    val df = DecimalFormat("#.##")
+    list.add("MEMORY" to "${df.format(memory.first * 0.001)} Gb") // from Mg tu Gb
+    list.add("STORAGE" to "${df.format(memory.second * 0.001)} Gb") // from Mg tu Gb
     return list
 }
 

@@ -48,6 +48,9 @@ class ChooseTimeFragment : Fragment() {
             }
 
         view.findViewById<TextView>(R.id.deviceNameTv).text = context.getDeviceName()
+        view.findViewById<TextView>(R.id.youTakeDeviceLabelTv).text =
+            "${resources.getString(R.string.time_choose_label)}${context.getDeviceName()}?"
+
         val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeSharedViewModel::class.java)
         var milisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
         if (milisec == 0L)

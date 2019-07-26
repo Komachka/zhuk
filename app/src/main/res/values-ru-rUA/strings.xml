@@ -1,0 +1,77 @@
+<resources>
+    <string name="app_name">Evo.Zhuk</string>
+
+    <string name="app_logo">evozhuk</string>
+    <string name="hello_message">Привет</string>
+    <string name="login_message">Войди с помощью логина</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="forgot_pass_message">Забыли пароль?</string>
+    <string name="login_bunt_text">Войти</string>
+    <string name="device_name">имя устройства</string>
+    <string name="returnMessage">Не забудь вернуть во время</string>
+    <string name="give_back_bunt_text">Отдать</string>
+    <string name="deviceName">имя устройства</string>
+    <string name="youTableDeviceLabel">Ты взял</string>
+    <string name="time_choose_label">Cколько времени нужен\n</string>
+    <string name="take_bunt_text">Взять устройство</string>
+    <string name="button_label_custom">text</string>
+    <string name="oneHour">1 час</string>
+    <string name="twoHour">2 часа</string>
+    <string name="foutHour">4 часа</string>
+    <string name="tillSevenOClock">до 19:00</string>
+    <string name="twoDays">2 дня</string>
+    <string name="anotherTime">другое</string>
+    <string name="inParkBack">Спасибо,\nя снова в парке</string>
+    <string name="time_choose_tool_bar">Выбор времени</string>
+
+
+    <!-- Toast messages-->
+
+    <string name="device_booked_message">Устройство успешно забронировано</string>
+    <string name="device_is_not_booked_message">Невозможно забронировать устройство</string>
+    <string name="device_returned_message">Устройство успешно возвращено</string>
+    <string name="device_not_returned_message">Устройство не возвращено</string>
+    <string name="device_registered_message">Устройство удачно зарегестрировано</string>
+    <string name="request_for_reset_success_message">Запрос на напоминание пароля отправлен в слак</string>
+
+
+    <!--Error messages-->
+    <string name="invalid_pass_error_message">Пароль не валидный</string>
+    <string name="invalid_login_error_message">Логин не валидный</string>
+    <string name="device_is_not_authorized_error_message">Устройство не автаризировано</string>
+    <string name="can_not_init_error_message">Устройство не зарегистрировано</string>
+    <string name="can_not_update_error_message">Устройство не обновлено</string>
+    <string name="can_not_book_error_message">Устройство не забронировано</string>
+    <string name="can_not_return_error_message">Устройство не возвращено</string>
+    <string name="can_not_get_users_error_message">Список пользователей недоступно</string>
+    <string name="can_not_remind_pin_error_message">Невозможно напомнить пин</string>
+    <string name="unexpected_error_message">Возникла ошибка</string>
+    <string name="pass_is_empty_error_message">Поле пароля или логина пусто</string>
+    <string name="request_for_reset_error_message">Напоминание пароля не было отправлено</string>
+    <string name="input_error_message">"Не правельный ввод"</string>
+
+
+    <!-- Reset pass dialog -->
+    <string name="reset_pass_dealog_title">Сбросить пароль</string>
+    <string name="reset_pass_dealog_message">Введите логин</string>
+    <string name="reset_pass_dealog_pos_but">Отправить</string>
+
+
+    <!-- Notification messages-->
+
+    <string name="dont_forget_notification_title">Не забудь вернуть устройство во время</string>
+    <string name="time_is_up_notification_title">Время стекает в </string>
+
+
+    <string name="you_need_to_back_device_in_next_notif_message">Тебе нужно вернуть устройство через</string>
+    <string name="chargeDeviceMessage">Поставь меня на зарядку, пожалуйста</string>
+    <string name="model">Модель</string>
+    <string name="version">Версия</string>
+    <string name="id">UID</string>
+    <string name="memory">Память</string>
+    <string name="storage">Хранилище</string>
+    <string name="info">Информация</string>
+
+
+</resources>

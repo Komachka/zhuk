@@ -1,35 +1,32 @@
 <resources>
     <string name="app_name">Evo.Zhuk</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="app_logo">evozhuk</string>
-    <string name="hello_message">Привет</string>
-    <string name="login_message">Войди с помощью логина</string>
-    <string name="login">Логин</string>
-    <string name="password">Пароль</string>
-    <string name="forgot_pass_message">Забыли пароль?</string>
-    <string name="login_bunt_text">Войти</string>
-    <string name="device_name">Sumsung S8</string>
-    <string name="returnMessage">Не забудь вернуть во время</string>
-    <string name="give_back_bunt_text">Отдать</string>
-    <string name="deviceName">Sumsung S8</string>
-    <string name="youTableDeviceLabel">Ты взял</string>
-    <string name="time_choose_label">Cколько времени\nнужен Samsung S8?</string>
-    <string name="take_bunt_text">Взять устройство</string>
+    <string name="hello_message">Hello</string>
+    <string name="login_message">Login by</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="forgot_pass_message">Forgot password?</string>
+    <string name="login_bunt_text">Log in</string>
+    <string name="device_name">Device name</string>
+    <string name="returnMessage">Don`t forget to return the device on time</string>
+    <string name="give_back_bunt_text">Return</string>
+    <string name="deviceName">device name</string>
+    <string name="youTableDeviceLabel">You took</string>
+    <string name="time_choose_label">How long do you need\n</string>
+    <string name="take_bunt_text">Take the device</string>
     <string name="button_label_custom">text</string>
-    <string name="oneHour">1 час</string>
-    <string name="twoHour">2 часа</string>
-    <string name="foutHour">4 часа</string>
-    <string name="tillSevenOClock">до 19:00</string>
-    <string name="twoDays">2 дня</string>
-    <string name="anotherTime">другое</string>
+    <string name="oneHour">1 hour</string>
+    <string name="twoHour">2 hours</string>
+    <string name="foutHour">4 hours</string>
+    <string name="tillSevenOClock">till 19:00</string>
+    <string name="twoDays">2 days</string>
+    <string name="anotherTime">another</string>
+    <string name="inParkBack">Thank`s,\nI am back in park</string>
+    <string name="time_choose_tool_bar">Choose the time</string>
+    <string name="you_need_to_back_device_in_next_notif_message">You need to back device in next</string>
+    <string name="chargeDeviceMessage">Put device on charging, please</string>
 
-
-    <string name="inParkBack">Спасибо,\nя снова в парке</string>
-
-
-    <string name="time_choose_tool_bar">Выбор времени</string>
 
 
     <!-- Toast messages-->
@@ -70,8 +67,6 @@
     <string name="time_is_up_notification_title">Your time is up in</string>
 
 
-    <string name="you_need_to_back_device_in_next_notif_message">You need to back device in next</string>
-    <string name="chargeDeviceMessage">Поставь меня на зарядку, если надо</string>
     <string name="model">Model</string>
     <string name="version">Version</string>
     <string name="id">id</string>
