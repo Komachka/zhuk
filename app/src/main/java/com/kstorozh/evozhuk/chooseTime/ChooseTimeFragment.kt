@@ -12,6 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -39,6 +41,15 @@ class ChooseTimeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        val view: View = inflater.inflate(R.layout.fragment_time_choose, container, false)
+        view.findViewById<ImageView>(R.id.infoImageBut)
+            .setOnClickListener {
+                Navigation.findNavController(view).navigate(ChooseTimeFragmentDirections.actionChooseTimeFragmentToInfoFragment())
+            }
+
+        // val info = context.getInfoAboutDevice()
+        view.findViewById<TextView>(R.id.deviceNameTv).text = context.getDeviceName()
+
         val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeSharedViewModel::class.java)
 
         var milisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
@@ -50,7 +61,6 @@ class ChooseTimeFragment : Fragment() {
             modelChooseTime.setUserId(userId)
         modelChooseTime.setCalendar(milisec)
 
-        val view: View = inflater.inflate(R.layout.fragment_time_choose, container, false)
         val button: Button = view.findViewById(R.id.takeDevice)
 
         val buttonList = listOf<Button>(
