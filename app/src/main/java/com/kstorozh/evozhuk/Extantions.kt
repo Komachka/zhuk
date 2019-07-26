@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.LiveData
 import com.google.android.material.snackbar.Snackbar
 import com.kstorozh.domainapi.model.DeviceInputData
 import com.kstorozh.domainapi.model.DomainErrors
@@ -90,3 +91,4 @@ fun View.showErrorMessage(domainErrors: DomainErrors) {
         Log.d(LOG_TAG, "Domain message ${domainErrors.message}")
     }
 }
+

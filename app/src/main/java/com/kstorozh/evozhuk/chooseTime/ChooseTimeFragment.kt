@@ -47,11 +47,8 @@ class ChooseTimeFragment : Fragment() {
                 Navigation.findNavController(view).navigate(ChooseTimeFragmentDirections.actionChooseTimeFragmentToInfoFragment())
             }
 
-        // val info = context.getInfoAboutDevice()
         view.findViewById<TextView>(R.id.deviceNameTv).text = context.getDeviceName()
-
         val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeSharedViewModel::class.java)
-
         var milisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
         if (milisec == 0L)
             milisec = TimeUtils.setHours(4)
@@ -94,7 +91,6 @@ class ChooseTimeFragment : Fragment() {
                         R.id.twoDaysBut -> TimeUtils.setHours(48)
                         R.id.allDayBut ->
                         {
-
                             val currenTime = GregorianCalendar.getInstance()
                             val mCalendar = GregorianCalendar(currenTime.get(Calendar.YEAR),
                                 currenTime.get(Calendar.MONTH),

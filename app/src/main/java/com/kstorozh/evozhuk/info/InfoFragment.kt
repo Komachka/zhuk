@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -34,7 +35,8 @@ class InfoFragment : Fragment() {
         mToolbar.title = resources.getString(R.string.info)
 
         mToolbar.setNavigationOnClickListener {
-            (activity as AppCompatActivity).getFragmentManager().popBackStack()
+            val navController = this.findNavController()
+            navController.navigateUp()
         }
 
         viewManager = LinearLayoutManager(context)

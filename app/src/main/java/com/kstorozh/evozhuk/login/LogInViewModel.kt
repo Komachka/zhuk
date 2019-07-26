@@ -3,6 +3,8 @@ package com.kstorozh.evozhuk.login
 import androidx.arch.core.util.Function
 import androidx.lifecycle.*
 import com.kstorozh.domainapi.LoginUseCase
+import com.kstorozh.domainapi.ManageDeviceUseCases
+import com.kstorozh.domainapi.model.DeviceInputData
 import com.kstorozh.domainapi.model.GetUsersUseCases
 import com.kstorozh.domainapi.model.User
 import com.kstorozh.domainapi.model.UserLoginInput
@@ -15,6 +17,7 @@ class LogInViewModel : ViewModel(), KoinComponent {
 
     private val loginUseCase: LoginUseCase by inject()
     private val getUserUseCase: GetUsersUseCases by inject()
+    private val initDeviceUseCases: ManageDeviceUseCases by inject()
 
     private val users: MutableLiveData<List<User>> by lazy { MutableLiveData<List<User>>().also {
         loadUsers()
@@ -64,4 +67,16 @@ class LogInViewModel : ViewModel(), KoinComponent {
             emit(loginUseCase.remindPin(user))
         }
     }
+
+
+    fun isDeviceBooked(deviceInputData: DeviceInputData): LiveData<Boolean> {
+        return liveData {
+            val result = initDeviceUseCases.getSession()
+            if (result != null)
+                emit(true)
+            else
+                emit(false)
+        }
+    }
+
 }

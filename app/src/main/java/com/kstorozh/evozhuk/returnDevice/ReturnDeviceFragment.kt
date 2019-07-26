@@ -11,6 +11,8 @@ import com.kstorozh.evozhuk.R
 import android.os.Handler
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
+import com.kstorozh.evozhuk.getDeviceName
 import com.kstorozh.evozhuk.getInfoAboutDevice
 
 const val TIME_TO_WAIT = 10000L // 10 sec
@@ -23,16 +25,11 @@ class ReturnDeviceFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val fragment = inflater.inflate(R.layout.fragment_return_device, container, false)
-
-        fragment.findViewById<ImageView>(R.id.infoImageBut)
-            .setOnClickListener {
-                Navigation.findNavController(fragment).navigate(ReturnDeviceFragmentDirections.actionReturnDeviceFragmentToLoginFragment())
-            }
-
-        val info = context.getInfoAboutDevice()
-        fragment.findViewById<TextView>(R.id.deviceNameTv).text = info.model + " " + info.os
-
-        Handler().postDelayed({ Navigation.findNavController(fragment).navigate(R.id.action_returnDeviceFragment_to_loginFragment) }, TIME_TO_WAIT)
+        fragment.findViewById<TextView>(R.id.deviceNameTv).text = context.getDeviceName()
+        Handler().postDelayed({
+            val navController = this.findNavController()
+            navController.navigateUp()
+        }, TIME_TO_WAIT)
 
         return fragment
     }

@@ -25,19 +25,14 @@ class InfoAdapter(private val infoAboutDevice: List<Pair<String, String>>) : Rec
 
     class InfoViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
-        val categoreNameTv: TextView
-        val categoreValueTv: TextView
-
-        init {
-            categoreNameTv = view.findViewById(R.id.categoryNameTv)
-            categoreValueTv = view.findViewById(R.id.categoryValueTv)
-        }
+        private val categoryNameTv: TextView = view.findViewById(R.id.categoryNameTv)
+        private val categoryValueTv: TextView = view.findViewById(R.id.categoryValueTv)
 
         fun bindData(dataPair: Pair<String, String>) {
 
             val enumInstance = FieldsInfo.valueOf(dataPair.first)
-            categoreNameTv.text = view.context.resources.getString(enumInstance.resurs)
-            categoreValueTv.text = dataPair.second
+            categoryNameTv.text = view.context.resources.getString(enumInstance.resurs)
+            categoryValueTv.text = dataPair.second
         }
     }
 }
