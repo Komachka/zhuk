@@ -86,7 +86,10 @@ class BackDeviceFragment : Fragment() {
     }
 
     private fun stopForegroundService() {
+
+
         val serviceIntent = Intent(context, NotificationService::class.java)
+        serviceIntent.putExtra(INTENT_STOP_FLAG, INTENT_STOP_FLAG)
         context!!.stopService(serviceIntent)
     }
 }

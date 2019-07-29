@@ -1,6 +1,7 @@
 package com.kstorozh.domain.mapper
 
 import android.annotation.SuppressLint
+import android.util.Log
 import com.kstorozh.dataimpl.model.into.BookingParam
 import com.kstorozh.dataimpl.model.into.DeviceParam
 import com.kstorozh.dataimpl.model.out.BookingSessionData
@@ -39,7 +40,8 @@ class DeviceInfoMapper {
     @SuppressLint("SimpleDateFormat")
     fun mapBookingSession(bookingSession: BookingSessionData): SessionData {
         val endDateCalendar = Calendar.getInstance()
-        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+03:00'")
+        Log.d("MainActivity", "End date " + bookingSession.endDate)
         endDateCalendar.setTime(format.parse(bookingSession.endDate)!!)
         return SessionData(bookingSession.userId, endDateCalendar)
     }

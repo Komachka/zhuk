@@ -14,10 +14,19 @@ import java.util.concurrent.TimeUnit
 
 class NotificationService : IntentService("Hello intent service") {
 
+    var STOP_SERVICE_FLAG = "SERVICE_RUNNING"
+
+
+
     override fun onHandleIntent(intent: Intent?) {
 
         Log.d(LOG_TAG, "on handle service")
         val endTime = intent!!.getLongExtra(INTENT_DATA_MILISEC, 0)
+        val stopFlag = intent!!.getStringExtra(INTENT_STOP_FLAG)
+        if(stopFlag != null && stopFlag == INTENT_STOP_FLAG)
+        {
+            STOP_SERVICE_FLAG = stopFlag
+        }
         val notificationId = 2
         val intent = Intent(this, MainActivity::class.java)
         val activity = PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT)
@@ -47,13 +56,16 @@ class NotificationService : IntentService("Hello intent service") {
         return builder
     }
 
-    private fun updateNotificationInLoop(endTime: Long, builder: NotificationCompat.Builder, notificationId: Int) {
-        while (System.currentTimeMillis() < endTime) {
+    private fun updateNotificationInLoop(endTime: Long,
+                                         builder: NotificationCompat.Builder,
+                                         notificationId: Int) {
+        while (System.currentTimeMillis() < endTime && STOP_SERVICE_FLAG != INTENT_STOP_FLAG) {
             synchronized(this) {
                 try {
                     Thread.sleep(1000)
                     val millis = endTime - System.currentTimeMillis()
                     val hms = createFormattedDateString(millis)
+                    //Log.d(LOG_TAG, millis.toString())
                     builder.setContentText(hms)
                     builder.setStyle(NotificationCompat.BigTextStyle().bigText(hms).setBigContentTitle(resources.getString(R.string.you_need_to_back_device_in_next_notif_message)))
                     startForeground(notificationId, builder.build())

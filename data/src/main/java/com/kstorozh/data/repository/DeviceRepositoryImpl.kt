@@ -38,7 +38,7 @@ internal class DeviceRepositoryImpl(
 
     override suspend fun getBookingSession(): BookingSessionData? {
         val device = localData.getDeviceInfo()
-        Log.d(LOG_TAG, "Device info $device")
+        Log.d(LOG_TAG, "getBookingSession() $device")
         val booking = localData.getBookingByDeviceId(device.id)
         return if (booking != null) { BookingSessionData(booking.userId, booking.endDate) } else null
     }

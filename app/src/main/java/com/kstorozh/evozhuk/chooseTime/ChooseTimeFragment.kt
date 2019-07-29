@@ -146,11 +146,21 @@ class ChooseTimeFragment : Fragment() {
     fun Context.startScheduleNotification(endTime: Calendar) {
 
         val deltaTime = GregorianCalendar.getInstance()
-        deltaTime.timeInMillis = endTime.timeInMillis
-        deltaTime.set(Calendar.MINUTE, -10)
 
-        Log.d(LOG_TAG, " System.currentTimeMillis() ${System.currentTimeMillis()}  deltaTime.timeInMillis ${deltaTime.timeInMillis}")
-        var delay: Long = if (deltaTime.timeInMillis < System.currentTimeMillis())1000L else deltaTime.timeInMillis - System.currentTimeMillis()
+        val format1 = SimpleDateFormat("yyyy-MM-dd HH:mm")
+
+        deltaTime.timeInMillis = endTime.timeInMillis
+        deltaTime.add(Calendar.MINUTE, -10)
+
+        val currentTime = GregorianCalendar.getInstance()
+        var delay: Long = if (deltaTime.timeInMillis < currentTime.timeInMillis) 1000L else deltaTime.timeInMillis - currentTime.timeInMillis
+        Log.d(LOG_TAG, " currentTime ${currentTime.timeInMillis}  deltaTime.timeInMillis ${deltaTime.timeInMillis}")
+
+        Log.d(LOG_TAG, " currentTime ${format1.format(currentTime.time)}  deltaTime.timeInMillis ${format1.format(deltaTime.time)}")
+        Log.d(LOG_TAG, " currentTime ${format1.format(currentTime.time)}  endTime.timeInMillis ${format1.format(endTime.time)}")
+
+//        var delay: Long = if (deltaTime.timeInMillis < System.currentTimeMillis())1000L else deltaTime.timeInMillis - System.currentTimeMillis()
+
 
         Log.d(LOG_TAG, "delay $delay")
         val notificationId = 1
@@ -161,6 +171,7 @@ class ChooseTimeFragment : Fragment() {
         val pendingIntent =
             PendingIntent.getBroadcast(context, notificationId, notificationIntentBroadcast, PendingIntent.FLAG_CANCEL_CURRENT)
         val futureInMillis = SystemClock.elapsedRealtime() + delay
+        //val futureInMillis = deltaTime.timeInMillis
         val alarmManager = context!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
     }

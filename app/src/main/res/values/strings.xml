@@ -41,7 +41,7 @@
 
     <!--Error messages-->
     <string name="invalid_pass_error_message">The password is not valid</string>
-    <string name="invalid_login_error_message">The login is not valid</string>
+    <string name="invalid_login_error_message">The login or password is not valid</string>
     <string name="device_is_not_authorized_error_message">The device unauthorized</string>
     <string name="can_not_init_error_message">The device does not init</string>
     <string name="can_not_update_error_message">The device does not update</string>
@@ -73,6 +73,7 @@
     <string name="memory">Memory</string>
     <string name="storage">Storage</string>
     <string name="info">Information</string>
+    <string name="init">Init device</string>
 
 
 </resources>

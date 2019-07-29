@@ -50,8 +50,8 @@ internal fun Response<*>.getErrorStatus(endpoint: Endpoints): ErrorStatus {
         }
         Endpoints.LOGIN ->
             when (code()) {
-                ERROR_STATUS_CODE -> ErrorStatus.INVALID_LOGIN
-                NOT_FOUND_STATUS_CODE -> ErrorStatus.INVALID_PASSWORD
+                ERROR_STATUS_CODE -> ErrorStatus.INVALID_PASSWORD
+                NOT_FOUND_STATUS_CODE -> ErrorStatus.INVALID_LOGIN
                 UNAUTHORIZED_STATUS_CODE -> ErrorStatus.UNAUTHORIZED
                 else -> ErrorStatus.UNEXPECTED_ERROR
             }
@@ -80,6 +80,8 @@ internal fun getError(errorStatus: ErrorStatus,exception: Exception): MyError {
 
 
 internal fun createError(endpoints: Endpoints, result: ApiResult.Error<*>): MyError {
+    Log.d(LOG_TAG, result.errorResponse!!.errorBody()!!.string())
+
     val errorStatus = result.errorResponse!!.getErrorStatus(endpoints)
     val exception = result.exception
     return getError(errorStatus, exception)

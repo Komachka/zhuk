@@ -61,7 +61,7 @@
     <!-- Notification messages-->
 
     <string name="dont_forget_notification_title">Не забудь вернуть устройство во время</string>
-    <string name="time_is_up_notification_title">Время стекает в </string>
+    <string name="time_is_up_notification_title">Время истекает в </string>
 
 
     <string name="you_need_to_back_device_in_next_notif_message">Тебе нужно вернуть устройство через</string>
