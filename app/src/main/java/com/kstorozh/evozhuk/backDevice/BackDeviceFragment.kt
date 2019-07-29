@@ -41,12 +41,23 @@ class BackDeviceFragment : Fragment() {
         view.youTakeDeviceLabelTv.text = "${resources.getString(R.string.youTableDeviceLabel)} ${context.getDeviceName()}"
 
         modelBackDevice = ViewModelProviders.of(activity!!).get(BackDeviceViewModel::class.java)
-        modelBackDevice.getSessionData().observe(this, Observer {
+
+
+
+        observe(modelBackDevice.getSessionData(), {
             it?.let {
                 val format = SimpleDateFormat(DATE_FORMAT_BACK_DEVICE_SCREEN_TV)
                 dateToBack.text = format.format(it.endData.time)
             }
         })
+
+
+        /*modelBackDevice.getSessionData().observe(this, Observer {
+            it?.let {
+                val format = SimpleDateFormat(DATE_FORMAT_BACK_DEVICE_SCREEN_TV)
+                dateToBack.text = format.format(it.endData.time)
+            }
+        })*/
 
         arguments?.let {
             val (endDate, userId) = Pair(

@@ -12,7 +12,10 @@ import com.kstorozh.domainapi.model.ErrorStatus
 import java.text.DecimalFormat
 
 import android.os.StatFs
-
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 
 
 fun Context?.getInfoAboutDevice(): DeviceInputData {
@@ -131,4 +134,8 @@ fun View.showErrorMessage(domainErrors: DomainErrors) {
         }
         this.showSnackbar(message)
         Log.d(LOG_TAG, "Message $message")
+}
+
+fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T?) -> Unit) {
+    liveData.observe(this, Observer(body))
 }
