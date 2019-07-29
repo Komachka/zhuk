@@ -12,9 +12,19 @@ import androidx.appcompat.widget.Toolbar
 import androidx.navigation.Navigation
 import com.kstorozh.evozhuk.USER_ID_NOT_SET
 import java.util.*
+import android.widget.NumberPicker
+
+import android.content.res.Resources
+import android.util.Log
+
+
+
+
 
 class SpecificTimeAndDateFragment : Fragment() {
 
+
+    val TIME_PICKER_INTERVAL: Int = 15
     companion object Time {
         var year = 0
         var month = 0
@@ -39,10 +49,27 @@ class SpecificTimeAndDateFragment : Fragment() {
         val timePicker = fragment.findViewById<TimePicker>(R.id.timepicker)
 
         timePicker.setIs24HourView(true)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             timePicker.minute = minute
             timePicker.hour = hour
         }
+        */
+        setTimePickerInterval(timePicker)
+
+
+        if (minute % TIME_PICKER_INTERVAL != 0) {
+            val minuteFloor = minute + TIME_PICKER_INTERVAL - minute % TIME_PICKER_INTERVAL
+            minute = minuteFloor + if (minute == minuteFloor + 1) TIME_PICKER_INTERVAL else 0
+            if (minute >= 60) {
+                minute = minute % 60
+                hour++
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                timePicker.hour = hour
+                timePicker.minute = (minute / TIME_PICKER_INTERVAL)
+            }
+        }
+
         timePicker.setOnTimeChangedListener { timePicker, pickerHour, pickerMinute ->
             hour = pickerHour
             minute = pickerMinute
@@ -82,5 +109,29 @@ class SpecificTimeAndDateFragment : Fragment() {
         val calendar = GregorianCalendar(year, month, day, hour, minute, seconds)
         calendar.timeZone = TimeUtils.getCurrentTimeZone()
         return calendar.time.time
+    }
+
+
+    private fun setTimePickerInterval(timePicker: TimePicker) {
+        try {
+
+            val minutePicker = timePicker.findViewById(
+                Resources.getSystem().getIdentifier(
+                    "minute", "id", "android"
+                )
+            ) as NumberPicker
+            minutePicker.minValue = 0
+            minutePicker.maxValue = 60 / TIME_PICKER_INTERVAL - 1
+            val displayedValues = ArrayList<String>()
+            var i = 0
+            while (i < 60) {
+                displayedValues.add(String.format("%02d", i))
+                i += TIME_PICKER_INTERVAL
+            }
+            minutePicker.displayedValues = displayedValues.toTypedArray()
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Exception: $e")
+        }
+
     }
 }
