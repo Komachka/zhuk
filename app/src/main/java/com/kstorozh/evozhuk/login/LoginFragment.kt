@@ -14,6 +14,7 @@ import com.kstorozh.evozhuk.getInfoAboutDevice
 
 import com.kstorozh.evozhuk.showSnackbar
 import kotlinx.android.synthetic.main.fragment_login.view.*
+import kotlinx.android.synthetic.main.logo_and_info.view.*
 
 class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
 
@@ -34,16 +35,16 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
     ): View? {
 
         val fragment: View = inflater.inflate(R.layout.fragment_login, container, false)
-        fragment.findViewById<ImageView>(R.id.infoImageBut)
+        fragment.infoImageBut
             .setOnClickListener {
                 Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_infoFragment)
             }
 
-        fragment.findViewById<TextView>(R.id.deviceNameTv).text = context.getDeviceName()
-        loginBut = fragment.findViewById(R.id.goInBut)
-        loginEt = fragment.findViewById(R.id.loginEt) as AutoCompleteTextView
-        passEt = fragment.findViewById(R.id.passwordEt) as EditText
-        forgotPassTv = fragment.findViewById(R.id.forgotPassTv)
+        fragment.deviceNameTv.text = context.getDeviceName()
+        loginBut = fragment.goInBut
+        loginEt = fragment.loginEt as AutoCompleteTextView
+        passEt = fragment.passwordEt as EditText
+        forgotPassTv = fragment.forgotPassTv
         forgotPassTv.setOnClickListener { show() }
         model = ViewModelProviders.of(this)[LogInViewModel::class.java]
         subscribeNamesLiveData()

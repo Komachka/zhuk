@@ -13,6 +13,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.kstorozh.domainapi.model.DeviceInputData
 import com.kstorozh.evozhuk.*
+import kotlinx.android.synthetic.main.fragment_at_home.*
+import kotlinx.android.synthetic.main.fragment_at_home.view.*
 
 class HomeFragment : Fragment() {
 
@@ -26,15 +28,11 @@ class HomeFragment : Fragment() {
         model = ViewModelProviders.of(this)[HomeViewModel::class.java]
         Log.d(LOG_TAG, context.getInfoAboutDevice().toString())
         val info = context.getInfoAboutDevice()
-        val welcomeMessageTv = view.findViewById<TextView>(R.id.welcomeMessageTv)
-        welcomeMessageTv.text = info.model
+        view.welcomeMessageTv.text = info.model
 
         view.initDevice(info)
 
-
-
-        val button:Button = view.findViewById(R.id.initBut)
-        button.setOnClickListener{
+        view.initBut.setOnClickListener{
             view.initDevice(info)
         }
 

@@ -16,9 +16,8 @@ import android.widget.NumberPicker
 
 import android.content.res.Resources
 import android.util.Log
-
-
-
+import kotlinx.android.synthetic.main.fragment_specific_time_and_date.*
+import kotlinx.android.synthetic.main.fragment_specific_time_and_date.view.*
 
 
 class SpecificTimeAndDateFragment : Fragment() {
@@ -45,16 +44,12 @@ class SpecificTimeAndDateFragment : Fragment() {
         dateAndTimeNow.timeZone = TimeUtils.getCurrentTimeZone()
         initTimeObject(dateAndTimeNow)
 
-        val datePicker = fragment.findViewById<DatePicker>(R.id.datepicker)
-        val timePicker = fragment.findViewById<TimePicker>(R.id.timepicker)
+        //val datePicker = fragment.findViewById<DatePicker>(R.id.datePicker)
+        //val timePicker = fragment.findViewById<TimePicker>(R.id.timePicker)
 
-        timePicker.setIs24HourView(true)
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            timePicker.minute = minute
-            timePicker.hour = hour
-        }
-        */
-        setTimePickerInterval(timePicker)
+        fragment.timePicker.setIs24HourView(true)
+
+        setTimePickerInterval(fragment.timePicker)
 
 
         if (minute % TIME_PICKER_INTERVAL != 0) {
@@ -65,17 +60,17 @@ class SpecificTimeAndDateFragment : Fragment() {
                 hour++
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                timePicker.hour = hour
-                timePicker.minute = (minute / TIME_PICKER_INTERVAL)
+                fragment.timePicker.hour = hour
+                fragment.timePicker.minute = (minute / TIME_PICKER_INTERVAL)
             }
         }
 
-        timePicker.setOnTimeChangedListener { timePicker, pickerHour, pickerMinute ->
+        fragment.timePicker.setOnTimeChangedListener { timePicker, pickerHour, pickerMinute ->
             hour = pickerHour
             minute = pickerMinute
         }
 
-        datePicker.init(year, month, day) { datePicker, pickYear, pickMonth, pickDay ->
+        fragment.datePicker.init(year, month, day) { datePicker, pickYear, pickMonth, pickDay ->
             year = pickYear
             month = pickMonth
             day = pickDay

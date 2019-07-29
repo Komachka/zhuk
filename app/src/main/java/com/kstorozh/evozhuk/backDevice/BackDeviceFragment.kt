@@ -15,11 +15,13 @@ import java.text.SimpleDateFormat
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.hardware.usb.UsbDevice.getDeviceName
-import android.widget.ImageView
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.notifications.NotificationService
 import java.util.*
+import kotlinx.android.synthetic.main.fragment_back_device.*
+import kotlinx.android.synthetic.main.fragment_back_device.view.*
+import kotlinx.android.synthetic.main.logo_and_info.*
+import kotlinx.android.synthetic.main.logo_and_info.view.*
 
 class BackDeviceFragment : Fragment() {
 
@@ -32,25 +34,17 @@ class BackDeviceFragment : Fragment() {
     ): View? {
 
         val view: View = inflater.inflate(R.layout.fragment_back_device, container, false)
-        view.findViewById<ImageView>(R.id.infoImageBut)
-            .setOnClickListener {
+        view.infoImageBut.setOnClickListener {
                 Navigation.findNavController(view).navigate(BackDeviceFragmentDirections.actionBackDeviceFragmentToInfoFragment())
-            }
-
-        // val info = context.getInfoAboutDevice()
-        view.findViewById<TextView>(R.id.deviceNameTv).text = context.getDeviceName()
-
-        view.findViewById<TextView>(R.id.youTakeDeviceLabelTv).text =
-            "${resources.getString(R.string.youTableDeviceLabel)} ${context.getDeviceName()}"
-
-        val dateToBackTv: TextView = view.findViewById(R.id.dateToBack)
-        val giveBackBut: Button = view.findViewById(R.id.giveBackBut)
+        }
+        view.deviceNameTv.text = context.getDeviceName()
+        view.youTakeDeviceLabelTv.text = "${resources.getString(R.string.youTableDeviceLabel)} ${context.getDeviceName()}"
 
         modelBackDevice = ViewModelProviders.of(activity!!).get(BackDeviceViewModel::class.java)
         modelBackDevice.getSessionData().observe(this, Observer {
             it?.let {
                 val format = SimpleDateFormat(DATE_FORMAT_BACK_DEVICE_SCREEN_TV)
-                dateToBackTv.text = format.format(it.endData.time)
+                dateToBack.text = format.format(it.endData.time)
             }
         })
 
@@ -64,7 +58,7 @@ class BackDeviceFragment : Fragment() {
             modelBackDevice.setBookingSession(SessionData(userId, endCalendar))
         }
 
-        giveBackBut.setOnClickListener { view ->
+        view.giveBackBut.setOnClickListener { view ->
 
             modelBackDevice.tryReturnDevice().observe(this, Observer {
                 if (it) {
@@ -86,8 +80,6 @@ class BackDeviceFragment : Fragment() {
     }
 
     private fun stopForegroundService() {
-
-
         val serviceIntent = Intent(context, NotificationService::class.java)
         serviceIntent.putExtra(INTENT_STOP_FLAG, INTENT_STOP_FLAG)
         context!!.stopService(serviceIntent)

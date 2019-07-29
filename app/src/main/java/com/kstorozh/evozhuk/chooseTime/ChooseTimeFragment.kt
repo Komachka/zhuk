@@ -13,8 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -26,6 +24,8 @@ import com.kstorozh.evozhuk.notifications.CHANEL_ID
 import com.kstorozh.evozhuk.notifications.NotificationService
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlinx.android.synthetic.main.fragment_time_choose.view.*
+import kotlinx.android.synthetic.main.logo_and_info.view.*
 
 class ChooseTimeFragment : Fragment() {
 
@@ -43,13 +43,12 @@ class ChooseTimeFragment : Fragment() {
     ): View? {
 
         val view: View = inflater.inflate(R.layout.fragment_time_choose, container, false)
-        view.findViewById<ImageView>(R.id.infoImageBut)
-            .setOnClickListener {
+        view.infoImageBut.setOnClickListener {
                 Navigation.findNavController(view).navigate(ChooseTimeFragmentDirections.actionChooseTimeFragmentToInfoFragment())
             }
 
-        view.findViewById<TextView>(R.id.deviceNameTv).text = context.getDeviceName()
-        view.findViewById<TextView>(R.id.youTakeDeviceLabelTv).text =
+        view.deviceNameTv.text = context.getDeviceName()
+        view.youTakeDeviceLabelTv.text =
             "${resources.getString(R.string.time_choose_label)}${context.getDeviceName()}?"
 
         val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeSharedViewModel::class.java)
@@ -62,17 +61,15 @@ class ChooseTimeFragment : Fragment() {
             modelChooseTime.setUserId(userId)
         modelChooseTime.setCalendar(milisec)
 
-        val button: Button = view.findViewById(R.id.takeDevice)
-
         val buttonList = listOf<Button>(
-            view.findViewById(R.id.oneHourBut),
-            view.findViewById(R.id.twoHourBut),
-            (view.findViewById(R.id.fourHourBut) as Button).also {
+            view.oneHourBut,
+            view.twoHourBut,
+            (view.fourHourBut as Button).also {
                 selectedButton = it
             },
-            view.findViewById(R.id.allDayBut),
-            view.findViewById(R.id.twoDaysBut),
-            (view.findViewById(R.id.anotherTimeBut) as Button).also {
+            view.allDayBut,
+            view.twoDaysBut,
+            (view.anotherTimeBut as Button).also {
                 if (ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec != 0L) {
                     selectedButton?.let { it1 -> resetButton(it1) }
                     selectedButton = it
@@ -113,7 +110,7 @@ class ChooseTimeFragment : Fragment() {
             }
         }
 
-        button.setOnClickListener { view ->
+        view.takeDevice.setOnClickListener { view ->
             modelChooseTime.tryBookDevice().observe(this, androidx.lifecycle.Observer {
                 if (it == true) {
                     view.showSnackbar(resources.getString(R.string.device_booked_message))
