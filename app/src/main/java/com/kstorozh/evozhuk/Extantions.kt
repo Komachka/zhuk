@@ -11,6 +11,10 @@ import com.kstorozh.domainapi.model.DomainErrors
 import com.kstorozh.domainapi.model.ErrorStatus
 import java.text.DecimalFormat
 
+import android.os.StatFs
+
+
+
 fun Context?.getInfoAboutDevice(): DeviceInputData {
 
     val details = ("VERSION.RELEASE : " + Build.VERSION.RELEASE +
@@ -36,8 +40,8 @@ fun Context?.getInfoAboutDevice(): DeviceInputData {
             "\nUNKNOWN : " + Build.UNKNOWN +
             "\nUSER : " + Build.USER)
 
-    val memory = getMemoryInfo()
-    return DeviceInputData(Build.ID, "${Build.BRAND} ${Build.MODEL}", "android", Build.VERSION.SDK_INT.toString(), memory.first.toInt(), memory.second.toInt())
+    val memory = getFreeMemoryInfo()
+    return DeviceInputData(Build.ID, "${Build.BRAND} ${Build.MODEL}", "android", Build.VERSION.SDK_INT.toString(), this.getTotalMemoryInfo().toInt(), this.getTotalStorageInfo().toInt())
 }
 
 fun Context?.getDeviceName(): String {
@@ -50,21 +54,60 @@ fun Context?.getInfoPairs(): List<Pair<String, String>> {
     list.add("VERSION" to Build.VERSION.SDK_INT.toString()) // PUT to constants
     list.add("MODEL" to "${Build.BRAND} ${Build.MODEL}")
     list.add("ID" to Build.ID)
-    val memory = getMemoryInfo()
+    val freeMemory = getFreeMemoryInfo()
+    val totalMemory = getTotalMemoryInfo()
+    val freeStorage = getFreeStorageInfo()
+    val totalStorage = getTotalStorageInfo()
+
 
     val df = DecimalFormat("#.##")
-    list.add("MEMORY" to "${df.format(memory.first * 0.001)} Gb") // from Mg tu Gb
-    list.add("STORAGE" to "${df.format(memory.second * 0.001)} Gb") // from Mg tu Gb
+    list.add("MEMORY" to "${df.format(totalMemory * 0.001)} Gb") // from Mg tu Gb
+
+
+
+    list.add("STORAGE" to "${df.format(totalStorage * 0.001)} Gb") // from Mg tu Gb
     return list
 }
 
-private fun Context?.getMemoryInfo(): Pair<Long, Long> {
+private fun Context?.getTotalStorageInfo(): Long {
+    val stat = StatFs(this!!.getExternalFilesDir("")!!.path)
+    val bytesAvailable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        stat.blockSizeLong * stat.blockCountLong
+    } else {
+        stat.blockSize.toLong() * stat.blockCount.toLong()
+    }
+    return bytesAvailable / (1024 * 1024)
+}
+
+fun Context?.getFreeStorageInfo(): Long {
+    val stat = StatFs(this!!.getExternalFilesDir("")!!.path)
+    val bytesAvailable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        stat.blockSizeLong * stat.availableBlocksLong
+    } else {
+        stat.blockSize.toLong() * stat.availableBlocks.toLong()
+    }
+    return bytesAvailable / (1024 * 1024)
+
+}
+
+
+private fun Context?.getTotalMemoryInfo(): Long {
     val mi = ActivityManager.MemoryInfo()
     val activityManager = this!!.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
     activityManager.getMemoryInfo(mi)
     val availableMegs = mi.availMem / 0x100000L // MG
     val totalMegs = mi.totalMem / 0x100000L // MG
-    return availableMegs to totalMegs
+    return totalMegs
+}
+
+
+private fun Context?.getFreeMemoryInfo(): Long {
+    val mi = ActivityManager.MemoryInfo()
+    val activityManager = this!!.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    activityManager.getMemoryInfo(mi)
+    val availableMegs = mi.availMem / 0x100000L // MG
+    val totalMegs = mi.totalMem / 0x100000L // MG
+    return availableMegs
 }
 
 fun View.showSnackbar(textMessage: String, length: Int = Snackbar.LENGTH_LONG) {

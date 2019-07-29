@@ -30,10 +30,9 @@ internal class DeviceRepositoryImpl(
 
     override suspend fun deviceAlreadyInited(deviceParam: DeviceParam): Boolean {
 
-        initDevice(deviceParam)
+        initDevice(deviceParam) // TODO check why cashe is saved
         val device = mapper.mapDeviceData(deviceParam)
         val res = tokenRepository.getToken()?.let {true } ?: false
-
         return res
     }
 
@@ -101,7 +100,8 @@ internal class DeviceRepositoryImpl(
 
     override suspend fun returnDevice(bookingParam: BookingParam): Boolean {
         val device = localData.getDeviceInfo()
-        return when (val result = remoteData.returnDevice(mapper.mapBookingParamForReturn(bookingParam, device.id))) {
+        val deviceId =  tokenRepository.getToken()
+        return when (val result = remoteData.returnDevice(mapper.mapBookingParamForReturn(bookingParam, deviceId!!))) {
             is ApiResult.Success -> {
                 localData.deleteBookingInfo()
                 true
