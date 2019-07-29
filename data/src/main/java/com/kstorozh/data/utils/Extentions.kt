@@ -10,8 +10,14 @@ import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.dataimpl.ErrorStatus
 import com.kstorozh.dataimpl.MyError
+import okhttp3.ResponseBody
 import retrofit2.Response
 import java.lang.Exception
+import com.google.gson.GsonBuilder
+import com.google.gson.Gson
+import com.kstorozh.data.models.ApiErrorBodyWithMessage
+import com.kstorozh.data.models.ApiErrorWithField
+
 
 internal fun Response<*>.getErrorStatus(endpoint: Endpoints): ErrorStatus {
     Log.d(LOG_TAG, endpoint.toString())
@@ -82,7 +88,42 @@ internal fun getError(errorStatus: ErrorStatus,exception: Exception): MyError {
 internal fun createError(endpoints: Endpoints, result: ApiResult.Error<*>): MyError {
     Log.d(LOG_TAG, result.errorResponse!!.errorBody()!!.string())
 
+   // val message = parseMessage(result.errorResponse!!)
+   // Log.d(LOG_TAG, "Message $message")
     val errorStatus = result.errorResponse!!.getErrorStatus(endpoints)
     val exception = result.exception
     return getError(errorStatus, exception)
 }
+
+fun parseMessage(errorResponse: Response<out Any>): String {
+
+
+    val gson = Gson()
+    var message:String
+    Log.d(LOG_TAG, errorResponse.code().toString())
+    when(errorResponse.code())
+    {
+
+        422 -> {
+            Log.d(LOG_TAG, errorResponse.errorBody()!!.string())
+            message = gson.fromJson(errorResponse.errorBody()!!.string(), ApiErrorWithField::class.java).toString()
+        }
+        401 -> {
+            Log.d(LOG_TAG, errorResponse.errorBody()!!.string())
+            message = gson.fromJson(errorResponse.errorBody()!!.string(), ApiErrorBodyWithMessage::class.java).toString()
+        }
+        400 -> {
+            Log.d(LOG_TAG, errorResponse.errorBody()!!.string())
+             val tmp = gson.fromJson(errorResponse.errorBody()!!.charStream(), ApiErrorBodyWithMessage::class.java)
+            message = "ff"
+            tmp?.let {
+               message = tmp.toString()
+            }
+        }
+        else -> message = "another status code ${errorResponse.code()}"
+    }
+    return message
+
+}
+
+

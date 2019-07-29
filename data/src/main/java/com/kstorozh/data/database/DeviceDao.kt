@@ -10,7 +10,7 @@ internal interface DeviceDao {
     @Query("SELECT * FROM $DEVICE_INFO_TABLE_NAME LIMIT 1")
     suspend fun getDeviceInfo(): Device
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDevice(device: Device): Long
 
     @Update

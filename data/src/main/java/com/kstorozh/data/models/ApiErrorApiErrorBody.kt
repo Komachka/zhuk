@@ -6,16 +6,16 @@ import com.google.gson.annotations.SerializedName
 internal abstract class ApiErrorBody
 internal data class ApiErrorWithField(
 
-    @SerializedName("errors")
-    @Expose
+
     val errors: Errors
 )
 
-internal data class ApiErrorBodyWithMessage(
+class ApiErrorBodyWithMessage {
 
-    @SerializedName("msg")
+    @SerializedName("errors")
     @Expose
-    val msg: String
-)
+    var errors: String? = null
+
+}
 
 internal data class ApiErrorBodyUnexpected(val message: String) : ApiErrorBody()

@@ -30,16 +30,17 @@ internal class DeviceRepositoryImpl(
 
     override suspend fun deviceAlreadyInited(deviceParam: DeviceParam): Boolean {
 
+        initDevice(deviceParam)
         val device = mapper.mapDeviceData(deviceParam)
-        val res = tokenRepository.getToken()?.let { true } ?: false
-        //Log.d(LOG_TAG, "is device inited in DeviceRepositoryImpl -  ${tokenRepository.getToken()}")
+        val res = tokenRepository.getToken()?.let {true } ?: false
+
         return res
     }
 
     override suspend fun getBookingSession(): BookingSessionData? {
         val device = localData.getDeviceInfo()
-        Log.d(LOG_TAG, "getBookingSession() $device")
-        val booking = localData.getBookingByDeviceId(device.id)
+        val deviceId =  tokenRepository.getToken()
+        val booking = localData.getBookingByDeviceId(deviceId!!)
         return if (booking != null) { BookingSessionData(booking.userId, booking.endDate) } else null
     }
 
@@ -49,6 +50,7 @@ internal class DeviceRepositoryImpl(
         return when (val result = remoteData.initDevice(device)) {
             is ApiResult.Success -> {
                 device.id = result.data.data.deviceId.toString()
+                Log.d(LOG_TAG, "device id ${device.id}")
                 localData.insertDevice(device)
                 tokenRepository.setToken(device.id)
                 true
@@ -77,11 +79,12 @@ internal class DeviceRepositoryImpl(
 
     override suspend fun takeDevice(bookingParam: BookingParam): Boolean {
 
-        val device = localData.getDeviceInfo()
-        val bookingBody = mapper.mapBookingDeviceInfo(bookingParam, device.id)
+        //val device = localData.getDeviceInfo()
+        val deviceId =  tokenRepository.getToken()
+        val bookingBody = mapper.mapBookingDeviceInfo(bookingParam, deviceId!!)
         return when (val result = remoteData.takeDevise(
             bookingBody,
-            device.id
+            deviceId
         )) {
             is ApiResult.Success -> {
                 localData.saveBooking(bookingBody)

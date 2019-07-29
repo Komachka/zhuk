@@ -29,14 +29,13 @@ class HomeFragment : Fragment() {
         val welcomeMessageTv = view.findViewById<TextView>(R.id.welcomeMessageTv)
         welcomeMessageTv.text = info.model
 
-        view.initDevice(info)
+        //view.initDevice(info)
 
 
         val button:Button = view.findViewById(R.id.initBut)
         button.setOnClickListener{
             view.initDevice(info)
         }
-
 
         return view
     }
