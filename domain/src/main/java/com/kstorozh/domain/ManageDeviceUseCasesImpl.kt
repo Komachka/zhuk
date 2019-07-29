@@ -31,7 +31,6 @@ class ManageDeviceUseCasesImpl(private val repository: DeviseRepository, val map
 
         val startDate = Calendar.getInstance()
         val res = repository.takeDevice(mapper.mapBookingParam(bookingParam, startDate))
-        Log.d("MainActivity", "is device taken $res")
         return res
     }
 

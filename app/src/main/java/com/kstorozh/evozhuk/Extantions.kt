@@ -73,8 +73,8 @@ fun View.showSnackbar(textMessage: String, length: Int = Snackbar.LENGTH_LONG) {
 }
 
 fun View.showErrorMessage(domainErrors: DomainErrors) {
-    if (domainErrors.message.isNullOrEmpty()) {
-        val message = when (domainErrors.errorStatus) {
+    Log.d(LOG_TAG, "status error " + domainErrors.errorStatus!!.name)
+    val message = when (domainErrors.errorStatus) {
             ErrorStatus.INVALID_PASSWORD -> resources.getString(R.string.invalid_pass_error_message)
             ErrorStatus.INVALID_LOGIN -> resources.getString(R.string.invalid_login_error_message)
             ErrorStatus.UNAUTHORIZED -> resources.getString(R.string.device_is_not_authorized_error_message)
@@ -84,12 +84,8 @@ fun View.showErrorMessage(domainErrors: DomainErrors) {
             ErrorStatus.CAN_NOT_RETURN_DEVICE -> resources.getString(R.string.can_not_return_error_message)
             ErrorStatus.CAN_NOT_GET_USERS -> resources.getString(R.string.can_not_get_users_error_message)
             ErrorStatus.CAN_NOT_REMIND_PIN -> resources.getString(R.string.can_not_remind_pin_error_message)
-            else -> resources.getString(R.string.unexpected_error_message) + " " + domainErrors.throwable.message
+            else -> resources.getString(R.string.unexpected_error_message)
         }
         this.showSnackbar(message)
         Log.d(LOG_TAG, "Message $message")
-    } else {
-        this.showSnackbar(domainErrors.message)
-        Log.d(LOG_TAG, "Domain message ${domainErrors.message}")
-    }
 }

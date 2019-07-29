@@ -9,13 +9,13 @@ internal data class ApiErrorWithField(
     @SerializedName("errors")
     @Expose
     val errors: Errors
-) : ApiErrorBody()
+)
 
 internal data class ApiErrorBodyWithMessage(
 
     @SerializedName("msg")
     @Expose
     val msg: String
-) : ApiErrorBody()
+)
 
 internal data class ApiErrorBodyUnexpected(val message: String) : ApiErrorBody()

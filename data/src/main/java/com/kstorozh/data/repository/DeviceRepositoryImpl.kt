@@ -20,7 +20,7 @@ internal class DeviceRepositoryImpl(
     private val remoteData: RemoteData,
     private val mapper: DeviceDataMapper,
     private val tokenRepository: TokenRepository
-) : DeviseRepository, KoinComponent {
+) : DeviseRepository {
 
     private val myError: MutableLiveData<MyError> = MutableLiveData()
 
@@ -32,7 +32,7 @@ internal class DeviceRepositoryImpl(
 
         val device = mapper.mapDeviceData(deviceParam)
         val res = tokenRepository.getToken()?.let { true } ?: false
-        Log.d(LOG_TAG, "is device inited in DeviceRepositoryImpl -  ${tokenRepository.getToken()}")
+        //Log.d(LOG_TAG, "is device inited in DeviceRepositoryImpl -  ${tokenRepository.getToken()}")
         return res
     }
 
@@ -54,7 +54,7 @@ internal class DeviceRepositoryImpl(
                 true
             }
             is ApiResult.Error<*> -> {
-                myError.postValue(createError(Endpoints.INIT_DEVICE, result, this))
+                myError.postValue(createError(Endpoints.INIT_DEVICE, result))
                 false
             }
         }
@@ -69,7 +69,7 @@ internal class DeviceRepositoryImpl(
                 true
             }
             is ApiResult.Error<*> -> {
-                myError.postValue(createError(Endpoints.UPDATE_DEVICE, result, this))
+                myError.postValue(createError(Endpoints.UPDATE_DEVICE, result))
                 false
             }
         }
@@ -89,7 +89,8 @@ internal class DeviceRepositoryImpl(
                 true
             }
             is ApiResult.Error<*> -> {
-                myError.postValue(createError(Endpoints.TAKE_DEVICE, result, this))
+                Log.d(LOG_TAG, "Taking device." + result.errorResponse!!.code())
+                myError.postValue(createError(Endpoints.TAKE_DEVICE, result))
                 false
             }
         }
@@ -103,7 +104,7 @@ internal class DeviceRepositoryImpl(
                 true
             }
             is ApiResult.Error<*> -> {
-                myError.postValue(createError(Endpoints.RETURN_DEVICE, result, this))
+                myError.postValue(createError(Endpoints.RETURN_DEVICE, result))
                 false
             }
         }

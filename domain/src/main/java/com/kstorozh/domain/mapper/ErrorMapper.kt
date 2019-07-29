@@ -6,6 +6,6 @@ import com.kstorozh.domainapi.model.ErrorStatus
 
 class ErrorMapper {
     fun mapToDomainError(error: MyError): DomainErrors {
-        return DomainErrors(ErrorStatus.valueOf(error.errorStatus.toString()), error.message, error.throwable)
+        return DomainErrors(ErrorStatus.valueOf(error.errorStatus.toString()), error.throwable)
     }
 }

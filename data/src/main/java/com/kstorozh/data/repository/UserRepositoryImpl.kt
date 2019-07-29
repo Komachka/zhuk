@@ -16,7 +16,7 @@ internal class UserRepositoryImpl(
     private val remoteData: RemoteData,
     private val mapper: UserDataMapper,
     private val users: ArrayList<SlackUser>
-) : UserRepository, KoinComponent {
+) : UserRepository {
 
     private val myError: MutableLiveData<MyError> = MutableLiveData()
 
@@ -28,7 +28,7 @@ internal class UserRepositoryImpl(
             }
             is ApiResult.Error<*> -> {
 
-                myError.postValue(createError(Endpoints.LOGIN, result, this))
+                myError.postValue(createError(Endpoints.LOGIN, result))
                 Log.d(LOG_TAG, "My error $myError")
                 null
             }
@@ -44,7 +44,7 @@ internal class UserRepositoryImpl(
                 users.addAll(mapper.mapSlackUserList(result.data.users))
             }
             is ApiResult.Error<*> -> {
-                myError.postValue(createError(Endpoints.GET_USERS, result, this))
+                myError.postValue(createError(Endpoints.GET_USERS, result))
             }
         }
         return users
@@ -57,7 +57,7 @@ internal class UserRepositoryImpl(
                 true
             }
             is ApiResult.Error<*> -> {
-                myError.postValue(createError(Endpoints.REMIND_PIN, result, this))
+                myError.postValue(createError(Endpoints.REMIND_PIN, result))
                 false
             }
         }

@@ -26,11 +26,13 @@ class DeviceInfoMapper {
     @SuppressLint("SimpleDateFormat")
     fun mapBookingParam(bookingInputData: BookingInputData, startDate: Calendar? = null): BookingParam {
 
-        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        //2019-07-28T16:43:00+03:00
+        //val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+03:00'") // TODO change to jodatime
         return BookingParam(
             bookingInputData.userId,
-            startDate?.let { format.format(startDate.time) } ?: "2019-07-07 00:00:00",
-            bookingInputData.endDate?.let { format.format(bookingInputData.endDate!!.time) } ?: "2019-07-07 00:00:00"
+            startDate?.let { format.format(startDate.time) } ?: "2019-07-07T00:00:00+03:00",
+            bookingInputData.endDate?.let { format.format(bookingInputData.endDate!!.time) } ?: "2019-07-07T00:00:00+03:00"
         )
     }
 
