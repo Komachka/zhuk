@@ -42,13 +42,17 @@ class NotificationService : IntentService("Hello intent service") {
                 .setContentTitle(resources.getString(R.string.you_need_to_back_device_in_next_notif_message))
                 .setContentText(hms)
                 .setSmallIcon(R.drawable.ic_timer_black_24dp)
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                //.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setOngoing(false)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(hms)
                     .setBigContentTitle(resources.getString(R.string.you_need_to_back_device_in_next_notif_message))
                 )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             builder.color = Color.RED
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN &&
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            builder.priority = NotificationCompat.PRIORITY_LOW
+        }
 
         return builder
     }

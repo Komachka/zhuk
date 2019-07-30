@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.LayoutInflater
@@ -165,10 +166,15 @@ class ChooseTimeFragment : Fragment() {
         val builder = NotificationCompat.Builder(context!!, CHANEL_ID)
             .setContentTitle(resources.getString(R.string.dont_forget_notification_title))
             .setContentText("${resources.getString(R.string.time_is_up_notification_title)} ${format.format(endTime.time)}")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+            .setSmallIcon(R.drawable.alarm_clock)
+            //.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
             .setColor(color)
             .setAutoCancel(false)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN &&
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            builder.priority = NotificationCompat.PRIORITY_LOW
+        }
+
         val intent = Intent(context, MainActivity::class.java)
 
         val pendingIntentActivity = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT)
