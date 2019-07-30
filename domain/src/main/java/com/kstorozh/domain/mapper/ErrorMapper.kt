@@ -8,13 +8,17 @@ import java.lang.Exception
 
 class ErrorMapper {
 
-    fun mapToDomainError(error: DataError): DomainErrors {
-        var status: ErrorStatus? = null
-        try {
-            status = ErrorStatus.valueOf(error.errorStatus.toString())
-        }
-        catch (e:Exception)
-        {}
+    fun mapToDomainError(error: DataError?): DomainErrors {
+        error?.let {
+            var status: ErrorStatus? = null
+            try {
+                status = ErrorStatus.valueOf(error.errorStatus.toString())
+            }
+            catch (e:Exception)
+            {}
             return DomainErrors(status, error.throwable)
+        }
+        return DomainErrors()
+
     }
 }
