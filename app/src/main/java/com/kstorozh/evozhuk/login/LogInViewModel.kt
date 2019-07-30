@@ -71,7 +71,7 @@ class LogInViewModel : ViewModel(), KoinComponent {
     fun isDeviceBooked(deviceInputData: DeviceInputData): LiveData<Boolean> {
         return liveData {
             val result = initDeviceUseCases.getSession()
-            if (result != null)
+            if (result.data != null)
                 emit(true)
             else
                 emit(false)
