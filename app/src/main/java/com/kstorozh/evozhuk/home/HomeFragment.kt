@@ -25,8 +25,6 @@ class HomeFragment : Fragment() {
         view.welcomeMessageTv.text = info.model
         observe(model.isDeviceInited(info), {
             if (it) {
-                val message = resources.getString(R.string.device_registered_message)
-                view.showSnackbar(message)
                 Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_loginFragment)
             }
         })

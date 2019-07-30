@@ -22,6 +22,7 @@ internal const val LOGIN_URL = "/api/login"
 
 //internal const val BASE_URL = "http://wh.evo.dev"
 internal const val BASE_URL = "https://aca21b89.ngrok.io"
+
 internal const val ERROR_STATUS_CODE = 422
 internal const val UNAUTHORIZED_STATUS_CODE = 401
 internal const val NOT_FOUND_STATUS_CODE = 400

@@ -135,9 +135,9 @@ class ChooseTimeFragment : Fragment() {
     }
 
     private fun startForegroundServiceNotification(millisec: Long) {
-        val serviceIntent = Intent(context, NotificationService::class.java)
+        val serviceIntent = Intent(context?.applicationContext, NotificationService::class.java)
         serviceIntent.putExtra(INTENT_DATA_MILISEC, millisec)
-        context!!.startService(serviceIntent)
+        context?.startService(serviceIntent)
     }
 
     fun Context.startScheduleNotification(endTime: Calendar) {
@@ -149,13 +149,13 @@ class ChooseTimeFragment : Fragment() {
         var delay: Long = if (deltaTime.timeInMillis < currentTime.timeInMillis) 1000L else deltaTime.timeInMillis - currentTime.timeInMillis
         val notificationId = 1
         val notification = createNotification(endTime, notificationId)
-        val notificationIntentBroadcast = Intent(context, MyNotificationPublisher::class.java)
+        val notificationIntentBroadcast = Intent(context?.applicationContext, MyNotificationPublisher::class.java)
         notificationIntentBroadcast.putExtra(MyNotificationPublisher.NOTIFICATION_ID, notificationId)
         notificationIntentBroadcast.putExtra(MyNotificationPublisher.NOTIFICATION, notification)
         val pendingIntent =
-            PendingIntent.getBroadcast(context, notificationId, notificationIntentBroadcast, PendingIntent.FLAG_CANCEL_CURRENT)
+            PendingIntent.getBroadcast(context?.applicationContext, notificationId, notificationIntentBroadcast, PendingIntent.FLAG_CANCEL_CURRENT)
         val futureInMillis = SystemClock.elapsedRealtime() + delay
-        val alarmManager = context!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
     }
 

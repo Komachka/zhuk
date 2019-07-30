@@ -19,11 +19,7 @@ class NotificationService : IntentService("Hello intent service") {
     override fun onHandleIntent(intent: Intent?) {
 
         Log.d(LOG_TAG, "on handle service")
-        val endTime = intent!!.getLongExtra(INTENT_DATA_MILISEC, 0)
-        val stopFlag = intent!!.getStringExtra(INTENT_STOP_FLAG)
-        if (stopFlag != null && stopFlag == INTENT_STOP_FLAG) {
-            STOP_SERVICE_FLAG = stopFlag
-        }
+        val endTime = intent?.getLongExtra(INTENT_DATA_MILISEC, 0)?:0
         val notificationId = 2
         val intent = Intent(this, MainActivity::class.java)
         val activity = PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT)
@@ -42,7 +38,6 @@ class NotificationService : IntentService("Hello intent service") {
                 .setContentTitle(resources.getString(R.string.you_need_to_back_device_in_next_notif_message))
                 .setContentText(hms)
                 .setSmallIcon(R.drawable.ic_timer_black_24dp)
-                //.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setOngoing(false)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(hms)
                     .setBigContentTitle(resources.getString(R.string.you_need_to_back_device_in_next_notif_message))
@@ -68,7 +63,6 @@ class NotificationService : IntentService("Hello intent service") {
                     Thread.sleep(1000)
                     val millis = endTime - System.currentTimeMillis()
                     val hms = createFormattedDateString(millis)
-                    // Log.d(LOG_TAG, millis.toString())
                     builder.setContentText(hms)
                     builder.setStyle(NotificationCompat.BigTextStyle().bigText(hms).setBigContentTitle(resources.getString(R.string.you_need_to_back_device_in_next_notif_message)))
                     startForeground(notificationId, builder.build())
