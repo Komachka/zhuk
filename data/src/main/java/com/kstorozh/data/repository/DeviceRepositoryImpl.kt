@@ -29,10 +29,7 @@ internal class DeviceRepositoryImpl(
     }
 
     override suspend fun deviceAlreadyInited(deviceParam: DeviceParam): Boolean {
-        val device = mapper.mapDeviceData(deviceParam)
         val res = tokenRepository.getToken()?.let { true } ?: false
-        Log.d(LOG_TAG, "deviceAlreadyInited $res")
-        if (res) Log.d(LOG_TAG, "token ${tokenRepository.getToken()}")
         return res
     }
 
