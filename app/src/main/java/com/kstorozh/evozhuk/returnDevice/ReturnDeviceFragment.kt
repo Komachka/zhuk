@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import com.kstorozh.evozhuk.R
 
 import android.os.Handler
-import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import com.kstorozh.evozhuk.getDeviceName
+import kotlinx.android.synthetic.main.logo_and_info.view.*
 
 const val TIME_TO_WAIT = 10000L // 10 sec
 const val BATTERY_LEVEL_TO_CHARGE = 50
@@ -24,7 +24,7 @@ class ReturnDeviceFragment : Fragment(), BatteryLevelCheck {
     ): View? {
 
         val fragment = inflater.inflate(R.layout.fragment_return_device, container, false)
-        fragment.findViewById<TextView>(R.id.deviceNameTv).text = context.getDeviceName()
+        fragment.deviceNameTv.text = context.getDeviceName()
         fragment.manageBatteryCharge()
 
         Handler().postDelayed({

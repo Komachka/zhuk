@@ -6,25 +6,21 @@ import androidx.fragment.app.Fragment
 import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import com.kstorozh.evozhuk.R
 import androidx.lifecycle.ViewModelProviders
 import android.widget.EditText
-import com.kstorozh.evozhuk.getDeviceName
-import com.kstorozh.evozhuk.getInfoAboutDevice
+import com.kstorozh.evozhuk.*
+import kotlinx.android.synthetic.main.fragment_back_device.*
 
-import com.kstorozh.evozhuk.showSnackbar
 import kotlinx.android.synthetic.main.fragment_login.view.*
+import kotlinx.android.synthetic.main.logo_and_info.view.*
 
 class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
-
-    // TODO move it inside method
 
     lateinit var model: LogInViewModel
     lateinit var loginBut: Button
     lateinit var loginEt: AutoCompleteTextView
     lateinit var passEt: EditText
     lateinit var forgotPassTv: TextView
-
     lateinit var userNames: ArrayList<String>
 
     override fun onCreateView(
@@ -34,22 +30,23 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
     ): View? {
 
         val fragment: View = inflater.inflate(R.layout.fragment_login, container, false)
-        fragment.findViewById<ImageView>(R.id.infoImageBut)
+        fragment.infoImageBut
             .setOnClickListener {
-                Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_infoFragment)
+                Navigation.findNavController(fragment).navigate(LoginFragmentDirections.actionLoginFragmentToInfoFragment())
             }
 
-        fragment.findViewById<TextView>(R.id.deviceNameTv).text = context.getDeviceName()
-        loginBut = fragment.findViewById(R.id.goInBut)
-        loginEt = fragment.findViewById(R.id.loginEt) as AutoCompleteTextView
-        passEt = fragment.findViewById(R.id.passwordEt) as EditText
-        forgotPassTv = fragment.findViewById(R.id.forgotPassTv)
+        fragment.deviceNameTv.text = context.getDeviceName()
+        loginBut = fragment.goInBut
+        loginEt = fragment.loginEt as AutoCompleteTextView
+        passEt = fragment.passwordEt as EditText
+        forgotPassTv = fragment.forgotPassTv
         forgotPassTv.setOnClickListener { show() }
         model = ViewModelProviders.of(this)[LogInViewModel::class.java]
         subscribeNamesLiveData()
 
-        model.isDeviceBooked(context.getInfoAboutDevice()).observe(this, Observer {
-            if (it) Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_backDeviceFragment)
+        observe(model.isDeviceBooked(context.getInfoAboutDevice()), {
+            if (it)
+                Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_backDeviceFragment)
         })
 
         loginBut.setOnClickListener { view ->

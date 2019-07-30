@@ -6,15 +6,13 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -26,6 +24,8 @@ import com.kstorozh.evozhuk.notifications.CHANEL_ID
 import com.kstorozh.evozhuk.notifications.NotificationService
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlinx.android.synthetic.main.fragment_time_choose.view.*
+import kotlinx.android.synthetic.main.logo_and_info.view.*
 
 class ChooseTimeFragment : Fragment() {
 
@@ -43,36 +43,33 @@ class ChooseTimeFragment : Fragment() {
     ): View? {
 
         val view: View = inflater.inflate(R.layout.fragment_time_choose, container, false)
-        view.findViewById<ImageView>(R.id.infoImageBut)
-            .setOnClickListener {
+        view.infoImageBut.setOnClickListener {
                 Navigation.findNavController(view).navigate(ChooseTimeFragmentDirections.actionChooseTimeFragmentToInfoFragment())
             }
 
-        view.findViewById<TextView>(R.id.deviceNameTv).text = context.getDeviceName()
-        view.findViewById<TextView>(R.id.youTakeDeviceLabelTv).text =
+        view.deviceNameTv.text = context.getDeviceName()
+        view.youTakeDeviceLabelTv.text =
             "${resources.getString(R.string.time_choose_label)}${context.getDeviceName()}?"
 
         val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeSharedViewModel::class.java)
         var milisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
         if (milisec == 0L)
-            milisec = TimeUtils.setHours(4)
+            milisec = TimeUtils.setHours(1)
 
         val userId = ChooseTimeFragmentArgs.fromBundle(arguments!!).userId
         if (userId != USER_ID_NOT_SET)
             modelChooseTime.setUserId(userId)
         modelChooseTime.setCalendar(milisec)
 
-        val button: Button = view.findViewById(R.id.takeDevice)
-
         val buttonList = listOf<Button>(
-            view.findViewById(R.id.oneHourBut),
-            view.findViewById(R.id.twoHourBut),
-            (view.findViewById(R.id.fourHourBut) as Button).also {
+            view.oneHourBut.also {
                 selectedButton = it
             },
-            view.findViewById(R.id.allDayBut),
-            view.findViewById(R.id.twoDaysBut),
-            (view.findViewById(R.id.anotherTimeBut) as Button).also {
+            view.twoHourBut,
+            view.fourHourBut,
+            view.allDayBut,
+            view.twoDaysBut,
+            (view.anotherTimeBut as Button).also {
                 if (ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec != 0L) {
                     selectedButton?.let { it1 -> resetButton(it1) }
                     selectedButton = it
@@ -80,10 +77,10 @@ class ChooseTimeFragment : Fragment() {
             }
         )
 
-        buttonList.forEach {
-            it.setOnClickListener {
+        buttonList.forEach { button ->
+            button.setOnClickListener {
                 (it as Button).setBackgroundResource(R.drawable.time_but_pressed)
-                it.setTextColor(getResources().getColor(R.color.but_time_focus))
+                it.setTextColor(resources.getColor(R.color.but_time_focus))
                 selectedButton?.let {
                     resetButton(it)
                 }
@@ -95,10 +92,10 @@ class ChooseTimeFragment : Fragment() {
                         R.id.twoDaysBut -> TimeUtils.setHours(48)
                         R.id.allDayBut ->
                         {
-                            val currenTime = GregorianCalendar.getInstance()
-                            val mCalendar = GregorianCalendar(currenTime.get(Calendar.YEAR),
-                                currenTime.get(Calendar.MONTH),
-                                currenTime.get(Calendar.DAY_OF_MONTH), 19, 0, 0)
+                            val currentTime = GregorianCalendar.getInstance()
+                            val mCalendar = GregorianCalendar(currentTime.get(Calendar.YEAR),
+                                currentTime.get(Calendar.MONTH),
+                                currentTime.get(Calendar.DAY_OF_MONTH), 19, 0, 0)
                             mCalendar.timeZone = TimeUtils.getCurrentTimeZone()
                             mCalendar.timeInMillis
                         }
@@ -113,7 +110,7 @@ class ChooseTimeFragment : Fragment() {
             }
         }
 
-        button.setOnClickListener { view ->
+        view.takeDevice.setOnClickListener { view ->
             modelChooseTime.tryBookDevice().observe(this, androidx.lifecycle.Observer {
                 if (it == true) {
                     view.showSnackbar(resources.getString(R.string.device_booked_message))
@@ -147,12 +144,9 @@ class ChooseTimeFragment : Fragment() {
 
         val deltaTime = GregorianCalendar.getInstance()
         deltaTime.timeInMillis = endTime.timeInMillis
-        deltaTime.set(Calendar.MINUTE, -10)
-
-        Log.d(LOG_TAG, " System.currentTimeMillis() ${System.currentTimeMillis()}  deltaTime.timeInMillis ${deltaTime.timeInMillis}")
-        var delay: Long = if (deltaTime.timeInMillis < System.currentTimeMillis())1000L else deltaTime.timeInMillis - System.currentTimeMillis()
-
-        Log.d(LOG_TAG, "delay $delay")
+        deltaTime.add(Calendar.MINUTE, -10)
+        val currentTime = GregorianCalendar.getInstance()
+        var delay: Long = if (deltaTime.timeInMillis < currentTime.timeInMillis) 1000L else deltaTime.timeInMillis - currentTime.timeInMillis
         val notificationId = 1
         val notification = createNotification(endTime, notificationId)
         val notificationIntentBroadcast = Intent(context, MyNotificationPublisher::class.java)
@@ -172,10 +166,15 @@ class ChooseTimeFragment : Fragment() {
         val builder = NotificationCompat.Builder(context!!, CHANEL_ID)
             .setContentTitle(resources.getString(R.string.dont_forget_notification_title))
             .setContentText("${resources.getString(R.string.time_is_up_notification_title)} ${format.format(endTime.time)}")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+            .setSmallIcon(R.drawable.alarm_clock)
+            //.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
             .setColor(color)
             .setAutoCancel(false)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN &&
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            builder.priority = NotificationCompat.PRIORITY_LOW
+        }
+
         val intent = Intent(context, MainActivity::class.java)
 
         val pendingIntentActivity = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT)

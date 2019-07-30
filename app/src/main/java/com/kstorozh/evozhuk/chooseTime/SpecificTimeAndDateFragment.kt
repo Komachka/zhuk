@@ -3,7 +3,6 @@ package com.kstorozh.evozhuk.chooseTime
 import android.os.Build
 import android.os.Bundle
 import android.view.*
-import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.fragment.app.Fragment
 import com.kstorozh.evozhuk.R
@@ -12,9 +11,16 @@ import androidx.appcompat.widget.Toolbar
 import androidx.navigation.Navigation
 import com.kstorozh.evozhuk.USER_ID_NOT_SET
 import java.util.*
+import android.widget.NumberPicker
+
+import android.content.res.Resources
+import android.util.Log
+import kotlinx.android.synthetic.main.fragment_specific_time_and_date.*
+import kotlinx.android.synthetic.main.fragment_specific_time_and_date.view.*
 
 class SpecificTimeAndDateFragment : Fragment() {
 
+    val TIME_PICKER_INTERVAL: Int = 15
     companion object Time {
         var year = 0
         var month = 0
@@ -34,21 +40,28 @@ class SpecificTimeAndDateFragment : Fragment() {
         val dateAndTimeNow = Calendar.getInstance()
         dateAndTimeNow.timeZone = TimeUtils.getCurrentTimeZone()
         initTimeObject(dateAndTimeNow)
+        fragment.timePicker.setIs24HourView(true)
+        setTimePickerInterval(fragment.timePicker)
 
-        val datePicker = fragment.findViewById<DatePicker>(R.id.datepicker)
-        val timePicker = fragment.findViewById<TimePicker>(R.id.timepicker)
-
-        timePicker.setIs24HourView(true)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            timePicker.minute = minute
-            timePicker.hour = hour
+        if (minute % TIME_PICKER_INTERVAL != 0) {
+            val minuteFloor = minute + TIME_PICKER_INTERVAL - minute % TIME_PICKER_INTERVAL
+            minute = minuteFloor + if (minute == minuteFloor + 1) TIME_PICKER_INTERVAL else 0
+            if (minute >= 60) {
+                minute = minute % 60
+                hour++
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                fragment.timePicker.hour = hour
+                fragment.timePicker.minute = (minute / TIME_PICKER_INTERVAL)
+            }
         }
-        timePicker.setOnTimeChangedListener { timePicker, pickerHour, pickerMinute ->
+
+        fragment.timePicker.setOnTimeChangedListener { timePicker, pickerHour, pickerMinute ->
             hour = pickerHour
             minute = pickerMinute
         }
 
-        datePicker.init(year, month, day) { datePicker, pickYear, pickMonth, pickDay ->
+        fragment.datePicker.init(year, month, day) { datePicker, pickYear, pickMonth, pickDay ->
             year = pickYear
             month = pickMonth
             day = pickDay
@@ -82,5 +95,27 @@ class SpecificTimeAndDateFragment : Fragment() {
         val calendar = GregorianCalendar(year, month, day, hour, minute, seconds)
         calendar.timeZone = TimeUtils.getCurrentTimeZone()
         return calendar.time.time
+    }
+
+    private fun setTimePickerInterval(timePicker: TimePicker) {
+        try {
+
+            val minutePicker = timePicker.findViewById(
+                Resources.getSystem().getIdentifier(
+                    "minute", "id", "android"
+                )
+            ) as NumberPicker
+            minutePicker.minValue = 0
+            minutePicker.maxValue = 60 / TIME_PICKER_INTERVAL - 1
+            val displayedValues = ArrayList<String>()
+            var i = 0
+            while (i < 60) {
+                displayedValues.add(String.format("%02d", i))
+                i += TIME_PICKER_INTERVAL
+            }
+            minutePicker.displayedValues = displayedValues.toTypedArray()
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Exception: $e")
+        }
     }
 }

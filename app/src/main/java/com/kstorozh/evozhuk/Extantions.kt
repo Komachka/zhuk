@@ -11,6 +11,11 @@ import com.kstorozh.domainapi.model.DomainErrors
 import com.kstorozh.domainapi.model.ErrorStatus
 import java.text.DecimalFormat
 
+import android.os.StatFs
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+
 fun Context?.getInfoAboutDevice(): DeviceInputData {
 
     val details = ("VERSION.RELEASE : " + Build.VERSION.RELEASE +
@@ -36,8 +41,8 @@ fun Context?.getInfoAboutDevice(): DeviceInputData {
             "\nUNKNOWN : " + Build.UNKNOWN +
             "\nUSER : " + Build.USER)
 
-    val memory = getMemoryInfo()
-    return DeviceInputData(Build.ID, "${Build.BRAND} ${Build.MODEL}", "android", Build.VERSION.SDK_INT.toString(), memory.first.toInt(), memory.second.toInt())
+    val memory = getFreeMemoryInfo()
+    return DeviceInputData(Build.ID, "${Build.BRAND} ${Build.MODEL}", "android", Build.VERSION.RELEASE, this.getTotalMemoryInfo().toInt(), this.getTotalStorageInfo().toInt())
 }
 
 fun Context?.getDeviceName(): String {
@@ -47,24 +52,57 @@ fun Context?.getDeviceName(): String {
 fun Context?.getInfoPairs(): List<Pair<String, String>> {
 
     val list = mutableListOf<Pair<String, String>>()
-    list.add("VERSION" to Build.VERSION.SDK_INT.toString()) // PUT to constants
+    list.add("VERSION" to Build.VERSION.RELEASE.toString()) // PUT to constants
     list.add("MODEL" to "${Build.BRAND} ${Build.MODEL}")
     list.add("ID" to Build.ID)
-    val memory = getMemoryInfo()
+    val freeMemory = getFreeMemoryInfo()
+    val totalMemory = getTotalMemoryInfo()
+    val freeStorage = getFreeStorageInfo()
+    val totalStorage = getTotalStorageInfo()
 
     val df = DecimalFormat("#.##")
-    list.add("MEMORY" to "${df.format(memory.first * 0.001)} Gb") // from Mg tu Gb
-    list.add("STORAGE" to "${df.format(memory.second * 0.001)} Gb") // from Mg tu Gb
+    list.add("MEMORY" to "${df.format(totalMemory * 0.001)} Gb") // from Mg tu Gb
+
+    list.add("STORAGE" to "${df.format(totalStorage * 0.001)} Gb") // from Mg tu Gb
     return list
 }
 
-private fun Context?.getMemoryInfo(): Pair<Long, Long> {
+private fun Context?.getTotalStorageInfo(): Long {
+    val stat = StatFs(this!!.getExternalFilesDir("")!!.path)
+    val bytesAvailable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        stat.blockSizeLong * stat.blockCountLong
+    } else {
+        stat.blockSize.toLong() * stat.blockCount.toLong()
+    }
+    return bytesAvailable / (1024 * 1024)
+}
+
+fun Context?.getFreeStorageInfo(): Long {
+    val stat = StatFs(this!!.getExternalFilesDir("")!!.path)
+    val bytesAvailable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        stat.blockSizeLong * stat.availableBlocksLong
+    } else {
+        stat.blockSize.toLong() * stat.availableBlocks.toLong()
+    }
+    return bytesAvailable / (1024 * 1024)
+}
+
+private fun Context?.getTotalMemoryInfo(): Long {
     val mi = ActivityManager.MemoryInfo()
     val activityManager = this!!.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
     activityManager.getMemoryInfo(mi)
     val availableMegs = mi.availMem / 0x100000L // MG
     val totalMegs = mi.totalMem / 0x100000L // MG
-    return availableMegs to totalMegs
+    return totalMegs
+}
+
+private fun Context?.getFreeMemoryInfo(): Long {
+    val mi = ActivityManager.MemoryInfo()
+    val activityManager = this!!.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    activityManager.getMemoryInfo(mi)
+    val availableMegs = mi.availMem / 0x100000L // MG
+    val totalMegs = mi.totalMem / 0x100000L // MG
+    return availableMegs
 }
 
 fun View.showSnackbar(textMessage: String, length: Int = Snackbar.LENGTH_LONG) {
@@ -73,8 +111,8 @@ fun View.showSnackbar(textMessage: String, length: Int = Snackbar.LENGTH_LONG) {
 }
 
 fun View.showErrorMessage(domainErrors: DomainErrors) {
-    if (domainErrors.message.isNullOrEmpty()) {
-        val message = when (domainErrors.errorStatus) {
+    Log.d(LOG_TAG, "status error " + domainErrors.errorStatus!!.name)
+    val message = when (domainErrors.errorStatus) {
             ErrorStatus.INVALID_PASSWORD -> resources.getString(R.string.invalid_pass_error_message)
             ErrorStatus.INVALID_LOGIN -> resources.getString(R.string.invalid_login_error_message)
             ErrorStatus.UNAUTHORIZED -> resources.getString(R.string.device_is_not_authorized_error_message)
@@ -84,12 +122,12 @@ fun View.showErrorMessage(domainErrors: DomainErrors) {
             ErrorStatus.CAN_NOT_RETURN_DEVICE -> resources.getString(R.string.can_not_return_error_message)
             ErrorStatus.CAN_NOT_GET_USERS -> resources.getString(R.string.can_not_get_users_error_message)
             ErrorStatus.CAN_NOT_REMIND_PIN -> resources.getString(R.string.can_not_remind_pin_error_message)
-            else -> resources.getString(R.string.unexpected_error_message) + " " + domainErrors.throwable.message
+            else -> resources.getString(R.string.unexpected_error_message)
         }
         this.showSnackbar(message)
         Log.d(LOG_TAG, "Message $message")
-    } else {
-        this.showSnackbar(domainErrors.message)
-        Log.d(LOG_TAG, "Domain message ${domainErrors.message}")
-    }
+}
+
+fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T) -> Unit) {
+    liveData.observe(this, Observer(body))
 }

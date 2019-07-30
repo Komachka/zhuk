@@ -1,6 +1,5 @@
 package com.kstorozh.domain
 
-import android.util.Log
 import com.kstorozh.dataimpl.DeviseRepository
 import com.kstorozh.domain.mapper.DeviceInfoMapper
 import com.kstorozh.domainapi.ManageDeviceUseCases
@@ -13,6 +12,10 @@ import java.util.*
 
 class ManageDeviceUseCasesImpl(private val repository: DeviseRepository, val mapper: DeviceInfoMapper) :
     ManageDeviceUseCases, KoinComponent {
+    override suspend fun isDeviceInited(deviceInputData: DeviceInputData): Boolean {
+        val deviceParam = mapper.mapDeviceInfoToDeviceParam(deviceInputData)
+        return repository.deviceAlreadyInited(deviceParam)
+    }
 
     override suspend fun getSession(): SessionData? {
         val result = repository.getBookingSession()
@@ -22,16 +25,13 @@ class ManageDeviceUseCasesImpl(private val repository: DeviseRepository, val map
     override suspend fun initDevice(deviceInputData: DeviceInputData): Boolean {
 
         val deviceParam = mapper.mapDeviceInfoToDeviceParam(deviceInputData)
-        if (!repository.deviceAlreadyInited(deviceParam))
-            return repository.initDevice(deviceParam)
-        else return true
+        return repository.initDevice(deviceParam)
     }
 
     override suspend fun takeDevice(bookingParam: BookingInputData): Boolean {
 
         val startDate = Calendar.getInstance()
         val res = repository.takeDevice(mapper.mapBookingParam(bookingParam, startDate))
-        Log.d("MainActivity", "is device taken $res")
         return res
     }
 

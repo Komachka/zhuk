@@ -13,10 +13,17 @@ class HomeViewModel : ViewModel(), KoinComponent {
 
     private val initDeviceUseCases: ManageDeviceUseCases by inject()
 
-    fun isDeviceInited(deviceInputData: DeviceInputData): LiveData<Boolean> {
+    fun initDevice(deviceInputData: DeviceInputData): LiveData<Boolean> {
 
         return liveData {
             val result = initDeviceUseCases.initDevice(deviceInputData)
+            emit(result)
+        }
+    }
+
+    fun isDeviceInited(info: DeviceInputData): LiveData<Boolean> {
+        return liveData {
+            val result = initDeviceUseCases.isDeviceInited(info)
             emit(result)
         }
     }

@@ -31,7 +31,7 @@
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <DatePicker
-                android:id="@+id/datepicker"
+                android:id="@+id/datePicker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleX="0.8"
@@ -44,7 +44,7 @@
         />
 
         <TimePicker
-                android:id="@+id/timepicker"
+                android:id="@+id/timePicker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleX="0.8"

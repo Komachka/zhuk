@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kstorozh.evozhuk.R
 import com.kstorozh.evozhuk.getInfoPairs
 import androidx.recyclerview.widget.DividerItemDecoration
+import kotlinx.android.synthetic.main.fragment_info.view.*
 
 class InfoFragment : Fragment() {
 
@@ -28,29 +28,28 @@ class InfoFragment : Fragment() {
     ): View? {
 
         val fragment = inflater.inflate(R.layout.fragment_info, container, false)
-        val mToolbar = fragment.findViewById(R.id.toolbar) as Toolbar
-        (activity as AppCompatActivity).setSupportActionBar(mToolbar)
-        mToolbar.navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
-        mToolbar.title = resources.getString(R.string.info)
+        (activity as AppCompatActivity).setSupportActionBar(fragment.toolbar)
+        fragment.toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
+        fragment.toolbar.title = resources.getString(R.string.info)
 
-        mToolbar.setNavigationOnClickListener {
+        fragment.toolbar.setNavigationOnClickListener {
             val navController = this.findNavController()
             navController.navigateUp()
         }
 
         viewManager = LinearLayoutManager(context)
         infoAdapter = InfoAdapter(context.getInfoPairs())
-        infoRecView = fragment.findViewById<RecyclerView>(R.id.infoRv).apply {
+        fragment.infoRv.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = infoAdapter
         }
 
         val dividerItemDecoration = DividerItemDecoration(
-            infoRecView.context,
+            fragment.infoRv.context,
             (viewManager as LinearLayoutManager).orientation
         )
-        infoRecView.addItemDecoration(dividerItemDecoration)
+        fragment.infoRv.addItemDecoration(dividerItemDecoration)
 
         return fragment
     }
