@@ -36,52 +36,60 @@ internal class DeviceRepositoryImpl(
 
     override suspend fun getBookingSession(): RepoResult<BookingSessionData> {
         var bookingSessionData: BookingSessionData?
-        val result:RepoResult<BookingSessionData>
-        val device = localData.getDeviceInfo()?.let { device ->
-            val booking = localData.getBookingByDeviceId(device.id)?.let {
+        val result:RepoResult<BookingSessionData> = RepoResult()
+        localData.getDeviceInfo()?.let { device ->
+            localData.getBookingByDeviceId(device.id)?.let {
                 bookingSessionData = BookingSessionData(it.userId, it.endDate)
-                result = RepoResult(bookingSessionData)
+                result.data  = bookingSessionData
             }
         }
         return result
     }
 
-    override suspend fun initDevice(deviceParam: DeviceParam): Boolean {
+    override suspend fun initDevice(deviceParam: DeviceParam): RepoResult<Boolean> {
         val device = mapper.mapDeviceData(deviceParam)
-
+        val repoResult:RepoResult<Boolean> = RepoResult()
         return when (val result = remoteData.initDevice(device)) {
             is ApiResult.Success -> {
                 device.id = result.data.data.deviceId.toString()
                 Log.d(LOG_TAG, "device id ${device.id}")
                 localData.insertDevice(device)
                 tokenRepository.setToken(device.id)
-                true
+                repoResult.data = true
+                repoResult
             }
             is ApiResult.Error<*> -> {
                 myError.postValue(createError(Endpoints.INIT_DEVICE, result))
-                false
+                repoResult.data = false
+                repoResult.error = createError(Endpoints.INIT_DEVICE, result)
+                repoResult
             }
         }
     }
 
-    override suspend fun updateDevice(deviceParam: DeviceParam): Boolean {
+    override suspend fun updateDevice(deviceParam: DeviceParam): RepoResult<Boolean> {
         val device = mapper.mapDeviceData(deviceParam) // TODO this device need to take from db
+        val repoResult:RepoResult<Boolean> = RepoResult()
         return when (val result = remoteData.updateDevice(device, deviceParam.uid)) {
             is ApiResult.Success -> {
                 // TODO handle bd error
                 localData.updateDevice(device)
-                true
+                repoResult.data = true
+                repoResult
             }
             is ApiResult.Error<*> -> {
                 myError.postValue(createError(Endpoints.UPDATE_DEVICE, result))
-                false
+                repoResult.data = false
+                repoResult.error = createError(Endpoints.UPDATE_DEVICE, result)
+                repoResult
             }
         }
     }
 
-    override suspend fun takeDevice(bookingParam: BookingParam): Boolean {
+    override suspend fun takeDevice(bookingParam: BookingParam): RepoResult<Boolean> {
 
         val device = localData.getDeviceInfo()
+        val repoResult:RepoResult<Boolean> = RepoResult()
         device?.let {
             val bookingBody = mapper.mapBookingDeviceInfo(bookingParam, device.id)
             return when (val result = remoteData.takeDevise(
@@ -91,32 +99,44 @@ internal class DeviceRepositoryImpl(
                 is ApiResult.Success -> {
                     localData.saveBooking(bookingBody)
                     Log.d(LOG_TAG, "save booking to db $bookingBody")
-                    true
+                    repoResult.data = true
+                    repoResult
                 }
                 is ApiResult.Error<*> -> {
                     Log.d(LOG_TAG, "Taking device." + result.errorResponse!!.code())
                     myError.postValue(createError(Endpoints.TAKE_DEVICE, result))
-                    false
+                    repoResult.data = false
+                    repoResult.error = createError(Endpoints.TAKE_DEVICE, result)
+                    repoResult
                 }
             }
         }
-        return false
+        repoResult.data = false
+         // TODO make function create error create not only api errors repoResult.error = createError(Endpoints.INIT_DEVICE, )
+        return repoResult
     }
 
-    override suspend fun returnDevice(bookingParam: BookingParam): Boolean {
+    override suspend fun returnDevice(bookingParam: BookingParam): RepoResult<Boolean> {
         val device = localData.getDeviceInfo()
+        val repoResult: RepoResult<Boolean> = RepoResult()
         device?.let {
-            return when (val result = remoteData.returnDevice(mapper.mapBookingParamForReturn(bookingParam, device.id))) {
+            return when (val result =
+                remoteData.returnDevice(mapper.mapBookingParamForReturn(bookingParam, device.id))) {
                 is ApiResult.Success -> {
                     localData.deleteBookingInfo()
-                    true
+                    repoResult.data = true
+                    repoResult
                 }
                 is ApiResult.Error<*> -> {
                     myError.postValue(createError(Endpoints.RETURN_DEVICE, result))
-                    false
+                    repoResult.data = false
+                    repoResult.error = createError(Endpoints.RETURN_DEVICE, result)
+                    repoResult
                 }
             }
         }
-        return false
+        repoResult.data = false
+        // TODO make function create error create not only api errors repoResult.error = createError(Endpoints.INIT_DEVICE, )
+        return repoResult
     }
 }

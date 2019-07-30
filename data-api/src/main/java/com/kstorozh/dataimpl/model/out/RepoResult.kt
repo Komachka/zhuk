@@ -2,6 +2,6 @@ package com.kstorozh.dataimpl.model.out
 import com.kstorozh.dataimpl.DataError
 
 class RepoResult<T> (
-    val data:T? = null,
-    val error: DataError? = null
+    var data:T? = null,
+    var error: DataError? = null
 )
