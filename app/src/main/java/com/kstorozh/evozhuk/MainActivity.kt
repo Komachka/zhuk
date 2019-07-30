@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         val errorModel = ViewModelProviders.of(this)[ErrorViewModel::class.java]
         errorModel.getErrors().observe(
             this, Observer {
-                Log.d(LOG_TAG, "Exception message ${it.throwable.message}")
+                Log.d(LOG_TAG, "Exception message ${it.throwable?.message}")
                 findViewById<View>(R.id.main).showErrorMessage(it)
             }
         )

@@ -23,5 +23,5 @@ val useCaseModules = module(override = true) {
     factory<GetUsersUseCases> { GetUsersUseCasesImpl(get<UserRepository>(), UserDataMapper()) }
     factory<HandleErrorUseCase> { HandleErrorUseCaseImpl(get(), get(), ErrorMapper()) }
     factory<LoginUseCase> { LoginUseCaseImpl(get(), UserDataMapper()) }
-    factory<ManageDeviceUseCases> { ManageDeviceUseCasesImpl(get(), DeviceInfoMapper()) }
+    factory<ManageDeviceUseCases> { ManageDeviceUseCasesImpl(get(), DeviceInfoMapper(), ErrorMapper()) }
 }
