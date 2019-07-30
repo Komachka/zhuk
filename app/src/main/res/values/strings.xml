@@ -6,7 +6,7 @@
     <string name="login_message">Login by</string>
     <string name="login">Login</string>
     <string name="password">Pin</string>
-    <string name="forgot_pass_message">Forgot password?</string>
+    <string name="forgot_pass_message">Forgot pincode?</string>
     <string name="login_bunt_text">Log in</string>
     <string name="device_name">Device name</string>
     <string name="returnMessage">Don`t forget to return the device on time</string>

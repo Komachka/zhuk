@@ -42,7 +42,7 @@ fun Context?.getInfoAboutDevice(): DeviceInputData {
             "\nUSER : " + Build.USER)
 
     val memory = getFreeMemoryInfo()
-    return DeviceInputData(Build.ID, "${Build.BRAND} ${Build.MODEL}", "android", Build.VERSION.SDK_INT.toString(), this.getTotalMemoryInfo().toInt(), this.getTotalStorageInfo().toInt())
+    return DeviceInputData(Build.ID, "${Build.BRAND} ${Build.MODEL}", "android", Build.VERSION.RELEASE, this.getTotalMemoryInfo().toInt(), this.getTotalStorageInfo().toInt())
 }
 
 fun Context?.getDeviceName(): String {
@@ -52,7 +52,7 @@ fun Context?.getDeviceName(): String {
 fun Context?.getInfoPairs(): List<Pair<String, String>> {
 
     val list = mutableListOf<Pair<String, String>>()
-    list.add("VERSION" to Build.VERSION.SDK_INT.toString()) // PUT to constants
+    list.add("VERSION" to Build.VERSION.RELEASE.toString()) // PUT to constants
     list.add("MODEL" to "${Build.BRAND} ${Build.MODEL}")
     list.add("ID" to Build.ID)
     val freeMemory = getFreeMemoryInfo()

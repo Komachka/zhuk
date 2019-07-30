@@ -6,7 +6,7 @@
     <string name="login_message">Войди с помощью логина</string>
     <string name="login">Логин</string>
     <string name="password">Пинкод</string>
-    <string name="forgot_pass_message">Забыли пароль?</string>
+    <string name="forgot_pass_message">Забыли пин?</string>
     <string name="login_bunt_text">Войти</string>
     <string name="device_name">имя устройства</string>
     <string name="returnMessage">Не забудь вернуть во время</string>
