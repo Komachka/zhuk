@@ -5,7 +5,7 @@
     <string name="hello_message">Привет</string>
     <string name="login_message">Войди с помощью логина</string>
     <string name="login">Логин</string>
-    <string name="password">Пароль</string>
+    <string name="password">Пинкод</string>
     <string name="forgot_pass_message">Забыли пароль?</string>
     <string name="login_bunt_text">Войти</string>
     <string name="device_name">имя устройства</string>
@@ -53,7 +53,7 @@
 
 
     <!-- Reset pass dialog -->
-    <string name="reset_pass_dealog_title">Сбросить пароль</string>
+    <string name="reset_pass_dealog_title">Напомнить пин</string>
     <string name="reset_pass_dealog_message">Введите логин</string>
     <string name="reset_pass_dealog_pos_but">Отправить</string>
 

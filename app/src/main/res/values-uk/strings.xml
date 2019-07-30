@@ -5,8 +5,8 @@
     <string name="app_logo">evozhuk</string>
     <string name="hello_message">Привіт</string>
     <string name="login_message">Увійди за допомогою логіна</string>
-    <string name="login">Лігин</string>
-    <string name="password">Пароль</string>
+    <string name="login">Логін</string>
+    <string name="password">Пінкод</string>
     <string name="forgot_pass_message">Забули пароль?</string>
     <string name="login_bunt_text">Увійти</string>
     <string name="device_name">Назва пристрою</string>
@@ -58,7 +58,7 @@
 
 
     <!-- Reset pass dialog -->
-    <string name="reset_pass_dealog_title">Нагадати пароль</string>
+    <string name="reset_pass_dealog_title">Нагадати пін</string>
     <string name="reset_pass_dealog_message">Введіть slack логін</string>
     <string name="reset_pass_dealog_pos_but">Відправити</string>
 

@@ -136,6 +136,6 @@ fun View.showErrorMessage(domainErrors: DomainErrors) {
         Log.d(LOG_TAG, "Message $message")
 }
 
-fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T?) -> Unit) {
+fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T) -> Unit) {
     liveData.observe(this, Observer(body))
 }

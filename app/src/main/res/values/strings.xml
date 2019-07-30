@@ -5,7 +5,7 @@
     <string name="hello_message">Hello</string>
     <string name="login_message">Login by</string>
     <string name="login">Login</string>
-    <string name="password">Password</string>
+    <string name="password">Pin</string>
     <string name="forgot_pass_message">Forgot password?</string>
     <string name="login_bunt_text">Log in</string>
     <string name="device_name">Device name</string>
@@ -56,7 +56,7 @@
 
 
     <!-- Reset pass dialog -->
-    <string name="reset_pass_dealog_title">Reset password</string>
+    <string name="reset_pass_dealog_title">Remind pin</string>
     <string name="reset_pass_dealog_message">Enter slack login please</string>
     <string name="reset_pass_dealog_pos_but">Send</string>
 

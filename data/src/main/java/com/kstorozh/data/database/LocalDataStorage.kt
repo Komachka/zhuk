@@ -8,7 +8,7 @@ import org.koin.core.KoinComponent
 internal interface LocalDataStorage : KoinComponent {
 
     @WorkerThread
-    suspend fun getDeviceInfo(): Device
+    suspend fun getDeviceInfo(): Device?
 
     @WorkerThread
     suspend fun insertDevice(device: Device)
@@ -23,7 +23,7 @@ internal interface LocalDataStorage : KoinComponent {
     suspend fun saveBooking(bookingBody: BookingBody)
 
     @WorkerThread
-    suspend fun getBookingByDeviceId(deviceId: String): BookingBody
+    suspend fun getBookingByDeviceId(deviceId: String): BookingBody?
 
     @WorkerThread
     suspend fun deleteBookingInfo()

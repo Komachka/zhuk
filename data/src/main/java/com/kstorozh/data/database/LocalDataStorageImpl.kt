@@ -11,7 +11,7 @@ internal class LocalDataStorageImpl(
         bookingDao.deleteAllBooking()
     }
 
-    override suspend fun getBookingByDeviceId(deviceId: String): BookingBody {
+    override suspend fun getBookingByDeviceId(deviceId: String): BookingBody? {
         return bookingDao.getBookingInfoByDeviceId(deviceId.toInt())
     }
 
@@ -19,7 +19,7 @@ internal class LocalDataStorageImpl(
         bookingDao.insertBooking(bookingBody)
     }
 
-    override suspend fun getDeviceInfo(): Device {
+    override suspend fun getDeviceInfo(): Device? {
         return deviceDao.getDeviceInfo()
     }
 

@@ -8,7 +8,7 @@ import com.kstorozh.data.models.Token
 internal interface TokenDao {
 
     @Query("SELECT * FROM $TOKEN_TABLE_NAME LIMIT 1")
-    suspend fun getToken(): Token
+    suspend fun getToken(): Token?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertToken(token: Token): Long

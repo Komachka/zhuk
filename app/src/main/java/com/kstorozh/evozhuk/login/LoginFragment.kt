@@ -17,8 +17,6 @@ import java.text.SimpleDateFormat
 
 class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
 
-    // TODO move it inside method
-
     lateinit var model: LogInViewModel
     lateinit var loginBut: Button
     lateinit var loginEt: AutoCompleteTextView
@@ -51,13 +49,9 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
 
 
         observe(model.isDeviceBooked(context.getInfoAboutDevice()), {
-            if (it!!)
+            if (it)
                 Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_backDeviceFragment)
         })
-
-        /*model.isDeviceBooked(context.getInfoAboutDevice()).observe(this, Observer {
-            if (it) Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_backDeviceFragment)
-        })*/
 
         loginBut.setOnClickListener { view ->
 

@@ -29,18 +29,21 @@ internal class DeviceRepositoryImpl(
     }
 
     override suspend fun deviceAlreadyInited(deviceParam: DeviceParam): Boolean {
-
-        initDevice(deviceParam) // TODO check why cashe is saved
         val device = mapper.mapDeviceData(deviceParam)
         val res = tokenRepository.getToken()?.let {true } ?: false
+        Log.d(LOG_TAG, "deviceAlreadyInited $res")
+        if (res) Log.d(LOG_TAG, "token ${tokenRepository.getToken()}")
         return res
     }
 
     override suspend fun getBookingSession(): BookingSessionData? {
-        val device = localData.getDeviceInfo()
-        val deviceId =  tokenRepository.getToken()
-        val booking = localData.getBookingByDeviceId(deviceId!!)
-        return if (booking != null) { BookingSessionData(booking.userId, booking.endDate) } else null
+        var bookingSessionData:BookingSessionData? = null
+        val device = localData.getDeviceInfo()?.let { device ->
+            val booking = localData.getBookingByDeviceId(device.id)?.let {
+                bookingSessionData = BookingSessionData(it.userId, it.endDate)
+            }
+        }
+        return bookingSessionData
     }
 
     override suspend fun initDevice(deviceParam: DeviceParam): Boolean {
@@ -78,38 +81,44 @@ internal class DeviceRepositoryImpl(
 
     override suspend fun takeDevice(bookingParam: BookingParam): Boolean {
 
-        //val device = localData.getDeviceInfo()
-        val deviceId =  tokenRepository.getToken()
-        val bookingBody = mapper.mapBookingDeviceInfo(bookingParam, deviceId!!)
-        return when (val result = remoteData.takeDevise(
-            bookingBody,
-            deviceId
-        )) {
-            is ApiResult.Success -> {
-                localData.saveBooking(bookingBody)
-                Log.d(LOG_TAG, "save booking to db $bookingBody")
-                true
-            }
-            is ApiResult.Error<*> -> {
-                Log.d(LOG_TAG, "Taking device." + result.errorResponse!!.code())
-                myError.postValue(createError(Endpoints.TAKE_DEVICE, result))
-                false
+        val device = localData.getDeviceInfo()
+        device?.let {
+            val bookingBody = mapper.mapBookingDeviceInfo(bookingParam, device.id)
+            return when (val result = remoteData.takeDevise(
+                bookingBody,
+                device.id
+            )) {
+                is ApiResult.Success -> {
+                    localData.saveBooking(bookingBody)
+                    Log.d(LOG_TAG, "save booking to db $bookingBody")
+                    true
+                }
+                is ApiResult.Error<*> -> {
+                    Log.d(LOG_TAG, "Taking device." + result.errorResponse!!.code())
+                    myError.postValue(createError(Endpoints.TAKE_DEVICE, result))
+                    false
+                }
             }
         }
+        return false
+
     }
 
     override suspend fun returnDevice(bookingParam: BookingParam): Boolean {
         val device = localData.getDeviceInfo()
-        val deviceId =  tokenRepository.getToken()
-        return when (val result = remoteData.returnDevice(mapper.mapBookingParamForReturn(bookingParam, deviceId!!))) {
-            is ApiResult.Success -> {
-                localData.deleteBookingInfo()
-                true
-            }
-            is ApiResult.Error<*> -> {
-                myError.postValue(createError(Endpoints.RETURN_DEVICE, result))
-                false
+        device?.let {
+            return when (val result = remoteData.returnDevice(mapper.mapBookingParamForReturn(bookingParam, device.id))) {
+                is ApiResult.Success -> {
+                    localData.deleteBookingInfo()
+                    true
+                }
+                is ApiResult.Error<*> -> {
+                    myError.postValue(createError(Endpoints.RETURN_DEVICE, result))
+                    false
+                }
             }
         }
+        return false
+
     }
 }

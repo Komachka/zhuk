@@ -8,7 +8,7 @@ import com.kstorozh.data.models.Device
 internal interface DeviceDao {
 
     @Query("SELECT * FROM $DEVICE_INFO_TABLE_NAME LIMIT 1")
-    suspend fun getDeviceInfo(): Device
+    suspend fun getDeviceInfo(): Device?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDevice(device: Device): Long

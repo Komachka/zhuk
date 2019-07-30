@@ -15,7 +15,7 @@ internal interface BookingDao {
     suspend fun getBookingInfo(): BookingBody
 
     @Query("SELECT * FROM $BOOKING_TABLE_NAME WHERE deviceId LIKE :id LIMIT 1")
-    suspend fun getBookingInfoByDeviceId(@NotNull id: Int): BookingBody
+    suspend fun getBookingInfoByDeviceId(@NotNull id: Int): BookingBody?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBooking(bookingBody: BookingBody): Long
