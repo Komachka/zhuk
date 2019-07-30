@@ -8,7 +8,6 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,7 +53,7 @@ class ChooseTimeFragment : Fragment() {
         val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeSharedViewModel::class.java)
         var milisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
         if (milisec == 0L)
-            milisec = TimeUtils.setHours(4)
+            milisec = TimeUtils.setHours(1)
 
         val userId = ChooseTimeFragmentArgs.fromBundle(arguments!!).userId
         if (userId != USER_ID_NOT_SET)
@@ -62,11 +61,11 @@ class ChooseTimeFragment : Fragment() {
         modelChooseTime.setCalendar(milisec)
 
         val buttonList = listOf<Button>(
-            view.oneHourBut,
-            view.twoHourBut,
-            (view.fourHourBut as Button).also {
+            view.oneHourBut.also {
                 selectedButton = it
             },
+            view.twoHourBut,
+            view.fourHourBut,
             view.allDayBut,
             view.twoDaysBut,
             (view.anotherTimeBut as Button).also {
@@ -77,10 +76,10 @@ class ChooseTimeFragment : Fragment() {
             }
         )
 
-        buttonList.forEach {
-            it.setOnClickListener {
+        buttonList.forEach { button ->
+            button.setOnClickListener {
                 (it as Button).setBackgroundResource(R.drawable.time_but_pressed)
-                it.setTextColor(getResources().getColor(R.color.but_time_focus))
+                it.setTextColor(resources.getColor(R.color.but_time_focus))
                 selectedButton?.let {
                     resetButton(it)
                 }
@@ -92,10 +91,10 @@ class ChooseTimeFragment : Fragment() {
                         R.id.twoDaysBut -> TimeUtils.setHours(48)
                         R.id.allDayBut ->
                         {
-                            val currenTime = GregorianCalendar.getInstance()
-                            val mCalendar = GregorianCalendar(currenTime.get(Calendar.YEAR),
-                                currenTime.get(Calendar.MONTH),
-                                currenTime.get(Calendar.DAY_OF_MONTH), 19, 0, 0)
+                            val currentTime = GregorianCalendar.getInstance()
+                            val mCalendar = GregorianCalendar(currentTime.get(Calendar.YEAR),
+                                currentTime.get(Calendar.MONTH),
+                                currentTime.get(Calendar.DAY_OF_MONTH), 19, 0, 0)
                             mCalendar.timeZone = TimeUtils.getCurrentTimeZone()
                             mCalendar.timeInMillis
                         }
@@ -143,23 +142,10 @@ class ChooseTimeFragment : Fragment() {
     fun Context.startScheduleNotification(endTime: Calendar) {
 
         val deltaTime = GregorianCalendar.getInstance()
-
-        val format1 = SimpleDateFormat("yyyy-MM-dd HH:mm")
-
         deltaTime.timeInMillis = endTime.timeInMillis
         deltaTime.add(Calendar.MINUTE, -10)
-
         val currentTime = GregorianCalendar.getInstance()
         var delay: Long = if (deltaTime.timeInMillis < currentTime.timeInMillis) 1000L else deltaTime.timeInMillis - currentTime.timeInMillis
-        Log.d(LOG_TAG, " currentTime ${currentTime.timeInMillis}  deltaTime.timeInMillis ${deltaTime.timeInMillis}")
-
-        Log.d(LOG_TAG, " currentTime ${format1.format(currentTime.time)}  deltaTime.timeInMillis ${format1.format(deltaTime.time)}")
-        Log.d(LOG_TAG, " currentTime ${format1.format(currentTime.time)}  endTime.timeInMillis ${format1.format(endTime.time)}")
-
-//        var delay: Long = if (deltaTime.timeInMillis < System.currentTimeMillis())1000L else deltaTime.timeInMillis - System.currentTimeMillis()
-
-
-        Log.d(LOG_TAG, "delay $delay")
         val notificationId = 1
         val notification = createNotification(endTime, notificationId)
         val notificationIntentBroadcast = Intent(context, MyNotificationPublisher::class.java)
@@ -168,7 +154,6 @@ class ChooseTimeFragment : Fragment() {
         val pendingIntent =
             PendingIntent.getBroadcast(context, notificationId, notificationIntentBroadcast, PendingIntent.FLAG_CANCEL_CURRENT)
         val futureInMillis = SystemClock.elapsedRealtime() + delay
-        //val futureInMillis = deltaTime.timeInMillis
         val alarmManager = context!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
     }

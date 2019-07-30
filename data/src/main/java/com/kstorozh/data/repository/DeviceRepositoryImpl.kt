@@ -8,12 +8,12 @@ import com.kstorozh.dataimpl.MyError
 import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.data.network.RemoteData
+import com.kstorozh.data.network.TokenRepository
 import com.kstorozh.data.utils.*
 import com.kstorozh.dataimpl.model.into.BookingParam
 import com.kstorozh.dataimpl.model.into.DeviceParam
 import com.kstorozh.dataimpl.DeviseRepository
 import com.kstorozh.dataimpl.model.out.BookingSessionData
-import org.koin.core.KoinComponent
 
 internal class DeviceRepositoryImpl(
     private val localData: LocalDataStorage,
@@ -30,14 +30,14 @@ internal class DeviceRepositoryImpl(
 
     override suspend fun deviceAlreadyInited(deviceParam: DeviceParam): Boolean {
         val device = mapper.mapDeviceData(deviceParam)
-        val res = tokenRepository.getToken()?.let {true } ?: false
+        val res = tokenRepository.getToken()?.let { true } ?: false
         Log.d(LOG_TAG, "deviceAlreadyInited $res")
         if (res) Log.d(LOG_TAG, "token ${tokenRepository.getToken()}")
         return res
     }
 
     override suspend fun getBookingSession(): BookingSessionData? {
-        var bookingSessionData:BookingSessionData? = null
+        var bookingSessionData: BookingSessionData? = null
         val device = localData.getDeviceInfo()?.let { device ->
             val booking = localData.getBookingByDeviceId(device.id)?.let {
                 bookingSessionData = BookingSessionData(it.userId, it.endDate)
@@ -101,7 +101,6 @@ internal class DeviceRepositoryImpl(
             }
         }
         return false
-
     }
 
     override suspend fun returnDevice(bookingParam: BookingParam): Boolean {
@@ -119,6 +118,5 @@ internal class DeviceRepositoryImpl(
             }
         }
         return false
-
     }
 }

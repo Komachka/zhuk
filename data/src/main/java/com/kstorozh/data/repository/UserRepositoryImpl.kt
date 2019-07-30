@@ -10,7 +10,6 @@ import com.kstorozh.data.utils.createError
 import com.kstorozh.dataimpl.MyError
 import com.kstorozh.dataimpl.model.UserLoginParam
 import com.kstorozh.dataimpl.model.out.SlackUser
-import org.koin.core.KoinComponent
 
 internal class UserRepositoryImpl(
     private val remoteData: RemoteData,

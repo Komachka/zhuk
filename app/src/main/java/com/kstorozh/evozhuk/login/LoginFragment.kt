@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.fragment_back_device.*
 
 import kotlinx.android.synthetic.main.fragment_login.view.*
 import kotlinx.android.synthetic.main.logo_and_info.view.*
-import java.text.SimpleDateFormat
 
 class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
 
@@ -22,7 +21,6 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
     lateinit var loginEt: AutoCompleteTextView
     lateinit var passEt: EditText
     lateinit var forgotPassTv: TextView
-
     lateinit var userNames: ArrayList<String>
 
     override fun onCreateView(
@@ -34,7 +32,7 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
         val fragment: View = inflater.inflate(R.layout.fragment_login, container, false)
         fragment.infoImageBut
             .setOnClickListener {
-                Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_infoFragment)
+                Navigation.findNavController(fragment).navigate(LoginFragmentDirections.actionLoginFragmentToInfoFragment())
             }
 
         fragment.deviceNameTv.text = context.getDeviceName()
@@ -45,8 +43,6 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
         forgotPassTv.setOnClickListener { show() }
         model = ViewModelProviders.of(this)[LogInViewModel::class.java]
         subscribeNamesLiveData()
-
-
 
         observe(model.isDeviceBooked(context.getInfoAboutDevice()), {
             if (it)

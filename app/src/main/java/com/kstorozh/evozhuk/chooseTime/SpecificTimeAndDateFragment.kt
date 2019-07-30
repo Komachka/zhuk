@@ -3,7 +3,6 @@ package com.kstorozh.evozhuk.chooseTime
 import android.os.Build
 import android.os.Bundle
 import android.view.*
-import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.fragment.app.Fragment
 import com.kstorozh.evozhuk.R
@@ -19,9 +18,7 @@ import android.util.Log
 import kotlinx.android.synthetic.main.fragment_specific_time_and_date.*
 import kotlinx.android.synthetic.main.fragment_specific_time_and_date.view.*
 
-
 class SpecificTimeAndDateFragment : Fragment() {
-
 
     val TIME_PICKER_INTERVAL: Int = 15
     companion object Time {
@@ -43,14 +40,8 @@ class SpecificTimeAndDateFragment : Fragment() {
         val dateAndTimeNow = Calendar.getInstance()
         dateAndTimeNow.timeZone = TimeUtils.getCurrentTimeZone()
         initTimeObject(dateAndTimeNow)
-
-        //val datePicker = fragment.findViewById<DatePicker>(R.id.datePicker)
-        //val timePicker = fragment.findViewById<TimePicker>(R.id.timePicker)
-
         fragment.timePicker.setIs24HourView(true)
-
         setTimePickerInterval(fragment.timePicker)
-
 
         if (minute % TIME_PICKER_INTERVAL != 0) {
             val minuteFloor = minute + TIME_PICKER_INTERVAL - minute % TIME_PICKER_INTERVAL
@@ -106,7 +97,6 @@ class SpecificTimeAndDateFragment : Fragment() {
         return calendar.time.time
     }
 
-
     private fun setTimePickerInterval(timePicker: TimePicker) {
         try {
 
@@ -127,6 +117,5 @@ class SpecificTimeAndDateFragment : Fragment() {
         } catch (e: Exception) {
             Log.e("MainActivity", "Exception: $e")
         }
-
     }
 }

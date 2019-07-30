@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import com.kstorozh.evozhuk.R
 
 import android.os.Handler
-import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import com.kstorozh.evozhuk.getDeviceName
 import kotlinx.android.synthetic.main.logo_and_info.view.*

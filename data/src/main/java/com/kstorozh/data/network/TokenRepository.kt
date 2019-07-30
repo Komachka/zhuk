@@ -1,11 +1,9 @@
-package com.kstorozh.data.utils
+package com.kstorozh.data.network
 
-import LOG_TAG
-import android.util.Log
 import com.kstorozh.data.database.TokenDao
 import com.kstorozh.data.models.Token
 
-internal class TokenRepository(val tokenDao: TokenDao) {
+internal class TokenRepository(private val tokenDao: TokenDao) {
     companion object {
         var token: String? = null
     }
@@ -13,7 +11,6 @@ internal class TokenRepository(val tokenDao: TokenDao) {
     suspend fun setToken(tokenFromDb: String) {
             tokenDao.insertToken(token = Token("1", tokenFromDb))
             token = tokenFromDb
-            Log.d(LOG_TAG, "token in set token $token")
         }
 
     suspend fun getToken(): String? {

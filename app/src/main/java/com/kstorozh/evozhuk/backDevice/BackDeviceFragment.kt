@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -42,15 +40,12 @@ class BackDeviceFragment : Fragment() {
 
         modelBackDevice = ViewModelProviders.of(activity!!).get(BackDeviceViewModel::class.java)
 
-
-
         observe(modelBackDevice.getSessionData(), {
             it?.let {
                 val format = SimpleDateFormat(DATE_FORMAT_BACK_DEVICE_SCREEN_TV)
                 dateToBack.text = format.format(it.endData.time)
             }
         })
-
 
         /*modelBackDevice.getSessionData().observe(this, Observer {
             it?.let {

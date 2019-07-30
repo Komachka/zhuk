@@ -12,11 +12,9 @@ import com.kstorozh.domainapi.model.ErrorStatus
 import java.text.DecimalFormat
 
 import android.os.StatFs
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-
 
 fun Context?.getInfoAboutDevice(): DeviceInputData {
 
@@ -62,11 +60,8 @@ fun Context?.getInfoPairs(): List<Pair<String, String>> {
     val freeStorage = getFreeStorageInfo()
     val totalStorage = getTotalStorageInfo()
 
-
     val df = DecimalFormat("#.##")
     list.add("MEMORY" to "${df.format(totalMemory * 0.001)} Gb") // from Mg tu Gb
-
-
 
     list.add("STORAGE" to "${df.format(totalStorage * 0.001)} Gb") // from Mg tu Gb
     return list
@@ -90,9 +85,7 @@ fun Context?.getFreeStorageInfo(): Long {
         stat.blockSize.toLong() * stat.availableBlocks.toLong()
     }
     return bytesAvailable / (1024 * 1024)
-
 }
-
 
 private fun Context?.getTotalMemoryInfo(): Long {
     val mi = ActivityManager.MemoryInfo()
@@ -102,7 +95,6 @@ private fun Context?.getTotalMemoryInfo(): Long {
     val totalMegs = mi.totalMem / 0x100000L // MG
     return totalMegs
 }
-
 
 private fun Context?.getFreeMemoryInfo(): Long {
     val mi = ActivityManager.MemoryInfo()

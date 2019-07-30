@@ -18,7 +18,6 @@ internal data class BookingBody(
     @SerializedName("device_id")
     val deviceId: Int,
 
-
     @SerializedName("start_date")
     val startDate: String,
 

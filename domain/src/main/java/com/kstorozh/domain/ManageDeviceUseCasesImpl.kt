@@ -1,6 +1,5 @@
 package com.kstorozh.domain
 
-import android.util.Log
 import com.kstorozh.dataimpl.DeviseRepository
 import com.kstorozh.domain.mapper.DeviceInfoMapper
 import com.kstorozh.domainapi.ManageDeviceUseCases
@@ -27,7 +26,6 @@ class ManageDeviceUseCasesImpl(private val repository: DeviseRepository, val map
 
         val deviceParam = mapper.mapDeviceInfoToDeviceParam(deviceInputData)
         return repository.initDevice(deviceParam)
-
     }
 
     override suspend fun takeDevice(bookingParam: BookingInputData): Boolean {

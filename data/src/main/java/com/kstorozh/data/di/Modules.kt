@@ -15,8 +15,8 @@ import com.kstorozh.data.repository.DeviceDataMapper
 import com.kstorozh.data.repository.DeviceRepositoryImpl
 import com.kstorozh.data.repository.UserDataMapper
 import com.kstorozh.data.repository.UserRepositoryImpl
-import com.kstorozh.data.utils.AuthInterceptor
-import com.kstorozh.data.utils.TokenRepository
+import com.kstorozh.data.network.AuthInterceptor
+import com.kstorozh.data.network.TokenRepository
 import com.kstorozh.dataimpl.DeviseRepository
 import com.kstorozh.dataimpl.model.out.SlackUser
 import okhttp3.OkHttpClient
@@ -43,7 +43,7 @@ val dbModule = module(override = true) {
 
 val networkModule = module(override = true) {
     factory { TokenRepository(get()) }
-    factory { AuthInterceptor(get()) }
+    factory { AuthInterceptor() }
     factory { HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY) }
     factory { provideOkHttpClient(get(), get()) }
     factory { provideDeviceApi(get()) }
