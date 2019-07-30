@@ -5,7 +5,6 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
@@ -116,7 +115,7 @@ class ChooseTimeFragment : Fragment() {
                     view.showSnackbar(resources.getString(R.string.device_booked_message))
                     val action =
                         ChooseTimeFragmentDirections.actionChooseTimeFragmentToBackDeviceFragment(
-                            modelChooseTime.userId.value!!,
+                            modelChooseTime.userIdLiveData.value!!,
                             modelChooseTime.chooseCalendar.value!!.timeInMillis)
                     startForegroundServiceNotification(modelChooseTime.chooseCalendar.value!!.timeInMillis)
                     context!!.startScheduleNotification(modelChooseTime.chooseCalendar.value!!)

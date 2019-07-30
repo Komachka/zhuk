@@ -21,6 +21,11 @@ class HomeFragment : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_at_home, container, false)
         model = ViewModelProviders.of(this)[HomeViewModel::class.java]
+
+        observe(model.errorsLiveData){
+            view.showSnackbar(it.throwable?.message ?: "domain error is null")
+
+        }
         val info = context.getInfoAboutDevice()
         view.welcomeMessageTv.text = info.model
         observe(model.isDeviceInited(info), {

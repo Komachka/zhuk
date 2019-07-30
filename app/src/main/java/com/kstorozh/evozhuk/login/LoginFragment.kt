@@ -9,8 +9,6 @@ import androidx.navigation.Navigation
 import androidx.lifecycle.ViewModelProviders
 import android.widget.EditText
 import com.kstorozh.evozhuk.*
-import kotlinx.android.synthetic.main.fragment_back_device.*
-
 import kotlinx.android.synthetic.main.fragment_login.view.*
 import kotlinx.android.synthetic.main.logo_and_info.view.*
 

@@ -10,6 +10,8 @@ import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.BookingInputData
 import com.kstorozh.domainapi.model.DomainErrors
 import com.kstorozh.domainapi.model.SessionData
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
@@ -22,26 +24,31 @@ class BackDeviceViewModel : ViewModel(), KoinComponent {
     }
 
     private val manageDeviceUseCases: ManageDeviceUseCases by inject()
-    private val errors:MutableLiveData<DomainErrors> = MutableLiveData<DomainErrors>()
+    private val applicationScope = CoroutineScope(Dispatchers.Default)
+    val errors:MutableLiveData<DomainErrors> = MutableLiveData<DomainErrors>()
+    val returnDeviceLiveData:MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+
 
     fun tryReturnDevice(): LiveData<Boolean> {
-        return liveData<Boolean> {
+
+        applicationScope.launch {
             bookingSession.value?.let {
                 Log.d("MainActivity", BookingInputData(bookingSession.value!!.userId, null).toString())
                 val result = manageDeviceUseCases.returnDevice(BookingInputData(bookingSession.value!!.userId, null))
                 result.data?.let {
-                    emit(it)
+                    returnDeviceLiveData.postValue(it)
                 }
                 result.domainError?.let {
                     errors.postValue(it)
                 }
             }
         }
+        return returnDeviceLiveData
     }
 
     fun getSessionData(): MutableLiveData<SessionData> {
 
-        GlobalScope.launch {
+        applicationScope.launch {
             val domainResult = manageDeviceUseCases.getSession()
             Log.d("MainActivity", "data is ${domainResult?.let { domainResult }}")
             domainResult.data?.let {

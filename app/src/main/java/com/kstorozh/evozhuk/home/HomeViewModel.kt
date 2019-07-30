@@ -17,32 +17,35 @@ import org.koin.core.inject
 class HomeViewModel : ViewModel(), KoinComponent {
 
     private val initDeviceUseCases: ManageDeviceUseCases by inject()
-    private val errors:MutableLiveData<DomainErrors> = MutableLiveData<DomainErrors>()
+    val errorsLiveData:MutableLiveData<DomainErrors> = MutableLiveData<DomainErrors>()
+    val initDeviceLiveData:MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    val isDeviceInitedLiveData:MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     val applicationScope = CoroutineScope(Dispatchers.Default)
 
     fun initDevice(deviceInputData: DeviceInputData): LiveData<Boolean> {
 
-        return liveData {
+        applicationScope.launch {
             val result = initDeviceUseCases.initDevice(deviceInputData)
             result.data?.let {
-                emit(it)
+                initDeviceLiveData.postValue(it)
             }
             result.domainError?.let {
-                errors.postValue(it)
+                errorsLiveData.postValue(it)
             }
-
         }
+        return initDeviceLiveData
     }
 
     fun isDeviceInited(info: DeviceInputData): LiveData<Boolean> {
-        return liveData {
+        applicationScope.launch {
             val result = initDeviceUseCases.isDeviceInited(info)
             result.data?.let {
-                emit(it)
+                isDeviceInitedLiveData.postValue(it)
             }
             result.domainError?.let {
-                errors.postValue(it)
+                errorsLiveData.postValue(it)
             }
         }
+        return isDeviceInitedLiveData
     }
 }
