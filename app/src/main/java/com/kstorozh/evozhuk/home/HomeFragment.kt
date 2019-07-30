@@ -23,7 +23,9 @@ class HomeFragment : Fragment() {
         model = ViewModelProviders.of(this)[HomeViewModel::class.java]
 
         observe(model.errorsLiveData){
-            view.showSnackbar(it.throwable?.message ?: "domain error is null")
+            it.throwable?.message?.let {
+                view.showSnackbar(it)
+            }
 
         }
         val info = context.getInfoAboutDevice()

@@ -16,10 +16,8 @@ import com.kstorozh.dataimpl.model.out.SlackUser
 internal class UserRepositoryImpl(
     private val remoteData: RemoteData,
     private val mapper: UserDataMapper
-    //private val users: ArrayList<SlackUser>
-) : UserRepository {
 
-    private val myError: MutableLiveData<DataError> = MutableLiveData()
+) : UserRepository {
 
     override suspend fun login(userLoginParam: UserLoginParam): RepoResult<String> {
         val repoResult: RepoResult<String> = RepoResult()
@@ -29,17 +27,12 @@ internal class UserRepositoryImpl(
                 repoResult
             }
             is ApiResult.Error<*> -> {
-                myError.postValue(createError(Endpoints.LOGIN, result))
-                Log.d(LOG_TAG, "My error $myError")
                 repoResult.error = createError(Endpoints.LOGIN, result)
                 repoResult
             }
         }
     }
 
-    override suspend fun getErrors(): MutableLiveData<DataError> {
-        return myError
-    }
     override suspend fun getUsers(): RepoResult<List<SlackUser>> {
         val repoResult: RepoResult<List<SlackUser>> = RepoResult()
         val users: ArrayList<SlackUser> = ArrayList()
@@ -49,7 +42,6 @@ internal class UserRepositoryImpl(
                 repoResult.data = users
             }
             is ApiResult.Error<*> -> {
-                myError.postValue(createError(Endpoints.GET_USERS, result))
                 repoResult.error = createError(Endpoints.GET_USERS, result)
             }
         }
@@ -64,7 +56,6 @@ internal class UserRepositoryImpl(
                 repoResult
             }
             is ApiResult.Error<*> -> {
-                myError.postValue(createError(Endpoints.REMIND_PIN, result))
                 repoResult.data = false
                 repoResult.error = createError(Endpoints.REMIND_PIN, result)
                 repoResult

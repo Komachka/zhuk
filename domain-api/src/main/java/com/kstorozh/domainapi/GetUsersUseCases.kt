@@ -2,5 +2,5 @@ package com.kstorozh.domainapi.model
 
 interface GetUsersUseCases {
 
-    suspend fun getUsers(): List<User>
+    suspend fun getUsers(): DomainResult<List<User>>
 }

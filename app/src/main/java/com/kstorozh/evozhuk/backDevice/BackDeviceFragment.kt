@@ -40,6 +40,13 @@ class BackDeviceFragment : Fragment() {
 
         modelBackDevice = ViewModelProviders.of(activity!!).get(BackDeviceViewModel::class.java)
 
+        observe(modelBackDevice.errors){
+            it.throwable?.message?.let {
+                view.showSnackbar(it)
+            }
+
+        }
+
         observe(modelBackDevice.getSessionData(), {
             it?.let {
                 val format = SimpleDateFormat(DATE_FORMAT_BACK_DEVICE_SCREEN_TV)

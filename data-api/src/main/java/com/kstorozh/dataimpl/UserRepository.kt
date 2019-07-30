@@ -10,6 +10,5 @@ import com.kstorozh.dataimpl.model.out.SlackUser
 interface UserRepository {
     suspend fun getUsers(): RepoResult<List<SlackUser>>
     suspend fun remindPin(slackUserId: String): RepoResult<Boolean>
-    suspend fun getErrors(): MutableLiveData<DataError>
     suspend fun login(userLoginParam: UserLoginParam): RepoResult<String>
 }

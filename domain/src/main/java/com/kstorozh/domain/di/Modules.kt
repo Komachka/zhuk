@@ -20,8 +20,8 @@ import org.koin.dsl.module
 
 val useCaseModules = module(override = true) {
 
-    factory<GetUsersUseCases> { GetUsersUseCasesImpl(get<UserRepository>(), UserDataMapper()) }
+    factory<GetUsersUseCases> { GetUsersUseCasesImpl(get<UserRepository>(), UserDataMapper(), ErrorMapper()) }
     factory<HandleErrorUseCase> { HandleErrorUseCaseImpl(get(), get(), ErrorMapper()) }
-    factory<LoginUseCase> { LoginUseCaseImpl(get(), UserDataMapper()) }
+    factory<LoginUseCase> { LoginUseCaseImpl(get(), UserDataMapper(), ErrorMapper()) }
     factory<ManageDeviceUseCases> { ManageDeviceUseCasesImpl(get(), DeviceInfoMapper(), ErrorMapper()) }
 }

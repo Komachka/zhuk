@@ -42,13 +42,18 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
         model = ViewModelProviders.of(this)[LogInViewModel::class.java]
         subscribeNamesLiveData()
 
+        observe(model.errorViewModel){
+            it.throwable?.message?.let {
+                fragment.showSnackbar(it)
+            }
+        }
+
         observe(model.isDeviceBooked(context.getInfoAboutDevice()), {
             if (it)
                 Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_backDeviceFragment)
         })
 
         loginBut.setOnClickListener { view ->
-
             if (passEt.text.isNotEmpty() && loginEt.text.isNotEmpty())
                     model.tryLogin(loginEt.text.toString(), passEt.text.toString()).observe(this, Observer {
                         if (!it.isNullOrEmpty()) {

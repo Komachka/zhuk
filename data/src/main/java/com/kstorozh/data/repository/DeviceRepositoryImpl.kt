@@ -23,12 +23,6 @@ internal class DeviceRepositoryImpl(
     private val tokenRepository: TokenRepository
 ) : DeviseRepository {
 
-    private val myError: MutableLiveData<DataError> = MutableLiveData()
-
-    override suspend fun getErrors(): MutableLiveData<DataError> {
-        return myError
-    }
-
     override suspend fun deviceAlreadyInited(deviceParam: DeviceParam): RepoResult<Boolean> {
         val res = tokenRepository.getToken()?.let { true } ?: false
         return RepoResult(res)
@@ -59,7 +53,6 @@ internal class DeviceRepositoryImpl(
                 repoResult
             }
             is ApiResult.Error<*> -> {
-                myError.postValue(createError(Endpoints.INIT_DEVICE, result))
                 repoResult.data = false
                 repoResult.error = createError(Endpoints.INIT_DEVICE, result)
                 repoResult
@@ -78,7 +71,6 @@ internal class DeviceRepositoryImpl(
                 repoResult
             }
             is ApiResult.Error<*> -> {
-                myError.postValue(createError(Endpoints.UPDATE_DEVICE, result))
                 repoResult.data = false
                 repoResult.error = createError(Endpoints.UPDATE_DEVICE, result)
                 repoResult
@@ -104,7 +96,6 @@ internal class DeviceRepositoryImpl(
                 }
                 is ApiResult.Error<*> -> {
                     Log.d(LOG_TAG, "Taking device." + result.errorResponse!!.code())
-                    myError.postValue(createError(Endpoints.TAKE_DEVICE, result))
                     repoResult.data = false
                     repoResult.error = createError(Endpoints.TAKE_DEVICE, result)
                     repoResult
@@ -128,7 +119,6 @@ internal class DeviceRepositoryImpl(
                     repoResult
                 }
                 is ApiResult.Error<*> -> {
-                    myError.postValue(createError(Endpoints.RETURN_DEVICE, result))
                     repoResult.data = false
                     repoResult.error = createError(Endpoints.RETURN_DEVICE, result)
                     repoResult

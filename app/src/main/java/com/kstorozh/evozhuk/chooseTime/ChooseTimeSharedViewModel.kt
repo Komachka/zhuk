@@ -22,7 +22,7 @@ import java.util.*
 class ChooseTimeSharedViewModel : ViewModel(), KoinComponent {
 
     private val manageDeviceUseCases: ManageDeviceUseCases by inject()
-    private val errors:MutableLiveData<DomainErrors> = MutableLiveData<DomainErrors>()
+    val errors:MutableLiveData<DomainErrors> = MutableLiveData<DomainErrors>()
     val applicationScope = CoroutineScope(Dispatchers.Default)
     val bookDeviceLiveData:MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 

@@ -56,7 +56,7 @@ val networkModule = module(override = true) {
 
 val repositoryModule = module(override = true) {
     single<DeviseRepository> { DeviceRepositoryImpl(get(), get(), DeviceDataMapper(), get()) }
-    single<UserRepository> { UserRepositoryImpl(get(), UserDataMapper(), ArrayList<SlackUser>()) }
+    single<UserRepository> { UserRepositoryImpl(get(), UserDataMapper()) }
 }
 
 private fun provideGson(): Gson {

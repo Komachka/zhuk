@@ -51,6 +51,15 @@ class ChooseTimeFragment : Fragment() {
             "${resources.getString(R.string.time_choose_label)}${context.getDeviceName()}?"
 
         val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeSharedViewModel::class.java)
+
+
+        observe(modelChooseTime.errors){
+            it.throwable?.message?.let {
+                view.showSnackbar(it)
+            }
+        }
+
+
         var milisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
         if (milisec == 0L)
             milisec = TimeUtils.setHours(1)
