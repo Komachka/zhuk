@@ -7,7 +7,7 @@ import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.data.network.RemoteData
 import com.kstorozh.data.utils.createError
-import com.kstorozh.dataimpl.MyError
+import com.kstorozh.dataimpl.DataError
 import com.kstorozh.dataimpl.model.UserLoginParam
 import com.kstorozh.dataimpl.model.out.SlackUser
 
@@ -17,7 +17,7 @@ internal class UserRepositoryImpl(
     private val users: ArrayList<SlackUser>
 ) : UserRepository {
 
-    private val myError: MutableLiveData<MyError> = MutableLiveData()
+    private val myError: MutableLiveData<DataError> = MutableLiveData()
 
     override suspend fun login(userLoginParam: UserLoginParam): String? {
         Log.d(LOG_TAG, userLoginParam.toString())
@@ -34,7 +34,7 @@ internal class UserRepositoryImpl(
         }
     }
 
-    override suspend fun getErrors(): MutableLiveData<MyError> {
+    override suspend fun getErrors(): MutableLiveData<DataError> {
         return myError
     }
     override suspend fun getUsers(): List<SlackUser> {

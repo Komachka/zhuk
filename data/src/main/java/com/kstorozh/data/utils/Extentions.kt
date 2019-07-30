@@ -9,7 +9,7 @@ import android.util.Log
 import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.dataimpl.ErrorStatus
-import com.kstorozh.dataimpl.MyError
+import com.kstorozh.dataimpl.DataError
 import retrofit2.Response
 import java.lang.Exception
 
@@ -73,12 +73,12 @@ internal fun Response<*>.getErrorStatus(endpoint: Endpoints): ErrorStatus {
     }
 }
 
-internal fun getError(errorStatus: ErrorStatus, exception: Exception): MyError {
+internal fun getError(errorStatus: ErrorStatus, exception: Exception): DataError {
 
-    return MyError(errorStatus, exception)
+    return DataError(errorStatus, exception)
 }
 
-internal fun createError(endpoints: Endpoints, result: ApiResult.Error<*>): MyError {
+internal fun createError(endpoints: Endpoints, result: ApiResult.Error<*>): DataError {
     Log.d(LOG_TAG, "Error body ${result.errorResponse!!.errorBody()!!.string()}")
     val errorStatus = result.errorResponse!!.getErrorStatus(endpoints)
     val exception = result.exception

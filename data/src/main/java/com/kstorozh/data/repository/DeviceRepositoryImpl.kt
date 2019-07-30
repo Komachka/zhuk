@@ -4,7 +4,7 @@ import LOG_TAG
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.kstorozh.data.database.LocalDataStorage
-import com.kstorozh.dataimpl.MyError
+import com.kstorozh.dataimpl.DataError
 import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.data.network.RemoteData
@@ -14,6 +14,7 @@ import com.kstorozh.dataimpl.model.into.BookingParam
 import com.kstorozh.dataimpl.model.into.DeviceParam
 import com.kstorozh.dataimpl.DeviseRepository
 import com.kstorozh.dataimpl.model.out.BookingSessionData
+import com.kstorozh.dataimpl.model.out.RepoResult
 
 internal class DeviceRepositoryImpl(
     private val localData: LocalDataStorage,
@@ -22,25 +23,27 @@ internal class DeviceRepositoryImpl(
     private val tokenRepository: TokenRepository
 ) : DeviseRepository {
 
-    private val myError: MutableLiveData<MyError> = MutableLiveData()
+    private val myError: MutableLiveData<DataError> = MutableLiveData()
 
-    override suspend fun getErrors(): MutableLiveData<MyError> {
+    override suspend fun getErrors(): MutableLiveData<DataError> {
         return myError
     }
 
-    override suspend fun deviceAlreadyInited(deviceParam: DeviceParam): Boolean {
+    override suspend fun deviceAlreadyInited(deviceParam: DeviceParam): RepoResult<Boolean> {
         val res = tokenRepository.getToken()?.let { true } ?: false
-        return res
+        return RepoResult(res)
     }
 
-    override suspend fun getBookingSession(): BookingSessionData? {
-        var bookingSessionData: BookingSessionData? = null
+    override suspend fun getBookingSession(): RepoResult<BookingSessionData> {
+        var bookingSessionData: BookingSessionData?
+        val result:RepoResult<BookingSessionData>
         val device = localData.getDeviceInfo()?.let { device ->
             val booking = localData.getBookingByDeviceId(device.id)?.let {
                 bookingSessionData = BookingSessionData(it.userId, it.endDate)
+                result = RepoResult(bookingSessionData)
             }
         }
-        return bookingSessionData
+        return result
     }
 
     override suspend fun initDevice(deviceParam: DeviceParam): Boolean {
