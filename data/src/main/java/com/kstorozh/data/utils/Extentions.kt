@@ -79,7 +79,7 @@ internal fun getError(errorStatus: ErrorStatus, exception: Exception): MyError {
 }
 
 internal fun createError(endpoints: Endpoints, result: ApiResult.Error<*>): MyError {
-    Log.d(LOG_TAG, result.errorResponse!!.errorBody()!!.string())
+    Log.d(LOG_TAG, "Error body ${result.errorResponse!!.errorBody()!!.string()}")
     val errorStatus = result.errorResponse!!.getErrorStatus(endpoints)
     val exception = result.exception
     return getError(errorStatus, exception)

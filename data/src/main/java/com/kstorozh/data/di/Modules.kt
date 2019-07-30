@@ -3,6 +3,7 @@ package com.kstorozh.data.di
 import BASE_URL
 import DEVICE_INFO_DB_NAME
 import androidx.room.Room
+import com.google.gson.Gson
 import com.kstorozh.data.database.DeviceDatabase
 import com.kstorozh.data.database.LocalDataStorage
 import com.kstorozh.data.database.LocalDataStorageImpl
@@ -48,7 +49,8 @@ val networkModule = module(override = true) {
     factory { provideOkHttpClient(get(), get()) }
     factory { provideDeviceApi(get()) }
     factory { provideUserApi(get()) }
-    single { provideRetrofit(get()) }
+    factory { provideGson() }
+    single { provideRetrofit(get(), get()) }
     factory<RemoteData> { RemoteDataImpl(get(), get()) }
 }
 
@@ -57,17 +59,19 @@ val repositoryModule = module(override = true) {
     single<UserRepository> { UserRepositoryImpl(get(), UserDataMapper(), ArrayList<SlackUser>()) }
 }
 
-fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-
-    val gson = GsonBuilder()
+private fun provideGson(): Gson {
+    return GsonBuilder()
         .excludeFieldsWithoutExposeAnnotation()
         .create()
+}
+
+private fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
 
     return Retrofit.Builder().baseUrl(BASE_URL).client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create(gson)).build()
 }
 
-internal fun provideOkHttpClient(authInterceptor: AuthInterceptor, loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+private fun provideOkHttpClient(authInterceptor: AuthInterceptor, loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
 
     return OkHttpClient()
         .newBuilder()
