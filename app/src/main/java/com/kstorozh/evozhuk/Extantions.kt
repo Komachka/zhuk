@@ -3,6 +3,7 @@ package com.kstorozh.evozhuk
 import android.app.ActivityManager
 import android.content.Context
 import android.os.Build
+import android.os.Environment
 import android.util.Log
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
@@ -16,7 +17,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 
-fun Context?.getInfoAboutDevice(): DeviceInputData {
+fun Context.getInfoAboutDevice(): DeviceInputData {
 
     val details = ("VERSION.RELEASE : " + Build.VERSION.RELEASE +
             "\nVERSION.INCREMENTAL : " + Build.VERSION.INCREMENTAL +
@@ -49,7 +50,7 @@ fun Context?.getDeviceName(): String {
     return "${Build.BRAND} ${Build.MODEL}"
 }
 
-fun Context?.getInfoPairs(): List<Pair<String, String>> {
+fun Context.getInfoPairs(): List<Pair<String, String>> {
 
     val list = mutableListOf<Pair<String, String>>()
     list.add("VERSION" to Build.VERSION.RELEASE.toString()) // PUT to constants
@@ -67,24 +68,42 @@ fun Context?.getInfoPairs(): List<Pair<String, String>> {
     return list
 }
 
-private fun Context?.getTotalStorageInfo(): Long {
-    val stat = StatFs(this!!.getExternalFilesDir("")!!.path)
-    val bytesAvailable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-        stat.blockSizeLong * stat.blockCountLong
+private fun Context.getTotalStorageInfo(): Long {
+    val file = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        getExternalFilesDir("")
     } else {
-        stat.blockSize.toLong() * stat.blockCount.toLong()
+        Environment.getExternalStorageDirectory()
     }
-    return bytesAvailable / (1024 * 1024)
+    file?.let {
+        val stat = StatFs(it.path)
+        val bytesAvailable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            stat.blockSizeLong * stat.blockCountLong
+        } else {
+            stat.blockSize.toLong() * stat.blockCount.toLong()
+        }
+        return bytesAvailable / (1024 * 1024)
+    }
+    return 0
+
 }
 
-fun Context?.getFreeStorageInfo(): Long {
-    val stat = StatFs(this!!.getExternalFilesDir("")!!.path)
-    val bytesAvailable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-        stat.blockSizeLong * stat.availableBlocksLong
+fun Context.getFreeStorageInfo(): Long {
+    val file = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        getExternalFilesDir("")
     } else {
-        stat.blockSize.toLong() * stat.availableBlocks.toLong()
+        Environment.getExternalStorageDirectory()
     }
-    return bytesAvailable / (1024 * 1024)
+    file?.let {
+        val stat = StatFs(it.path)
+        val bytesAvailable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            stat.blockSizeLong * stat.availableBlocksLong
+        } else {
+            stat.blockSize.toLong() * stat.availableBlocks.toLong()
+        }
+        return bytesAvailable / (1024 * 1024)
+    }
+    return 0
+
 }
 
 private fun Context?.getTotalMemoryInfo(): Long {

@@ -44,10 +44,14 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
         model = ViewModelProviders.of(this)[LogInViewModel::class.java]
         subscribeNamesLiveData()
 
-        observe(model.isDeviceBooked(context.getInfoAboutDevice()), {
-            if (it)
-                Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_backDeviceFragment)
-        })
+
+        context?.let {
+            observe(model.isDeviceBooked(it.getInfoAboutDevice()), {
+                if (it)
+                    Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_backDeviceFragment)
+            })
+        }
+
 
         loginBut.setOnClickListener { view ->
 
