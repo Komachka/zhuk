@@ -27,7 +27,6 @@ class BackDeviceFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val view: View = inflater.inflate(R.layout.fragment_back_device, container, false)
         view.infoImageBut.setOnClickListener {
                 Navigation.findNavController(view).navigate(BackDeviceFragmentDirections.actionBackDeviceFragmentToInfoFragment())
@@ -35,7 +34,6 @@ class BackDeviceFragment : Fragment() {
         view.deviceNameTv.text = context?.getDeviceName()
         view.youTakeDeviceLabelTv.text = "${resources.getString(R.string.youTableDeviceLabel)} ${context?.getDeviceName()}"
         val modelBackDevice = ViewModelProviders.of(this).get(BackDeviceViewModel::class.java)
-
         observe(modelBackDevice.errors) {
             it.throwable?.message?.let {
                 view.showSnackbar(it)
@@ -47,7 +45,6 @@ class BackDeviceFragment : Fragment() {
                 dateToBack.text = format.format(it.endData.time)
             }
         })
-
         arguments?.let {
             val (endDate, userId) = Pair(
                 BackDeviceFragmentArgs.fromBundle(arguments!!).endTime,
@@ -57,7 +54,6 @@ class BackDeviceFragment : Fragment() {
             endCalendar.timeInMillis = endDate
             modelBackDevice.setBookingSession(SessionData(userId, endCalendar))
         }
-
         view.giveBackBut.setOnClickListener { view ->
             observe(modelBackDevice.tryReturnDevice()) {
                 if (it) {
