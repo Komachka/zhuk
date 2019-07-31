@@ -17,6 +17,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.backDevice.MyNotificationPublisher
 import com.kstorozh.evozhuk.notifications.CHANEL_ID
@@ -24,9 +26,11 @@ import com.kstorozh.evozhuk.notifications.NotificationService
 import com.kstorozh.evozhuk.utils.getDeviceName
 import com.kstorozh.evozhuk.utils.observe
 import com.kstorozh.evozhuk.utils.showSnackbar
+import kotlinx.android.synthetic.main.fragment_time_choose.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlinx.android.synthetic.main.fragment_time_choose.view.*
+import kotlinx.android.synthetic.main.fragment_time_choose.view.buttonsRv
 import kotlinx.android.synthetic.main.logo_and_info.view.*
 
 class ChooseTimeFragment : Fragment() {
@@ -37,6 +41,10 @@ class ChooseTimeFragment : Fragment() {
             value!!.setBackgroundResource(R.drawable.time_but_pressed)
             value.setTextColor(resources.getColor(R.color.but_time_def))
         }
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewManager: RecyclerView.LayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,7 +78,33 @@ class ChooseTimeFragment : Fragment() {
             modelChooseTime.setUserId(userId)
         modelChooseTime.setCalendar(milisec)
 
-        val buttonList = listOf<Button>(
+        val buttonTimes = listOf<TimeButton>(
+            TimeButton("1 hour", TimeUtils.setHours(1), true),
+            TimeButton("2 hour", TimeUtils.setHours(2), false),
+            TimeButton("3 hour", TimeUtils.setHours(3), false),
+            TimeButton("4 hour", TimeUtils.setHours(4), false),
+            TimeButton("5 hour", TimeUtils.setHours(5), false)
+        )
+
+        viewManager = GridLayoutManager(this.context, 2)
+        viewAdapter = ButtonTimeAdapter(buttonTimes)
+
+        // val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
+
+        view.buttonsRv.apply {
+            // use this setting to improve performance if you know that changes
+            // in content do not change the layout size of the RecyclerView
+            setHasFixedSize(true)
+
+            // use a linear layout manager
+            layoutManager = viewManager
+
+            // specify an viewAdapter (see also next example)
+            adapter = viewAdapter
+            addItemDecoration(SpacesItemDecoration(10))
+        }
+
+        /*val buttonList = listOf<Button>(
             view.oneHourBut.also {
                 selectedButton = it
             },
@@ -117,7 +151,7 @@ class ChooseTimeFragment : Fragment() {
 
                 modelChooseTime.setCalendar(milisec)
             }
-        }
+        }*/
 
         view.takeDevice.setOnClickListener { view ->
             observe(modelChooseTime.tryBookDevice()) {
