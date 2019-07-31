@@ -17,14 +17,14 @@ class LogInViewModel : ViewModel(), KoinComponent {
     private val getUserUseCase: GetUsersUseCases by inject()
     private val initDeviceUseCases: ManageDeviceUseCases by inject()
 
-    val applicationScope = CoroutineScope(Dispatchers.Default)
+    private val applicationScope = CoroutineScope(Dispatchers.Default)
     private val users: MutableLiveData<List<User>> by lazy { MutableLiveData<List<User>>().also {
         loadUsers()
     } }
 
-    val tryLoginViewModel: MutableLiveData<String> = MutableLiveData<String>()
-    val remindPinViewModel: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-    val isDeviceBookedViewModel: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    private val tryLoginViewModel: MutableLiveData<String> = MutableLiveData<String>()
+    private val remindPinViewModel: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    private val isDeviceBookedViewModel: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     val errorViewModel: MutableLiveData<DomainErrors> = MutableLiveData<DomainErrors>()
 
     fun getUserNames(): LiveData<ArrayList<String>> {
@@ -37,9 +37,9 @@ class LogInViewModel : ViewModel(), KoinComponent {
         })
     }
 
-    fun getUserByName(login: String): LiveData<User?> {
+    fun getUserByName(login: String): LiveData<User> {
 
-        return Transformations.map(users, Function<List<User>, User?> {
+        return Transformations.map(users, Function<List<User>, User> {
             var user: User? = null
             it.forEach {
                 if (it.slackUserName == login) user = it

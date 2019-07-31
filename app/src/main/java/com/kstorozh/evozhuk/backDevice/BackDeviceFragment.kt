@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.kstorozh.domainapi.model.SessionData
@@ -35,7 +34,7 @@ class BackDeviceFragment : Fragment() {
         }
         view.deviceNameTv.text = context?.getDeviceName()
         view.youTakeDeviceLabelTv.text = "${resources.getString(R.string.youTableDeviceLabel)} ${context?.getDeviceName()}"
-        val modelBackDevice = ViewModelProviders.of(activity!!).get(BackDeviceViewModel::class.java)
+        val modelBackDevice = ViewModelProviders.of(this).get(BackDeviceViewModel::class.java)
 
         observe(modelBackDevice.errors) {
             it.throwable?.message?.let {

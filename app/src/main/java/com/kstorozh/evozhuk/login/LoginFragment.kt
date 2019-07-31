@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.*
-import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.lifecycle.ViewModelProviders
 import android.widget.EditText
@@ -56,7 +55,7 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
 
         loginBut.setOnClickListener { view ->
             if (passEt.text.isNotEmpty() && loginEt.text.isNotEmpty())
-                    model.tryLogin(loginEt.text.toString(), passEt.text.toString()).observe(this, Observer {
+                observe(model.tryLogin(loginEt.text.toString(), passEt.text.toString())) {
                         if (!it.isNullOrEmpty()) {
                             setEmptyValues()
                             val action = LoginFragmentDirections.actionLoginFragmentToChooseTimeFragment(it)
@@ -64,7 +63,7 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
                         } else {
                             view.showSnackbar(resources.getString(R.string.invalid_pass_error_message))
                         }
-                })
+                }
             else
                 view.showSnackbar(resources.getString(R.string.pass_is_empty_error_message))
         }

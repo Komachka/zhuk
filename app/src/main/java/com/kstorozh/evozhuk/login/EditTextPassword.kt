@@ -36,7 +36,7 @@ class EditTextPassword : AppCompatEditText {
     private fun showImage() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             setCompoundDrawablesRelativeWithIntrinsicBounds(
-                null, null, // Above text.
+                null, null,
                 hintPassImg, null
             )
         }
@@ -45,7 +45,7 @@ class EditTextPassword : AppCompatEditText {
     private fun hideImage() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             setCompoundDrawablesRelativeWithIntrinsicBounds(
-                null, null, // Above text.
+                null, null,
                 null, null
             )
         }

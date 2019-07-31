@@ -2,14 +2,14 @@ package com.kstorozh.evozhuk.login
 
 import android.R
 import android.widget.ArrayAdapter
-import androidx.lifecycle.Observer
+import com.kstorozh.evozhuk.observe
 
 interface UserNamesDataHandler {
 
     fun LoginFragment.subscribeNamesLiveData() {
-        model.getUserNames().observe(this, Observer {
+        observe(model.getUserNames()) {
             userNames = it
             loginEt.setAdapter(ArrayAdapter(context!!, R.layout.simple_dropdown_item_1line, it.toTypedArray()))
-        })
+        }
     }
 }

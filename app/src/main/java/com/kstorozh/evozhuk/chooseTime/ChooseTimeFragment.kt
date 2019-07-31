@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.logo_and_info.view.*
 
 class ChooseTimeFragment : Fragment() {
 
-    var selectedButton: Button? = null
+    private var selectedButton: Button? = null
         private set(value) {
             field = value
             value!!.setBackgroundResource(R.drawable.time_but_pressed)
@@ -117,8 +117,8 @@ class ChooseTimeFragment : Fragment() {
         }
 
         view.takeDevice.setOnClickListener { view ->
-            modelChooseTime.tryBookDevice().observe(this, androidx.lifecycle.Observer {
-                if (it == true) {
+            observe(modelChooseTime.tryBookDevice()) {
+                if (it) {
                     view.showSnackbar(resources.getString(R.string.device_booked_message))
                     val action =
                         ChooseTimeFragmentDirections.actionChooseTimeFragmentToBackDeviceFragment(
@@ -130,10 +130,10 @@ class ChooseTimeFragment : Fragment() {
                 } else {
                     view.showSnackbar(resources.getString(R.string.device_is_not_booked_message))
                 }
-            })
+            }
         }
         return view
-        }
+    }
 
     private fun resetButton(button: Button) {
         button.setBackgroundResource(R.drawable.round_rectangle)
@@ -173,16 +173,13 @@ class ChooseTimeFragment : Fragment() {
             .setContentTitle(resources.getString(R.string.dont_forget_notification_title))
             .setContentText("${resources.getString(R.string.time_is_up_notification_title)} ${format.format(endTime.time)}")
             .setSmallIcon(R.drawable.alarm_clock)
-            // .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
             .setColor(color)
             .setAutoCancel(false)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN &&
             Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             builder.priority = NotificationCompat.PRIORITY_LOW
         }
-
         val intent = Intent(context, MainActivity::class.java)
-
         val pendingIntentActivity = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT)
         builder.setContentIntent(pendingIntentActivity)
         return builder.build()
