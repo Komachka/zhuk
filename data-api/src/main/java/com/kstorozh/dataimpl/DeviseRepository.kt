@@ -1,6 +1,5 @@
 package com.kstorozh.dataimpl
 
-import androidx.lifecycle.MutableLiveData
 import com.kstorozh.dataimpl.model.into.BookingParam
 import com.kstorozh.dataimpl.model.into.DeviceParam
 import com.kstorozh.dataimpl.model.out.BookingSessionData

@@ -9,9 +9,11 @@ import com.kstorozh.domainapi.model.GetUsersUseCases
 import com.kstorozh.domainapi.model.User
 import org.koin.core.KoinComponent
 
-class GetUsersUseCasesImpl(val repository: UserRepository,
-                           val mapper: UserDataMapper,
-                           val errorMapper: ErrorMapper) :
+class GetUsersUseCasesImpl(
+    val repository: UserRepository,
+    val mapper: UserDataMapper,
+    val errorMapper: ErrorMapper
+) :
     GetUsersUseCases, KoinComponent {
 
     override suspend fun getUsers(): DomainResult<List<User>> {

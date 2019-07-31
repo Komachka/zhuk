@@ -19,7 +19,6 @@ import com.kstorozh.data.repository.UserRepositoryImpl
 import com.kstorozh.data.network.AuthInterceptor
 import com.kstorozh.data.network.TokenRepository
 import com.kstorozh.dataimpl.DeviseRepository
-import com.kstorozh.dataimpl.model.out.SlackUser
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication

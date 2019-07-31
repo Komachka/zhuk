@@ -1,6 +1,5 @@
 package com.kstorozh.domain.mapper
 
-
 import com.kstorozh.dataimpl.DataError
 import com.kstorozh.domainapi.model.DomainErrors
 import com.kstorozh.domainapi.model.ErrorStatus
@@ -13,12 +12,9 @@ class ErrorMapper {
             var status: ErrorStatus? = null
             try {
                 status = ErrorStatus.valueOf(error.errorStatus.toString())
-            }
-            catch (e:Exception)
-            {}
-            return DomainErrors(status, error.throwable)
+            } catch (e: Exception) {}
+            return DomainErrors(status, error.throwable, error.errorMessage)
         }
         return DomainErrors()
-
     }
 }

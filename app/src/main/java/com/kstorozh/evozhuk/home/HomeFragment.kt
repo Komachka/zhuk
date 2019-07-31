@@ -21,11 +21,10 @@ class HomeFragment : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_at_home, container, false)
         model = ViewModelProviders.of(this)[HomeViewModel::class.java]
-        observe(model.errorsLiveData){
+        observe(model.errorsLiveData) {
             it.throwable?.message?.let {
                 view.showSnackbar(it)
             }
-
         }
         val info = context?.applicationContext!!.getInfoAboutDevice()
 

@@ -1,7 +1,6 @@
 package com.kstorozh.domain.mapper
 
 import android.annotation.SuppressLint
-import android.util.Log
 import com.kstorozh.dataimpl.model.into.BookingParam
 import com.kstorozh.dataimpl.model.into.DeviceParam
 import com.kstorozh.dataimpl.model.out.BookingSessionData
@@ -26,10 +25,7 @@ class DeviceInfoMapper {
 
     @SuppressLint("SimpleDateFormat")
     fun mapBookingParam(bookingInputData: BookingInputData, startDate: Calendar? = null): BookingParam {
-
-        // 2019-07-28T16:43:00+03:00
-        // val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+03:00'") // TODO change to jodatime
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+03:00'")
         return BookingParam(
             bookingInputData.userId,
             startDate?.let { format.format(startDate.time) } ?: "2019-07-07T00:00:00+03:00",
@@ -41,7 +37,6 @@ class DeviceInfoMapper {
     fun mapBookingSession(bookingSession: BookingSessionData): SessionData {
         val endDateCalendar = Calendar.getInstance()
         val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+03:00'")
-        Log.d("MainActivity", "End date " + bookingSession.endDate)
         endDateCalendar.setTime(format.parse(bookingSession.endDate)!!)
         return SessionData(bookingSession.userId, endDateCalendar)
     }

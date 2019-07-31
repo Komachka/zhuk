@@ -4,7 +4,6 @@ import android.app.ActivityManager
 import android.content.Context
 import android.os.Build
 import android.os.Environment
-import android.util.Log
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import com.kstorozh.domainapi.model.DeviceInputData
@@ -84,7 +83,6 @@ private fun Context.getTotalStorageInfo(): Long {
         return bytesAvailable / (1024 * 1024)
     }
     return 0
-
 }
 
 fun Context.getFreeStorageInfo(): Long {
@@ -103,7 +101,6 @@ fun Context.getFreeStorageInfo(): Long {
         return bytesAvailable / (1024 * 1024)
     }
     return 0
-
 }
 
 private fun Context?.getTotalMemoryInfo(): Long {
@@ -130,7 +127,7 @@ fun View.showSnackbar(textMessage: String, length: Int = Snackbar.LENGTH_LONG) {
 }
 
 fun View.showErrorMessage(domainErrors: DomainErrors) {
-    var message:String = resources.getString(R.string.unexpected_error_message)
+    var message: String = resources.getString(R.string.unexpected_error_message)
     domainErrors.errorStatus?.let {
         message = when (domainErrors.errorStatus) {
             ErrorStatus.INVALID_PASSWORD -> resources.getString(R.string.invalid_pass_error_message)
@@ -145,9 +142,7 @@ fun View.showErrorMessage(domainErrors: DomainErrors) {
             else -> resources.getString(R.string.unexpected_error_message)
         }
     }
-
-        this.showSnackbar(message)
-        Log.d(LOG_TAG, "Message $message")
+    this.showSnackbar(message)
 }
 
 fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T) -> Unit) {

@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.DeviceInputData
 import com.kstorozh.domainapi.model.DomainErrors
@@ -17,9 +16,9 @@ import org.koin.core.inject
 class HomeViewModel : ViewModel(), KoinComponent {
 
     private val initDeviceUseCases: ManageDeviceUseCases by inject()
-    val errorsLiveData:MutableLiveData<DomainErrors> = MutableLiveData<DomainErrors>()
-    val initDeviceLiveData:MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-    val isDeviceInitedLiveData:MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    val errorsLiveData: MutableLiveData<DomainErrors> = MutableLiveData<DomainErrors>()
+    val initDeviceLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    val isDeviceInitedLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     val applicationScope = CoroutineScope(Dispatchers.Default)
 
     fun initDevice(deviceInputData: DeviceInputData): LiveData<Boolean> {

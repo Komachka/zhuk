@@ -52,13 +52,11 @@ class ChooseTimeFragment : Fragment() {
 
         val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeSharedViewModel::class.java)
 
-
-        observe(modelChooseTime.errors){
+        observe(modelChooseTime.errors) {
             it.throwable?.message?.let {
                 view.showSnackbar(it)
             }
         }
-
 
         var milisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
         if (milisec == 0L)
@@ -175,7 +173,7 @@ class ChooseTimeFragment : Fragment() {
             .setContentTitle(resources.getString(R.string.dont_forget_notification_title))
             .setContentText("${resources.getString(R.string.time_is_up_notification_title)} ${format.format(endTime.time)}")
             .setSmallIcon(R.drawable.alarm_clock)
-            //.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+            // .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
             .setColor(color)
             .setAutoCancel(false)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN &&

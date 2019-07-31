@@ -1,23 +1,19 @@
 package com.kstorozh.data.repository
 
-import LOG_TAG
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.data.network.RemoteData
 import com.kstorozh.data.utils.createError
-import com.kstorozh.dataimpl.DataError
 import com.kstorozh.dataimpl.model.UserLoginParam
-import com.kstorozh.dataimpl.model.out.BookingSessionData
 import com.kstorozh.dataimpl.model.out.RepoResult
 import com.kstorozh.dataimpl.model.out.SlackUser
+import org.koin.core.KoinComponent
 
 internal class UserRepositoryImpl(
     private val remoteData: RemoteData,
     private val mapper: UserDataMapper
 
-) : UserRepository {
+) : UserRepository, KoinComponent {
 
     override suspend fun login(userLoginParam: UserLoginParam): RepoResult<String> {
         val repoResult: RepoResult<String> = RepoResult()
@@ -27,7 +23,7 @@ internal class UserRepositoryImpl(
                 repoResult
             }
             is ApiResult.Error<*> -> {
-                repoResult.error = createError(Endpoints.LOGIN, result)
+                repoResult.error = createError(Endpoints.LOGIN, result, this)
                 repoResult
             }
         }
@@ -42,7 +38,7 @@ internal class UserRepositoryImpl(
                 repoResult.data = users
             }
             is ApiResult.Error<*> -> {
-                repoResult.error = createError(Endpoints.GET_USERS, result)
+                repoResult.error = createError(Endpoints.GET_USERS, result, this)
             }
         }
         return repoResult
@@ -57,7 +53,7 @@ internal class UserRepositoryImpl(
             }
             is ApiResult.Error<*> -> {
                 repoResult.data = false
-                repoResult.error = createError(Endpoints.REMIND_PIN, result)
+                repoResult.error = createError(Endpoints.REMIND_PIN, result, this)
                 repoResult
             }
         }

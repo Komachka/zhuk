@@ -22,10 +22,10 @@ class LogInViewModel : ViewModel(), KoinComponent {
         loadUsers()
     } }
 
-    val tryLoginViewModel:MutableLiveData<String> = MutableLiveData<String>()
-    val remindPinViewModel:MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-    val isDeviceBookedViewModel:MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-    val errorViewModel:MutableLiveData<DomainErrors> = MutableLiveData<DomainErrors>()
+    val tryLoginViewModel: MutableLiveData<String> = MutableLiveData<String>()
+    val remindPinViewModel: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    val isDeviceBookedViewModel: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    val errorViewModel: MutableLiveData<DomainErrors> = MutableLiveData<DomainErrors>()
 
     fun getUserNames(): LiveData<ArrayList<String>> {
         return Transformations.map(users, Function<List<User>, ArrayList<String>> {
@@ -70,7 +70,7 @@ class LogInViewModel : ViewModel(), KoinComponent {
 
         applicationScope.launch {
             val domainRes = loginUseCase.remindPin(user)
-            domainRes.data?.let { remindPinViewModel.postValue(it)}
+            domainRes.data?.let { remindPinViewModel.postValue(it) }
             domainRes.domainError?.let { errorViewModel.postValue(it) }
         }
         return remindPinViewModel

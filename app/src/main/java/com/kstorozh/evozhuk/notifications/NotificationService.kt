@@ -4,7 +4,6 @@ import android.app.*
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.media.RingtoneManager
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
@@ -18,8 +17,7 @@ class NotificationService : IntentService("Hello intent service") {
 
     override fun onHandleIntent(intent: Intent?) {
 
-        Log.d(LOG_TAG, "on handle service")
-        val endTime = intent?.getLongExtra(INTENT_DATA_MILISEC, 0)?:0
+        val endTime = intent?.getLongExtra(INTENT_DATA_MILISEC, 0) ?: 0
         val notificationId = 2
         val intent = Intent(this, MainActivity::class.java)
         val activity = PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT)

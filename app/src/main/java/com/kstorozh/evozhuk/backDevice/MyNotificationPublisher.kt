@@ -32,6 +32,5 @@ class MyNotificationPublisher : BroadcastReceiver() {
         notification?.let {
             notificationManager.notify(notificationId, notification)
         }
-
     }
 }

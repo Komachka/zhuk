@@ -40,11 +40,10 @@ class BackDeviceFragment : Fragment() {
 
         modelBackDevice = ViewModelProviders.of(activity!!).get(BackDeviceViewModel::class.java)
 
-        observe(modelBackDevice.errors){
+        observe(modelBackDevice.errors) {
             it.throwable?.message?.let {
                 view.showSnackbar(it)
             }
-
         }
 
         observe(modelBackDevice.getSessionData(), {

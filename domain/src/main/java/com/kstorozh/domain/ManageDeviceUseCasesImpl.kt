@@ -24,7 +24,7 @@ class ManageDeviceUseCasesImpl(private val repository: DeviseRepository, val map
 
     override suspend fun getSession(): DomainResult<SessionData> {
         val repoResult = repository.getBookingSession()
-        val domainResult:DomainResult<SessionData> = DomainResult()
+        val domainResult: DomainResult<SessionData> = DomainResult()
 
         repoResult.data?.let {
             domainResult.data = mapper.mapBookingSession(it)
@@ -33,7 +33,6 @@ class ManageDeviceUseCasesImpl(private val repository: DeviseRepository, val map
             domainResult.domainError = errorMapper.mapToDomainError(repoResult.error)
         }
         return domainResult
-
     }
 
     override suspend fun initDevice(deviceInputData: DeviceInputData): DomainResult<Boolean> {

@@ -8,7 +8,6 @@ import com.kstorozh.domain.ManageDeviceUseCasesImpl
 import com.kstorozh.domain.mapper.DeviceInfoMapper
 import com.kstorozh.domain.mapper.ErrorMapper
 import com.kstorozh.domain.mapper.UserDataMapper
-import com.kstorozh.domainapi.HandleErrorUseCase
 import com.kstorozh.domainapi.LoginUseCase
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.GetUsersUseCases
