@@ -10,7 +10,7 @@ internal data class UserData(
     var userId: Int
 )
 
-internal data class LoginUserResponce(
+internal data class LoginUserResponse(
 
     @SerializedName("data")
     @Expose

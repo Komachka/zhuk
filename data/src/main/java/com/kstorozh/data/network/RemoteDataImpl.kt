@@ -19,7 +19,7 @@ internal class RemoteDataImpl(
     private val deviceApi: DeviceApi,
     private val userApi: UserApi
 ) : RemoteData {
-    override suspend fun login(userLoginParam: UserLogin): ApiResult<LoginUserResponce> {
+    override suspend fun login(userLoginParam: UserLogin): ApiResult<LoginUserResponse> {
         return getApiResult(LOGIN_ERROR) {
             userApi.login(userLoginParam)
         }
