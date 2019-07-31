@@ -46,9 +46,9 @@ class ChooseTimeFragment : Fragment() {
                 Navigation.findNavController(view).navigate(ChooseTimeFragmentDirections.actionChooseTimeFragmentToInfoFragment())
             }
 
-        view.deviceNameTv.text = context.getDeviceName()
+        view.deviceNameTv.text = context?.getDeviceName()
         view.youTakeDeviceLabelTv.text =
-            "${resources.getString(R.string.time_choose_label)}${context.getDeviceName()}?"
+            "${resources.getString(R.string.time_choose_label)}${context?.getDeviceName()}?"
 
         val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeSharedViewModel::class.java)
 

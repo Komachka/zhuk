@@ -33,7 +33,7 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
                 Navigation.findNavController(fragment).navigate(LoginFragmentDirections.actionLoginFragmentToInfoFragment())
             }
 
-        fragment.deviceNameTv.text = context.getDeviceName()
+        fragment.deviceNameTv.text = context?.getDeviceName()
         loginBut = fragment.goInBut
         loginEt = fragment.loginEt as AutoCompleteTextView
         passEt = fragment.passwordEt as EditText

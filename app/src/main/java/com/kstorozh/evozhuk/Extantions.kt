@@ -41,11 +41,10 @@ fun Context.getInfoAboutDevice(): DeviceInputData {
             "\nUNKNOWN : " + Build.UNKNOWN +
             "\nUSER : " + Build.USER)
 
-    val memory = getFreeMemoryInfo()
     return DeviceInputData(Build.ID, "${Build.BRAND} ${Build.MODEL}", "android", Build.VERSION.RELEASE, this.getTotalMemoryInfo().toInt(), this.getTotalStorageInfo().toInt())
 }
 
-fun Context?.getDeviceName(): String {
+fun Context.getDeviceName(): String {
     return "${Build.BRAND} ${Build.MODEL}"
 }
 
@@ -103,18 +102,18 @@ fun Context.getFreeStorageInfo(): Long {
     return 0
 }
 
-private fun Context?.getTotalMemoryInfo(): Long {
+private fun Context.getTotalMemoryInfo(): Long {
     val mi = ActivityManager.MemoryInfo()
-    val activityManager = this!!.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    val activityManager = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
     activityManager.getMemoryInfo(mi)
     val availableMegs = mi.availMem / 0x100000L // MG
     val totalMegs = mi.totalMem / 0x100000L // MG
     return totalMegs
 }
 
-private fun Context?.getFreeMemoryInfo(): Long {
+private fun Context.getFreeMemoryInfo(): Long {
     val mi = ActivityManager.MemoryInfo()
-    val activityManager = this!!.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    val activityManager = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
     activityManager.getMemoryInfo(mi)
     val availableMegs = mi.availMem / 0x100000L // MG
     val totalMegs = mi.totalMem / 0x100000L // MG

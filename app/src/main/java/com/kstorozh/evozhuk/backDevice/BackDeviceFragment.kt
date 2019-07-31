@@ -35,8 +35,8 @@ class BackDeviceFragment : Fragment() {
         view.infoImageBut.setOnClickListener {
                 Navigation.findNavController(view).navigate(BackDeviceFragmentDirections.actionBackDeviceFragmentToInfoFragment())
         }
-        view.deviceNameTv.text = context.getDeviceName()
-        view.youTakeDeviceLabelTv.text = "${resources.getString(R.string.youTableDeviceLabel)} ${context.getDeviceName()}"
+        view.deviceNameTv.text = context?.getDeviceName()
+        view.youTakeDeviceLabelTv.text = "${resources.getString(R.string.youTableDeviceLabel)} ${context?.getDeviceName()}"
 
         modelBackDevice = ViewModelProviders.of(activity!!).get(BackDeviceViewModel::class.java)
 

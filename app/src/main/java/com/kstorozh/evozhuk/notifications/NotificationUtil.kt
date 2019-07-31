@@ -10,7 +10,7 @@ const val CHANEL_NAME: String = "Foreground service chanel"
 class NotificationUtil {
 
     companion object {
-        fun createNotificationChanal(context: Context) {
+        fun createNotificationChannel(context: Context) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val serviceChanel = NotificationChannel(CHANEL_ID, CHANEL_NAME, NotificationManager.IMPORTANCE_LOW)
                 val manager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
