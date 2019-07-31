@@ -16,108 +16,72 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 
-fun Context.getInfoAboutDevice(): DeviceInputData {
+typealias DeviceInfoName = String
+typealias DeviceInfoParam = String
 
-    val details = ("VERSION.RELEASE : " + Build.VERSION.RELEASE +
-            "\nVERSION.INCREMENTAL : " + Build.VERSION.INCREMENTAL +
-            "\nVERSION.SDK.NUMBER : " + Build.VERSION.SDK_INT +
-            "\nBOARD : " + Build.BOARD +
-            "\nBOOTLOADER : " + Build.BOOTLOADER +
-            "\nBRAND : " + Build.BRAND +
-            "\nCPU_ABI : " + Build.CPU_ABI +
-            "\nCPU_ABI2 : " + Build.CPU_ABI2 +
-            "\nDISPLAY : " + Build.DISPLAY +
-            "\nFINGERPRINT : " + Build.FINGERPRINT +
-            "\nHARDWARE : " + Build.HARDWARE +
-            "\nHOST : " + Build.HOST +
-            "\nID : " + Build.ID +
-            "\nMANUFACTURER : " + Build.MANUFACTURER +
-            "\nMODEL : " + Build.MODEL +
-            "\nPRODUCT : " + Build.PRODUCT +
-            "\nSERIAL : " + Build.SERIAL +
-            "\nTAGS : " + Build.TAGS +
-            "\nTIME : " + Build.TIME +
-            "\nTYPE : " + Build.TYPE +
-            "\nUNKNOWN : " + Build.UNKNOWN +
-            "\nUSER : " + Build.USER)
-
-    return DeviceInputData(Build.ID, "${Build.BRAND} ${Build.MODEL}", "android", Build.VERSION.RELEASE, this.getTotalMemoryInfo().toInt(), this.getTotalStorageInfo().toInt())
+internal fun Context.getInfoAboutDevice(): DeviceInputData {
+    return DeviceInputData(
+        Build.ID,
+        "${Build.BRAND} ${Build.MODEL}",
+        OS, Build.VERSION.RELEASE,
+        getTotalMemoryInfoInBite().mgToGb().toInt(),
+        getTotalStorageInfoInBite().mgToGb().toInt())
 }
 
-fun Context.getDeviceName(): String {
+internal fun Context.getDeviceName(): String {
     return "${Build.BRAND} ${Build.MODEL}"
 }
 
-fun Context.getInfoPairs(): List<Pair<String, String>> {
-
-    val list = mutableListOf<Pair<String, String>>()
-    list.add("VERSION" to Build.VERSION.RELEASE.toString()) // PUT to constants
-    list.add("MODEL" to "${Build.BRAND} ${Build.MODEL}")
-    list.add("ID" to Build.ID)
-    val freeMemory = getFreeMemoryInfo()
-    val totalMemory = getTotalMemoryInfo()
-    val freeStorage = getFreeStorageInfo()
-    val totalStorage = getTotalStorageInfo()
-
-    val df = DecimalFormat("#.##")
-    list.add("MEMORY" to "${df.format(totalMemory * 0.001)} Gb") // from Mg tu Gb
-
-    list.add("STORAGE" to "${df.format(totalStorage * 0.001)} Gb") // from Mg tu Gb
-    return list
+internal fun Context.getInfoPairs(): List<Pair<DeviceInfoName, DeviceInfoParam>> {
+    val df = DecimalFormat(MEMORY_DECIMAL_FORMAT)
+    return listOf(
+        INFO_VERSION to Build.VERSION.RELEASE.toString(),
+        INFO_MODEL to "${Build.BRAND} ${Build.MODEL}",
+        INFO_ID to Build.ID,
+        INFO_MEMORY to "${df.format(getTotalMemoryInfoInBite().biteToGb())} Gb",
+        INFO_STORAGE to "${df.format(getTotalStorageInfoInBite().biteToGb())} Gb"
+    )
 }
 
-private fun Context.getTotalStorageInfo(): Long {
+private fun Context.getTotalStorageInfoInBite(): Long {
+    getStatFs()?.let {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            it.blockSizeLong * it.blockCountLong
+        } else {
+            it.blockSize.toLong() * it.blockCount.toLong()
+        }
+    }
+    return 0
+}
+
+fun Context.getFreeStorageInfoInBite(): Long {
+    getStatFs()?.let {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            it.blockSizeLong * it.availableBlocksLong
+        } else {
+            it.blockSize.toLong() * it.availableBlocks.toLong()
+        }
+    }
+    return 0
+}
+
+fun Context.getStatFs(): StatFs? {
     val file = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
         getExternalFilesDir("")
     } else {
         Environment.getExternalStorageDirectory()
     }
-    file?.let {
-        val stat = StatFs(it.path)
-        val bytesAvailable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            stat.blockSizeLong * stat.blockCountLong
-        } else {
-            stat.blockSize.toLong() * stat.blockCount.toLong()
-        }
-        return bytesAvailable / (1024 * 1024)
-    }
-    return 0
+    return if (file != null) StatFs(file.path) else null
 }
 
-fun Context.getFreeStorageInfo(): Long {
-    val file = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-        getExternalFilesDir("")
-    } else {
-        Environment.getExternalStorageDirectory()
-    }
-    file?.let {
-        val stat = StatFs(it.path)
-        val bytesAvailable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            stat.blockSizeLong * stat.availableBlocksLong
-        } else {
-            stat.blockSize.toLong() * stat.availableBlocks.toLong()
-        }
-        return bytesAvailable / (1024 * 1024)
-    }
-    return 0
-}
+private fun Context.getFreeMemoryInfoInBite() = getMemoryInfo().availMem
+private fun Context.getTotalMemoryInfoInBite() = getMemoryInfo().totalMem
 
-private fun Context.getTotalMemoryInfo(): Long {
+private fun Context.getMemoryInfo(): ActivityManager.MemoryInfo {
     val mi = ActivityManager.MemoryInfo()
-    val activityManager = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
     activityManager.getMemoryInfo(mi)
-    val availableMegs = mi.availMem / 0x100000L // MG
-    val totalMegs = mi.totalMem / 0x100000L // MG
-    return totalMegs
-}
-
-private fun Context.getFreeMemoryInfo(): Long {
-    val mi = ActivityManager.MemoryInfo()
-    val activityManager = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-    activityManager.getMemoryInfo(mi)
-    val availableMegs = mi.availMem / 0x100000L // MG
-    val totalMegs = mi.totalMem / 0x100000L // MG
-    return availableMegs
+    return mi
 }
 
 fun View.showSnackbar(textMessage: String, length: Int = Snackbar.LENGTH_LONG) {
@@ -147,3 +111,7 @@ fun View.showErrorMessage(domainErrors: DomainErrors) {
 fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T) -> Unit) {
     liveData.observe(this, Observer(body))
 }
+
+private fun Long.mgToGb() = this * 0.001
+private fun Long.biteToMg() = this / 0X100000 // 1024 * 1024
+private fun Long.biteToGb() = biteToMg().mgToGb()
