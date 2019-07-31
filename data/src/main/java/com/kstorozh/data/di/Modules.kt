@@ -19,7 +19,6 @@ import com.kstorozh.data.repository.UserRepositoryImpl
 import com.kstorozh.data.network.AuthInterceptor
 import com.kstorozh.data.network.TokenRepository
 import com.kstorozh.dataimpl.DeviseRepository
-import com.kstorozh.dataimpl.model.out.SlackUser
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
@@ -56,7 +55,7 @@ val networkModule = module(override = true) {
 
 val repositoryModule = module(override = true) {
     single<DeviseRepository> { DeviceRepositoryImpl(get(), get(), DeviceDataMapper(), get()) }
-    single<UserRepository> { UserRepositoryImpl(get(), UserDataMapper(), ArrayList<SlackUser>()) }
+    single<UserRepository> { UserRepositoryImpl(get(), UserDataMapper()) }
 }
 
 private fun provideGson(): Gson {

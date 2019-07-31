@@ -6,7 +6,6 @@ import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.models.BookingBody
 import com.kstorozh.data.models.Device
 import com.kstorozh.data.models.InitDeviceResponse
-import com.kstorozh.data.models.User
 
 internal interface RemoteData {
 
@@ -26,12 +25,9 @@ internal interface RemoteData {
     suspend fun getUsers(): ApiResult<UsersData>
 
     @WorkerThread
-    suspend fun createUser(user: User): ApiResult<BaseResponse>
-
-    @WorkerThread
 
     suspend fun remindPin(slackId: String): ApiResult<BaseResponse>
 
     @WorkerThread
-    suspend fun login(userLoginParam: UserLogin): ApiResult<LoginUserResponce>
+    suspend fun login(userLoginParam: UserLogin): ApiResult<LoginUserResponse>
 }

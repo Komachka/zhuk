@@ -5,7 +5,6 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
@@ -52,6 +51,13 @@ class ChooseTimeFragment : Fragment() {
             "${resources.getString(R.string.time_choose_label)}${context.getDeviceName()}?"
 
         val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeSharedViewModel::class.java)
+
+        observe(modelChooseTime.errors) {
+            it.throwable?.message?.let {
+                view.showSnackbar(it)
+            }
+        }
+
         var milisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
         if (milisec == 0L)
             milisec = TimeUtils.setHours(1)
@@ -116,7 +122,7 @@ class ChooseTimeFragment : Fragment() {
                     view.showSnackbar(resources.getString(R.string.device_booked_message))
                     val action =
                         ChooseTimeFragmentDirections.actionChooseTimeFragmentToBackDeviceFragment(
-                            modelChooseTime.userId.value!!,
+                            modelChooseTime.userIdLiveData.value!!,
                             modelChooseTime.chooseCalendar.value!!.timeInMillis)
                     startForegroundServiceNotification(modelChooseTime.chooseCalendar.value!!.timeInMillis)
                     context!!.startScheduleNotification(modelChooseTime.chooseCalendar.value!!)
@@ -135,9 +141,9 @@ class ChooseTimeFragment : Fragment() {
     }
 
     private fun startForegroundServiceNotification(millisec: Long) {
-        val serviceIntent = Intent(context, NotificationService::class.java)
+        val serviceIntent = Intent(context?.applicationContext, NotificationService::class.java)
         serviceIntent.putExtra(INTENT_DATA_MILISEC, millisec)
-        context!!.startService(serviceIntent)
+        context?.startService(serviceIntent)
     }
 
     fun Context.startScheduleNotification(endTime: Calendar) {
@@ -149,13 +155,13 @@ class ChooseTimeFragment : Fragment() {
         var delay: Long = if (deltaTime.timeInMillis < currentTime.timeInMillis) 1000L else deltaTime.timeInMillis - currentTime.timeInMillis
         val notificationId = 1
         val notification = createNotification(endTime, notificationId)
-        val notificationIntentBroadcast = Intent(context, MyNotificationPublisher::class.java)
+        val notificationIntentBroadcast = Intent(context?.applicationContext, MyNotificationPublisher::class.java)
         notificationIntentBroadcast.putExtra(MyNotificationPublisher.NOTIFICATION_ID, notificationId)
         notificationIntentBroadcast.putExtra(MyNotificationPublisher.NOTIFICATION, notification)
         val pendingIntent =
-            PendingIntent.getBroadcast(context, notificationId, notificationIntentBroadcast, PendingIntent.FLAG_CANCEL_CURRENT)
+            PendingIntent.getBroadcast(context?.applicationContext, notificationId, notificationIntentBroadcast, PendingIntent.FLAG_CANCEL_CURRENT)
         val futureInMillis = SystemClock.elapsedRealtime() + delay
-        val alarmManager = context!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
     }
 
@@ -167,7 +173,7 @@ class ChooseTimeFragment : Fragment() {
             .setContentTitle(resources.getString(R.string.dont_forget_notification_title))
             .setContentText("${resources.getString(R.string.time_is_up_notification_title)} ${format.format(endTime.time)}")
             .setSmallIcon(R.drawable.alarm_clock)
-            //.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+            // .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
             .setColor(color)
             .setAutoCancel(false)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN &&

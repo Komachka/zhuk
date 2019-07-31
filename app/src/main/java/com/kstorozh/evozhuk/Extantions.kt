@@ -3,7 +3,7 @@ package com.kstorozh.evozhuk
 import android.app.ActivityManager
 import android.content.Context
 import android.os.Build
-import android.util.Log
+import android.os.Environment
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import com.kstorozh.domainapi.model.DeviceInputData
@@ -16,7 +16,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 
-fun Context?.getInfoAboutDevice(): DeviceInputData {
+fun Context.getInfoAboutDevice(): DeviceInputData {
 
     val details = ("VERSION.RELEASE : " + Build.VERSION.RELEASE +
             "\nVERSION.INCREMENTAL : " + Build.VERSION.INCREMENTAL +
@@ -49,7 +49,7 @@ fun Context?.getDeviceName(): String {
     return "${Build.BRAND} ${Build.MODEL}"
 }
 
-fun Context?.getInfoPairs(): List<Pair<String, String>> {
+fun Context.getInfoPairs(): List<Pair<String, String>> {
 
     val list = mutableListOf<Pair<String, String>>()
     list.add("VERSION" to Build.VERSION.RELEASE.toString()) // PUT to constants
@@ -67,24 +67,40 @@ fun Context?.getInfoPairs(): List<Pair<String, String>> {
     return list
 }
 
-private fun Context?.getTotalStorageInfo(): Long {
-    val stat = StatFs(this!!.getExternalFilesDir("")!!.path)
-    val bytesAvailable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-        stat.blockSizeLong * stat.blockCountLong
+private fun Context.getTotalStorageInfo(): Long {
+    val file = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        getExternalFilesDir("")
     } else {
-        stat.blockSize.toLong() * stat.blockCount.toLong()
+        Environment.getExternalStorageDirectory()
     }
-    return bytesAvailable / (1024 * 1024)
+    file?.let {
+        val stat = StatFs(it.path)
+        val bytesAvailable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            stat.blockSizeLong * stat.blockCountLong
+        } else {
+            stat.blockSize.toLong() * stat.blockCount.toLong()
+        }
+        return bytesAvailable / (1024 * 1024)
+    }
+    return 0
 }
 
-fun Context?.getFreeStorageInfo(): Long {
-    val stat = StatFs(this!!.getExternalFilesDir("")!!.path)
-    val bytesAvailable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-        stat.blockSizeLong * stat.availableBlocksLong
+fun Context.getFreeStorageInfo(): Long {
+    val file = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        getExternalFilesDir("")
     } else {
-        stat.blockSize.toLong() * stat.availableBlocks.toLong()
+        Environment.getExternalStorageDirectory()
     }
-    return bytesAvailable / (1024 * 1024)
+    file?.let {
+        val stat = StatFs(it.path)
+        val bytesAvailable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            stat.blockSizeLong * stat.availableBlocksLong
+        } else {
+            stat.blockSize.toLong() * stat.availableBlocks.toLong()
+        }
+        return bytesAvailable / (1024 * 1024)
+    }
+    return 0
 }
 
 private fun Context?.getTotalMemoryInfo(): Long {
@@ -111,8 +127,9 @@ fun View.showSnackbar(textMessage: String, length: Int = Snackbar.LENGTH_LONG) {
 }
 
 fun View.showErrorMessage(domainErrors: DomainErrors) {
-    Log.d(LOG_TAG, "status error " + domainErrors.errorStatus!!.name)
-    val message = when (domainErrors.errorStatus) {
+    var message: String = resources.getString(R.string.unexpected_error_message)
+    domainErrors.errorStatus?.let {
+        message = when (domainErrors.errorStatus) {
             ErrorStatus.INVALID_PASSWORD -> resources.getString(R.string.invalid_pass_error_message)
             ErrorStatus.INVALID_LOGIN -> resources.getString(R.string.invalid_login_error_message)
             ErrorStatus.UNAUTHORIZED -> resources.getString(R.string.device_is_not_authorized_error_message)
@@ -124,8 +141,8 @@ fun View.showErrorMessage(domainErrors: DomainErrors) {
             ErrorStatus.CAN_NOT_REMIND_PIN -> resources.getString(R.string.can_not_remind_pin_error_message)
             else -> resources.getString(R.string.unexpected_error_message)
         }
-        this.showSnackbar(message)
-        Log.d(LOG_TAG, "Message $message")
+    }
+    this.showSnackbar(message)
 }
 
 fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T) -> Unit) {

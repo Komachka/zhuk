@@ -21,12 +21,16 @@ class HomeFragment : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_at_home, container, false)
         model = ViewModelProviders.of(this)[HomeViewModel::class.java]
-        val info = context.getInfoAboutDevice()
+        observe(model.errorsLiveData) {
+            it.throwable?.message?.let {
+                view.showSnackbar(it)
+            }
+        }
+        val info = context?.applicationContext!!.getInfoAboutDevice()
+
         view.welcomeMessageTv.text = info.model
         observe(model.isDeviceInited(info), {
             if (it) {
-                val message = resources.getString(R.string.device_registered_message)
-                view.showSnackbar(message)
                 Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_loginFragment)
             }
         })

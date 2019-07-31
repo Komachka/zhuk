@@ -38,7 +38,7 @@ class InfoFragment : Fragment() {
         }
 
         viewManager = LinearLayoutManager(context)
-        infoAdapter = InfoAdapter(context.getInfoPairs())
+        infoAdapter = InfoAdapter(context?.applicationContext!!.getInfoPairs())
         fragment.infoRv.apply {
             setHasFixedSize(true)
             layoutManager = viewManager

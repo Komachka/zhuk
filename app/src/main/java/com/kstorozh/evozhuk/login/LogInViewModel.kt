@@ -4,11 +4,9 @@ import androidx.arch.core.util.Function
 import androidx.lifecycle.*
 import com.kstorozh.domainapi.LoginUseCase
 import com.kstorozh.domainapi.ManageDeviceUseCases
-import com.kstorozh.domainapi.model.DeviceInputData
-import com.kstorozh.domainapi.model.GetUsersUseCases
-import com.kstorozh.domainapi.model.User
-import com.kstorozh.domainapi.model.UserLoginInput
-import kotlinx.coroutines.GlobalScope
+import com.kstorozh.domainapi.model.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -19,9 +17,15 @@ class LogInViewModel : ViewModel(), KoinComponent {
     private val getUserUseCase: GetUsersUseCases by inject()
     private val initDeviceUseCases: ManageDeviceUseCases by inject()
 
+    val applicationScope = CoroutineScope(Dispatchers.Default)
     private val users: MutableLiveData<List<User>> by lazy { MutableLiveData<List<User>>().also {
         loadUsers()
     } }
+
+    val tryLoginViewModel: MutableLiveData<String> = MutableLiveData<String>()
+    val remindPinViewModel: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    val isDeviceBookedViewModel: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    val errorViewModel: MutableLiveData<DomainErrors> = MutableLiveData<DomainErrors>()
 
     fun getUserNames(): LiveData<ArrayList<String>> {
         return Transformations.map(users, Function<List<User>, ArrayList<String>> {
@@ -46,35 +50,38 @@ class LogInViewModel : ViewModel(), KoinComponent {
 
     private fun loadUsers() {
 
-        GlobalScope.launch {
-            val data = getUserUseCase.getUsers()
-            users.postValue(data)
+        applicationScope.launch {
+            val domainRes = getUserUseCase.getUsers()
+            domainRes.data?.let { users.postValue(it) }
+            domainRes.domainError?.let { errorViewModel.postValue(it) }
         }
     }
 
     fun tryLogin(name: String, pass: String): LiveData<String> {
-        return liveData<String> {
-            val userId = loginUseCase.loginUser(UserLoginInput(name, pass))
-            userId?.let {
-                emit(userId)
-            }
+        applicationScope.launch {
+            val domainRes = loginUseCase.loginUser(UserLoginInput(name, pass))
+            domainRes.data?.let { tryLoginViewModel.postValue(it) }
+            domainRes.domainError?.let { errorViewModel.postValue(it) }
         }
+        return tryLoginViewModel
     }
 
     fun remindPin(user: User): LiveData<Boolean> {
 
-        return liveData {
-            emit(loginUseCase.remindPin(user))
+        applicationScope.launch {
+            val domainRes = loginUseCase.remindPin(user)
+            domainRes.data?.let { remindPinViewModel.postValue(it) }
+            domainRes.domainError?.let { errorViewModel.postValue(it) }
         }
+        return remindPinViewModel
     }
 
     fun isDeviceBooked(deviceInputData: DeviceInputData): LiveData<Boolean> {
-        return liveData {
+
+        applicationScope.launch {
             val result = initDeviceUseCases.getSession()
-            if (result != null)
-                emit(true)
-            else
-                emit(false)
+            if (result.data != null) isDeviceBookedViewModel.postValue(true) else isDeviceBookedViewModel.postValue(false)
         }
+        return isDeviceBookedViewModel
     }
 }

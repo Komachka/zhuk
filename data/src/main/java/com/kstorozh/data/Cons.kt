@@ -19,11 +19,21 @@ internal const val GET_USERS_URL = "/api/users"
 internal const val CREATE_USER_URL = "/api/users"
 internal const val REMIND_PIN_URL = "/api/users/{id}/pin/remind"
 internal const val LOGIN_URL = "/api/login"
+internal const val BASE_URL = "http://wh.evo.dev"
 
-//internal const val BASE_URL = "http://wh.evo.dev"
-internal const val BASE_URL = "http://evozhuk.tk"
 internal const val ERROR_STATUS_CODE = 422
 internal const val UNAUTHORIZED_STATUS_CODE = 401
 internal const val NOT_FOUND_STATUS_CODE = 400
 
 internal const val LOG_TAG = "MainActivity"
+
+/**
+ * Error messages
+ */
+internal const val LOGIN_ERROR = "api problem with login"
+internal const val INIT_ERROR = "api problem with init device"
+internal const val UPDATE_ERROR = "api problem with update device"
+internal const val BOOKING_ERROR = "api problem with update device"
+internal const val RETURN_ERROR = "api problem with update device"
+internal const val GET_USERS_ERROR = "api problem with getting list of users"
+internal const val REMIND_PIN_ERROR = "api problem with reminding pin"

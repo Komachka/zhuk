@@ -9,8 +9,6 @@ import androidx.navigation.Navigation
 import androidx.lifecycle.ViewModelProviders
 import android.widget.EditText
 import com.kstorozh.evozhuk.*
-import kotlinx.android.synthetic.main.fragment_back_device.*
-
 import kotlinx.android.synthetic.main.fragment_login.view.*
 import kotlinx.android.synthetic.main.logo_and_info.view.*
 
@@ -44,13 +42,19 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
         model = ViewModelProviders.of(this)[LogInViewModel::class.java]
         subscribeNamesLiveData()
 
-        observe(model.isDeviceBooked(context.getInfoAboutDevice()), {
+        observe(model.errorViewModel) {
+            var message: String = "error message"
+            it.message?.let { message = it }
+            if (it.message == null) it.throwable?.message?.let { message = it }
+            activity?.currentFocus?.showSnackbar(message)
+        }
+
+        observe(model.isDeviceBooked(context?.applicationContext!!.getInfoAboutDevice()), {
             if (it)
                 Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_backDeviceFragment)
         })
 
         loginBut.setOnClickListener { view ->
-
             if (passEt.text.isNotEmpty() && loginEt.text.isNotEmpty())
                     model.tryLogin(loginEt.text.toString(), passEt.text.toString()).observe(this, Observer {
                         if (!it.isNullOrEmpty()) {

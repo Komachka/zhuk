@@ -29,6 +29,8 @@ class MyNotificationPublisher : BroadcastReceiver() {
             val mChannel = NotificationChannel(CHANEL_ID, name, importance)
             notificationManager.createNotificationChannel(mChannel)
         }
-        notificationManager.notify(notificationId, notification)
+        notification?.let {
+            notificationManager.notify(notificationId, notification)
+        }
     }
 }
