@@ -85,7 +85,6 @@ private fun Context.getMemoryInfo(): ActivityManager.MemoryInfo {
 }
 
 fun View.showSnackbar(textMessage: String, length: Int = Snackbar.LENGTH_LONG) {
-
     Snackbar.make(this, textMessage, length).show()
 }
 
