@@ -11,7 +11,6 @@ import com.kstorozh.data.models.*
 import com.kstorozh.data.models.BookingBody
 import com.kstorozh.data.models.Device
 import com.kstorozh.data.models.ReturnDeviceBody
-import com.kstorozh.data.models.User
 import retrofit2.Response
 import java.io.IOException
 import java.lang.Exception
@@ -65,7 +64,6 @@ internal class RemoteDataImpl(
             userApi.getUsers()
         }
     }
-
 
     override suspend fun remindPin(slackUserId: String): ApiResult<BaseResponse> {
         return getApiResult(REMIND_PIN_ERROR) {

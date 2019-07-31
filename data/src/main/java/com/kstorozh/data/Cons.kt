@@ -27,8 +27,9 @@ internal const val NOT_FOUND_STATUS_CODE = 400
 
 internal const val LOG_TAG = "MainActivity"
 
-
-//errors
+/**
+ * Error messages
+ */
 internal const val LOGIN_ERROR = "api problem with login"
 internal const val INIT_ERROR = "api problem with init device"
 internal const val UPDATE_ERROR = "api problem with update device"
