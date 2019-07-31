@@ -23,8 +23,6 @@ import kotlinx.android.synthetic.main.logo_and_info.view.*
 
 class BackDeviceFragment : Fragment() {
 
-    lateinit var modelBackDevice: BackDeviceViewModel
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,28 +35,19 @@ class BackDeviceFragment : Fragment() {
         }
         view.deviceNameTv.text = context?.getDeviceName()
         view.youTakeDeviceLabelTv.text = "${resources.getString(R.string.youTableDeviceLabel)} ${context?.getDeviceName()}"
-
-        modelBackDevice = ViewModelProviders.of(activity!!).get(BackDeviceViewModel::class.java)
+        val modelBackDevice = ViewModelProviders.of(activity!!).get(BackDeviceViewModel::class.java)
 
         observe(modelBackDevice.errors) {
             it.throwable?.message?.let {
                 view.showSnackbar(it)
             }
         }
-
         observe(modelBackDevice.getSessionData(), {
             it?.let {
                 val format = SimpleDateFormat(DATE_FORMAT_BACK_DEVICE_SCREEN_TV)
                 dateToBack.text = format.format(it.endData.time)
             }
         })
-
-        /*modelBackDevice.getSessionData().observe(this, Observer {
-            it?.let {
-                val format = SimpleDateFormat(DATE_FORMAT_BACK_DEVICE_SCREEN_TV)
-                dateToBack.text = format.format(it.endData.time)
-            }
-        })*/
 
         arguments?.let {
             val (endDate, userId) = Pair(
@@ -71,8 +60,7 @@ class BackDeviceFragment : Fragment() {
         }
 
         view.giveBackBut.setOnClickListener { view ->
-
-            modelBackDevice.tryReturnDevice().observe(this, Observer {
+            observe(modelBackDevice.tryReturnDevice()) {
                 if (it) {
                     view.showSnackbar(resources.getString(R.string.device_returned_message))
                     clearAllNotification(context)
@@ -80,9 +68,8 @@ class BackDeviceFragment : Fragment() {
                     Navigation.findNavController(view).navigate(R.id.action_backDeviceFragment_to_returnDeviceFragment)
                 } else
                     view.showSnackbar(resources.getString(R.string.device_not_returned_message))
-            })
+            }
         }
-
         return view
     }
 
@@ -94,6 +81,6 @@ class BackDeviceFragment : Fragment() {
     private fun stopForegroundService() {
         val serviceIntent = Intent(context, NotificationService::class.java)
         serviceIntent.putExtra(INTENT_STOP_FLAG, INTENT_STOP_FLAG)
-        context!!.stopService(serviceIntent)
+        context?.stopService(serviceIntent)
     }
 }
