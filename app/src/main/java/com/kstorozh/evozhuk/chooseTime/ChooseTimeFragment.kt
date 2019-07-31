@@ -5,9 +5,11 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +28,6 @@ import com.kstorozh.evozhuk.notifications.NotificationService
 import com.kstorozh.evozhuk.utils.getDeviceName
 import com.kstorozh.evozhuk.utils.observe
 import com.kstorozh.evozhuk.utils.showSnackbar
-import kotlinx.android.synthetic.main.fragment_time_choose.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlinx.android.synthetic.main.fragment_time_choose.view.*
@@ -68,92 +69,39 @@ class ChooseTimeFragment : Fragment() {
                 view.showSnackbar(it)
             }
         }
-
-        var milisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
-        if (milisec == 0L)
-            milisec = TimeUtils.setHours(1)
+        var anotherTimeMilisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
+        if (anotherTimeMilisec == 0L)
+            anotherTimeMilisec = TimeUtils.getTimeInMsFromHours(1)
 
         val userId = ChooseTimeFragmentArgs.fromBundle(arguments!!).userId
         if (userId != USER_ID_NOT_SET)
             modelChooseTime.setUserId(userId)
-        modelChooseTime.setCalendar(milisec)
+        modelChooseTime.setCalendar(anotherTimeMilisec)
 
+        val res = context?.applicationContext?.resources as Resources
         val buttonTimes = listOf<TimeButton>(
-            TimeButton("1 hour", TimeUtils.setHours(1), true),
-            TimeButton("2 hour", TimeUtils.setHours(2), false),
-            TimeButton("3 hour", TimeUtils.setHours(3), false),
-            TimeButton("4 hour", TimeUtils.setHours(4), false),
-            TimeButton("5 hour", TimeUtils.setHours(5), false)
+            TimeButton(res.getString(R.string.oneHour), TimeUtils.getTimeInMsFromHours(1), true),
+            TimeButton(res.getString(R.string.twoHour), TimeUtils.getTimeInMsFromHours(2)),
+            TimeButton(res.getString(R.string.foutHour), TimeUtils.getTimeInMsFromHours(4)),
+            TimeButton(res.getString(R.string.tillSevenOClock), TimeUtils.getTimeInMsForEndOfWorkDay()),
+            TimeButton(res.getString(R.string.twoDays), TimeUtils.getTimeInMsFromHours(48)),
+            TimeButton(res.getString(R.string.anotherTime), anotherTimeMilisec, navigation =
+            { Navigation.findNavController(view).navigate(R.id.action_chooseTimeFragment_to_specificTimeAndDate) }) // get fom args
         )
 
         viewManager = GridLayoutManager(this.context, 2)
         viewAdapter = ButtonTimeAdapter(buttonTimes)
-
-        // val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
-
         view.buttonsRv.apply {
-            // use this setting to improve performance if you know that changes
-            // in content do not change the layout size of the RecyclerView
             setHasFixedSize(true)
-
-            // use a linear layout manager
             layoutManager = viewManager
-
-            // specify an viewAdapter (see also next example)
             adapter = viewAdapter
             addItemDecoration(SpacesItemDecoration(10))
         }
 
-        /*val buttonList = listOf<Button>(
-            view.oneHourBut.also {
-                selectedButton = it
-            },
-            view.twoHourBut,
-            view.fourHourBut,
-            view.allDayBut,
-            view.twoDaysBut,
-            (view.anotherTimeBut as Button).also {
-                if (ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec != 0L) {
-                    selectedButton?.let { it1 -> resetButton(it1) }
-                    selectedButton = it
-                }
-            }
-        )
-
-        buttonList.forEach { button ->
-            button.setOnClickListener {
-                (it as Button).setBackgroundResource(R.drawable.time_but_pressed)
-                it.setTextColor(resources.getColor(R.color.but_time_focus))
-                selectedButton?.let {
-                    resetButton(it)
-                }
-                selectedButton = it
-                milisec = when (it.id) {
-                        R.id.oneHourBut -> TimeUtils.setHours(1)
-                        R.id.twoHourBut -> TimeUtils.setHours(2)
-                        R.id.fourHourBut -> TimeUtils.setHours(4)
-                        R.id.twoDaysBut -> TimeUtils.setHours(48)
-                        R.id.allDayBut ->
-                        {
-                            val currentTime = GregorianCalendar.getInstance()
-                            val mCalendar = GregorianCalendar(currentTime.get(Calendar.YEAR),
-                                currentTime.get(Calendar.MONTH),
-                                currentTime.get(Calendar.DAY_OF_MONTH), 19, 0, 0)
-                            mCalendar.timeZone = TimeUtils.getCurrentTimeZone()
-                            mCalendar.timeInMillis
-                        }
-
-                        else -> {
-                            Navigation.findNavController(view).navigate(R.id.action_chooseTimeFragment_to_specificTimeAndDate)
-                            0
-                        }
-                    }
-
-                modelChooseTime.setCalendar(milisec)
-            }
-        }*/
-
         view.takeDevice.setOnClickListener { view ->
+            val selected = buttonTimes.filter { timeBut -> timeBut.isSelected }
+            modelChooseTime.setCalendar(selected.first().milisec)
+            Log.d(LOG_TAG, "end date for booking ${SimpleDateFormat(DATE_FORMAT_NOTIFICATION_MESSAGE).format(selected.first().milisec)}")
             observe(modelChooseTime.tryBookDevice()) {
                 if (it) {
                     view.showSnackbar(resources.getString(R.string.device_booked_message))

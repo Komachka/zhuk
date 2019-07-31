@@ -8,6 +8,8 @@ import com.kstorozh.evozhuk.R
 
 class ButtonTimeAdapter(private val timeButtonList: List<TimeButton>) : RecyclerView.Adapter<ButtonTimeAdapter.ViewHolder>() {
 
+    var selectedIndex = 0
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val button = LayoutInflater.from(parent.context).inflate(R.layout.item_button, parent, false) as Button
         return ViewHolder(button)
@@ -19,9 +21,18 @@ class ButtonTimeAdapter(private val timeButtonList: List<TimeButton>) : Recycler
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(timeButtonList[position])
+        holder.buttonItem.setOnClickListener {
+            timeButtonList[selectedIndex].isSelected = false
+            timeButtonList[position].isSelected = true
+            selectedIndex = position
+            timeButtonList[position].navigation?.let {
+                it.invoke()
+            }
+            notifyDataSetChanged()
+        }
     }
 
-    class ViewHolder(private val buttonItem: Button) : RecyclerView.ViewHolder(buttonItem) {
+    class ViewHolder(val buttonItem: Button) : RecyclerView.ViewHolder(buttonItem) {
         fun bind(timeButton: TimeButton) {
             buttonItem.text = timeButton.text
             if (timeButton.isSelected) {
@@ -38,5 +49,6 @@ class ButtonTimeAdapter(private val timeButtonList: List<TimeButton>) : Recycler
 class TimeButton(
     val text: String,
     val milisec: Long,
-    var isSelected: Boolean
+    var isSelected: Boolean = false,
+    val navigation: (() -> Unit)? = null
 )

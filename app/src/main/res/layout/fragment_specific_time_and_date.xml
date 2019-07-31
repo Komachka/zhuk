@@ -43,7 +43,7 @@
 
         />
 
-        <TimePicker
+        <com.kstorozh.evozhuk.chooseTime.TimePickerMinInterval
                 android:id="@+id/timePicker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

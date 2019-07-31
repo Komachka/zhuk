@@ -18,3 +18,5 @@ const val INFO_MODEL = "MODEL"
 const val INFO_ID = "ID"
 const val INFO_MEMORY = "MEMORY"
 const val INFO_STORAGE = "STORAGE"
+
+const val TIME_PICKER_INTERVAL: Int = 15
