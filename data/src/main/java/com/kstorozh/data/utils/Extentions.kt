@@ -80,7 +80,7 @@ internal fun getError(errorStatus: ErrorStatus?, exception: Exception): DataErro
 
 
 internal fun createError(endpoints: Endpoints, result: ApiResult.Error<*>): DataError {
-    val errorStatus = result.errorResponse?.getErrorStatus(endpoints)
+    val errorStatus = result.errorResponse?.getErrorStatus(endpoints)?: ErrorStatus.UNEXPECTED_ERROR
     val exception = result.exception
     return getError(errorStatus, exception)
 }
