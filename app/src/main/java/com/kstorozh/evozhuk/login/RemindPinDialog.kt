@@ -5,8 +5,8 @@ import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import com.kstorozh.evozhuk.R
-import com.kstorozh.evozhuk.observe
-import com.kstorozh.evozhuk.showSnackbar
+import com.kstorozh.evozhuk.utils.observe
+import com.kstorozh.evozhuk.utils.showSnackbar
 
 interface RemindPinDialog {
 

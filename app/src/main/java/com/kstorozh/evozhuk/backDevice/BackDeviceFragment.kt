@@ -14,10 +14,12 @@ import android.content.Context
 import android.content.Intent
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.notifications.NotificationService
+import com.kstorozh.evozhuk.utils.getDeviceName
+import com.kstorozh.evozhuk.utils.observe
+import com.kstorozh.evozhuk.utils.showSnackbar
 import java.util.*
 import kotlinx.android.synthetic.main.fragment_back_device.*
 import kotlinx.android.synthetic.main.fragment_back_device.view.*
-import kotlinx.android.synthetic.main.logo_and_info.*
 import kotlinx.android.synthetic.main.logo_and_info.view.*
 
 class BackDeviceFragment : Fragment() {

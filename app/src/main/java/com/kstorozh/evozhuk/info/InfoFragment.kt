@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.kstorozh.evozhuk.R
-import com.kstorozh.evozhuk.getInfoPairs
+import com.kstorozh.evozhuk.utils.getInfoPairs
 import androidx.recyclerview.widget.DividerItemDecoration
 import kotlinx.android.synthetic.main.fragment_info.view.*
 

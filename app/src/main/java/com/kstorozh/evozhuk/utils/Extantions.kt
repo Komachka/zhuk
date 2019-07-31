@@ -1,4 +1,4 @@
-package com.kstorozh.evozhuk
+package com.kstorozh.evozhuk.utils
 
 import android.app.ActivityManager
 import android.content.Context
@@ -15,6 +15,7 @@ import android.os.StatFs
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import com.kstorozh.evozhuk.*
 
 typealias DeviceInfoName = String
 typealias DeviceInfoParam = String
@@ -22,21 +23,21 @@ typealias DeviceInfoParam = String
 internal fun Context.getInfoAboutDevice(): DeviceInputData {
     return DeviceInputData(
         Build.ID,
-        "${Build.BRAND} ${Build.MODEL}",
+        getDeviceName(),
         OS, Build.VERSION.RELEASE,
         getTotalMemoryInfoInBite().mgToGb().toInt(),
         getTotalStorageInfoInBite().mgToGb().toInt())
 }
 
 internal fun Context.getDeviceName(): String {
-    return "${Build.BRAND} ${Build.MODEL}"
+    return "${Build.BRAND.capitalize() }  ${SearchDeviceName.name}"
 }
 
 internal fun Context.getInfoPairs(): List<Pair<DeviceInfoName, DeviceInfoParam>> {
     val df = DecimalFormat(MEMORY_DECIMAL_FORMAT)
     return listOf(
         INFO_VERSION to Build.VERSION.RELEASE.toString(),
-        INFO_MODEL to "${Build.BRAND} ${Build.MODEL}",
+        INFO_MODEL to getDeviceName(),
         INFO_ID to Build.ID,
         INFO_MEMORY to "${df.format(getTotalMemoryInfoInBite().biteToGb())} Gb",
         INFO_STORAGE to "${df.format(getTotalStorageInfoInBite().biteToGb())} Gb"

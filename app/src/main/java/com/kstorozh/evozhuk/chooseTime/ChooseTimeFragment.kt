@@ -21,6 +21,9 @@ import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.backDevice.MyNotificationPublisher
 import com.kstorozh.evozhuk.notifications.CHANEL_ID
 import com.kstorozh.evozhuk.notifications.NotificationService
+import com.kstorozh.evozhuk.utils.getDeviceName
+import com.kstorozh.evozhuk.utils.observe
+import com.kstorozh.evozhuk.utils.showSnackbar
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlinx.android.synthetic.main.fragment_time_choose.view.*

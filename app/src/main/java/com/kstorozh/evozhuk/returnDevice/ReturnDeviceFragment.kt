@@ -9,7 +9,7 @@ import com.kstorozh.evozhuk.R
 
 import android.os.Handler
 import androidx.navigation.fragment.findNavController
-import com.kstorozh.evozhuk.getDeviceName
+import com.kstorozh.evozhuk.utils.getDeviceName
 import kotlinx.android.synthetic.main.logo_and_info.view.*
 
 const val TIME_TO_WAIT = 10000L // 10 sec

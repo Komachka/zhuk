@@ -2,7 +2,7 @@ package com.kstorozh.evozhuk.login
 
 import android.R
 import android.widget.ArrayAdapter
-import com.kstorozh.evozhuk.observe
+import com.kstorozh.evozhuk.utils.observe
 
 interface UserNamesDataHandler {
 

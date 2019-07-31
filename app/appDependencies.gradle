@@ -8,6 +8,7 @@ dependencies {
     implementation appDependencies.navigation
     implementation appDependencies.navigationktx
     implementation appDependencies.livecycleExtansion
+    implementation appDependencies.deveseNames
     implementation commonDependencies.files
     implementation commonDependencies.koin
     implementation commonDependencies.koinAX

@@ -9,6 +9,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.kstorozh.domainapi.model.DeviceInputData
 import com.kstorozh.evozhuk.*
+import com.kstorozh.evozhuk.utils.getInfoAboutDevice
+import com.kstorozh.evozhuk.utils.observe
+import com.kstorozh.evozhuk.utils.showSnackbar
 import kotlinx.android.synthetic.main.fragment_at_home.view.*
 
 class HomeFragment : Fragment() {

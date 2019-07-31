@@ -8,6 +8,10 @@ import androidx.navigation.Navigation
 import androidx.lifecycle.ViewModelProviders
 import android.widget.EditText
 import com.kstorozh.evozhuk.*
+import com.kstorozh.evozhuk.utils.getDeviceName
+import com.kstorozh.evozhuk.utils.getInfoAboutDevice
+import com.kstorozh.evozhuk.utils.observe
+import com.kstorozh.evozhuk.utils.showSnackbar
 import kotlinx.android.synthetic.main.fragment_login.view.*
 import kotlinx.android.synthetic.main.logo_and_info.view.*
 
