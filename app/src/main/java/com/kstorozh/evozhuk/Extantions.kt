@@ -20,7 +20,6 @@ import androidx.lifecycle.Observer
 fun Context.getInfoAboutDevice(): DeviceInputData {
 
     return DeviceInputData(Build.ID, getDeviceName(), "android", Build.VERSION.RELEASE, this.getTotalMemoryInfo().toInt(), this.getTotalStorageInfo().toInt())
-
 }
 
 fun Context?.getDeviceName(): String {
@@ -61,7 +60,6 @@ private fun Context.getTotalStorageInfo(): Long {
         return bytesAvailable / (1024 * 1024)
     }
     return 0
-
 }
 
 fun Context.getFreeStorageInfo(): Long {
@@ -80,7 +78,6 @@ fun Context.getFreeStorageInfo(): Long {
         return bytesAvailable / (1024 * 1024)
     }
     return 0
-
 }
 
 private fun Context?.getTotalMemoryInfo(): Long {
@@ -107,7 +104,7 @@ fun View.showSnackbar(textMessage: String, length: Int = Snackbar.LENGTH_LONG) {
 }
 
 fun View.showErrorMessage(domainErrors: DomainErrors) {
-    var message:String = resources.getString(R.string.unexpected_error_message)
+    var message: String = resources.getString(R.string.unexpected_error_message)
     domainErrors.errorStatus?.let {
         message = when (domainErrors.errorStatus) {
             ErrorStatus.INVALID_PASSWORD -> resources.getString(R.string.invalid_pass_error_message)

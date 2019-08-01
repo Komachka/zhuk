@@ -19,7 +19,6 @@ import androidx.lifecycle.Observer
 import com.kstorozh.evozhuk.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 internal fun Context.getInfoAboutDevice(): DeviceInputData {
     return DeviceInputData(
@@ -74,9 +73,9 @@ fun Context.getStatFs(): StatFs? {
     } else {
         Environment.getExternalStorageDirectory()
     }
-    var statf:StatFs? = null
+    var statf: StatFs? = null
     GlobalScope.launch {
-        if (file != null){
+        if (file != null) {
             statf = StatFs(file.path)
         }
     }

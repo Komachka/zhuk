@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.DeviceInputData
-import com.kstorozh.domainapi.model.DomainErrors
 import com.kstorozh.evozhuk.BaseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

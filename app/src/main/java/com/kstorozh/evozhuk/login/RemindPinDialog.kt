@@ -11,7 +11,7 @@ import com.kstorozh.evozhuk.utils.showSnackbar
 interface RemindPinDialog {
 
     fun LoginFragment.show() {
-        val applicationContext = context?.applicationContext!!
+        val applicationContext = context ?: return
         val alertDialog = AlertDialog.Builder(applicationContext)
         alertDialog.setTitle(resources.getString(R.string.reset_pass_dealog_title))
         alertDialog.setMessage(resources.getString(R.string.reset_pass_dealog_message))
