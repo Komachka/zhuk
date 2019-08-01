@@ -29,8 +29,15 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        return inflater.inflate(R.layout.fragment_login, container, false)
+    }
 
-        val fragment: View = inflater.inflate(R.layout.fragment_login, container, false)
+    private fun setEmptyValues() {
+        loginEt.setText("")
+        passEt.setText("")
+    }
+
+    override fun onViewCreated(fragment: View, savedInstanceState: Bundle?) {
         fragment.infoImageBut
             .setOnClickListener {
                 Navigation.findNavController(fragment).navigate(LoginFragmentDirections.actionLoginFragmentToInfoFragment())
@@ -60,22 +67,16 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
         loginBut.setOnClickListener { view ->
             if (passEt.text.isNotEmpty() && loginEt.text.isNotEmpty())
                 observe(model.tryLogin(loginEt.text.toString(), passEt.text.toString())) {
-                        if (!it.isNullOrEmpty()) {
-                            setEmptyValues()
-                            val action = LoginFragmentDirections.actionLoginFragmentToChooseTimeFragment(it)
-                            Navigation.findNavController(fragment).navigate(action)
-                        } else {
-                            view.showSnackbar(resources.getString(R.string.invalid_pass_error_message))
-                        }
+                    if (!it.isNullOrEmpty()) {
+                        setEmptyValues()
+                        val action = LoginFragmentDirections.actionLoginFragmentToChooseTimeFragment(it)
+                        Navigation.findNavController(fragment).navigate(action)
+                    } else {
+                        view.showSnackbar(resources.getString(R.string.invalid_pass_error_message))
+                    }
                 }
             else
                 view.showSnackbar(resources.getString(R.string.pass_is_empty_error_message))
         }
-        return fragment
-    }
-
-    private fun setEmptyValues() {
-        loginEt.setText("")
-        passEt.setText("")
     }
 }

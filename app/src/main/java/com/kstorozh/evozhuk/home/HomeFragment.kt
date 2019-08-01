@@ -22,7 +22,20 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.fragment_at_home, container, false)
+        return inflater.inflate(R.layout.fragment_at_home, container, false)
+    }
+
+    private fun View.initDevice(deviceInputData: DeviceInputData) {
+        observe(model.initDevice(deviceInputData)) {
+            if (it) {
+                val message = resources.getString(R.string.device_registered_message)
+                this.showSnackbar(message)
+                Navigation.findNavController(this).navigate(R.id.action_homeFragment_to_loginFragment)
+            } else this.showSnackbar(context.resources.getString(R.string.can_not_init_error_message))
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         model = ViewModelProviders.of(this)[HomeViewModel::class.java]
         observe(model.errorsLiveData) {
             it.throwable?.message?.let {
@@ -39,17 +52,6 @@ class HomeFragment : Fragment() {
         })
         view.initBut.setOnClickListener {
             view.initDevice(info)
-        }
-        return view
-    }
-
-    private fun View.initDevice(deviceInputData: DeviceInputData) {
-        observe(model.initDevice(deviceInputData)) {
-            if (it) {
-                val message = resources.getString(R.string.device_registered_message)
-                this.showSnackbar(message)
-                Navigation.findNavController(this).navigate(R.id.action_homeFragment_to_loginFragment)
-            } else this.showSnackbar(context.resources.getString(R.string.can_not_init_error_message))
         }
     }
 }

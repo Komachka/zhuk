@@ -26,8 +26,10 @@ class InfoFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        return inflater.inflate(R.layout.fragment_info, container, false)
+    }
 
-        val fragment = inflater.inflate(R.layout.fragment_info, container, false)
+    override fun onViewCreated(fragment: View, savedInstanceState: Bundle?) {
         (activity as AppCompatActivity).setSupportActionBar(fragment.toolbar)
         fragment.toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
         fragment.toolbar.title = resources.getString(R.string.info)
@@ -50,7 +52,5 @@ class InfoFragment : Fragment() {
             (viewManager as LinearLayoutManager).orientation
         )
         fragment.infoRv.addItemDecoration(dividerItemDecoration)
-
-        return fragment
     }
 }

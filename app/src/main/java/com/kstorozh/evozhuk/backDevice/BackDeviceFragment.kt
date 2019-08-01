@@ -29,9 +29,13 @@ class BackDeviceFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.fragment_back_device, container, false)
+        return inflater.inflate(R.layout.fragment_back_device, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         view.infoImageBut.setOnClickListener {
-                Navigation.findNavController(view).navigate(BackDeviceFragmentDirections.actionBackDeviceFragmentToInfoFragment())
+            Navigation.findNavController(view).navigate(BackDeviceFragmentDirections.actionBackDeviceFragmentToInfoFragment())
         }
         view.deviceNameTv.text = context?.getDeviceName()
         view.youTakeDeviceLabelTv.text = "${resources.getString(R.string.youTableDeviceLabel)} ${context?.getDeviceName()}"
@@ -67,7 +71,6 @@ class BackDeviceFragment : Fragment() {
                     view.showSnackbar(resources.getString(R.string.device_not_returned_message))
             }
         }
-        return view
     }
 
     private fun clearAllNotification(context: Context?) {

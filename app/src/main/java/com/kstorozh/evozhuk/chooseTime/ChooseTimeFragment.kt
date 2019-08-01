@@ -42,11 +42,13 @@ class ChooseTimeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        return inflater.inflate(R.layout.fragment_time_choose, container, false)
+    }
 
-        val view: View = inflater.inflate(R.layout.fragment_time_choose, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         view.infoImageBut.setOnClickListener {
-                Navigation.findNavController(view).navigate(ChooseTimeFragmentDirections.actionChooseTimeFragmentToInfoFragment())
-            }
+            Navigation.findNavController(view).navigate(ChooseTimeFragmentDirections.actionChooseTimeFragmentToInfoFragment())
+        }
 
         view.deviceNameTv.text = context?.getDeviceName()
         view.youTakeDeviceLabelTv.text =
@@ -104,7 +106,6 @@ class ChooseTimeFragment : Fragment() {
                 }
             }
         }
-        return view
     }
 
     private fun startForegroundServiceNotification(millisec: Long) {

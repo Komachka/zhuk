@@ -18,7 +18,10 @@ class SpecificTimeAndDateFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val fragment = inflater.inflate(R.layout.fragment_specific_time_and_date, container, false)
+        return inflater.inflate(R.layout.fragment_specific_time_and_date, container, false)
+    }
+
+    override fun onViewCreated(fragment: View, savedInstanceState: Bundle?) {
         val curentTimeAndDate = CustomTime()
         curentTimeAndDate.countMinutesWithInterval(TIME_PICKER_INTERVAL)
 
@@ -52,6 +55,5 @@ class SpecificTimeAndDateFragment : Fragment() {
                 Navigation.findNavController(fragment).navigate(action)
             }
         }
-        return fragment
     }
 }
