@@ -37,8 +37,9 @@ class EditTextPassword : AppCompatEditText {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             setCompoundDrawablesRelativeWithIntrinsicBounds(
                 null, null,
-                hintPassImg, null
-            )
+                hintPassImg, null)
+        } else {
+            setCompoundDrawablesWithIntrinsicBounds(null, null, hintPassImg, null)
         }
     }
 
@@ -48,6 +49,9 @@ class EditTextPassword : AppCompatEditText {
                 null, null,
                 null, null
             )
+        }
+        else {
+            setCompoundDrawablesWithIntrinsicBounds(null, null, hintPassImg, null)
         }
     }
 }
