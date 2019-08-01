@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.kstorozh.domainapi.LoginUseCase
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.*
+import com.kstorozh.evozhuk.BaseViewModel
 import com.kstorozh.evozhuk.USER_ID_NOT_SET
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +13,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class LogInViewModel : ViewModel(), KoinComponent {
+class LogInViewModel : BaseViewModel(), KoinComponent {
 
     private val loginUseCase: LoginUseCase by inject()
     private val getUserUseCase: GetUsersUseCases by inject()
@@ -21,7 +22,6 @@ class LogInViewModel : ViewModel(), KoinComponent {
     private val users: MutableLiveData<List<User>> by lazy { MutableLiveData<List<User>>().also {
         loadUsers()
     } }
-
     val tryLoginLiveData: MutableLiveData<String> = MutableLiveData<String>()
     private val remindPinLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     val errorLiveData: MutableLiveData<DomainErrors> = MutableLiveData<DomainErrors>()
@@ -37,7 +37,6 @@ class LogInViewModel : ViewModel(), KoinComponent {
     }
 
     fun getUserByName(login: String): LiveData<User> {
-
         return Transformations.map(users, Function<List<User>, User> {
             var user: User? = null
             it.forEach {
@@ -48,7 +47,6 @@ class LogInViewModel : ViewModel(), KoinComponent {
     }
 
     private fun loadUsers() {
-
         applicationScope.launch {
             val domainRes = getUserUseCase.getUsers()
             domainRes.data?.let { users.postValue(it) }
@@ -71,7 +69,6 @@ class LogInViewModel : ViewModel(), KoinComponent {
     }
 
     fun remindPin(user: User): LiveData<Boolean> {
-
         applicationScope.launch {
             val domainRes = loginUseCase.remindPin(user)
             domainRes.data?.let { remindPinLiveData.postValue(it) }
@@ -81,7 +78,6 @@ class LogInViewModel : ViewModel(), KoinComponent {
     }
 
     fun isDeviceBooked(deviceInputData: DeviceInputData): LiveData<Boolean> {
-
         val isDeviceBookedLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
         applicationScope.launch {
             val result = initDeviceUseCases.getSession()

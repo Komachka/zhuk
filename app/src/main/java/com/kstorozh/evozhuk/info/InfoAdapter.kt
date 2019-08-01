@@ -27,9 +27,8 @@ class InfoAdapter(private val infoAboutDevice: List<Pair<DeviceInfoName, DeviceI
 
     class InfoViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         fun bindData(dataPair: Pair<DeviceInfoName, DeviceInfoParam>) {
-
-            val enumInstance = FieldsInfo.valueOf(dataPair.first)
-            view.categoryNameTv.text = view.context.resources.getString(enumInstance.resurs)
+            val enumInfoName = FieldsInfo.valueOf(dataPair.first)
+            view.categoryNameTv.text = view.context.resources.getString(enumInfoName.resursId)
             view.categoryValueTv.text = dataPair.second
         }
     }

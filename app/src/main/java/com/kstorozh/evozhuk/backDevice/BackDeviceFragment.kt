@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.fragment_back_device.*
 import kotlinx.android.synthetic.main.fragment_back_device.view.*
 import kotlinx.android.synthetic.main.logo_and_info.view.*
 
-class BackDeviceFragment : Fragment() {
+class BackDeviceFragment : Fragment(), HandleErrors {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,11 +40,7 @@ class BackDeviceFragment : Fragment() {
         view.deviceNameTv.text = context?.getDeviceName()
         view.youTakeDeviceLabelTv.text = "${resources.getString(R.string.youTableDeviceLabel)} ${context?.getDeviceName()}"
         val modelBackDevice = ViewModelProviders.of(this).get(BackDeviceViewModel::class.java)
-        observe(modelBackDevice.errors) {
-            it.throwable?.message?.let {
-                view.showSnackbar(it)
-            }
-        }
+        handleErrors(modelBackDevice, view)
         observe(modelBackDevice.getSessionData(), {
             it?.let {
                 val format = SimpleDateFormat(DATE_FORMAT_BACK_DEVICE_SCREEN_TV)

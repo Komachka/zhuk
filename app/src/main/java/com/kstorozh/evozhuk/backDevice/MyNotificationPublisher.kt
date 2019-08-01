@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.app.NotificationManager
 import android.app.NotificationChannel
+import android.app.NotificationManager.IMPORTANCE_HIGH
 import android.os.Build
 import com.kstorozh.evozhuk.R
 import com.kstorozh.evozhuk.notifications.CHANEL_ID
@@ -22,10 +23,10 @@ class MyNotificationPublisher : BroadcastReceiver() {
         val notificationManager = context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notification = intent!!.getParcelableExtra<Notification>(NOTIFICATION)
         val notificationId = intent.getIntExtra(NOTIFICATION_ID, 0)
-        val name = context.getResources().getString(R.string.app_name) // The user-visible name of the channel.
-        val importance = NotificationManager.IMPORTANCE_HIGH
+        val name = context.getResources().getString(R.string.app_name)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val importance = IMPORTANCE_HIGH
             val mChannel = NotificationChannel(CHANEL_ID, name, importance)
             notificationManager.createNotificationChannel(mChannel)
         }

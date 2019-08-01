@@ -1,4 +1,5 @@
 package com.kstorozh.evozhuk.chooseTime
+import com.kstorozh.evozhuk.MINUETS_IN_HOUR
 import java.util.*
 
 class CustomTime(
@@ -20,12 +21,12 @@ class CustomTime(
         seconds = dateAndTimeNow.get(Calendar.SECOND)
     }
 
-    fun countMinutesWithInterval(minuteInterval: Int) {
+    fun countMinutesWithTimePickerInterval(minuteInterval: Int) {
         if (minute % minuteInterval != 0) {
             val minuteFloor = minute + minuteInterval - minute % minuteInterval
             minute = minuteFloor + if (minute == minuteFloor + 1) minuteInterval else 0
-            if (minute >= 60) {
-                minute = minute % 60
+            if (minute >= MINUETS_IN_HOUR) {
+                minute %= MINUETS_IN_HOUR
                 hour++
             }
         }

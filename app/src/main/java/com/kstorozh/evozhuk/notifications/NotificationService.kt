@@ -11,7 +11,7 @@ import androidx.core.app.NotificationCompat
 import com.kstorozh.evozhuk.*
 import java.util.concurrent.TimeUnit
 
-class NotificationService : IntentService("Hello intent service") {
+class NotificationService : IntentService("Notification intent service") {
 
     var STOP_SERVICE_FLAG = "SERVICE_RUNNING"
 
@@ -46,7 +46,6 @@ class NotificationService : IntentService("Hello intent service") {
             Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             builder.priority = NotificationCompat.PRIORITY_LOW
         }
-
         return builder
     }
 
@@ -87,18 +86,7 @@ class NotificationService : IntentService("Hello intent service") {
         )
     }
 
-    override fun onCreate() {
-        super.onCreate()
-        Log.d(LOG_TAG, "on create service")
-    }
-
-    override fun onDestroy() {
-        Log.d(LOG_TAG, "on destroy service")
-        super.onDestroy()
-    }
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
         super.onStartCommand(intent, flags, startId)
         return START_NOT_STICKY
     }

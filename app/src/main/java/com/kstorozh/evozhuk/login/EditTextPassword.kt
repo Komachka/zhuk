@@ -21,9 +21,7 @@ class EditTextPassword : AppCompatEditText {
         hintPassImg = ResourcesCompat.getDrawable(resources, R.mipmap.ic_hide, null)!!
         addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {}
-
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (start == 0)
                     hideImage()

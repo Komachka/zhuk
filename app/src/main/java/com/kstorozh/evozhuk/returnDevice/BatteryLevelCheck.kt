@@ -5,6 +5,7 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import android.view.View
 import android.widget.TextView
+import com.kstorozh.evozhuk.BATTERY_LEVEL_TO_CHARGE
 import com.kstorozh.evozhuk.R
 
 interface BatteryLevelCheck {

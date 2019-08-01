@@ -17,7 +17,6 @@ import kotlinx.android.synthetic.main.fragment_info.view.*
 
 class InfoFragment : Fragment() {
 
-    private lateinit var infoRecView: RecyclerView
     private lateinit var infoAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
 
@@ -33,12 +32,10 @@ class InfoFragment : Fragment() {
         (activity as AppCompatActivity).setSupportActionBar(fragment.toolbar)
         fragment.toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
         fragment.toolbar.title = resources.getString(R.string.info)
-
         fragment.toolbar.setNavigationOnClickListener {
             val navController = this.findNavController()
             navController.navigateUp()
         }
-
         viewManager = LinearLayoutManager(context)
         infoAdapter = InfoAdapter(context?.applicationContext!!.getInfoPairs())
         fragment.infoRv.apply {
@@ -46,7 +43,6 @@ class InfoFragment : Fragment() {
             layoutManager = viewManager
             adapter = infoAdapter
         }
-
         val dividerItemDecoration = DividerItemDecoration(
             fragment.infoRv.context,
             (viewManager as LinearLayoutManager).orientation

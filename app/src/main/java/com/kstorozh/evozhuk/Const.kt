@@ -5,8 +5,11 @@ const val INTENT_DATA_MILISEC = "INTENT_DATA_MILISEC"
 const val INTENT_STOP_FLAG = "STOP_SERVICE"
 
 const val DATE_FORMAT_TIMER = "%02d:%02d:%02d"
+const val MINUTES_FORMAT_TIME_PICKER = "%02d"
+
 const val DATE_FORMAT_NOTIFICATION_MESSAGE = "HH:mm dd MMMM"
 const val DATE_FORMAT_BACK_DEVICE_SCREEN_TV = "HH:mm\ndd MMMM"
+const val TIME_ZONE = "Europe/Kiev"
 const val MEMORY_DECIMAL_FORMAT = "#.##"
 
 const val LOG_TAG: String = "MainActivity"
@@ -20,8 +23,31 @@ const val INFO_MEMORY = "MEMORY"
 const val INFO_STORAGE = "STORAGE"
 
 const val TIME_PICKER_INTERVAL: Int = 15
+const val MINUETS_IN_HOUR = 60
+const val MILISEC_IN_HOUR = 3600000L
+const val HOUR_END_OF_WORK_DAY = 19
+
 const val SPAN_COUNT = 2
 const val SPACE_RECYCLER = 16
 
 typealias DeviceInfoName = String
 typealias DeviceInfoParam = String
+
+const val TIME_TO_WAIT = 10000L // 10 sec
+const val BATTERY_LEVEL_TO_CHARGE = 50
+
+const val MUTUTS_BEFORE_TIME_IS_UP_NOTIFICATION = 15
+
+/**
+ * Time Picker
+ */
+const val NAME = "minute"
+const val DEF_TYPE = "id"
+const val PACKAGE = "android"
+
+/**
+ * Logs
+ */
+
+const val TIME_PICKER_ERROR = "Can not set to timePicker this data set: "
+const val DELY_NAVIGATION_ERROR = "Already navigated to another screen"

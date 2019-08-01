@@ -14,7 +14,7 @@ import com.kstorozh.evozhuk.utils.observe
 import com.kstorozh.evozhuk.utils.showSnackbar
 import kotlinx.android.synthetic.main.fragment_at_home.view.*
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), HandleErrors {
 
     private lateinit var model: HomeViewModel
     override fun onCreateView(
@@ -37,13 +37,13 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         model = ViewModelProviders.of(this)[HomeViewModel::class.java]
+        handleErrors(model, view)
         observe(model.errorsLiveData) {
             it.throwable?.message?.let {
                 view.showSnackbar(it)
             }
         }
         val info = context?.applicationContext!!.getInfoAboutDevice()
-
         view.welcomeMessageTv.text = info.model
         observe(model.isDeviceInited(info), {
             if (it) {

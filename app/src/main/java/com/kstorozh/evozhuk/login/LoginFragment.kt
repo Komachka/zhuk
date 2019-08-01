@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_login.view.loginEt
 import kotlinx.android.synthetic.main.fragment_login.view.passwordEt
 import kotlinx.android.synthetic.main.logo_and_info.view.*
 
-class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
+class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler, HandleErrors {
 
     lateinit var model: LogInViewModel
     lateinit var userNames: ArrayList<String>
@@ -44,20 +44,18 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler {
         fragment.deviceNameTv.text = context?.getDeviceName()
         fragment.forgotPassTv.setOnClickListener { show() }
         model = ViewModelProviders.of(this)[LogInViewModel::class.java]
+        handleErrors(model, fragment)
         subscribeNamesLiveData()
-
         observe(model.errorLiveData) {
             var message: String = it.toString()
             it.message?.let { message = it }
             if (it.message == null) it.throwable?.message?.let { message = it }
             activity?.currentFocus?.showSnackbar(message)
         }
-
         observe(model.isDeviceBooked(context?.applicationContext!!.getInfoAboutDevice()), {
             if (it)
                 Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_backDeviceFragment)
         })
-
         fragment.goInBut.setOnClickListener { view ->
             if (fragment.passwordEt.text!!.isNotEmpty() && loginEt.text.isNotEmpty())
                 observe(model.tryLogin(loginEt.text.toString(), passwordEt.text.toString())) {

@@ -32,7 +32,7 @@ import kotlinx.android.synthetic.main.fragment_time_choose.view.*
 import kotlinx.android.synthetic.main.fragment_time_choose.view.buttonsRv
 import kotlinx.android.synthetic.main.logo_and_info.view.*
 
-class ChooseTimeFragment : Fragment() {
+class ChooseTimeFragment : Fragment(), HandleErrors {
 
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -49,24 +49,16 @@ class ChooseTimeFragment : Fragment() {
         view.infoImageBut.setOnClickListener {
             Navigation.findNavController(view).navigate(ChooseTimeFragmentDirections.actionChooseTimeFragmentToInfoFragment())
         }
-
         view.deviceNameTv.text = context?.getDeviceName()
         view.youTakeDeviceLabelTv.text =
             "${resources.getString(R.string.time_choose_label)}${context?.getDeviceName()}?"
-
-        val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeSharedViewModel::class.java)
-
-        observe(modelChooseTime.errors) {
-            it.throwable?.message?.let {
-                view.showSnackbar(it)
-            }
-        }
+        val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeViewModel::class.java)
+        handleErrors(modelChooseTime, view)
         val anotherTimeMilisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
         val userId = ChooseTimeFragmentArgs.fromBundle(arguments!!).userId
         if (userId != USER_ID_NOT_SET)
             modelChooseTime.setUserId(userId)
         modelChooseTime.setCalendar(anotherTimeMilisec)
-
         val res = context?.applicationContext?.resources as Resources
         val buttonTimes = listOf<TimeButton>(
             TimeButton(res.getString(R.string.oneHour), TimeUtils.getTimeInMsFromHours(1)).apply { if (anotherTimeMilisec == 0L) isSelected = true },
@@ -78,7 +70,6 @@ class ChooseTimeFragment : Fragment() {
             { Navigation.findNavController(view).navigate(R.id.action_chooseTimeFragment_to_specificTimeAndDate) }).apply {
                 if (anotherTimeMilisec != 0L) isSelected = true }
         )
-
         viewManager = GridLayoutManager(this.context, SPAN_COUNT)
         viewAdapter = ButtonTimeAdapter(buttonTimes)
         view.buttonsRv.apply {
@@ -87,7 +78,6 @@ class ChooseTimeFragment : Fragment() {
             adapter = viewAdapter
             addItemDecoration(SpacesItemDecoration(SPACE_RECYCLER))
         }
-
         view.takeDevice.setOnClickListener { view ->
             val selected = buttonTimes.filter { timeBut -> timeBut.isSelected }
             modelChooseTime.setCalendar(selected.first().milisec)
@@ -115,12 +105,11 @@ class ChooseTimeFragment : Fragment() {
     }
 
     fun Context.startScheduleNotification(endTime: Calendar) {
-
         val deltaTime = GregorianCalendar.getInstance()
         deltaTime.timeInMillis = endTime.timeInMillis
-        deltaTime.add(Calendar.MINUTE, -10)
+        deltaTime.add(Calendar.MINUTE, -MUTUTS_BEFORE_TIME_IS_UP_NOTIFICATION)
         val currentTime = GregorianCalendar.getInstance()
-        var delay: Long = if (deltaTime.timeInMillis < currentTime.timeInMillis) 1000L else deltaTime.timeInMillis - currentTime.timeInMillis
+        val delay: Long = if (deltaTime.timeInMillis < currentTime.timeInMillis) 1000L else deltaTime.timeInMillis - currentTime.timeInMillis
         val notificationId = 1
         val notification = createNotification(endTime, notificationId)
         val notificationIntentBroadcast = Intent(context?.applicationContext, MyNotificationPublisher::class.java)
