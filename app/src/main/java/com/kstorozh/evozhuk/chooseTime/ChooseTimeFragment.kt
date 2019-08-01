@@ -13,7 +13,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -36,14 +35,6 @@ import kotlinx.android.synthetic.main.logo_and_info.view.*
 
 class ChooseTimeFragment : Fragment() {
 
-    private var selectedButton: Button? = null
-        private set(value) {
-            field = value
-            value!!.setBackgroundResource(R.drawable.time_but_pressed)
-            value.setTextColor(resources.getColor(R.color.but_time_def))
-        }
-
-    private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
 
@@ -69,10 +60,7 @@ class ChooseTimeFragment : Fragment() {
                 view.showSnackbar(it)
             }
         }
-        var anotherTimeMilisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
-        if (anotherTimeMilisec == 0L)
-            anotherTimeMilisec = TimeUtils.getTimeInMsFromHours(1)
-
+        val anotherTimeMilisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
         val userId = ChooseTimeFragmentArgs.fromBundle(arguments!!).userId
         if (userId != USER_ID_NOT_SET)
             modelChooseTime.setUserId(userId)
@@ -80,13 +68,14 @@ class ChooseTimeFragment : Fragment() {
 
         val res = context?.applicationContext?.resources as Resources
         val buttonTimes = listOf<TimeButton>(
-            TimeButton(res.getString(R.string.oneHour), TimeUtils.getTimeInMsFromHours(1), true),
+            TimeButton(res.getString(R.string.oneHour), TimeUtils.getTimeInMsFromHours(1)).apply { if (anotherTimeMilisec == 0L) isSelected = true },
             TimeButton(res.getString(R.string.twoHour), TimeUtils.getTimeInMsFromHours(2)),
             TimeButton(res.getString(R.string.foutHour), TimeUtils.getTimeInMsFromHours(4)),
             TimeButton(res.getString(R.string.tillSevenOClock), TimeUtils.getTimeInMsForEndOfWorkDay()),
             TimeButton(res.getString(R.string.twoDays), TimeUtils.getTimeInMsFromHours(48)),
             TimeButton(res.getString(R.string.anotherTime), anotherTimeMilisec, navigation =
-            { Navigation.findNavController(view).navigate(R.id.action_chooseTimeFragment_to_specificTimeAndDate) }) // get fom args
+            { Navigation.findNavController(view).navigate(R.id.action_chooseTimeFragment_to_specificTimeAndDate) }).apply {
+                if (anotherTimeMilisec != 0L) isSelected = true }
         )
 
         viewManager = GridLayoutManager(this.context, 2)
@@ -102,7 +91,7 @@ class ChooseTimeFragment : Fragment() {
             val selected = buttonTimes.filter { timeBut -> timeBut.isSelected }
             modelChooseTime.setCalendar(selected.first().milisec)
             Log.d(LOG_TAG, "end date for booking ${SimpleDateFormat(DATE_FORMAT_NOTIFICATION_MESSAGE).format(selected.first().milisec)}")
-            observe(modelChooseTime.tryBookDevice()) {
+            /*observe(modelChooseTime.tryBookDevice()) {
                 if (it) {
                     view.showSnackbar(resources.getString(R.string.device_booked_message))
                     val action =
@@ -115,14 +104,9 @@ class ChooseTimeFragment : Fragment() {
                 } else {
                     view.showSnackbar(resources.getString(R.string.device_is_not_booked_message))
                 }
-            }
+            }*/
         }
         return view
-    }
-
-    private fun resetButton(button: Button) {
-        button.setBackgroundResource(R.drawable.round_rectangle)
-        button.setTextColor(resources.getColor(R.color.but_time_def))
     }
 
     private fun startForegroundServiceNotification(millisec: Long) {

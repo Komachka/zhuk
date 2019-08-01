@@ -8,7 +8,10 @@ import com.kstorozh.evozhuk.R
 
 class ButtonTimeAdapter(private val timeButtonList: List<TimeButton>) : RecyclerView.Adapter<ButtonTimeAdapter.ViewHolder>() {
 
-    var selectedIndex = 0
+    private var selectedIndex = 0
+    init {
+        timeButtonList.forEachIndexed { index, element -> if (element.isSelected) selectedIndex = index }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val button = LayoutInflater.from(parent.context).inflate(R.layout.item_button, parent, false) as Button

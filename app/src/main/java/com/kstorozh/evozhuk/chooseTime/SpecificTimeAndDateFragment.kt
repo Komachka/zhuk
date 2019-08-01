@@ -2,17 +2,16 @@ package com.kstorozh.evozhuk.chooseTime
 
 import android.os.Bundle
 import android.view.*
-import android.widget.TimePicker
 import androidx.fragment.app.Fragment
-import com.kstorozh.evozhuk.R
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
-import com.kstorozh.evozhuk.USER_ID_NOT_SET
 import java.util.*
 
 import android.os.Build
-import com.kstorozh.evozhuk.TIME_PICKER_INTERVAL
+import android.util.Log
+import com.kstorozh.evozhuk.*
 import kotlinx.android.synthetic.main.fragment_specific_time_and_date.view.*
+import java.text.SimpleDateFormat
 
 class SpecificTimeAndDateFragment : Fragment() {
 
@@ -22,7 +21,6 @@ class SpecificTimeAndDateFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val fragment = inflater.inflate(R.layout.fragment_specific_time_and_date, container, false)
-        setTimePickerInterval(fragment.timePicker)
         val curentTimeAndDate = CustomTime()
         curentTimeAndDate.countMinutesWithInterval(TIME_PICKER_INTERVAL)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -30,7 +28,7 @@ class SpecificTimeAndDateFragment : Fragment() {
             fragment.timePicker.minute = (curentTimeAndDate.minute / TIME_PICKER_INTERVAL)
         } else {
             fragment.timePicker.setCurrentHour(curentTimeAndDate.hour)
-            fragment.timePicker.setCurrentMinute(curentTimeAndDate.minute / TIME_PICKER_INTERVAL)
+            fragment.timePicker.setCurrentMinute(curentTimeAndDate.minute)
         }
 
         fragment.timePicker.setOnTimeChangedListener { timePicker, pickerHour, pickerMinute ->
@@ -52,13 +50,11 @@ class SpecificTimeAndDateFragment : Fragment() {
                 val action = SpecificTimeAndDateFragmentDirections.actionSpecificTimeAndDateToChooseTimeFragment(
                     USER_ID_NOT_SET)
                 action.milisec = curentTimeAndDate.getMillisec()
+                Log.d(LOG_TAG, "milisec in spesific time ${SimpleDateFormat(DATE_FORMAT_NOTIFICATION_MESSAGE).format(action.milisec)}")
                 Navigation.findNavController(fragment).navigate(action)
             }
         }
 
         return fragment
-    }
-
-    private fun setTimePickerInterval(timePicker: TimePicker) {
     }
 }

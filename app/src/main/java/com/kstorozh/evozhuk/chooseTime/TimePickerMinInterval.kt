@@ -36,4 +36,12 @@ class TimePickerMinInterval : TimePicker {
             Log.e("MainActivity", "Exception: $e")
         }
     }
+
+    override fun setCurrentMinute(currentMinute: Int) {
+        super.setCurrentMinute(currentMinute / TIME_PICKER_INTERVAL)
+    }
+
+    override fun setMinute(minute: Int) {
+        super.setMinute(currentMinute / TIME_PICKER_INTERVAL)
+    }
 }
