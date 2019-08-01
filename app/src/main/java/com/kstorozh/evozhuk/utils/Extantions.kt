@@ -17,9 +17,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.kstorozh.evozhuk.*
 
-typealias DeviceInfoName = String
-typealias DeviceInfoParam = String
-
 internal fun Context.getInfoAboutDevice(): DeviceInputData {
     return DeviceInputData(
         Build.ID,
