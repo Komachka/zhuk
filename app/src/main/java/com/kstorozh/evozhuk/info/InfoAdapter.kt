@@ -7,6 +7,7 @@ import android.widget.TextView
 
 import androidx.recyclerview.widget.RecyclerView
 import com.kstorozh.evozhuk.R
+import kotlinx.android.synthetic.main.info_item.view.*
 
 class InfoAdapter(private val infoAboutDevice: List<Pair<String, String>>) : RecyclerView.Adapter<InfoAdapter.InfoViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoViewHolder {
@@ -25,14 +26,11 @@ class InfoAdapter(private val infoAboutDevice: List<Pair<String, String>>) : Rec
 
     class InfoViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
-        private val categoryNameTv: TextView = view.findViewById(R.id.categoryNameTv)
-        private val categoryValueTv: TextView = view.findViewById(R.id.categoryValueTv)
-
         fun bindData(dataPair: Pair<String, String>) {
 
             val enumInstance = FieldsInfo.valueOf(dataPair.first)
-            categoryNameTv.text = view.context.resources.getString(enumInstance.resurs)
-            categoryValueTv.text = dataPair.second
+            view.categoryNameTv.text = view.context.resources.getString(enumInstance.resurs)
+            view.categoryValueTv.text = dataPair.second
         }
     }
 }
