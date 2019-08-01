@@ -17,7 +17,6 @@ class LogInViewModel : ViewModel(), KoinComponent {
     private val loginUseCase: LoginUseCase by inject()
     private val getUserUseCase: GetUsersUseCases by inject()
     private val initDeviceUseCases: ManageDeviceUseCases by inject()
-
     private val applicationScope = CoroutineScope(Dispatchers.Default)
     private val users: MutableLiveData<List<User>> by lazy { MutableLiveData<List<User>>().also {
         loadUsers()
@@ -25,7 +24,6 @@ class LogInViewModel : ViewModel(), KoinComponent {
 
     val tryLoginLiveData: MutableLiveData<String> = MutableLiveData<String>()
     private val remindPinLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-    private val isDeviceBookedLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     val errorLiveData: MutableLiveData<DomainErrors> = MutableLiveData<DomainErrors>()
 
     fun getUserNames(): LiveData<ArrayList<String>> {
@@ -84,6 +82,7 @@ class LogInViewModel : ViewModel(), KoinComponent {
 
     fun isDeviceBooked(deviceInputData: DeviceInputData): LiveData<Boolean> {
 
+        val isDeviceBookedLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
         applicationScope.launch {
             val result = initDeviceUseCases.getSession()
             if (result.data != null) isDeviceBookedLiveData.postValue(true) else isDeviceBookedLiveData.postValue(false)
