@@ -42,6 +42,6 @@ class TimePickerMinInterval : TimePicker {
     }
 
     override fun setMinute(minute: Int) {
-        super.setMinute(currentMinute / TIME_PICKER_INTERVAL)
+        super.setMinute(minute / TIME_PICKER_INTERVAL)
     }
 }

@@ -20,3 +20,5 @@ const val INFO_MEMORY = "MEMORY"
 const val INFO_STORAGE = "STORAGE"
 
 const val TIME_PICKER_INTERVAL: Int = 15
+const val SPAN_COUNT = 2
+const val SPACE_RECYCLER = 16

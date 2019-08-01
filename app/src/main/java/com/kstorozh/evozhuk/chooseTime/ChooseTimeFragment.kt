@@ -9,7 +9,6 @@ import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,20 +77,19 @@ class ChooseTimeFragment : Fragment() {
                 if (anotherTimeMilisec != 0L) isSelected = true }
         )
 
-        viewManager = GridLayoutManager(this.context, 2)
+        viewManager = GridLayoutManager(this.context, SPAN_COUNT)
         viewAdapter = ButtonTimeAdapter(buttonTimes)
         view.buttonsRv.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
-            addItemDecoration(SpacesItemDecoration(10))
+            addItemDecoration(SpacesItemDecoration(SPACE_RECYCLER))
         }
 
         view.takeDevice.setOnClickListener { view ->
             val selected = buttonTimes.filter { timeBut -> timeBut.isSelected }
             modelChooseTime.setCalendar(selected.first().milisec)
-            Log.d(LOG_TAG, "end date for booking ${SimpleDateFormat(DATE_FORMAT_NOTIFICATION_MESSAGE).format(selected.first().milisec)}")
-            /*observe(modelChooseTime.tryBookDevice()) {
+            observe(modelChooseTime.tryBookDevice()) {
                 if (it) {
                     view.showSnackbar(resources.getString(R.string.device_booked_message))
                     val action =
@@ -104,7 +102,7 @@ class ChooseTimeFragment : Fragment() {
                 } else {
                     view.showSnackbar(resources.getString(R.string.device_is_not_booked_message))
                 }
-            }*/
+            }
         }
         return view
     }

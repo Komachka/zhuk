@@ -8,10 +8,8 @@ import androidx.navigation.Navigation
 import java.util.*
 
 import android.os.Build
-import android.util.Log
 import com.kstorozh.evozhuk.*
 import kotlinx.android.synthetic.main.fragment_specific_time_and_date.view.*
-import java.text.SimpleDateFormat
 
 class SpecificTimeAndDateFragment : Fragment() {
 
@@ -23,9 +21,10 @@ class SpecificTimeAndDateFragment : Fragment() {
         val fragment = inflater.inflate(R.layout.fragment_specific_time_and_date, container, false)
         val curentTimeAndDate = CustomTime()
         curentTimeAndDate.countMinutesWithInterval(TIME_PICKER_INTERVAL)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             fragment.timePicker.hour = curentTimeAndDate.hour
-            fragment.timePicker.minute = (curentTimeAndDate.minute / TIME_PICKER_INTERVAL)
+            fragment.timePicker.minute = (curentTimeAndDate.minute)
         } else {
             fragment.timePicker.setCurrentHour(curentTimeAndDate.hour)
             fragment.timePicker.setCurrentMinute(curentTimeAndDate.minute)
@@ -33,7 +32,7 @@ class SpecificTimeAndDateFragment : Fragment() {
 
         fragment.timePicker.setOnTimeChangedListener { timePicker, pickerHour, pickerMinute ->
             curentTimeAndDate.hour = pickerHour
-            curentTimeAndDate.minute = pickerMinute
+            curentTimeAndDate.minute = pickerMinute * TIME_PICKER_INTERVAL // back to real time
         }
 
         fragment.datePicker.init(curentTimeAndDate.year, curentTimeAndDate.month, curentTimeAndDate.day) { datePicker, pickYear, pickMonth, pickDay ->
@@ -50,11 +49,9 @@ class SpecificTimeAndDateFragment : Fragment() {
                 val action = SpecificTimeAndDateFragmentDirections.actionSpecificTimeAndDateToChooseTimeFragment(
                     USER_ID_NOT_SET)
                 action.milisec = curentTimeAndDate.getMillisec()
-                Log.d(LOG_TAG, "milisec in spesific time ${SimpleDateFormat(DATE_FORMAT_NOTIFICATION_MESSAGE).format(action.milisec)}")
                 Navigation.findNavController(fragment).navigate(action)
             }
         }
-
         return fragment
     }
 }

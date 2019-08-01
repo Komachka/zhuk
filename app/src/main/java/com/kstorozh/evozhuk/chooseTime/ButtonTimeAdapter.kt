@@ -48,10 +48,3 @@ class ButtonTimeAdapter(private val timeButtonList: List<TimeButton>) : Recycler
         }
     }
 }
-
-class TimeButton(
-    val text: String,
-    val milisec: Long,
-    var isSelected: Boolean = false,
-    val navigation: (() -> Unit)? = null
-)
