@@ -1,14 +1,12 @@
 package com.kstorozh.evozhuk.chooseTime
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.BookingInputData
 import com.kstorozh.evozhuk.BaseViewModel
-import com.kstorozh.evozhuk.LOG_TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,7 +42,6 @@ class ChooseTimeViewModel : BaseViewModel(), KoinComponent {
                     bookDeviceLiveData.postValue(it)
                 }
                 result.domainError?.let {
-                    Log.d(LOG_TAG, "Error $it")
                     errors.postValue(it)
                 }
             }
