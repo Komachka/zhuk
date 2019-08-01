@@ -8,8 +8,14 @@ internal data class ApiErrorWithField(
     val errors: Errors
 )
 
-internal data class ApiErrorBodyWithMessage(
+internal data class ApiErrorBodyWithError(
     @SerializedName("errors")
+    @Expose
+    var errors: String? = null
+)
+
+internal data class ApiErrorBodyWithMsg(
+    @SerializedName("msg")
     @Expose
     var errors: String? = null
 )

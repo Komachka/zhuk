@@ -22,9 +22,6 @@ class LogInViewModel : BaseViewModel(), KoinComponent {
     private val users: MutableLiveData<List<User>> by lazy { MutableLiveData<List<User>>().also {
         loadUsers()
     } }
-    val tryLoginLiveData: MutableLiveData<String> = MutableLiveData<String>()
-    private val remindPinLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-    val errorLiveData: MutableLiveData<DomainErrors> = MutableLiveData<DomainErrors>()
 
     fun getUserNames(): LiveData<ArrayList<String>> {
         return Transformations.map(users, Function<List<User>, ArrayList<String>> {
@@ -50,11 +47,12 @@ class LogInViewModel : BaseViewModel(), KoinComponent {
         applicationScope.launch {
             val domainRes = getUserUseCase.getUsers()
             domainRes.data?.let { users.postValue(it) }
-            domainRes.domainError?.let { errorLiveData.postValue(it) }
+            domainRes.domainError?.let { errors.postValue(it) }
         }
     }
 
     fun tryLogin(name: String, pass: String): LiveData<String> {
+        val tryLoginLiveData: MutableLiveData<String> = MutableLiveData<String>()
         applicationScope.launch {
             val domainRes = loginUseCase.loginUser(UserLoginInput(name, pass))
             domainRes.data?.let {
@@ -62,17 +60,18 @@ class LogInViewModel : BaseViewModel(), KoinComponent {
             }
             domainRes.domainError?.let {
                 tryLoginLiveData.postValue(USER_ID_NOT_SET)
-                errorLiveData.postValue(it)
+                errors.postValue(it)
             }
         }
         return tryLoginLiveData
     }
 
     fun remindPin(user: User): LiveData<Boolean> {
+        val remindPinLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
         applicationScope.launch {
             val domainRes = loginUseCase.remindPin(user)
             domainRes.data?.let { remindPinLiveData.postValue(it) }
-            domainRes.domainError?.let { errorLiveData.postValue(it) }
+            domainRes.domainError?.let { errors.postValue(it) }
         }
         return remindPinLiveData
     }

@@ -1,12 +1,14 @@
 package com.kstorozh.evozhuk.chooseTime
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.BookingInputData
 import com.kstorozh.evozhuk.BaseViewModel
+import com.kstorozh.evozhuk.LOG_TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +20,6 @@ class ChooseTimeViewModel : BaseViewModel(), KoinComponent {
 
     private val manageDeviceUseCases: ManageDeviceUseCases by inject()
     private val applicationScope = CoroutineScope(Dispatchers.Default)
-    private val bookDeviceLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
     val chooseCalendar: MutableLiveData<Calendar> by lazy { MutableLiveData<Calendar>().also {
         it.value = GregorianCalendar.getInstance()
@@ -34,14 +35,18 @@ class ChooseTimeViewModel : BaseViewModel(), KoinComponent {
     }
 
     @SuppressLint("SimpleDateFormat")
-    fun tryBookDevice(): LiveData<Boolean> {
-        applicationScope.launch {
-            val result = manageDeviceUseCases.takeDevice(BookingInputData(userIdLiveData.value!!, chooseCalendar.value))
-            result.data?.let {
-                bookDeviceLiveData.postValue(it)
-            }
-            result.domainError?.let {
-                errors.postValue(it)
+    fun tryBookDevice(timeMs: Long): LiveData<Boolean> {
+        val bookDeviceLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+        userIdLiveData.value?.let {
+            applicationScope.launch {
+                val result = manageDeviceUseCases.takeDevice(BookingInputData(it, Calendar.getInstance().apply { timeInMillis = timeMs }))
+                result.data?.let {
+                    bookDeviceLiveData.postValue(it)
+                }
+                result.domainError?.let {
+                    Log.d(LOG_TAG, "Error $it")
+                    errors.postValue(it)
+                }
             }
         }
         return bookDeviceLiveData

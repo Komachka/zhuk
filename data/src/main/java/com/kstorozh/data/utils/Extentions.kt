@@ -1,14 +1,18 @@
 package com.kstorozh.data.utils
 
 import ERROR_STATUS_CODE
+import LOG_TAG
 import NOT_FOUND_STATUS_CODE
 import UNAUTHORIZED_STATUS_CODE
-import com.kstorozh.data.models.ApiErrorBodyWithMessage
+import android.util.Log
+import com.kstorozh.data.models.ApiErrorBodyWithError
+import com.kstorozh.data.models.ApiErrorBodyWithMsg
 
 import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.dataimpl.ErrorStatus
 import com.kstorozh.dataimpl.DataError
+import okhttp3.ResponseBody
 import org.koin.core.KoinComponent
 import org.koin.core.get
 import retrofit2.Response
@@ -44,16 +48,18 @@ internal fun getError(errorStatus: ErrorStatus?, message: String?, exception: Ex
 }
 
 internal fun createError(endpoints: Endpoints, result: ApiResult.Error<*>, koinComponent: KoinComponent): DataError {
-    val retrofit: Retrofit = koinComponent.get()
     val errorStatus = result.errorResponse?.getErrorStatus(endpoints) ?: ErrorStatus.UNEXPECTED_ERROR
     var message: String? = null
     result.errorResponse?.errorBody()?.let {
         try {
-            val errorConverter =
-                retrofit.responseBodyConverter<ApiErrorBodyWithMessage>(ApiErrorBodyWithMessage::class.java, arrayOfNulls<Annotation>(0))
-            val error = errorConverter.convert(it)
+            val error = tryConvertError(ApiErrorBodyWithError::class.java, it, koinComponent)
             message = error?.errors
+            if (message == null) {
+                val error = tryConvertError(ApiErrorBodyWithMsg::class.java, it, koinComponent)
+                message = error?.errors
+            }
         } catch (e: Exception) {
+            Log.d(LOG_TAG, "Can not convert error message ${it.string()} because ${e.message}")
             message = null
         }
     }
@@ -67,4 +73,11 @@ private fun Int.getErrorStatusByCode(error: ErrorStatus, unauthorised: ErrorStat
         NOT_FOUND_STATUS_CODE -> notFound
         else -> ErrorStatus.UNEXPECTED_ERROR
     }
+}
+
+fun <T> tryConvertError(type: Class<T>, it: ResponseBody, koinComponent: KoinComponent): T? {
+    val retrofit: Retrofit = koinComponent.get()
+    val errorConverter =
+        retrofit.responseBodyConverter<T>(type, arrayOfNulls<Annotation>(0))
+    return errorConverter.convert(it)
 }

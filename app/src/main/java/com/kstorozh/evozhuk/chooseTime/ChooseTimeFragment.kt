@@ -9,6 +9,7 @@ import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,6 +57,7 @@ class ChooseTimeFragment : Fragment(), HandleErrors {
         handleErrors(modelChooseTime, view)
         val anotherTimeMilisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
         val userId = ChooseTimeFragmentArgs.fromBundle(arguments!!).userId
+        Log.d(LOG_TAG, "userId $userId")
         if (userId != USER_ID_NOT_SET)
             modelChooseTime.setUserId(userId)
         modelChooseTime.setCalendar(anotherTimeMilisec)
@@ -80,19 +82,16 @@ class ChooseTimeFragment : Fragment(), HandleErrors {
         }
         view.takeDevice.setOnClickListener { view ->
             val selected = buttonTimes.filter { timeBut -> timeBut.isSelected }
-            modelChooseTime.setCalendar(selected.first().milisec)
-            observe(modelChooseTime.tryBookDevice()) {
+            observe(modelChooseTime.tryBookDevice(selected.first().milisec)) {
                 if (it) {
                     view.showSnackbar(resources.getString(R.string.device_booked_message))
                     val action =
                         ChooseTimeFragmentDirections.actionChooseTimeFragmentToBackDeviceFragment(
                             modelChooseTime.userIdLiveData.value!!,
                             modelChooseTime.chooseCalendar.value!!.timeInMillis)
-                    startForegroundServiceNotification(modelChooseTime.chooseCalendar.value!!.timeInMillis)
-                    context!!.startScheduleNotification(modelChooseTime.chooseCalendar.value!!)
+                    startForegroundServiceNotification(selected.first().milisec)
+                    context!!.startScheduleNotification(selected.first().milisec)
                     Navigation.findNavController(view).navigate(action)
-                } else {
-                    view.showSnackbar(resources.getString(R.string.device_is_not_booked_message))
                 }
             }
         }
@@ -104,9 +103,9 @@ class ChooseTimeFragment : Fragment(), HandleErrors {
         context?.startService(serviceIntent)
     }
 
-    fun Context.startScheduleNotification(endTime: Calendar) {
+    fun Context.startScheduleNotification(endTime: Long) {
         val deltaTime = GregorianCalendar.getInstance()
-        deltaTime.timeInMillis = endTime.timeInMillis
+        deltaTime.timeInMillis = endTime
         deltaTime.add(Calendar.MINUTE, -MUTUTS_BEFORE_TIME_IS_UP_NOTIFICATION)
         val currentTime = GregorianCalendar.getInstance()
         val delay: Long = if (deltaTime.timeInMillis < currentTime.timeInMillis) 1000L else deltaTime.timeInMillis - currentTime.timeInMillis
@@ -122,13 +121,13 @@ class ChooseTimeFragment : Fragment(), HandleErrors {
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
     }
 
-    private fun createNotification(endTime: Calendar, notificationId: Int): Notification {
+    private fun createNotification(endTime: Long, notificationId: Int): Notification {
 
         val format = SimpleDateFormat(DATE_FORMAT_NOTIFICATION_MESSAGE)
         val color = ContextCompat.getColor(context!!, R.color.background)
         val builder = NotificationCompat.Builder(context!!, CHANEL_ID)
             .setContentTitle(resources.getString(R.string.dont_forget_notification_title))
-            .setContentText("${resources.getString(R.string.time_is_up_notification_title)} ${format.format(endTime.time)}")
+            .setContentText("${resources.getString(R.string.time_is_up_notification_title)} ${format.format(endTime)}")
             .setSmallIcon(R.drawable.alarm_clock)
             .setColor(color)
             .setAutoCancel(false)
