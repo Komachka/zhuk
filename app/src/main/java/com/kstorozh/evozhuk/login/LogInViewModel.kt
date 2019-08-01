@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.kstorozh.domainapi.LoginUseCase
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.*
+import com.kstorozh.evozhuk.USER_ID_NOT_SET
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,10 +23,10 @@ class LogInViewModel : ViewModel(), KoinComponent {
         loadUsers()
     } }
 
-    private val tryLoginViewModel: MutableLiveData<String> = MutableLiveData<String>()
-    private val remindPinViewModel: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-    private val isDeviceBookedViewModel: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-    val errorViewModel: MutableLiveData<DomainErrors> = MutableLiveData<DomainErrors>()
+    val tryLoginLiveData: MutableLiveData<String> = MutableLiveData<String>()
+    private val remindPinLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    private val isDeviceBookedLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    val errorLiveData: MutableLiveData<DomainErrors> = MutableLiveData<DomainErrors>()
 
     fun getUserNames(): LiveData<ArrayList<String>> {
         return Transformations.map(users, Function<List<User>, ArrayList<String>> {
@@ -53,35 +54,40 @@ class LogInViewModel : ViewModel(), KoinComponent {
         applicationScope.launch {
             val domainRes = getUserUseCase.getUsers()
             domainRes.data?.let { users.postValue(it) }
-            domainRes.domainError?.let { errorViewModel.postValue(it) }
+            domainRes.domainError?.let { errorLiveData.postValue(it) }
         }
     }
 
     fun tryLogin(name: String, pass: String): LiveData<String> {
         applicationScope.launch {
             val domainRes = loginUseCase.loginUser(UserLoginInput(name, pass))
-            domainRes.data?.let { tryLoginViewModel.postValue(it) }
-            domainRes.domainError?.let { errorViewModel.postValue(it) }
+            domainRes.data?.let {
+                tryLoginLiveData.postValue(it)
+            }
+            domainRes.domainError?.let {
+                tryLoginLiveData.postValue(USER_ID_NOT_SET)
+                errorLiveData.postValue(it)
+            }
         }
-        return tryLoginViewModel
+        return tryLoginLiveData
     }
 
     fun remindPin(user: User): LiveData<Boolean> {
 
         applicationScope.launch {
             val domainRes = loginUseCase.remindPin(user)
-            domainRes.data?.let { remindPinViewModel.postValue(it) }
-            domainRes.domainError?.let { errorViewModel.postValue(it) }
+            domainRes.data?.let { remindPinLiveData.postValue(it) }
+            domainRes.domainError?.let { errorLiveData.postValue(it) }
         }
-        return remindPinViewModel
+        return remindPinLiveData
     }
 
     fun isDeviceBooked(deviceInputData: DeviceInputData): LiveData<Boolean> {
 
         applicationScope.launch {
             val result = initDeviceUseCases.getSession()
-            if (result.data != null) isDeviceBookedViewModel.postValue(true) else isDeviceBookedViewModel.postValue(false)
+            if (result.data != null) isDeviceBookedLiveData.postValue(true) else isDeviceBookedLiveData.postValue(false)
         }
-        return isDeviceBookedViewModel
+        return isDeviceBookedLiveData
     }
 }

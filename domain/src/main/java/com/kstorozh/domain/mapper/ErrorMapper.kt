@@ -7,7 +7,7 @@ import java.lang.Exception
 
 class ErrorMapper {
 
-    fun mapToDomainError(error: DataError?): DomainErrors {
+    fun mapToDomainError(error: DataError?): DomainErrors? {
         error?.let {
             var status: ErrorStatus? = null
             try {
@@ -15,6 +15,6 @@ class ErrorMapper {
             } catch (e: Exception) {}
             return DomainErrors(status, error.throwable, error.errorMessage)
         }
-        return DomainErrors()
+        return null
     }
 }

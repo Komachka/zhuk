@@ -49,8 +49,7 @@ class EditTextPassword : AppCompatEditText {
                 null, null,
                 null, null
             )
-        }
-        else {
+        } else {
             setCompoundDrawablesWithIntrinsicBounds(null, null, hintPassImg, null)
         }
     }
