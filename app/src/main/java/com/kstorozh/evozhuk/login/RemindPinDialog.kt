@@ -11,11 +11,12 @@ import com.kstorozh.evozhuk.utils.showSnackbar
 interface RemindPinDialog {
 
     fun LoginFragment.show() {
-        val alertDialog = AlertDialog.Builder(context?.applicationContext!!)
+        val applicationContext = context?.applicationContext!!
+        val alertDialog = AlertDialog.Builder(applicationContext)
         alertDialog.setTitle(resources.getString(R.string.reset_pass_dealog_title))
         alertDialog.setMessage(resources.getString(R.string.reset_pass_dealog_message))
-        val input = AutoCompleteTextView(context)
-        input.setAdapter(ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, userNames.toTypedArray()))
+        val input = AutoCompleteTextView(applicationContext)
+        input.setAdapter(ArrayAdapter(applicationContext, android.R.layout.simple_dropdown_item_1line, userNames.toTypedArray()))
         val lp = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.MATCH_PARENT

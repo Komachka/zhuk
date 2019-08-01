@@ -12,10 +12,14 @@ import com.kstorozh.domainapi.model.ErrorStatus
 import java.text.DecimalFormat
 
 import android.os.StatFs
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.kstorozh.evozhuk.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.lang.Exception
 
 internal fun Context.getInfoAboutDevice(): DeviceInputData {
     return DeviceInputData(
@@ -27,7 +31,7 @@ internal fun Context.getInfoAboutDevice(): DeviceInputData {
 }
 
 internal fun Context.getDeviceName(): String {
-    return "${Build.BRAND.capitalize() }  ${SearchDeviceName.name}"
+    return SearchDeviceName.name
 }
 
 internal fun Context.getInfoPairs(): List<Pair<DeviceInfoName, DeviceInfoParam>> {
@@ -43,7 +47,7 @@ internal fun Context.getInfoPairs(): List<Pair<DeviceInfoName, DeviceInfoParam>>
 
 private fun Context.getTotalStorageInfoInBite(): Long {
     getStatFs()?.let {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        return if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
             it.blockSizeLong * it.blockCountLong
         } else {
             it.blockSize.toLong() * it.blockCount.toLong()
@@ -64,12 +68,19 @@ fun Context.getFreeStorageInfoInBite(): Long {
 }
 
 fun Context.getStatFs(): StatFs? {
-    val file = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+    Log.d(LOG_TAG, Build.VERSION.SDK_INT.toString())
+    val file = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
         getExternalFilesDir("")
     } else {
         Environment.getExternalStorageDirectory()
     }
-    return if (file != null) StatFs(file.path) else null
+    var statf:StatFs? = null
+    GlobalScope.launch {
+        if (file != null){
+            statf = StatFs(file.path)
+        }
+    }
+    return statf
 }
 
 private fun Context.getFreeMemoryInfoInBite() = getMemoryInfo().availMem

@@ -1,6 +1,7 @@
 package com.kstorozh.evozhuk.login
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -57,6 +58,7 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler, HandleE
                 Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_backDeviceFragment)
         })
         fragment.goInBut.setOnClickListener { view ->
+            Log.d(LOG_TAG, "on click")
             if (fragment.passwordEt.text!!.isNotEmpty() && loginEt.text.isNotEmpty())
                 observe(model.tryLogin(loginEt.text.toString(), passwordEt.text.toString())) {
                     if (it != USER_ID_NOT_SET) {

@@ -38,11 +38,6 @@ class HomeFragment : Fragment(), HandleErrors {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         model = ViewModelProviders.of(this)[HomeViewModel::class.java]
         handleErrors(model, view)
-        observe(model.errorsLiveData) {
-            it.throwable?.message?.let {
-                view.showSnackbar(it)
-            }
-        }
         val info = context?.applicationContext!!.getInfoAboutDevice()
         view.welcomeMessageTv.text = info.model
         observe(model.isDeviceInited(info), {

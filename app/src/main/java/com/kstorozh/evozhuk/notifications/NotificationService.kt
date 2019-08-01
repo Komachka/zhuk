@@ -92,7 +92,6 @@ class NotificationService : IntentService("Notification intent service") {
     }
 
     override fun onBind(intent: Intent): IBinder {
-        Log.d(LOG_TAG, "on bing")
         TODO("Return the communication channel to the service.")
     }
 }
