@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_specific_time_and_date.view.*
 
 class SpecificTimeAndDateFragment : Fragment() {
 
+    private lateinit var currentTimeAndDate: CustomTime
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -21,7 +22,7 @@ class SpecificTimeAndDateFragment : Fragment() {
     }
 
     override fun onViewCreated(fragment: View, savedInstanceState: Bundle?) {
-        val currentTimeAndDate = CustomTime()
+        currentTimeAndDate = CustomTime()
         currentTimeAndDate.countMinutesWithTimePickerInterval(TIME_PICKER_INTERVAL)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             fragment.timePicker.hour = currentTimeAndDate.hour
@@ -43,12 +44,15 @@ class SpecificTimeAndDateFragment : Fragment() {
         fragment.toolbar.apply {
             navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
             title = resources.getString(R.string.time_choose_tool_bar)
-            setNavigationOnClickListener {
-                val action = SpecificTimeAndDateFragmentDirections.actionSpecificTimeAndDateToChooseTimeFragment(
-                    USER_ID_NOT_SET)
-                action.milisec = currentTimeAndDate.getMillisec()
-                Navigation.findNavController(fragment).navigate(action)
-            }
+            setNavigationOnClickListener { navigateBack() }
         }
+        fragment.chooseTimeBut.setOnClickListener { fragment.navigateBack() }
+    }
+
+    private fun View.navigateBack() {
+        val action = SpecificTimeAndDateFragmentDirections.actionSpecificTimeAndDateToChooseTimeFragment(
+            USER_ID_NOT_SET)
+        action.milisec = currentTimeAndDate.getMillisec()
+        Navigation.findNavController(this).navigate(action)
     }
 }
