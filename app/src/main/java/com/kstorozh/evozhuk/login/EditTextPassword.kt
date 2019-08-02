@@ -9,9 +9,14 @@ import com.kstorozh.evozhuk.R
 import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.MotionEvent
+import android.view.View
+import android.text.InputType
+
 
 class EditTextPassword : AppCompatEditText {
     lateinit var hintPassImg: Drawable
+
 
     constructor(context: Context) : super(context) { initContext() }
     constructor(context: Context, attr: AttributeSet) : super(context, attr) { initContext() }
@@ -28,6 +33,38 @@ class EditTextPassword : AppCompatEditText {
                 else
                     showImage()
             }
+        })
+        setOnTouchListener(object: OnTouchListener {
+            override fun onTouch(v: View, event: MotionEvent): Boolean {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    if (compoundDrawablesRelative[2] != null) {
+                        val buttonStart: Float = ((width - paddingEnd - hintPassImg.intrinsicWidth).toFloat())
+                        var isClearButtonClicked = false
+                        if (event.x > buttonStart) { isClearButtonClicked = true}
+                        if (isClearButtonClicked) {
+                            if (event.action == MotionEvent.ACTION_DOWN) {
+                                    inputType = InputType.TYPE_CLASS_TEXT
+                                    showImage()
+                            }
+                            if (event.action == MotionEvent.ACTION_UP) {
+                                    inputType = (InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD)
+                                    showImage()
+                                    return true
+                            }
+                        } else
+                            return false
+                    }
+                }
+                else {
+                   if(compoundDrawables[2] != null)
+                   {
+
+                   }
+                }
+                return false
+            }
+
+
         })
     }
 
