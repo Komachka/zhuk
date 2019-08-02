@@ -3,19 +3,21 @@ package com.kstorozh.data.models
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-internal abstract class ApiErrorBody
 internal data class ApiErrorWithField(
 
+    val errors: Errors
+)
+
+internal data class ApiErrorBodyWithError(
     @SerializedName("errors")
     @Expose
-    val errors: Errors
-) : ApiErrorBody()
+    var errors: String? = null
+)
 
-internal data class ApiErrorBodyWithMessage(
-
+internal data class ApiErrorBodyWithMsg(
     @SerializedName("msg")
     @Expose
-    val msg: String
-) : ApiErrorBody()
+    var errors: String? = null
+)
 
-internal data class ApiErrorBodyUnexpected(val message: String) : ApiErrorBody()
+internal data class ApiErrorBodyUnexpected(val message: String)

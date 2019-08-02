@@ -7,28 +7,24 @@ internal data class User(
 
     @SerializedName("id")
     @Expose
-    val id: Int,
-
-    @SerializedName("slack_id")
+    var id: Int,
+    @SerializedName("slack_uid")
     @Expose
-    val slackId: String,
-
+    var slackUid: String,
     @SerializedName("slack_username")
     @Expose
-    val slackUserName: String
-)
-
-internal class UsersData(
-
-    @SerializedName("users")
+    var slackUsername: String,
+    @SerializedName("pin")
     @Expose
-    val users: List<User>
+    var pin: String? = null,
+    @SerializedName("role")
+    @Expose
+    var role: String? = null
 )
 
-internal class UsersDataResponse(
+internal data class UsersData(
 
     @SerializedName("data")
     @Expose
-    val usersData: UsersData
-
+    val users: List<User>
 ) : BaseResponse()

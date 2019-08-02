@@ -1,8 +1,9 @@
 package com.kstorozh.data.models
 
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-internal class UserLogin(
-    @SerializedName("slack_username") val userName: String,
-    @SerializedName("pin") val pin: String
+internal data class UserLogin(
+    @Expose @SerializedName("slack_username") val userName: String,
+    @Expose @SerializedName("pin") val pin: String
 )

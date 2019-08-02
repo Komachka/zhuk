@@ -3,7 +3,7 @@ package com.kstorozh.data.models
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-internal class Errors(
+internal data class Errors(
 
     @SerializedName("field_name")
     @Expose

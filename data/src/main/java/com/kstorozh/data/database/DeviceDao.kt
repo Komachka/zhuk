@@ -8,14 +8,14 @@ import com.kstorozh.data.models.Device
 internal interface DeviceDao {
 
     @Query("SELECT * FROM $DEVICE_INFO_TABLE_NAME LIMIT 1")
-    fun getDeviceInfo(): Device
+    suspend fun getDeviceInfo(): Device?
 
-    @Insert
-    fun insertDevice(device: Device): Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertDevice(device: Device): Long
 
     @Update
-    fun updateDevice(device: Device): Int
+    suspend fun updateDevice(device: Device): Int
 
     @Query("DELETE FROM $DEVICE_INFO_TABLE_NAME")
-    fun deleteAllDeviceInfo()
+    suspend fun deleteAllDeviceInfo()
 }

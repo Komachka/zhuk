@@ -30,7 +30,6 @@ internal interface DeviceApi {
 
     @PUT(RETURN_DEVISE_URL)
     suspend fun returnDevice(
-        @Body status: ReturnDeviceBody,
-        @Path("id") deviceId: String
+        @Body status: ReturnDeviceBody
     ): Response<BaseResponse>
 }

@@ -1,28 +1,81 @@
 <resources>
     <string name="app_name">Evo.Zhuk</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="app_logo">evozhuk</string>
-    <string name="hello_message">Привет</string>
-    <string name="login_message">Войди с помощью логина</string>
-    <string name="login">Логин</string>
-    <string name="password">Пароль</string>
-    <string name="forgot_pass_message">Забыли пароль?</string>
-    <string name="login_bunt_text">Войти</string>
-    <string name="device_name">Sumsung S8</string>
-    <string name="returnMessage">Не забудь вернуть во время</string>
-    <string name="give_back_bunt_text">Отдать</string>
-    <string name="deviceName">Sumsung S8</string>
-    <string name="youTableDeviceLabel">Ты взял Samsung S8 до</string>
-    <string name="time_choose_label">Cколько времени\nнужен Samsung S8?</string>
-    <string name="take_bunt_text">Взять устройство</string>
+    <string name="hello_message">Hello</string>
+    <string name="login_message">Login by</string>
+    <string name="login">Login</string>
+    <string name="password">Pin</string>
+    <string name="forgot_pass_message">Forgot pincode?</string>
+    <string name="login_bunt_text">Log in</string>
+    <string name="device_name">Device name</string>
+    <string name="returnMessage">Don`t forget to return the device on time</string>
+    <string name="give_back_bunt_text">Return</string>
+    <string name="deviceName">device name</string>
+    <string name="youTableDeviceLabel">You took</string>
+    <string name="time_choose_label">How long do you need\n</string>
+    <string name="take_bunt_text">Take the device</string>
     <string name="button_label_custom">text</string>
-    <string name="oneHour">1 час</string>
-    <string name="twoHour">2 часа</string>
-    <string name="foutHour">4 часа</string>
-    <string name="tillSevenOClock">до 19:00</string>
-    <string name="twoDays">2 дня</string>
-    <string name="anotherTime">другое</string>
+    <string name="oneHour">1 hour</string>
+    <string name="twoHour">2 hours</string>
+    <string name="foutHour">4 hours</string>
+    <string name="tillSevenOClock">till 19:00</string>
+    <string name="twoDays">2 days</string>
+    <string name="anotherTime">another</string>
+    <string name="inParkBack">Thank`s,\nI am back in park</string>
+    <string name="time_choose_tool_bar">Choose the time</string>
+    <string name="you_need_to_back_device_in_next_notif_message">You need to back device in next</string>
+    <string name="chargeDeviceMessage">Put device on charging, please</string>
+
+
+
+    <!-- Toast messages-->
+
+    <string name="device_booked_message">Device successfully booked</string>
+    <string name="device_is_not_booked_message">Can not book the device</string>
+    <string name="device_returned_message">Device successfully returned</string>
+    <string name="device_not_returned_message">Device was not successfully returned</string>
+    <string name="device_registered_message">Device is registered in database</string>
+    <string name="request_for_reset_success_message">Request for reset pin was sent</string>
+
+
+    <!--Error messages-->
+    <string name="invalid_pass_error_message">The password is not valid</string>
+    <string name="invalid_login_error_message">The login or password is not valid</string>
+    <string name="device_is_not_authorized_error_message">The device unauthorized</string>
+    <string name="can_not_init_error_message">The device does not init</string>
+    <string name="can_not_update_error_message">The device does not update</string>
+    <string name="can_not_book_error_message">The device does not booked</string>
+    <string name="can_not_return_error_message">The device does not booked</string>
+    <string name="can_not_get_users_error_message">Users list is unavailable</string>
+    <string name="can_not_remind_pin_error_message">Can not remind pin</string>
+    <string name="unexpected_error_message">There is some unexpected error occurred</string>
+    <string name="pass_is_empty_error_message">The password or login field is empty</string>
+    <string name="request_for_reset_error_message">Request for reset pin was not sent</string>
+    <string name="input_error_message">"Incorrect input"</string>
+
+
+    <!-- Reset pass dialog -->
+    <string name="reset_pass_dealog_title">Remind pin</string>
+    <string name="reset_pass_dealog_message">Enter slack login please</string>
+    <string name="reset_pass_dealog_pos_but">Send</string>
+
+
+    <!-- Notification messages-->
+
+    <string name="dont_forget_notification_title">Don`t forget to back device</string>
+    <string name="time_is_up_notification_title">Your time is up in</string>
+
+
+    <string name="model">Model</string>
+    <string name="version">Version</string>
+    <string name="id">id</string>
+    <string name="memory">Memory</string>
+    <string name="storage">Storage</string>
+    <string name="info">Information</string>
+    <string name="init">Init device</string>
+
+
+
 
 </resources>

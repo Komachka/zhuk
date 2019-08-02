@@ -13,4 +13,10 @@
     <color name="editTextColourHint">#a1aef6</color>
     <color name="label_colour">#00e9cb</color>
 
+    <color name="but_time_focus">#1828a7</color>
+    <color name="but_time_def">#FFFFFF</color>
+
+    <color name="tool_bar_background">#11239a</color>
+    <color name="tool_bar_text">#00e9cb</color>
+
 </resources>

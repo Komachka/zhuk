@@ -1,11 +1,25 @@
 package com.kstorozh.data.database
 
+import com.kstorozh.data.models.BookingBody
 import com.kstorozh.data.models.Device
-import org.koin.core.KoinComponent
 
-internal class LocalDataStorageImpl(private val deviceDao: DeviceDao) : LocalDataStorage, KoinComponent {
+internal class LocalDataStorageImpl(
+    private val deviceDao: DeviceDao,
+    private val bookingDao: BookingDao
+) : LocalDataStorage {
+    override suspend fun deleteBookingInfo() {
+        bookingDao.deleteAllBooking()
+    }
 
-    override suspend fun getDeviceInfo(): Device {
+    override suspend fun getBookingByDeviceId(deviceId: String): BookingBody? {
+        return bookingDao.getBookingInfoByDeviceId(deviceId.toInt())
+    }
+
+    override suspend fun saveBooking(bookingBody: BookingBody) {
+        bookingDao.insertBooking(bookingBody)
+    }
+
+    override suspend fun getDeviceInfo(): Device? {
         return deviceDao.getDeviceInfo()
     }
 
