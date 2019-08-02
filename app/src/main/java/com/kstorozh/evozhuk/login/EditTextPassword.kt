@@ -13,10 +13,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.text.InputType
 
-
+const val END_IMAGE_INDEX = 2
 class EditTextPassword : AppCompatEditText {
     lateinit var hintPassImg: Drawable
-
 
     constructor(context: Context) : super(context) { initContext() }
     constructor(context: Context, attr: AttributeSet) : super(context, attr) { initContext() }
@@ -34,37 +33,26 @@ class EditTextPassword : AppCompatEditText {
                     showImage()
             }
         })
-        setOnTouchListener(object: OnTouchListener {
+        setOnTouchListener(object : OnTouchListener {
             override fun onTouch(v: View, event: MotionEvent): Boolean {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    if (compoundDrawablesRelative[2] != null) {
-                        val buttonStart: Float = ((width - paddingEnd - hintPassImg.intrinsicWidth).toFloat())
-                        var isClearButtonClicked = false
-                        if (event.x > buttonStart) { isClearButtonClicked = true}
-                        if (isClearButtonClicked) {
-                            if (event.action == MotionEvent.ACTION_DOWN) {
-                                    inputType = InputType.TYPE_CLASS_TEXT
-                                    showImage()
-                            }
-                            if (event.action == MotionEvent.ACTION_UP) {
-                                    inputType = (InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD)
-                                    showImage()
-                                    return true
-                            }
-                        } else
-                            return false
+                    if (compoundDrawablesRelative[END_IMAGE_INDEX] == null) return false } else { if (compoundDrawables[END_IMAGE_INDEX] == null) return false }
+                val buttonStart: Float = ((width - paddingRight - hintPassImg.intrinsicWidth).toFloat())
+                var isClearButtonClicked = false
+                if (event.x > buttonStart) { isClearButtonClicked = true }
+                if (isClearButtonClicked) {
+                    if (event.action == MotionEvent.ACTION_DOWN) {
+                        inputType = InputType.TYPE_CLASS_TEXT
+                        showImage()
                     }
-                }
-                else {
-                   if(compoundDrawables[2] != null)
-                   {
-
-                   }
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        inputType = (InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD)
+                        showImage()
+                        return true
+                    }
                 }
                 return false
             }
-
-
         })
     }
 
