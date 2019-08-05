@@ -75,6 +75,7 @@ class BackDeviceFragment : Fragment(), HandleErrors {
     }
 
     private fun stopForegroundService() {
+        NotificationService.isServiceRunning = false
         val serviceIntent = Intent(context, NotificationService::class.java)
         serviceIntent.putExtra(INTENT_STOP_FLAG, INTENT_STOP_FLAG)
         context?.stopService(serviceIntent)
