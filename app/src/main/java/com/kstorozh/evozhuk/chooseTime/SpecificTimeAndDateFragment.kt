@@ -50,9 +50,10 @@ class SpecificTimeAndDateFragment : Fragment() {
     }
 
     private fun View.navigateBack() {
-        val action = SpecificTimeAndDateFragmentDirections.actionSpecificTimeAndDateToChooseTimeFragment(
-            USER_ID_NOT_SET)
-        action.milisec = currentTimeAndDate.getMillisec()
-        Navigation.findNavController(this).navigate(action)
+        val view = this
+        with(SpecificTimeAndDateFragmentDirections.actionSpecificTimeAndDateToChooseTimeFragment(USER_ID_NOT_SET)) {
+            milisec = currentTimeAndDate.getMillisec()
+            Navigation.findNavController(view).navigate(this)
+        }
     }
 }
