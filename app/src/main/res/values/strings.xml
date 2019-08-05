@@ -14,7 +14,7 @@
     <string name="deviceName">device name</string>
     <string name="youTableDeviceLabel">You took</string>
     <string name="time_choose_label">How long do you need\n</string>
-    <string name="take_bunt_text">Take the device</string>
+    <string name="take_bunt_text">Take device</string>
     <string name="button_label_custom">text</string>
     <string name="oneHour">1 hour</string>
     <string name="twoHour">2 hours</string>
@@ -74,8 +74,7 @@
     <string name="storage">Storage</string>
     <string name="info">Information</string>
     <string name="init">Init device</string>
-
-
+    <string name="book_device">Book device</string>
 
 
 </resources>
