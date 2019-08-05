@@ -12,6 +12,8 @@ import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
 import android.text.InputType
+import android.widget.EditText
+import com.kstorozh.evozhuk.utils.onTextChanged
 
 const val END_IMAGE_INDEX = 2
 const val VISIBLE_PASSWORD_TYPE = InputType.TYPE_CLASS_TEXT
@@ -27,7 +29,7 @@ class EditTextPassword : AppCompatEditText {
     private fun initContext() {
         hintPassImg = ResourcesCompat.getDrawable(resources, R.mipmap.ic_hide, null)!!
         iconStartCoordinate = ((width - paddingRight - hintPassImg.intrinsicWidth).toFloat())
-        handleShowingIconOnTextChange { start -> if (start == 0) hideImage() else showImage() }
+        onTextChanged { start -> if (start == 0) hideImage() else showImage() }
         handleShowPassOnIconClick()
     }
 
@@ -82,12 +84,4 @@ class EditTextPassword : AppCompatEditText {
         }
     }
 
-    private fun handleShowingIconOnTextChange(onTextChangedBody: (Int) -> Unit) {
-        addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {}
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                onTextChangedBody.invoke(start) }
-        })
-    }
 }

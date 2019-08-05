@@ -12,11 +12,15 @@ import com.kstorozh.domainapi.model.ErrorStatus
 import java.text.DecimalFormat
 
 import android.os.StatFs
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.widget.EditText
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.kstorozh.evozhuk.*
+import com.kstorozh.evozhuk.login.EditTextPassword
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -122,3 +126,12 @@ fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T) -> 
 private fun Long.mgToGb() = this * 0.001
 private fun Long.biteToMg() = this / 0X100000 // 1024 * 1024
 private fun Long.biteToGb() = biteToMg().mgToGb()
+
+fun EditText.onTextChanged(onTextChangedBody: (Int) -> Unit) {
+    addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(p0: Editable?) {}
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            onTextChangedBody.invoke(start) }
+    })
+}
