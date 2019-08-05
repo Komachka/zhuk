@@ -72,6 +72,7 @@
     <string name="memory">Память</string>
     <string name="storage">Хранилище</string>
     <string name="info">Информация</string>
+    <string name="choose">Вибрать</string>
 
 
 </resources>
