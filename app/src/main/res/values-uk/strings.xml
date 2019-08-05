@@ -78,5 +78,7 @@
     <string name="storage">Сховище</string>
     <string name="info">Інформація</string>
 
+    <string name="book_device">Забронювати</string>
+
 
 </resources>

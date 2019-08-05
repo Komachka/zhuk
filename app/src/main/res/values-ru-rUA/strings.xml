@@ -73,5 +73,7 @@
     <string name="storage">Хранилище</string>
     <string name="info">Информация</string>
 
+    <string name="book_device">Забронировать</string>
+
 
 </resources>
