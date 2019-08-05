@@ -9,15 +9,15 @@
 
 
     <com.applandeo.materialcalendarview.CalendarView
-            android:id="@+id/datePicker"
+            android:id="@+id/calendarView"
             android:layout_width="0dp"
-            android:layout_height="370dp"
-            app:datePicker="true"
-            app:headerColor="@color/colorPrimary"
+            android:layout_height="0dp"
+            app:headerColor="@color/background"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:selectionColor="@color/colorAccent"
-            app:todayLabelColor="@color/colorPrimaryDark" />
+            app:todayLabelColor="@color/backgroundButColour"
+            app:selectionColor="@color/colorAccent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

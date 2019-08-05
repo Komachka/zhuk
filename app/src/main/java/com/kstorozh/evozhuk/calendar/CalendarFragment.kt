@@ -10,6 +10,10 @@ import com.kstorozh.evozhuk.R
 import com.applandeo.materialcalendarview.EventDay
 import kotlinx.android.synthetic.main.fragment_calendar.view.*
 import android.widget.Toast
+import com.kstorozh.evozhuk.DATE_FORMAT_NOTIFICATION_MESSAGE
+import com.kstorozh.evozhuk.utils.showSnackbar
+import java.text.SimpleDateFormat
+import java.util.logging.SimpleFormatter
 
 class CalendarFragment : Fragment() {
 
@@ -22,10 +26,12 @@ class CalendarFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        view.datePicker.setOnDayClickListener { eventDay -> doSmth(eventDay) }
+        view.calendarView.setOnDayClickListener { eventDay ->
+            view.showSnackbar(
+                SimpleDateFormat(DATE_FORMAT_NOTIFICATION_MESSAGE).format(eventDay.calendar.timeInMillis)
+            )
+        }
     }
 
-    private fun doSmth(eventDay: EventDay) {
-        Toast.makeText(context, eventDay.calendar.toString() + " " + eventDay.toString(), Toast.LENGTH_LONG).show()
-    }
+
 }
