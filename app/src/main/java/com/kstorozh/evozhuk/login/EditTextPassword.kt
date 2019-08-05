@@ -15,7 +15,8 @@ import android.text.InputType
 
 const val END_IMAGE_INDEX = 2
 class EditTextPassword : AppCompatEditText {
-    lateinit var hintPassImg: Drawable
+    private lateinit var hintPassImg: Drawable
+    private var iconStartCoordinate: Float = 0F
 
     constructor(context: Context) : super(context) { initContext() }
     constructor(context: Context, attr: AttributeSet) : super(context, attr) { initContext() }
@@ -23,24 +24,18 @@ class EditTextPassword : AppCompatEditText {
 
     private fun initContext() {
         hintPassImg = ResourcesCompat.getDrawable(resources, R.mipmap.ic_hide, null)!!
-        addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {}
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (start == 0)
-                    hideImage()
-                else
-                    showImage()
-            }
-        })
+        iconStartCoordinate = ((width - paddingRight - hintPassImg.intrinsicWidth).toFloat())
+        handleShowingIconOnTextChange()
+        handleShowPassOnIconClick()
+    }
+
+    private fun handleShowPassOnIconClick() {
         setOnTouchListener(object : OnTouchListener {
             override fun onTouch(v: View, event: MotionEvent): Boolean {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    if (compoundDrawablesRelative[END_IMAGE_INDEX] == null) return false } else { if (compoundDrawables[END_IMAGE_INDEX] == null) return false }
-                val buttonStart: Float = ((width - paddingRight - hintPassImg.intrinsicWidth).toFloat())
-                var isClearButtonClicked = false
-                if (event.x > buttonStart) { isClearButtonClicked = true }
-                if (isClearButtonClicked) {
+                if (!checkIfImageExists()) return false
+                var isShowPassIconClicked = false
+                if (event.x > iconStartCoordinate) { isShowPassIconClicked = true }
+                if (isShowPassIconClicked) {
                     if (event.action == MotionEvent.ACTION_DOWN) {
                         inputType = InputType.TYPE_CLASS_TEXT
                         showImage()
@@ -52,6 +47,27 @@ class EditTextPassword : AppCompatEditText {
                     }
                 }
                 return false
+            }
+        })
+    }
+
+    private fun checkIfImageExists(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            compoundDrawablesRelative[END_IMAGE_INDEX] != null
+        } else {
+            compoundDrawables[END_IMAGE_INDEX] != null
+        }
+    }
+
+    private fun handleShowingIconOnTextChange() {
+        addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (start == 0)
+                    hideImage()
+                else
+                    showImage()
             }
         })
     }
