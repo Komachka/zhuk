@@ -25,7 +25,7 @@ class EditTextPassword : AppCompatEditText {
     private fun initContext() {
         hintPassImg = ResourcesCompat.getDrawable(resources, R.mipmap.ic_hide, null)!!
         iconStartCoordinate = ((width - paddingRight - hintPassImg.intrinsicWidth).toFloat())
-        handleShowingIconOnTextChange()
+        handleShowingIconOnTextChange { start -> if (start == 0) hideImage() else showImage() }
         handleShowPassOnIconClick()
     }
 
@@ -59,19 +59,6 @@ class EditTextPassword : AppCompatEditText {
         }
     }
 
-    private fun handleShowingIconOnTextChange() {
-        addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {}
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (start == 0)
-                    hideImage()
-                else
-                    showImage()
-            }
-        })
-    }
-
     private fun showImage() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             setCompoundDrawablesRelativeWithIntrinsicBounds(
@@ -91,5 +78,14 @@ class EditTextPassword : AppCompatEditText {
         } else {
             setCompoundDrawablesWithIntrinsicBounds(null, null, hintPassImg, null)
         }
+    }
+
+    private fun EditTextPassword.handleShowingIconOnTextChange(onTextChangedBody: (Int) -> Unit) {
+        addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                onTextChangedBody.invoke(start) }
+        })
     }
 }
