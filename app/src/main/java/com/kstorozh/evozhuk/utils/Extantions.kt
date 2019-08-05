@@ -20,7 +20,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.kstorozh.evozhuk.*
-import com.kstorozh.evozhuk.login.EditTextPassword
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

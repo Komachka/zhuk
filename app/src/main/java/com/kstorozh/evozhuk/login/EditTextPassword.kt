@@ -7,12 +7,9 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.res.ResourcesCompat
 import com.kstorozh.evozhuk.R
 import android.os.Build
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
 import android.text.InputType
-import android.widget.EditText
 import com.kstorozh.evozhuk.utils.onTextChanged
 
 const val END_IMAGE_INDEX = 2
@@ -83,5 +80,4 @@ class EditTextPassword : AppCompatEditText {
             setCompoundDrawablesWithIntrinsicBounds(null, null, hintPassImg, null)
         }
     }
-
 }
