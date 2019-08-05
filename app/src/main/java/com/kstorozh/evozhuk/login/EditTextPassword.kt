@@ -14,6 +14,8 @@ import android.view.View
 import android.text.InputType
 
 const val END_IMAGE_INDEX = 2
+const val VISIBLE_PASSWORD_TYPE = InputType.TYPE_CLASS_TEXT
+const val INVISIBLE_PASSWORD_TYPE = (InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD)
 class EditTextPassword : AppCompatEditText {
     private lateinit var hintPassImg: Drawable
     private var iconStartCoordinate: Float = 0F
@@ -37,11 +39,11 @@ class EditTextPassword : AppCompatEditText {
                 if (event.x > iconStartCoordinate) { isShowPassIconClicked = true }
                 if (isShowPassIconClicked) {
                     if (event.action == MotionEvent.ACTION_DOWN) {
-                        inputType = InputType.TYPE_CLASS_TEXT
+                        inputType = VISIBLE_PASSWORD_TYPE
                         showImage()
                     }
                     if (event.action == MotionEvent.ACTION_UP) {
-                        inputType = (InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD)
+                        inputType = INVISIBLE_PASSWORD_TYPE
                         showImage()
                         return true
                     }
