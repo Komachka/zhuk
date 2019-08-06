@@ -126,7 +126,7 @@ private fun Long.mgToGb() = this * 0.001
 private fun Long.biteToMg() = this / 0X100000 // 1024 * 1024
 private fun Long.biteToGb() = biteToMg().mgToGb()
 
-fun EditText.onTextChanged(onTextChangedBody: (Int) -> Unit) {
+fun EditText.onTextChanged(onTextChangedBody: (startSymbol:Int) -> Unit) {
     addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(p0: Editable?) {}
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
