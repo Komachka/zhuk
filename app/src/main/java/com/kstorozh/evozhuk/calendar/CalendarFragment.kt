@@ -9,7 +9,6 @@ import com.kstorozh.evozhuk.DATE_FORMAT_DAY
 import com.kstorozh.evozhuk.R
 
 import kotlinx.android.synthetic.main.fragment_calendar.view.*
-import com.kstorozh.evozhuk.DATE_FORMAT_NOTIFICATION_MESSAGE
 import com.kstorozh.evozhuk.utils.showSnackbar
 import java.text.SimpleDateFormat
 

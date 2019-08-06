@@ -12,7 +12,7 @@
         <action android:id="@+id/action_loginFragment_to_infoFragment" app:destination="@id/infoFragment"/>
         <action android:id="@+id/action_loginFragment_to_backDeviceFragment" app:destination="@id/backDeviceFragment"
                 app:popUpTo="@+id/loginFragment" app:popUpToInclusive="false"/>
-        <action android:id="@+id/action_loginFragment_to_bookOrTakeFragment2" app:destination="@id/bookOrTakeFragment"/>
+        <action android:id="@+id/action_loginFragment_to_bookOrTakeFragment" app:destination="@id/bookOrTakeFragment"/>
     </fragment>
     <fragment android:id="@+id/chooseTimeFragment" android:name="com.kstorozh.evozhuk.chooseTime.ChooseTimeFragment"
               android:label="ChooseTimeFragment">
