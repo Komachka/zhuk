@@ -13,6 +13,9 @@ import java.text.DecimalFormat
 
 import android.os.StatFs
 import android.util.Log
+import android.view.ViewGroup
+import android.widget.FrameLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -122,3 +125,31 @@ fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T) -> 
 private fun Long.mgToGb() = this * 0.001
 private fun Long.biteToMg() = this / 0X100000 // 1024 * 1024
 private fun Long.biteToGb() = biteToMg().mgToGb()
+
+/**
+ * copy findSuitableParent from Snackbar class
+ * https://github.com/material-components/material-components-android/blob/1.0.0/lib/java/com/google/android/material/snackbar/Snackbar.java
+ */
+
+fun View?.findSuitableParent(): ViewGroup? {
+    var view = this
+    var fallback: ViewGroup? = null
+    do {
+        if (view is CoordinatorLayout) { // We've found a CoordinatorLayout, use it
+            return view
+        } else if (view is FrameLayout) {
+            if (view.id == android.R.id.content) { // If we've hit the decor content view, then we didn't find a CoL in the hierarchy, so use it.
+                return view
+            } else {
+                fallback = view // It's not the content view but we'll use it as our fallback
+            }
+        }
+        if (view != null) {
+            // Else, we will loop and crawl up the view hierarchy and try to find a parent
+            val parent = view.parent
+            view = if (parent is View) parent else null
+        }
+    } while (view != null)
+    // If we reach here then we didn't find a CoL or a suitable content view so we'll fallback
+    return fallback
+}
