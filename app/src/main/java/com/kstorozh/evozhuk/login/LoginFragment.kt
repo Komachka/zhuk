@@ -55,7 +55,7 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler, HandleE
                 observe(model.tryLogin(loginEt.text.toString(), passwordEt.text.toString())) {
                     if (it != USER_ID_NOT_SET) {
                         fragment.setEmptyValues()
-                        val action = LoginFragmentDirections.actionLoginFragmentToChooseTimeFragment(it)
+                        val action = LoginFragmentDirections.actionLoginFragmentToBookOrTakeFragment(it)
                         Navigation.findNavController(fragment).navigate(action)
                     }
                 }

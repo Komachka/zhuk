@@ -8,6 +8,7 @@ const val DATE_FORMAT_TIMER = "%02d:%02d:%02d"
 const val MINUTES_FORMAT_TIME_PICKER = "%02d"
 
 const val DATE_FORMAT_NOTIFICATION_MESSAGE = "HH:mm dd MMMM"
+const val DATE_FORMAT_DAY = "dd MMMM"
 const val DATE_FORMAT_BACK_DEVICE_SCREEN_TV = "HH:mm\ndd MMMM"
 const val TIME_ZONE = "Europe/Kiev"
 const val MEMORY_DECIMAL_FORMAT = "#.##"

@@ -16,6 +16,7 @@ ext {
     nav_dep = "1.0.0"
     recycler = "28.0.0"
     device_names = "1.1.9"
+    calendar = "1.0.1"
 
     commonDependencies = [
             kotlin : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin",
@@ -38,7 +39,8 @@ ext {
             navigation: "android.arch.navigation:navigation-fragment-ktx:$nav_dep",
             navigationktx: "android.arch.navigation:navigation-ui-ktx:$nav_dep",
             recycler: "com.android.support:recyclerview-v7:$recycler",
-            deveseNames:"com.jaredrummler:android-device-names:$device_names"
+            deveseNames:"com.jaredrummler:android-device-names:$device_names",
+            calendar:"com.applandeo:material-calendar-view:$calendar"
     ]
 
     domainDependencies = [
