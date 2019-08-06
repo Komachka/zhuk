@@ -17,15 +17,15 @@ class LowBatterySnackbar(parent: ViewGroup, content: LowBatterySnackbarView) :
     }
 
     companion object {
-        fun make(view: View): LowBatterySnackbar {
-            val parent = view.findSuitableParent() ?: throw IllegalArgumentException(
-                "No suitable parent found from the given view. Please provide a valid view."
-            )
-            val customViewSnackbar = LowBatterySnackbarView(view.context)
-            return LowBatterySnackbar(
-                parent,
-                customViewSnackbar
-            )
+        fun make(view: View): LowBatterySnackbar? {
+            view.findSuitableParent()?.let { parent ->
+                val customViewSnackbar = LowBatterySnackbarView(view.context)
+                return LowBatterySnackbar(
+                    parent,
+                    customViewSnackbar
+                )
+            }
+            return null
         }
     }
 }
