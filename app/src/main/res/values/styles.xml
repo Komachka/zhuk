@@ -37,6 +37,9 @@
         <item name="android:layout_height">64dp</item>item>
         <item name="android:textAllCaps">false</item>
     </style>
+    <style name="Autocomplete" parent="Widget.AppCompat.Light.AutoCompleteTextView">
+        <item name="android:background">@drawable/authocomplite</item>
+    </style>
 
 
 </resources>
