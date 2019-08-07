@@ -16,7 +16,7 @@ ext {
     nav_dep = "1.0.0"
     recycler = "28.0.0"
     device_names = "1.1.9"
-    calendar = "1.0.1"
+    calendar = "1.6.0"
 
     commonDependencies = [
             kotlin : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin",
