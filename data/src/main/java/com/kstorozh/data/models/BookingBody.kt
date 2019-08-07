@@ -29,4 +29,4 @@ internal data class BookingBody(
     @SerializedName("is_active")
     val isActive: Boolean
 
-)
+):BaseResponse()
