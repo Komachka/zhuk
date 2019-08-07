@@ -36,7 +36,6 @@ internal data class Day(
     @SerializedName("end_date")
     @Expose
     var endDate: String,
-    @SerializedName("duration")
     @Expose
     var duration: Int
 )
