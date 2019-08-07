@@ -11,9 +11,11 @@ import androidx.core.app.NotificationCompat
 import com.kstorozh.evozhuk.*
 import java.util.concurrent.TimeUnit
 
-class NotificationService : IntentService("Notification intent service") {
-
-    var STOP_SERVICE_FLAG = "SERVICE_RUNNING"
+class NotificationService : IntentService(NOTIFICATION_SERVICE_NAME) {
+    companion object {
+        @Volatile
+        var isServiceRunning = true
+    }
 
     override fun onHandleIntent(intent: Intent?) {
 
@@ -54,10 +56,10 @@ class NotificationService : IntentService("Notification intent service") {
         builder: NotificationCompat.Builder,
         notificationId: Int
     ) {
-        while (System.currentTimeMillis() < endTime && STOP_SERVICE_FLAG != INTENT_STOP_FLAG) {
+        while (System.currentTimeMillis() < endTime && isServiceRunning) {
             synchronized(this) {
                 try {
-                    Thread.sleep(1000)
+                    Thread.sleep(ONE_SECOND)
                     val millis = endTime - System.currentTimeMillis()
                     val hms = createFormattedDateString(millis)
                     builder.setContentText(hms)
