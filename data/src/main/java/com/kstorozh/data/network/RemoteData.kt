@@ -30,4 +30,7 @@ internal interface RemoteData {
 
     @WorkerThread
     suspend fun login(userLoginParam: UserLogin): ApiResult<LoginUserResponse>
+
+    @WorkerThread
+    suspend fun getBookingByDate(startDate: String, endDate: String): ApiResult<BookingDataByDay>
 }

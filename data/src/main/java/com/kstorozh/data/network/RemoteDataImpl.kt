@@ -1,5 +1,6 @@
 package com.kstorozh.data.network
 
+import BOOKING_CALENDAR_ERROR
 import BOOKING_ERROR
 import GET_USERS_ERROR
 import INIT_ERROR
@@ -17,8 +18,16 @@ import java.lang.Exception
 
 internal class RemoteDataImpl(
     private val deviceApi: DeviceApi,
-    private val userApi: UserApi
+    private val userApi: UserApi,
+    private val calendarApi: CalendarApi
 ) : RemoteData {
+
+    override suspend fun getBookingByDate(startDate: String, endDate: String): ApiResult<BookingDataByDay> {
+        return getApiResult(BOOKING_CALENDAR_ERROR) {
+            calendarApi.getBookingByDate(startDate, endDate)
+        }
+    }
+
     override suspend fun login(userLoginParam: UserLogin): ApiResult<LoginUserResponse> {
         return getApiResult(LOGIN_ERROR) {
             userApi.login(userLoginParam)
