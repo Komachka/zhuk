@@ -7,17 +7,11 @@ import com.google.gson.Gson
 import com.kstorozh.data.database.DeviceDatabase
 import com.kstorozh.data.database.LocalDataStorage
 import com.kstorozh.data.database.LocalDataStorageImpl
-import com.kstorozh.data.network.DeviceApi
-import com.kstorozh.data.network.RemoteData
-import com.kstorozh.data.network.RemoteDataImpl
-import com.kstorozh.data.network.UserApi
 import com.kstorozh.data.repository.*
 import com.kstorozh.data.repository.DeviceDataMapper
 import com.kstorozh.data.repository.DeviceRepositoryImpl
 import com.kstorozh.data.repository.UserDataMapper
 import com.kstorozh.data.repository.UserRepositoryImpl
-import com.kstorozh.data.network.AuthInterceptor
-import com.kstorozh.data.network.TokenRepository
 import com.kstorozh.dataimpl.DeviseRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -26,6 +20,14 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.google.gson.GsonBuilder
+import com.kstorozh.data.network.*
+import com.kstorozh.data.network.AuthInterceptor
+import com.kstorozh.data.network.CalendarApi
+import com.kstorozh.data.network.DeviceApi
+import com.kstorozh.data.network.RemoteData
+import com.kstorozh.data.network.RemoteDataImpl
+import com.kstorozh.data.network.TokenRepository
+import com.kstorozh.data.network.UserApi
 
 // The module is marked as override, which means that its content will override any other definition within the application.
 
@@ -48,10 +50,13 @@ val networkModule = module(override = true) {
     factory { provideOkHttpClient(get(), get()) }
     factory { provideDeviceApi(get()) }
     factory { provideUserApi(get()) }
+    factory { provideCalendarApi(get()) }
     factory { provideGson() }
     single { provideRetrofit(get(), get()) }
-    factory<RemoteData> { RemoteDataImpl(get(), get()) }
+    factory<RemoteData> { RemoteDataImpl(get(), get(), get()) }
 }
+
+private fun provideCalendarApi(retrofit: Retrofit) = retrofit.create(CalendarApi::class.java)
 
 val repositoryModule = module(override = true) {
     single<DeviseRepository> { DeviceRepositoryImpl(get(), get(), DeviceDataMapper(), get()) }
