@@ -15,7 +15,7 @@
             android:scaleType="centerInside"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@mipmap/ic_allert"
+            android:src="@drawable/ic_info_black_24dp"
             android:layout_marginLeft="17dp"
             android:layout_marginStart="17dp"
             android:layout_marginTop="9dp"
