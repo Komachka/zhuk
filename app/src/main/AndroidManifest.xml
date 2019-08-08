@@ -15,7 +15,7 @@
             android:supportsRtl="true"
             android:vmSafeMode="true"
             android:usesCleartextTraffic="true"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.Launcher">
 
         <receiver android:name=".backDevice.MyNotificationPublisher"  android:exported="true">
             <intent-filter>
