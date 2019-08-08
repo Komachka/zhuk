@@ -1,6 +1,5 @@
 package com.kstorozh.evozhuk.calendar
 
-
 import androidx.lifecycle.*
 import com.applandeo.materialcalendarview.EventDay
 import com.kstorozh.evozhuk.R
@@ -64,6 +63,4 @@ class CalendarViewModelFactory(private val startDate: Long, private val endDate:
             liveData.value = events
             return liveData
         }
-
-
 }
