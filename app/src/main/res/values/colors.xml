@@ -19,5 +19,7 @@
     <color name="tool_bar_background">#11239a</color>
     <color name="tool_bar_text">#00e9cb</color>
     <color name="backgroundButColour">#ff8087</color>
+    <color name="round_but_color">#ff8087</color>
+
 
 </resources>

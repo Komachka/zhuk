@@ -15,7 +15,13 @@ import android.os.StatFs
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+
 import android.widget.EditText
+
+import android.view.ViewGroup
+import android.widget.FrameLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -126,11 +132,33 @@ private fun Long.mgToGb() = this * 0.001
 private fun Long.biteToMg() = this / 0X100000 // 1024 * 1024
 private fun Long.biteToGb() = biteToMg().mgToGb()
 
-fun EditText.onTextChanged(onTextChangedBody: (startSymbol:Int) -> Unit) {
+fun EditText.onTextChanged(onTextChangedBody: (startSymbol: Int) -> Unit) {
     addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(p0: Editable?) {}
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            onTextChangedBody.invoke(start) }
+            onTextChangedBody.invoke(start)
+        }
     })
 }
+
+    fun View?.findSuitableParent(): ViewGroup? {
+        var view = this
+        var fallback: ViewGroup? = null
+        do {
+            if (view is CoordinatorLayout) {
+                return view
+            } else if (view is FrameLayout) {
+                if (view.id == android.R.id.content) {
+                    return view
+                } else {
+                    fallback = view
+                }
+            }
+            if (view != null) {
+                val parent = view.parent
+                view = if (parent is View) parent else null
+            }
+        } while (view != null)
+        return fallback
+    }
