@@ -36,7 +36,6 @@ class CalendarFragment : Fragment() {
 
         val model = activity!!.run {
             CalendarViewModelFactory(calendar1.timeInMillis, calendar2.timeInMillis).create(CalendarViewModel::class.java)
-            // ViewModelProviders.of(this).get(CalendarViewModel::class.java)
         }
 
         val min = Calendar.getInstance()
