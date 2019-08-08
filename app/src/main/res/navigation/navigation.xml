@@ -61,5 +61,11 @@
     <fragment android:id="@+id/calendarFragment" android:name="com.kstorozh.evozhuk.calendar.CalendarFragment"
               android:label="fragment_calendar" tools:layout="@layout/fragment_calendar">
         <argument android:name="userId" app:argType="string"/>
+        <action android:id="@+id/action_calendarFragment_to_calendarDayView" app:destination="@id/calendarDayView"/>
+    </fragment>
+    <fragment android:id="@+id/calendarDayView" android:name="com.kstorozh.evozhuk.calendar.CalendarDayFragment"
+              android:label="fragment_calendar_day_view" tools:layout="@layout/fragment_calendar_day_view">
+        <argument android:name="userId" app:argType="string"/>
+        <argument android:name="milisec" app:argType="long"/>
     </fragment>
 </navigation>

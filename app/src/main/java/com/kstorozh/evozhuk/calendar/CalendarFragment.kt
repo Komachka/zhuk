@@ -1,29 +1,17 @@
 package com.kstorozh.evozhuk.calendar
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import com.applandeo.materialcalendarview.CalendarView
-import com.applandeo.materialcalendarview.EventDay
-import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException
 import com.applandeo.materialcalendarview.utils.DateUtils
-import com.kstorozh.evozhuk.DATE_FORMAT_DAY
 import com.kstorozh.evozhuk.R
-import com.kstorozh.evozhuk.home.HomeViewModel
-import com.kstorozh.evozhuk.utils.DrawableUtils
 import com.kstorozh.evozhuk.utils.observe
 
-import kotlinx.android.synthetic.main.fragment_calendar.view.*
-import com.kstorozh.evozhuk.utils.showSnackbar
-import java.text.SimpleDateFormat
 import java.util.*
 
 class CalendarFragment : Fragment() {
@@ -40,7 +28,16 @@ class CalendarFragment : Fragment() {
 
         val calendarView = view.findViewById<View>(R.id.calendarView) as CalendarView
 
-        val model = ViewModelProviders.of(this).get(CalendarViewModel::class.java)
+        val calendar1 = Calendar.getInstance()
+        calendar1.add(Calendar.DAY_OF_MONTH, 1)
+
+        val calendar2 = Calendar.getInstance()
+        calendar2.add(Calendar.DAY_OF_MONTH, 31)
+
+        val model = activity!!.run {
+            CalendarViewModelFactory(calendar1.timeInMillis, calendar2.timeInMillis).create(CalendarViewModel::class.java)
+            // ViewModelProviders.of(this).get(CalendarViewModel::class.java)
+        }
 
         val min = Calendar.getInstance()
         min.add(Calendar.MONTH, -2)
@@ -51,27 +48,23 @@ class CalendarFragment : Fragment() {
         calendarView.setMinimumDate(min)
         calendarView.setMaximumDate(max)
 
-
-        observe(model.getBookingDayInfo())
-        {
+        observe(model.getBookingDaysInfo()) {
             calendarView.setEvents(it)
             calendarView.setDisabledDays(getDisabledDays())
         }
 
-
-
         calendarView.setOnDayClickListener { eventDay ->
             Toast.makeText(
                 context,
-                eventDay.calendar.time.toString() + " "
-                        + eventDay.isEnabled,
+                eventDay.calendar.time.toString() + " " +
+                        eventDay.isEnabled,
                 Toast.LENGTH_SHORT
             ).show()
+            val userId = CalendarFragmentArgs.fromBundle(arguments!!).userId
+            Navigation.findNavController(calendarView)
+                .navigate(CalendarFragmentDirections.actionCalendarFragmentToCalendarDayView(userId, eventDay.calendar.timeInMillis))
         }
-
-
     }
-
 
     private fun getDisabledDays(): List<Calendar> {
         val firstDisabled = DateUtils.getCalendar()
@@ -88,14 +81,5 @@ class CalendarFragment : Fragment() {
         calendars.add(secondDisabled)
         calendars.add(thirdDisabled)
         return calendars
-    }
-
-    private fun getRandomCalendar(): Calendar {
-        val random = Random()
-
-        val calendar = Calendar.getInstance()
-        calendar.add(Calendar.MONTH, random.nextInt(99))
-
-        return calendar
     }
 }

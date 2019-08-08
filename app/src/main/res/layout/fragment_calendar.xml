@@ -8,6 +8,16 @@
               android:background="@color/background">
 
     <com.applandeo.materialcalendarview.CalendarView
+            app:headerColor="#3133b3"
+            app:headerLabelColor="@color/smallTextColour"
+            app:pagesColor="#3133b3"
+            app:abbreviationsBarColor="#3133b3"
+            app:abbreviationsLabelsColor="#a1aef6"
+            app:selectionColor="#1828a7"
+            app:selectionLabelColor="@color/smallTextColour"
+            app:daysLabelsColor="@color/smallTextColour"
+            app:anotherMonthsDaysLabelsColor="#a1aef6"
+            app:disabledDaysLabelsColor="#a1aef6"
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

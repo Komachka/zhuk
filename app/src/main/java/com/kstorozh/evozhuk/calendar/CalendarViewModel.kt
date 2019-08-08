@@ -1,48 +1,75 @@
 package com.kstorozh.evozhuk.calendar
 
-import android.graphics.Color
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.applandeo.materialcalendarview.EventDay
 import com.kstorozh.evozhuk.R
 import java.util.*
-import java.text.SimpleDateFormat
-import android.graphics.Color.parseColor
-import android.graphics.drawable.Drawable
-import com.kstorozh.evozhuk.utils.DrawableUtils
+import com.kstorozh.domainapi.GetBookingUseCase
+import com.kstorozh.domainapi.model.Booking
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
+class CalendarViewModelFactory(val startDate: Long, val endDate: Long) :
+    ViewModelProvider.Factory, KoinComponent {
+    val getBookingsUseCase: GetBookingUseCase by inject()
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
-class CalendarViewModel : ViewModel() {
-
-    fun getBookingDayInfo(): MutableLiveData<List<EventDay>>
-    {
-
-        val events = ArrayList<EventDay>()
-
-        val calendar = Calendar.getInstance()
-        events.add(EventDay(calendar, R.drawable.sample_three_icons))
-
-        val calendar1 = Calendar.getInstance()
-        calendar1.add(Calendar.DAY_OF_MONTH, 2)
-        events.add(EventDay(calendar1, R.drawable.sample_icon_2))
-
-        val calendar2 = Calendar.getInstance()
-        calendar2.add(Calendar.DAY_OF_MONTH, 5)
-        events.add(EventDay(calendar2, R.drawable.sample_icon_3))
-
-        val calendar3 = Calendar.getInstance()
-        calendar3.add(Calendar.DAY_OF_MONTH, 7)
-        events.add(EventDay(calendar3, R.drawable.sample_four_icons))
-
-        val calendar4 = Calendar.getInstance()
-        calendar4.add(Calendar.DAY_OF_MONTH, 13)
-        events.add(EventDay(calendar4, R.drawable.sample_three_icons))
-
-        val liveData = MutableLiveData<List<EventDay>>()
-        liveData.value = events
-        return liveData
-
+        return CalendarViewModel(getBookingsUseCase, startDate, endDate) as T
     }
+}
 
+    class CalendarViewModel(
+        private val getBookingsUseCase: GetBookingUseCase,
+        private val startDate: Long,
+        private val endDate: Long
+    ) : ViewModel() {
+
+        private val bookingsLiveData: LiveData<List<Booking>> by lazy {
+            val liveData = MutableLiveData<List<Booking>>()
+            getBookingsUseCase.loadBooking(startDate, endDate) { liveData.value = it }
+            return@lazy liveData
+        }
+
+        fun bookings(startDate: String, endDate: String): LiveData<List<Booking>> = bookingsLiveData
+
+        fun getBookingDaysInfo(): MutableLiveData<List<EventDay>> {
+
+            val events = ArrayList<EventDay>()
+
+            val calendar = Calendar.getInstance()
+            events.add(EventDay(calendar, R.drawable.sample_three_icons))
+
+            val calendar1 = Calendar.getInstance()
+            calendar1.add(Calendar.DAY_OF_MONTH, 2)
+            events.add(EventDay(calendar1, R.drawable.sample_icon_2))
+
+            val calendar2 = Calendar.getInstance()
+            calendar2.add(Calendar.DAY_OF_MONTH, 5)
+            events.add(EventDay(calendar2, R.drawable.sample_icon_3))
+
+            val calendar3 = Calendar.getInstance()
+            calendar3.add(Calendar.DAY_OF_MONTH, 7)
+            events.add(EventDay(calendar3, R.drawable.sample_four_icons))
+
+            val calendar4 = Calendar.getInstance()
+            calendar4.add(Calendar.DAY_OF_MONTH, 13)
+            events.add(EventDay(calendar4, R.drawable.sample_three_icons))
+
+            val liveData = MutableLiveData<List<EventDay>>()
+            liveData.value = events
+            return liveData
+        }
+
+        /*fun getInfoByDay(milisec: Long): LiveData<List<Booking>> {
+            return Transformations.switchMap(bookingsLiveData, Function<Booking, LiveData<Booking>> {
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = milisec
+                val bookingCalendarStart = Calendar.getInstance()
+                bookingCalendarStart.timeInMillis = it.startDate
+                val bookingCalendarEnd = Calendar.getInstance()
+                bookingCalendarEnd.timeInMillis = it.endDate
+
+                if (calendar.get(Calendar.DATE) == bookingCalendarStart)
+            })
+        }*/
 }
