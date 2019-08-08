@@ -1,5 +1,6 @@
 package com.kstorozh.evozhuk.calendar
 
+import android.graphics.Color
 import androidx.lifecycle.*
 import com.applandeo.materialcalendarview.EventDay
 import com.kstorozh.evozhuk.R
@@ -37,15 +38,15 @@ class CalendarViewModelFactory(val startDate: Long, val endDate: Long) :
             val events = ArrayList<EventDay>()
 
             val calendar = Calendar.getInstance()
-            events.add(EventDay(calendar, R.drawable.sample_three_icons))
+            events.add(EventDay(calendar, R.drawable.sample_two_icons))
 
             val calendar1 = Calendar.getInstance()
             calendar1.add(Calendar.DAY_OF_MONTH, 2)
-            events.add(EventDay(calendar1, R.drawable.sample_icon_2))
+            events.add(EventDay(calendar1, R.drawable.my_book_icon))
 
             val calendar2 = Calendar.getInstance()
             calendar2.add(Calendar.DAY_OF_MONTH, 5)
-            events.add(EventDay(calendar2, R.drawable.sample_icon_3))
+            events.add(EventDay(calendar2, R.drawable.other_book_icon))
 
             val calendar3 = Calendar.getInstance()
             calendar3.add(Calendar.DAY_OF_MONTH, 7)
@@ -53,7 +54,7 @@ class CalendarViewModelFactory(val startDate: Long, val endDate: Long) :
 
             val calendar4 = Calendar.getInstance()
             calendar4.add(Calendar.DAY_OF_MONTH, 13)
-            events.add(EventDay(calendar4, R.drawable.sample_three_icons))
+            events.add(EventDay(calendar4, R.drawable.sample_two_icons))
 
             val liveData = MutableLiveData<List<EventDay>>()
             liveData.value = events
