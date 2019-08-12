@@ -10,7 +10,7 @@ internal const val BOOKING_TABLE_NAME = "booking_table"
 /**
  * API constance
  */
-internal const val ACCESS_TOKEN = "X-ACCESS-TOKEN"
+internal const val ACCESS_TOKEN = "X-DEVICE-ID"
 internal const val INIT_DEVISE_URL = " /api/devices"
 internal const val UPDATE_DEVISE_URL = "/api/devices/:{id}"
 internal const val TAKE_DEVISE_URL = "/api/booking"
@@ -19,12 +19,13 @@ internal const val GET_USERS_URL = "/api/users"
 internal const val CREATE_USER_URL = "/api/users"
 internal const val REMIND_PIN_URL = "/api/users/{id}/pin/remind"
 internal const val LOGIN_URL = "/api/login"
-internal const val BASE_URL = "http://wh.evo.dev"
+// internal const val BASE_URL = "http://wh.evo.dev"
 internal const val GET_BOOKING_URL = "/api/booking?"
 internal const val START_DATE = "start"
 internal const val END_DATE = "end"
 
 // internal const val BASE_URL = "http://evozhuk.tk"
+internal const val BASE_URL = "http://78abb9a1.ngrok.io/"
 
 internal const val ERROR_STATUS_CODE = 422
 internal const val UNAUTHORIZED_STATUS_CODE = 401
@@ -43,3 +44,4 @@ internal const val RETURN_ERROR = "api problem with update device"
 internal const val GET_USERS_ERROR = "api problem with getting list of users"
 internal const val REMIND_PIN_ERROR = "api problem with reminding pin"
 internal const val BOOKING_CALENDAR_ERROR = "api problem with getting booking by date"
+internal const val BOOKING_DATA_EMPTY_ERROR = "Booking data is empty"
