@@ -14,8 +14,6 @@ import kotlinx.android.synthetic.main.fragment_calendar.view.*
 
 import java.util.*
 
-
-
 class CalendarFragment : Fragment(), HandleErrors {
 
     override fun onCreateView(
