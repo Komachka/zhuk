@@ -6,6 +6,7 @@ import com.kstorozh.domain.GetBookingUseCaseImpl
 import com.kstorozh.domain.GetUsersUseCasesImpl
 import com.kstorozh.domain.LoginUseCaseImpl
 import com.kstorozh.domain.ManageDeviceUseCasesImpl
+import com.kstorozh.domain.mapper.CalendarMapper
 import com.kstorozh.domain.mapper.DeviceInfoMapper
 import com.kstorozh.domain.mapper.ErrorMapper
 import com.kstorozh.domain.mapper.UserDataMapper
@@ -23,5 +24,5 @@ val useCaseModules = module(override = true) {
     factory<GetUsersUseCases> { GetUsersUseCasesImpl(get<UserRepository>(), UserDataMapper(), ErrorMapper()) }
     factory<LoginUseCase> { LoginUseCaseImpl(get(), UserDataMapper(), ErrorMapper()) }
     factory<ManageDeviceUseCases> { ManageDeviceUseCasesImpl(get(), DeviceInfoMapper(), ErrorMapper()) }
-    factory<GetBookingUseCase> { GetBookingUseCaseImpl() }
+    factory<GetBookingUseCase> { GetBookingUseCaseImpl(get(), ErrorMapper(), CalendarMapper()) }
 }
