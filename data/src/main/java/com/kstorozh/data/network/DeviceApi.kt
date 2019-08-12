@@ -4,8 +4,10 @@ import INIT_DEVISE_URL
 import RETURN_DEVISE_URL
 import TAKE_DEVISE_URL
 import UPDATE_DEVISE_URL
+import com.kstorozh.data.models.*
 import com.kstorozh.data.models.BaseResponse
 import com.kstorozh.data.models.BookingBody
+import com.kstorozh.data.models.BookingCreated
 import com.kstorozh.data.models.Device
 import com.kstorozh.data.models.InitDeviceResponse
 import com.kstorozh.data.models.ReturnDeviceBody
@@ -26,7 +28,7 @@ internal interface DeviceApi {
     @POST(TAKE_DEVISE_URL)
     suspend fun takeDevice(
         @Body bookingBody: BookingBody
-    ): Response<BaseResponse>
+    ): Response<BookingCreated>
 
     @PUT(RETURN_DEVISE_URL)
     suspend fun returnDevice(

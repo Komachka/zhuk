@@ -18,7 +18,7 @@ internal class DeviceDataMapper {
         deviceParam.storage)
 
     fun mapBookingDeviceInfo(bookingParam: BookingParam, deviceId: String) = BookingBody(
-        "1",
+        1,
         bookingParam.userId,
         deviceId.toInt(),
         bookingParam.startDate,

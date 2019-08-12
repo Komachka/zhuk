@@ -8,7 +8,8 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = BOOKING_TABLE_NAME)
 internal data class BookingBody(
-    @PrimaryKey var id: String,
+
+    @PrimaryKey var id: Int,
 
     @Expose
     @SerializedName("user_id")
@@ -30,3 +31,20 @@ internal data class BookingBody(
     val isActive: Boolean
 
 )
+
+internal class BookingCreated (
+
+    @Expose
+    val msg:String,
+
+    @Expose
+    val data: BookingId
+)
+
+internal class BookingId (
+
+    @SerializedName("booking_id")
+    @Expose
+    val bookingId: Int
+)
+
