@@ -1,8 +1,7 @@
 dependencies {
     implementation commonDependencies.kotlin
     implementation domainDependencies.coroutines
-    implementation dataDependencies.livedata
-    implementation domainDependencies.livedataKTX
+    implementation domainDependencies.jodaTime
     implementation commonDependencies.koin
     implementation commonDependencies.koinAX
     implementation project(':data-api')
