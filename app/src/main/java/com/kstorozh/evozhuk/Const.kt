@@ -12,7 +12,7 @@ const val DATE_FORMAT_DAY = "dd MMMM"
 const val DATE_FORMAT_BACK_DEVICE_SCREEN_TV = "HH:mm\ndd MMMM"
 const val TIME_ZONE = "Europe/Kiev"
 const val MEMORY_DECIMAL_FORMAT = "#.##"
-
+const val YEAR_MONTH_DAY_FORMAT = "yyyy-MM-dd"
 const val LOG_TAG: String = "MainActivity"
 const val NOTIFICATION_SERVICE_NAME = "Notification service name"
 

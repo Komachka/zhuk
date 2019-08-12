@@ -1,66 +1,66 @@
 package com.kstorozh.evozhuk.calendar
 
+import androidx.arch.core.util.Function
 import androidx.lifecycle.*
 import com.applandeo.materialcalendarview.EventDay
 import com.kstorozh.evozhuk.R
 import java.util.*
 import com.kstorozh.domainapi.GetBookingUseCase
 import com.kstorozh.domainapi.model.Booking
+import com.kstorozh.evozhuk.BaseViewModel
+import com.kstorozh.evozhuk.YEAR_MONTH_DAY_FORMAT
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.text.SimpleDateFormat
 
-class CalendarViewModelFactory(private val startDate: Long, private val endDate: Long) :
-    ViewModelProvider.Factory, KoinComponent {
+class CalendarViewModel : BaseViewModel(), KoinComponent {
+
     private val getBookingsUseCase: GetBookingUseCase by inject()
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+    private val applicationScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
+    private val bookingsLiveData = MutableLiveData<Map<String, List<Booking>>>()
+    private val durationLiveData = MutableLiveData<Long>()
 
-        return CalendarViewModel(getBookingsUseCase, startDate, endDate) as T
+        fun bookings(startDate: Long, endDate: Long): LiveData<Map<String, List<Booking>>> {
+            applicationScope.launch {
+                val result = getBookingsUseCase.loadBooking(startDate, endDate)
+                result.data?.let {
+                    bookingsLiveData.postValue(it.bookingMap)
+                    durationLiveData.postValue(it.duration)
+                }
+                result.domainError?.let {
+                    errors.postValue(it)
+                }
+            }
+            return bookingsLiveData
+        }
+
+        fun getBookingEvents(startDate: Long, endDate: Long, userId: Int): LiveData<List<EventDay>> {
+            return Transformations.switchMap(bookings(startDate, endDate),
+                Function<Map<String, List<Booking>>, LiveData<List<EventDay>>> {
+                val mutableLiveData = MutableLiveData<List<EventDay>>()
+                val events = mutableListOf<EventDay>()
+                it.forEach { (day, bookingList) ->
+                    val calendar = Calendar.getInstance()
+                    calendar.time = SimpleDateFormat(YEAR_MONTH_DAY_FORMAT).parse(day)
+                    events.add(EventDay(calendar, chooseImageIcon(bookingList, userId)))
+                }
+                mutableLiveData.value = events
+                return@Function mutableLiveData
+            })
+        }
+
+    private fun chooseImageIcon(bookingList: List<Booking>, userId: Int): Int {
+        var isOnlyMyBooking = false
+        var isOnlyAnotherPersonBooking = false
+        bookingList.forEach { booking ->
+            if (booking.userId == userId) isOnlyMyBooking = true
+            else isOnlyAnotherPersonBooking = true
+        }
+        return if (isOnlyMyBooking && isOnlyAnotherPersonBooking) R.drawable.sample_two_icons
+        else if (isOnlyMyBooking) R.drawable.my_book_icon
+        else R.drawable.other_book_icon
     }
-}
-
-    class CalendarViewModel(
-        private val getBookingsUseCase: GetBookingUseCase,
-        private val startDate: Long,
-        private val endDate: Long
-    ) : ViewModel() {
-
-        private val bookingsLiveData: LiveData<List<Booking>> by lazy {
-            val liveData = MutableLiveData<List<Booking>>()
-            getBookingsUseCase.loadBooking(startDate, endDate) { liveData.value = it }
-            return@lazy liveData
-        }
-
-        fun bookings(startDate: String, endDate: String): LiveData<List<Booking>> = bookingsLiveData
-
-        fun getBookingDaysInfo(): MutableLiveData<List<EventDay>> {
-
-            val events = ArrayList<EventDay>()
-
-            val calendar = Calendar.getInstance()
-            events.add(EventDay(calendar, R.drawable.sample_two_icons))
-
-            val calendar1 = Calendar.getInstance()
-            calendar1.add(Calendar.DAY_OF_MONTH, 2)
-            events.add(EventDay(calendar1, R.drawable.my_book_icon))
-
-            val calendar11 = Calendar.getInstance()
-            calendar11.add(Calendar.DAY_OF_MONTH, 30)
-            events.add(EventDay(calendar11, R.drawable.my_book_icon))
-
-            val calendar2 = Calendar.getInstance()
-            calendar2.add(Calendar.DAY_OF_MONTH, 5)
-            events.add(EventDay(calendar2, R.drawable.other_book_icon))
-
-            val calendar3 = Calendar.getInstance()
-            calendar3.add(Calendar.DAY_OF_MONTH, 7)
-            events.add(EventDay(calendar3, R.drawable.sample_two_icons))
-
-            val calendar4 = Calendar.getInstance()
-            calendar4.add(Calendar.DAY_OF_MONTH, 13)
-            events.add(EventDay(calendar4, R.drawable.sample_two_icons))
-
-            val liveData = MutableLiveData<List<EventDay>>()
-            liveData.value = events
-            return liveData
-        }
 }

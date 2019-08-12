@@ -10,6 +10,7 @@ internal const val BOOKING_TABLE_NAME = "booking_table"
 /**
  * API constance
  */
+// internal const val ACCESS_TOKEN = "X-ACCESS-TOKEN"
 internal const val ACCESS_TOKEN = "X-DEVICE-ID"
 internal const val INIT_DEVISE_URL = " /api/devices"
 internal const val UPDATE_DEVISE_URL = "/api/devices/:{id}"
@@ -24,8 +25,8 @@ internal const val GET_BOOKING_URL = "/api/booking?"
 internal const val START_DATE = "start"
 internal const val END_DATE = "end"
 
-// internal const val BASE_URL = "http://evozhuk.tk"
-internal const val BASE_URL = "http://78abb9a1.ngrok.io/"
+internal const val BASE_URL = "http://evozhuk.tk"
+// internal const val BASE_URL = "http://78abb9a1.ngrok.io/"
 
 internal const val ERROR_STATUS_CODE = 422
 internal const val UNAUTHORIZED_STATUS_CODE = 401
