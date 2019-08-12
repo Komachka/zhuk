@@ -23,11 +23,11 @@ class CalendarViewModel : BaseViewModel(), KoinComponent {
 
         fun bookings(startDate: Long, endDate: Long): LiveData<Map<String, Booking>> {
 
-            Log.d(LOG_TAG, "here")
             applicationScope.launch {
                 val result = getBookingsUseCase.loadBooking(startDate, endDate)
                 result.data?.let {
-                    bookingsLiveData.postValue(it.bookingMap)
+                    Log.d(LOG_TAG, it.toString())
+                    // bookingsLiveData.postValue(it.bookingMap)
                 }
                 result.domainError?.let {
                     errors.postValue(it)

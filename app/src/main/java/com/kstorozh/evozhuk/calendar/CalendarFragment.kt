@@ -16,6 +16,8 @@ import kotlinx.android.synthetic.main.fragment_calendar.view.*
 
 import java.util.*
 
+import java.text.SimpleDateFormat
+
 class CalendarFragment : Fragment(), HandleErrors {
 
     override fun onCreateView(
@@ -28,13 +30,15 @@ class CalendarFragment : Fragment(), HandleErrors {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
         val calendar1 = Calendar.getInstance()
-        calendar1.add(Calendar.DAY_OF_MONTH, 1)
+        calendar1.setTime(sdf.parse("05-08-2019"))
         val calendar2 = Calendar.getInstance()
-        calendar2.add(Calendar.DAY_OF_MONTH, 31)
+        calendar2.setTime(sdf.parse("16-08-2019"))
         /*val model = activity!!.run {
             ViewModelProviders.of(this)[CalendarViewModel::class.java]
         }*/
+
         val model = ViewModelProviders.of(this)[CalendarViewModel::class.java]
         handleErrors(model, view)
 
