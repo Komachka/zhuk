@@ -34,7 +34,7 @@ class CalendarMapper {
         return Booking(
             calendarDay.bookingId,
             calendarDay.userId, calendarDay.slackUsername,
-            start.millis, // TODO need to parse this date
+            start.millis,
             end.millis,
             calendarDay.duration
         )
