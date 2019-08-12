@@ -8,20 +8,28 @@ import com.kstorozh.dataimpl.model.out.CalendarDay
 internal class BookingDataMapper {
 
     fun mapBookingDataToCalendarData(bookingDataByDay: BookingDataByDay): CalendarBookingData {
-        val days = bookingDataByDay.data.dayData
+        val days = bookingDataByDay.dayData
         return CalendarBookingData(bookingDataByDay.slotDuration, mapToCalendarDay(days))
     }
 
-    private fun mapToCalendarDay(days: Map<String, Day>): Map<String, CalendarDay> {
-        return HashMap<String, CalendarDay>().apply {
+    private fun mapToCalendarDay(days: Map<String, List<Day>>): Map<String, List<CalendarDay>> {
+        return HashMap<String, List<CalendarDay>>().apply {
             days.forEach { (key, value) ->
-                this[key] = CalendarDay(
-                    value.id,
-                    value.userId,
-                    value.slackUsername,
-                    value.startDate,
-                    value.endDate,
-                    value.duration) }
+                val list = mutableListOf<CalendarDay>()
+                value.forEach { day ->
+                    list.add(
+                        CalendarDay(
+                            day.id,
+                            day.userId,
+                            day.slackUsername,
+                            day.startDate,
+                            day.endDate,
+                            day.duration
+                        )
+                    )
+                }
+                this[key] = list
+            }
         }
     }
 }

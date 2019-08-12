@@ -1,10 +1,13 @@
 package com.kstorozh.data.repository
 
+import BOOKING_DATA_EMPTY_ERROR
 import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.data.network.RemoteData
 import com.kstorozh.data.utils.createError
 import com.kstorozh.dataimpl.CalendarRepository
+import com.kstorozh.dataimpl.DataError
+import com.kstorozh.dataimpl.ErrorStatus
 import com.kstorozh.dataimpl.model.out.CalendarBookingData
 import com.kstorozh.dataimpl.model.out.RepoResult
 import org.koin.core.KoinComponent
@@ -18,14 +21,18 @@ internal class CalendarRepositoryImpl(
         return when (val result = remoteData.getBookingByDate(startDate, endDate)) {
             is ApiResult.Success -> {
                 repoResult.apply {
-                    data = bookingDataMapper.mapBookingDataToCalendarData(result.data)
+                    try {
+                        data = bookingDataMapper.mapBookingDataToCalendarData(result.data) } catch (e: Throwable) {
+                        data = null
+                        error = DataError(ErrorStatus.UNEXPECTED_ERROR, BOOKING_DATA_EMPTY_ERROR, e)
+                    }
                 }
             }
             is ApiResult.Error<*> -> {
                 val koin = this as KoinComponent
                 repoResult.apply {
                     data = null
-                    error = createError(Endpoints.INIT_DEVICE, result, koin)
+                    error = createError(Endpoints.GET_BOOKING, result, koin)
                 }
             }
         }
