@@ -17,6 +17,7 @@ ext {
     recycler = "28.0.0"
     device_names = "1.1.9"
     calendar = "1.6.0"
+    jodaTime = "2.10.2"
 
     commonDependencies = [
             kotlin : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin",
@@ -33,6 +34,7 @@ ext {
             crashlytics: "com.crashlytics.sdk.android:crashlytics:$crashlytics",
             livedata : "androidx.lifecycle:lifecycle-extensions:$lifecycle_version",
             lifecycleKTX : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version",
+            livedataKTX : "androidx.lifecycle:lifecycle-livedata-ktx:$livedataKTX",
             material: "com.google.android.material:material:$material_version",
             livecycleExtansion: "android.arch.lifecycle:extensions:$lifecycle_version",
             viewModel: "android.arch.lifecycle:viewmodel:$lifecycle_version",
@@ -45,7 +47,7 @@ ext {
 
     domainDependencies = [
             coroutines : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines",
-            livedataKTX : "androidx.lifecycle:lifecycle-livedata-ktx:$livedataKTX"
+            jodaTime: "net.danlew:android.joda:$jodaTime"
     ]
 
     dataDependencies = [

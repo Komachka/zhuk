@@ -19,5 +19,5 @@ internal class TokenRepository(private val tokenDao: TokenDao) {
                     token = it.token
                 }
                 return tokenDb?.token
-        }
+    }
 }
