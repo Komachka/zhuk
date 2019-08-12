@@ -1,36 +1,41 @@
 package com.kstorozh.evozhuk.calendar
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.applandeo.materialcalendarview.EventDay
 import com.kstorozh.evozhuk.R
 import java.util.*
 import com.kstorozh.domainapi.GetBookingUseCase
 import com.kstorozh.domainapi.model.Booking
+import com.kstorozh.evozhuk.BaseViewModel
+import com.kstorozh.evozhuk.LOG_TAG
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class CalendarViewModelFactory(private val startDate: Long, private val endDate: Long) :
-    ViewModelProvider.Factory, KoinComponent {
+class CalendarViewModel : BaseViewModel(), KoinComponent {
+
     private val getBookingsUseCase: GetBookingUseCase by inject()
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+    private val applicationScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
+    private val bookingsLiveData = MutableLiveData<Map<String, Booking>>()
 
-        return CalendarViewModel(getBookingsUseCase, startDate, endDate) as T
-    }
-}
+        fun bookings(startDate: Long, endDate: Long): LiveData<Map<String, Booking>> {
 
-    class CalendarViewModel(
-        private val getBookingsUseCase: GetBookingUseCase,
-        private val startDate: Long,
-        private val endDate: Long
-    ) : ViewModel() {
+            Log.d(LOG_TAG, "here")
+            applicationScope.launch {
+                val result = getBookingsUseCase.loadBooking(startDate, endDate)
+                result.data?.let {
+                    bookingsLiveData.postValue(it.bookingMap)
+                }
+                result.domainError?.let {
+                    errors.postValue(it)
+                }
+            }
 
-        private val bookingsLiveData: LiveData<List<Booking>> by lazy {
-            val liveData = MutableLiveData<List<Booking>>()
-            getBookingsUseCase.loadBooking(startDate, endDate) { liveData.value = it }
-            return@lazy liveData
+            return bookingsLiveData
         }
-
-        fun bookings(startDate: String, endDate: String): LiveData<List<Booking>> = bookingsLiveData
 
         fun getBookingDaysInfo(): MutableLiveData<List<EventDay>> {
 
