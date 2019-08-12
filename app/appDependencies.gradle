@@ -13,7 +13,7 @@ dependencies {
     implementation commonDependencies.files
     implementation commonDependencies.koin
     implementation commonDependencies.koinAX
-    implementation domainDependencies.livedataKTX
+    implementation appDependencies.livedataKTX
     implementation domainDependencies.jodaTime
     implementation project(':domain-api')
     implementation project(':di')
