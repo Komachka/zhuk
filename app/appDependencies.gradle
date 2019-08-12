@@ -14,6 +14,7 @@ dependencies {
     implementation commonDependencies.koin
     implementation commonDependencies.koinAX
     implementation domainDependencies.livedataKTX
+    implementation domainDependencies.jodaTime
     implementation project(':domain-api')
     implementation project(':di')
 }
