@@ -1,6 +1,6 @@
 package com.kstorozh.domainapi.model
 
-class Booking(
+data class Booking(
     val id: Int,
     val userId: Int,
     val slackUserName: String,
