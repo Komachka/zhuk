@@ -28,6 +28,7 @@ import com.kstorozh.data.network.RemoteData
 import com.kstorozh.data.network.RemoteDataImpl
 import com.kstorozh.data.network.TokenRepository
 import com.kstorozh.data.network.UserApi
+import com.kstorozh.dataimpl.CalendarRepository
 
 // The module is marked as override, which means that its content will override any other definition within the application.
 
@@ -56,11 +57,10 @@ val networkModule = module(override = true) {
     factory<RemoteData> { RemoteDataImpl(get(), get(), get()) }
 }
 
-private fun provideCalendarApi(retrofit: Retrofit) = retrofit.create(CalendarApi::class.java)
-
 val repositoryModule = module(override = true) {
     single<DeviseRepository> { DeviceRepositoryImpl(get(), get(), DeviceDataMapper(), get()) }
     single<UserRepository> { UserRepositoryImpl(get(), UserDataMapper()) }
+    single<CalendarRepository> { CalendarRepositoryImpl(get(), BookingDataMapper()) }
 }
 
 private fun provideGson(): Gson {
@@ -85,3 +85,4 @@ private fun provideOkHttpClient(authInterceptor: AuthInterceptor, loggingInterce
 }
 private fun provideDeviceApi(retrofit: Retrofit): DeviceApi = retrofit.create(DeviceApi::class.java)
 private fun provideUserApi(retrofit: Retrofit): UserApi = retrofit.create(UserApi::class.java)
+private fun provideCalendarApi(retrofit: Retrofit) = retrofit.create(CalendarApi::class.java)

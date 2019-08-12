@@ -1,7 +1,8 @@
 package com.kstorozh.domainapi
 
-import com.kstorozh.domainapi.model.Booking
+import com.kstorozh.domainapi.model.BookingInfo
+import com.kstorozh.domainapi.model.DomainResult
 
 interface GetBookingUseCase {
-    fun loadBooking(startDate: Long, endDate: Long, onLoad: (List<Booking>) -> Unit)
+    suspend fun loadBooking(startDate: Long, endDate: Long): DomainResult<BookingInfo>
 }

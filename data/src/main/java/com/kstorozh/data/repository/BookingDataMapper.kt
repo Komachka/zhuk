@@ -17,6 +17,7 @@ internal class BookingDataMapper {
             days.forEach { (key, value) ->
                 this[key] = CalendarDay(
                     value.id,
+                    value.userId,
                     value.slackUsername,
                     value.startDate,
                     value.endDate,
