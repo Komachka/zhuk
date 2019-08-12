@@ -7,9 +7,10 @@ import com.kstorozh.data.models.BookingDataByDay
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 internal interface CalendarApi {
     @GET(GET_BOOKING_URL)
-    suspend fun getBookingByDate(@Path(START_DATE)start_date: String, @Path(END_DATE)end_date: String):
+    suspend fun getBookingByDate(@Query(START_DATE)start_date: String, @Query(END_DATE)end_date: String):
             Response<BookingDataByDay>
 }
