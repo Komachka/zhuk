@@ -20,9 +20,9 @@ internal const val CREATE_USER_URL = "/api/users"
 internal const val REMIND_PIN_URL = "/api/users/{id}/pin/remind"
 internal const val LOGIN_URL = "/api/login"
 internal const val BASE_URL = "http://wh.evo.dev"
-internal const val GET_BOOKING_URL = "/api/booking?start={start_date}&end={end_date}"
-internal const val START_DATE = "start_date"
-internal const val END_DATE = "end_date"
+internal const val GET_BOOKING_URL = "/api/booking?"
+internal const val START_DATE = "start"
+internal const val END_DATE = "end"
 
 // internal const val BASE_URL = "http://evozhuk.tk"
 
