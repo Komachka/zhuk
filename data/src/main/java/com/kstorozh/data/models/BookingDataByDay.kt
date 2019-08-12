@@ -10,13 +10,13 @@ internal data class BookingDataByDay(
     val slotDuration: Long,
     @SerializedName("data")
     @Expose
-    val data: DayData
+    val dayData: Map<String, List<Day>>
 )
 
 internal data class DayData(
 
     @Expose
-    var dayData: Map<String, Day>
+    var dayData: Map<String, List<Day>>
 )
 
 internal data class Day(

@@ -6,7 +6,6 @@ import NOT_FOUND_STATUS_CODE
 import UNAUTHORIZED_STATUS_CODE
 import android.util.Log
 import com.kstorozh.data.models.ApiErrorBodyWithError
-import com.kstorozh.data.models.ApiErrorBodyWithMsg
 
 import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
@@ -40,6 +39,8 @@ internal fun Response<*>.getErrorStatus(endpoint: Endpoints): ErrorStatus {
 
         Endpoints.REMIND_PIN ->
             code().getErrorStatusByCode(ErrorStatus.CAN_NOT_REMIND_PIN, notFound = ErrorStatus.CAN_NOT_REMIND_PIN)
+        Endpoints.GET_BOOKING ->
+            code().getErrorStatusByCode(ErrorStatus.CAN_NOT_GET_BOOKING, notFound = ErrorStatus.CAN_NOT_GET_BOOKING)
     }
 }
 
@@ -54,10 +55,6 @@ internal fun createError(endpoints: Endpoints, result: ApiResult.Error<*>, koinC
         try {
             val error = tryConvertError(ApiErrorBodyWithError::class.java, it, koinComponent)
             message = error?.errors
-            if (message == null) {
-                val error = tryConvertError(ApiErrorBodyWithMsg::class.java, it, koinComponent)
-                message = error?.errors
-            }
         } catch (e: Exception) {
             Log.d(LOG_TAG, "Can not convert error message ${it.string()} because ${e.message}")
             message = null

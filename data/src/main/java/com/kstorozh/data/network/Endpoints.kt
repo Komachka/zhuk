@@ -7,5 +7,6 @@ enum class Endpoints {
     RETURN_DEVICE,
     LOGIN,
     GET_USERS,
-    REMIND_PIN
+    REMIND_PIN,
+    GET_BOOKING
 }
