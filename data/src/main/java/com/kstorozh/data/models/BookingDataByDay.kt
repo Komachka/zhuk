@@ -7,7 +7,7 @@ internal data class BookingDataByDay(
 
     @SerializedName("slot_duration")
     @Expose
-    val slotDuration: Int,
+    val slotDuration: Long,
     @SerializedName("data")
     @Expose
     val data: DayData
@@ -37,5 +37,5 @@ internal data class Day(
     @Expose
     var endDate: String,
     @Expose
-    var duration: Int
+    var duration: Long
 )
