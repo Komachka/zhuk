@@ -53,7 +53,6 @@ internal fun createError(endpoints: Endpoints, result: ApiResult.Error<*>, koinC
     var message: String? = null
     result.errorResponse?.errorBody()?.let {
         try {
-            Log.d(LOG_TAG, "error body ${it.string()}")
             val error = tryConvertError(ApiErrorBodyWithError::class.java, it, koinComponent)
             message = error?.errors
         } catch (e: Exception) {
