@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.kstorozh.evozhuk.HandleErrors
@@ -13,10 +14,11 @@ import com.kstorozh.evozhuk.LOG_TAG
 import com.kstorozh.evozhuk.R
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_calendar.view.*
+import java.text.SimpleDateFormat
 
 import java.util.*
 
-import java.text.SimpleDateFormat
+
 
 class CalendarFragment : Fragment(), HandleErrors {
 
