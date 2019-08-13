@@ -1,5 +1,6 @@
 package com.kstorozh.evozhuk.calendar
 
+import android.util.Log
 import androidx.arch.core.util.Function
 import androidx.lifecycle.*
 import com.applandeo.materialcalendarview.EventDay
@@ -16,6 +17,9 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.text.SimpleDateFormat
 import org.joda.time.format.DateTimeFormat
+
+
+
 
 class CalendarViewModel : BaseViewModel(), KoinComponent {
 
@@ -82,37 +86,78 @@ class CalendarViewModel : BaseViewModel(), KoinComponent {
     }
 
     private fun parseBookingToTimeSlot(list: List<Booking>, userId: Int): List<TimeSlot> {
-     val mapOfTimeSlot = mutableMapOf<Int, TimeSlot>()
-        for (i in 8..20) // TODO move to const first and last hour
+     val mapOfTimeSlot = mutableMapOf<String, TimeSlot>()
+
+        val slotDuration = durationLiveData.value
+
+
+        val sdt = DateTime(2019, 8, 13, 8,0,0)
+        val edt = DateTime(2019, 8, 13, 20,0,0)
+
+        val firstHour = sdt.millis /1000
+        val lastHour = edt.millis / 1000
+        val step = slotDuration!!
+        //val step = 900
+        var i = firstHour
+        while (i <= lastHour)
+        {
+            val hour = DateTime(i * 1000).hourOfDay
+            val minute = DateTime(i * 1000).minuteOfHour
+            Log.d(LOG_TAG, "hour $hour minute ${minute}")
+            val startDate = if (hour < 10) "0${hour}:${minute}" else "$hour:${minute}"
+            val endDate = if ((hour + 1) < 10) "0${hour + 1}:${minute}" else "${hour + 1}:${minute}"
+            mapOfTimeSlot[startDate] = TimeSlot(
+                isMyBooking = false,
+                isOtherBooking = false,
+                isContinue = false,
+                timeLable = startDate,
+                slotStartDate = startDate,
+                slotEndDate = endDate
+            )
+            i+=step
+        }
+
+
+    /*    for (i in 8..20) // TODO move to const first and last hour
      {
          val startDate = if (i < 10) "0$i:00" else "$i:00"
          val endDate = if (i + 1 < 10) "0${i + 1}:00" else "${i + 1}:00"
          mapOfTimeSlot[i] = TimeSlot(
              isMyBooking = false,
              isOtherBooking = false,
+             isContinue = false,
+             timeLable = startDate,
              slotStartDate = startDate,
              slotEndDate = endDate
          )
-     }
-     list.forEach {
+     }*/
+     /*list.forEach {
          val dateTimeStart = DateTime(it.startDate)
+         val dateTimeEnd = DateTime(it.endDate)
          if (mapOfTimeSlot.containsKey(dateTimeStart.hourOfDay)) {
              val item = mapOfTimeSlot[dateTimeStart.hourOfDay]
              item!!.booking = it
+             item.isContinue = false
+             item.slotEndDate = dateTimeEnd.hourOfDay().asText + ":" + dateTimeEnd.minuteOfHour().asText
+             item.slotStartDate = dateTimeStart.hourOfDay().asText + ":" + dateTimeStart.minuteOfHour().asText
              if (item.booking!!.userId == userId)
                  item.isMyBooking = true
              else
                  item.isOtherBooking = true
          }
-         if (it.duration > SEC_IN_HOUR) {
-             var time = it.duration - SEC_IN_HOUR
+         Log.d(LOG_TAG, "duration ${it.duration} sec in hour $SEC_IN_HOUR")
+         val duration = if (it.duration <= SEC_IN_HOUR) it.duration + (SEC_IN_HOUR - it.duration) else it.duration
+         var time = duration
              while (time / SEC_IN_HOUR > 0) {
+                 Log.d(LOG_TAG, "time ${time} time / SEC_IN_HOUR ${time / SEC_IN_HOUR}")
                  val startDateTmp = dateTimeStart.millis + ((time / SEC_IN_HOUR) * SEC_IN_HOUR * 1000)
                  val dateTimeStartTmp = DateTime(startDateTmp)
-                 if (mapOfTimeSlot.containsKey(dateTimeStartTmp.hourOfDay)) // if there are two slots with the same start hour time the last one will be main
+                 Log.d(LOG_TAG, "dateTimeStartTmp.hourOfDay ${dateTimeStartTmp.hourOfDay}")
+                 if (mapOfTimeSlot.containsKey(dateTimeStartTmp.hourOfDay))
                  {
                      val item = mapOfTimeSlot[dateTimeStartTmp.hourOfDay]
                      item!!.booking = it
+                     item.isContinue = true
                      if (item.booking!!.userId == userId)
                          item.isMyBooking = true
                      else
@@ -120,9 +165,10 @@ class CalendarViewModel : BaseViewModel(), KoinComponent {
                  }
                  time -= SEC_IN_HOUR
              }
-         }
-     }
 
+     }*/
+
+        Log.d(LOG_TAG, "---------------------")
         return mapOfTimeSlot.values.toList()
     }
 }

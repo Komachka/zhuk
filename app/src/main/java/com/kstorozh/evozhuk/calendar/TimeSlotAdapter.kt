@@ -6,37 +6,38 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kstorozh.evozhuk.R
 import kotlinx.android.synthetic.main.empty_time_slot.view.timeTv
-import kotlinx.android.synthetic.main.time_slot_item.view.*
+import kotlinx.android.synthetic.main.busy_time_slot_with_login_item.view.*
 
 class TimeSlotAdapter(val timeSlot: List<TimeSlot>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val EMPTY_VIEW_TYPE = 0
-    private val MY_BOOKING_VIEW_TYPE = 1
-    private val OTHER_BOOKING_VIEW_TYPE = 2
+    private val BOOKING_VIEW_TYPE = 1
+    private val CONTINUE_BOOKING_VIEW_TYPE = 2
 
     class EmptySlotViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
         fun setMyBookingView(timeSlot: TimeSlot) {
-            view.timeTv.text = timeSlot.slotStartDate
+            view.timeTv.text = timeSlot.timeLable
         }
     }
 
-    class MySlotViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    class BusySlotWithLoginViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
         fun setMyBookingView(timeSlot: TimeSlot) {
-            view.timeTv.text = timeSlot.slotStartDate
+            if (timeSlot.isOtherBooking)
+                view.userIndex.setBackgroundResource(R.color.other_booking_colour)
+            view.timeTv.text = timeSlot.timeLable
             view.slackNameTv.text = timeSlot.booking!!.slackUserName
             view.timePeriodTv.text = "${timeSlot.slotStartDate}-${timeSlot.slotEndDate}"
         }
     }
 
-    class AnotherPersonSlotViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    class BusySlotNoLoginViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
         fun setMyBookingView(timeSlot: TimeSlot) {
-            view.userIndex.setBackgroundResource(R.color.other_booking_colour)
-            view.timeTv.text = timeSlot.slotStartDate
-            view.slackNameTv.text = timeSlot.booking!!.slackUserName
-            view.timePeriodTv.text = "${timeSlot.slotStartDate}-${timeSlot.slotEndDate}"
+            view.timeTv.text = timeSlot.timeLable
+            if (timeSlot.isOtherBooking)
+                view.userIndex.setBackgroundResource(R.color.other_booking_colour)
         }
     }
 
@@ -48,15 +49,15 @@ class TimeSlotAdapter(val timeSlot: List<TimeSlot>) : RecyclerView.Adapter<Recyc
                 view = LayoutInflater.from(parent.context).inflate(R.layout.empty_time_slot, parent, false)
                 EmptySlotViewHolder(view)
             }
-            MY_BOOKING_VIEW_TYPE ->
+            BOOKING_VIEW_TYPE ->
             {
-                view = LayoutInflater.from(parent.context).inflate(R.layout.time_slot_item, parent, false)
-                MySlotViewHolder(view)
+                view = LayoutInflater.from(parent.context).inflate(R.layout.busy_time_slot_with_login_item, parent, false)
+                BusySlotWithLoginViewHolder(view)
             }
             else ->
             {
-                view = LayoutInflater.from(parent.context).inflate(R.layout.time_slot_item, parent, false)
-                AnotherPersonSlotViewHolder(view)
+                view = LayoutInflater.from(parent.context).inflate(R.layout.busy_time_slot_no_login_item, parent, false)
+                BusySlotNoLoginViewHolder(view)
             }
         }
     }
@@ -67,16 +68,16 @@ class TimeSlotAdapter(val timeSlot: List<TimeSlot>) : RecyclerView.Adapter<Recyc
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         when {
-            getItemViewType(position) == MY_BOOKING_VIEW_TYPE -> (viewHolder as MySlotViewHolder).setMyBookingView(timeSlot[position])
+            getItemViewType(position) == BOOKING_VIEW_TYPE -> (viewHolder as BusySlotWithLoginViewHolder).setMyBookingView(timeSlot[position])
             getItemViewType(position) == EMPTY_VIEW_TYPE -> (viewHolder as EmptySlotViewHolder).setMyBookingView(timeSlot[position])
-            else -> (viewHolder as AnotherPersonSlotViewHolder).setMyBookingView(timeSlot[position])
+            else -> (viewHolder as BusySlotNoLoginViewHolder).setMyBookingView(timeSlot[position])
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when {
-            timeSlot[position].isMyBooking -> MY_BOOKING_VIEW_TYPE
-            timeSlot[position].isOtherBooking -> OTHER_BOOKING_VIEW_TYPE
+            (timeSlot[position].isMyBooking || timeSlot[position].isOtherBooking) && !timeSlot[position].isContinue -> BOOKING_VIEW_TYPE
+            timeSlot[position].isContinue -> CONTINUE_BOOKING_VIEW_TYPE
             else -> EMPTY_VIEW_TYPE
         }
     }
