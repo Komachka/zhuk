@@ -1,5 +1,7 @@
 package com.kstorozh.data.repository
 
+import LOG_TAG
+import android.util.Log
 import com.kstorozh.data.database.LocalDataStorage
 import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
@@ -84,6 +86,8 @@ internal class DeviceRepositoryImpl(
                 device.id
             )) {
                 is ApiResult.Success -> {
+                    bookingBody.id = result.data.data.bookingId
+                    Log.d(LOG_TAG, "Booking id " + bookingBody.id.toString())
                     localData.saveBooking(bookingBody)
                     repoResult.data = true
                     repoResult
@@ -101,10 +105,11 @@ internal class DeviceRepositoryImpl(
 
     override suspend fun returnDevice(bookingParam: BookingParam): RepoResult<Boolean> {
         val device = localData.getDeviceInfo()
+        val booking = localData.getBookingByDeviceId(device!!.id)
         val repoResult: RepoResult<Boolean> = RepoResult()
         device?.let {
             return when (val result =
-                remoteData.returnDevice(mapper.mapBookingParamForReturn(bookingParam, device.id))) {
+                remoteData.returnDevice(mapper.mapBookingParamForReturn(bookingParam, device.id), booking!!.id)) {
                 is ApiResult.Success -> {
                     localData.deleteBookingInfo()
                     repoResult.data = true
@@ -117,7 +122,5 @@ internal class DeviceRepositoryImpl(
                 }
             }
         }
-        repoResult.data = false
-        return repoResult
     }
 }

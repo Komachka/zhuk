@@ -56,15 +56,15 @@ internal class RemoteDataImpl(
         }
     }
 
-    override suspend fun takeDevise(bookingBody: BookingBody, deviceId: String): ApiResult<BaseResponse> {
+    override suspend fun takeDevise(bookingBody: BookingBody, deviceId: String): ApiResult<BookingCreated> {
         return getApiResult(BOOKING_ERROR) {
             deviceApi.takeDevice(bookingBody = bookingBody)
         }
     }
 
-    override suspend fun returnDevice(returnDeviceBody: ReturnDeviceBody): ApiResult<BaseResponse> {
+    override suspend fun returnDevice(returnDeviceBody: ReturnDeviceBody, bookingId: Int): ApiResult<BaseResponse> {
         return getApiResult(RETURN_ERROR) {
-            deviceApi.returnDevice(returnDeviceBody)
+            deviceApi.returnDevice(returnDeviceBody, bookingId)
         }
     }
 
