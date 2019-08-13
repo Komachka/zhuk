@@ -26,6 +26,7 @@ const val INFO_STORAGE = "STORAGE"
 
 const val TIME_PICKER_INTERVAL: Int = 15
 const val MINUETS_IN_HOUR = 60
+const val SEC_IN_HOUR = 3600
 const val MILISEC_IN_HOUR = 3600000L
 const val HOUR_END_OF_WORK_DAY = 19
 const val ONE_SECOND = 1000L

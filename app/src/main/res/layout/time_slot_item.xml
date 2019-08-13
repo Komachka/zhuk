@@ -3,7 +3,7 @@
                                                    xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
                                                    android:orientation="vertical"
                                                    android:layout_width="match_parent"
-                                                   android:layout_height="match_parent">
+                                                   android:layout_height="wrap_content">
 
     <TextView
             android:layout_width="wrap_content"
@@ -16,7 +16,7 @@
             tools:text="11:00"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp" android:id="@+id/timeTv"
-            app:layout_constraintBottom_toBottomOf="@+id/view3"/>
+            app:layout_constraintTop_toTopOf="@+id/constraintLayout"/>
 
     <View android:layout_width="0dp"
 
@@ -37,9 +37,9 @@
             android:id="@+id/constraintLayout">
 
         <View android:layout_width="6dp" android:layout_height="match_parent"
-              android:background="#00e9cb" app:layout_constraintTop_toTopOf="parent"
+              android:background="@color/my_booking_colour" app:layout_constraintTop_toTopOf="parent"
               app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintVertical_bias="0.0" android:id="@+id/view2"/>
+              app:layout_constraintVertical_bias="0.0" android:id="@+id/userIndex"/>
 
         <TextView
                 android:layout_width="wrap_content"

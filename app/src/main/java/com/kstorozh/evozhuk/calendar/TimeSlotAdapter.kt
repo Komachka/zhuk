@@ -8,7 +8,7 @@ import com.kstorozh.evozhuk.R
 import kotlinx.android.synthetic.main.empty_time_slot.view.timeTv
 import kotlinx.android.synthetic.main.time_slot_item.view.*
 
-class TimeSlotAdapter(val booking: List<Booking>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TimeSlotAdapter(val timeSlot: List<TimeSlot>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val EMPTY_VIEW_TYPE = 0
     private val MY_BOOKING_VIEW_TYPE = 1
@@ -16,26 +16,27 @@ class TimeSlotAdapter(val booking: List<Booking>) : RecyclerView.Adapter<Recycle
 
     class EmptySlotViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
-        fun setMyBookingView(booking: Booking) {
-            view.timeTv.text = booking.calendar.time.toString()
+        fun setMyBookingView(timeSlot: TimeSlot) {
+            view.timeTv.text = timeSlot.slotStartDate
         }
     }
 
     class MySlotViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
-        fun setMyBookingView(booking: Booking) {
-            view.timeTv.text = booking.calendar.time.toString()
-            view.slackNameTv.text = booking.slackName
-            view.timePeriodTv.text = "${booking.startDate}-${booking.endDate}"
+        fun setMyBookingView(timeSlot: TimeSlot) {
+            view.timeTv.text = timeSlot.slotStartDate
+            view.slackNameTv.text = timeSlot.booking!!.slackUserName
+            view.timePeriodTv.text = "${timeSlot.slotStartDate}-${timeSlot.slotEndDate}"
         }
     }
 
     class AnotherPersonSlotViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
-        fun setMyBookingView(booking: Booking) {
-            view.timeTv.text = booking.calendar.time.toString()
-            view.slackNameTv.text = booking.slackName
-            view.timePeriodTv.text = "${booking.startDate}-${booking.endDate}"
+        fun setMyBookingView(timeSlot: TimeSlot) {
+            view.userIndex.setBackgroundResource(R.color.other_booking_colour)
+            view.timeTv.text = timeSlot.slotStartDate
+            view.slackNameTv.text = timeSlot.booking!!.slackUserName
+            view.timePeriodTv.text = "${timeSlot.slotStartDate}-${timeSlot.slotEndDate}"
         }
     }
 
@@ -61,21 +62,21 @@ class TimeSlotAdapter(val booking: List<Booking>) : RecyclerView.Adapter<Recycle
     }
 
     override fun getItemCount(): Int {
-        return booking.size
+        return timeSlot.size
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         when {
-            getItemViewType(position) == MY_BOOKING_VIEW_TYPE -> (viewHolder as MySlotViewHolder).setMyBookingView(booking[position])
-            getItemViewType(position) == EMPTY_VIEW_TYPE -> (viewHolder as EmptySlotViewHolder).setMyBookingView(booking[position])
-            else -> (viewHolder as AnotherPersonSlotViewHolder).setMyBookingView(booking[position])
+            getItemViewType(position) == MY_BOOKING_VIEW_TYPE -> (viewHolder as MySlotViewHolder).setMyBookingView(timeSlot[position])
+            getItemViewType(position) == EMPTY_VIEW_TYPE -> (viewHolder as EmptySlotViewHolder).setMyBookingView(timeSlot[position])
+            else -> (viewHolder as AnotherPersonSlotViewHolder).setMyBookingView(timeSlot[position])
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when {
-            booking[position].isMyBooking -> MY_BOOKING_VIEW_TYPE
-            booking[position].isOtherBooking -> OTHER_BOOKING_VIEW_TYPE
+            timeSlot[position].isMyBooking -> MY_BOOKING_VIEW_TYPE
+            timeSlot[position].isOtherBooking -> OTHER_BOOKING_VIEW_TYPE
             else -> EMPTY_VIEW_TYPE
         }
     }

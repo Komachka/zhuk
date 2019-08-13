@@ -21,5 +21,8 @@
     <color name="backgroundButColour">#ff8087</color>
     <color name="round_but_color">#ff8087</color>
 
+    <color name="my_booking_colour">#00e9cb</color>
+    <color name="other_booking_colour">#ff8087</color>
+
 
 </resources>
