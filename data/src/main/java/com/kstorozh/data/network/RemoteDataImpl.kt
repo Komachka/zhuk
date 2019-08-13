@@ -62,9 +62,9 @@ internal class RemoteDataImpl(
         }
     }
 
-    override suspend fun returnDevice(returnDeviceBody: ReturnDeviceBody): ApiResult<BaseResponse> {
+    override suspend fun returnDevice(returnDeviceBody: ReturnDeviceBody, bookingId: Int): ApiResult<BaseResponse> {
         return getApiResult(RETURN_ERROR) {
-            deviceApi.returnDevice(returnDeviceBody)
+            deviceApi.returnDevice(returnDeviceBody, bookingId)
         }
     }
 

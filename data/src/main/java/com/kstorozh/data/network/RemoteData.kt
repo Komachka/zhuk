@@ -19,7 +19,7 @@ internal interface RemoteData {
     suspend fun takeDevise(bookingBody: BookingBody, deviceId: String): ApiResult<BookingCreated>
 
     @WorkerThread
-    suspend fun returnDevice(returnDeviceBody: ReturnDeviceBody): ApiResult<BaseResponse>
+    suspend fun returnDevice(returnDeviceBody: ReturnDeviceBody, bookingId: Int): ApiResult<BaseResponse>
 
     @WorkerThread
     suspend fun getUsers(): ApiResult<UsersData>

@@ -32,19 +32,18 @@ internal data class BookingBody(
 
 )
 
-internal class BookingCreated (
+internal class BookingCreated(
 
     @Expose
-    val msg:String,
+    val msg: String,
 
     @Expose
     val data: BookingId
 )
 
-internal class BookingId (
+internal class BookingId(
 
     @SerializedName("booking_id")
     @Expose
     val bookingId: Int
 )
-

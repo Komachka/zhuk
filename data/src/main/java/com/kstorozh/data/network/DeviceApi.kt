@@ -32,6 +32,7 @@ internal interface DeviceApi {
 
     @PUT(RETURN_DEVISE_URL)
     suspend fun returnDevice(
-        @Body status: ReturnDeviceBody
+        @Body status: ReturnDeviceBody,
+        @Path("id") bookingId: Int
     ): Response<BaseResponse>
 }
