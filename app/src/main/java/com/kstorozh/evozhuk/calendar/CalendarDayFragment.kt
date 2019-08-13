@@ -23,7 +23,6 @@ class CalendarDayFragment : Fragment() {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,14 +44,12 @@ class CalendarDayFragment : Fragment() {
         val model = activity!!.run {
             ViewModelProviders.of(this)[CalendarViewModel::class.java]
         }
-        observe(model.getBookingSlotsPerDay(milisec, userId.toInt()))
-        {
+        observe(model.getBookingSlotsPerDay(milisec, userId.toInt())) {
             viewAdapter = TimeSlotAdapter(it)
             view.recyclerView.adapter = viewAdapter
         }
 
         viewManager = LinearLayoutManager(context)
-
 
         view.recyclerView.apply {
             // use this setting to improve performance if you know that changes
@@ -62,6 +59,5 @@ class CalendarDayFragment : Fragment() {
             // use a linear layout manager
             layoutManager = viewManager
         }
-
     }
 }

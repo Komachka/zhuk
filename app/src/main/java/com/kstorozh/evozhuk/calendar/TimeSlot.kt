@@ -8,5 +8,5 @@ class TimeSlot(
     var isOtherBooking: Boolean,
     var slotStartDate: String,
     var slotEndDate: String,
-    var booking:Booking? = null
+    var booking: Booking? = null
 )
