@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.empty_time_slot.view.timeTv
 import kotlinx.android.synthetic.main.busy_time_slot_with_login_item.view.*
 import org.joda.time.DateTime
 
+
 class TimeSlotAdapter(val timeSlot: List<TimeSlot>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val EMPTY_VIEW_TYPE = 0
@@ -86,3 +87,4 @@ class TimeSlotAdapter(val timeSlot: List<TimeSlot>) : RecyclerView.Adapter<Recyc
         }
     }
 }
+

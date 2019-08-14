@@ -8,15 +8,18 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
-import com.kstorozh.evozhuk.R
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.*
-import java.util.*
+import android.widget.Toast
+import com.kstorozh.evozhuk.R
+import com.google.android.material.bottomsheet.BottomSheetDialog
+
+
+
+
 
 class CalendarDayFragment : Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
 
@@ -28,7 +31,7 @@ class CalendarDayFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_calendar_day_view, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
         val userId = CalendarDayFragmentArgs.fromBundle(arguments!!).userId
         val milisec = CalendarDayFragmentArgs.fromBundle(arguments!!).milisec
         val model = activity!!.run {
@@ -36,12 +39,39 @@ class CalendarDayFragment : Fragment() {
         }
         observe(model.getBookingSlotsPerDay(milisec, userId.toInt())) {
             viewAdapter = TimeSlotAdapter(it)
-            view.recyclerView.adapter = viewAdapter
+            fragmentView.recyclerView.adapter = viewAdapter
+            fragmentView.recyclerView.addOnItemTouchListener(
+                RecyclerItemClickListener(context!!, fragmentView.recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
+                    override fun onItemClick(view: View, position: Int) {
+                        val itemPosition = fragmentView.recyclerView.getChildLayoutPosition(view)
+                        val item = it[itemPosition]
+                        val mBottomSheetDialog = BottomSheetDialog(activity!!)
+                        val sheetView = activity!!.layoutInflater.inflate(R.layout.bottom_sheet_dialog, null)
+
+
+
+                        mBottomSheetDialog.setContentView(sheetView)
+                        mBottomSheetDialog.show()
+
+                    }
+
+                    override fun onLongItemClick(view: View?, position: Int) {
+                        // do whatever
+                    }
+                })
+            )
+
         }
         viewManager = LinearLayoutManager(context)
-        view.recyclerView.apply {
+        fragmentView.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
         }
+
     }
 }
+
+
+
+
+

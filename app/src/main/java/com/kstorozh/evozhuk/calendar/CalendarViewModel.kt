@@ -84,4 +84,5 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
         listOfTimeSlot.fillBusySlots(list, userId, durationInMilisecLiveData.value!!)
         return listOfTimeSlot
     }
+
 }

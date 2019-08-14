@@ -76,7 +76,9 @@
     <string name="choose">Choose</string>
     <string name="book_device">Book device</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="book_bunt_text">Book</string>
+    <string name="fromTV">From</string>
+    <string name="toTv">To</string>
+    <string name="chooseTimeLable">Choose time for booking</string>
 
 </resources>
