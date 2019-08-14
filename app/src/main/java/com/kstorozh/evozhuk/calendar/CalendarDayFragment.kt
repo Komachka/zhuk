@@ -32,15 +32,8 @@ class CalendarDayFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        /*val model = activity?.run {
-            ViewModelProviders.of(this).get(CalendarViewModel::class.java)
-        }*/ // java.lang.RuntimeException: Cannot create an instance of class com.kstorozh.evozhuk.calendar.CalendarViewModel
-
         val userId = CalendarDayFragmentArgs.fromBundle(arguments!!).userId
         val milisec = CalendarDayFragmentArgs.fromBundle(arguments!!).milisec
-        view.showSnackbar("userId $userId " +
-                "date ${SimpleDateFormat(DATE_FORMAT_NOTIFICATION_MESSAGE).format(milisec)}")
-
         val model = activity!!.run {
             ViewModelProviders.of(this)[CalendarViewModel::class.java]
         }
@@ -48,15 +41,9 @@ class CalendarDayFragment : Fragment() {
             viewAdapter = TimeSlotAdapter(it)
             view.recyclerView.adapter = viewAdapter
         }
-
         viewManager = LinearLayoutManager(context)
-
         view.recyclerView.apply {
-            // use this setting to improve performance if you know that changes
-            // in content do not change the layout size of the RecyclerView
             setHasFixedSize(true)
-
-            // use a linear layout manager
             layoutManager = viewManager
         }
     }
