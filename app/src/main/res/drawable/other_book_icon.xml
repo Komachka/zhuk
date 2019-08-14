@@ -7,7 +7,7 @@
 >
     <bitmap
             android:gravity="center"
-            android:tint="#ff8087"
+            android:tint="@color/other_booking_colour"
             android:src="@drawable/ic_dot" />
 </item>
 

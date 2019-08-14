@@ -28,6 +28,7 @@ import androidx.lifecycle.Observer
 import com.kstorozh.evozhuk.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.joda.time.DateTime
 
 internal fun Context.getInfoAboutDevice(): DeviceInputData {
     return DeviceInputData(
@@ -142,7 +143,7 @@ fun EditText.onTextChanged(onTextChangedBody: (startSymbol: Int) -> Unit) {
     })
 }
 
-    fun View?.findSuitableParent(): ViewGroup? {
+fun View?.findSuitableParent(): ViewGroup? {
         var view = this
         var fallback: ViewGroup? = null
         do {
@@ -161,4 +162,10 @@ fun EditText.onTextChanged(onTextChangedBody: (startSymbol: Int) -> Unit) {
             }
         } while (view != null)
         return fallback
-    }
+}
+
+fun DateTime.getStringHourMinuteDate(): String {
+    val minute = if (this.minuteOfHour <10) "0${this.minuteOfHour}" else "${this.minuteOfHour}"
+    val hour = if (this.hourOfDay <10) "0${this.hourOfDay}" else "${this.hourOfDay}"
+    return "$hour:$minute"
+}

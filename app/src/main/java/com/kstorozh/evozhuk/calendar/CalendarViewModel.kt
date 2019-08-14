@@ -3,32 +3,33 @@ package com.kstorozh.evozhuk.calendar
 import androidx.arch.core.util.Function
 import androidx.lifecycle.*
 import com.applandeo.materialcalendarview.EventDay
-import com.kstorozh.evozhuk.R
 import java.util.*
 import com.kstorozh.domainapi.GetBookingUseCase
 import com.kstorozh.domainapi.model.Booking
-import com.kstorozh.evozhuk.BaseViewModel
-import com.kstorozh.evozhuk.YEAR_MONTH_DAY_FORMAT
+import com.kstorozh.evozhuk.*
+import com.kstorozh.evozhuk.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.joda.time.DateTime
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.text.SimpleDateFormat
+import org.joda.time.format.DateTimeFormat
 
-class CalendarViewModel : BaseViewModel(), KoinComponent {
+class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
 
     private val getBookingsUseCase: GetBookingUseCase by inject()
     private val applicationScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
     private val bookingsLiveData = MutableLiveData<Map<String, List<Booking>>>()
-    private val durationLiveData = MutableLiveData<Long>()
+    private val durationInMilisecLiveData = MutableLiveData<Long>()
 
         fun bookings(startDate: Long, endDate: Long): LiveData<Map<String, List<Booking>>> {
             applicationScope.launch {
                 val result = getBookingsUseCase.loadBooking(startDate, endDate)
                 result.data?.let {
                     bookingsLiveData.postValue(it.bookingMap)
-                    durationLiveData.postValue(it.duration)
+                    durationInMilisecLiveData.postValue(it.duration * ONE_SECOND)
                 }
                 result.domainError?.let {
                     errors.postValue(it)
@@ -62,5 +63,25 @@ class CalendarViewModel : BaseViewModel(), KoinComponent {
         return if (isOnlyMyBooking && isOnlyAnotherPersonBooking) R.drawable.sample_two_icons
         else if (isOnlyMyBooking) R.drawable.my_book_icon
         else R.drawable.other_book_icon
+    }
+
+    fun getBookingSlotsPerDay(dateInMilisec: Long, userId: Int): LiveData<List<TimeSlot>> {
+        val dt = DateTime(dateInMilisec)
+        val fmt = DateTimeFormat.forPattern(YEAR_MONTH_DAY_FORMAT)
+        val dayInFormat = fmt.print(dt)
+        return Transformations.switchMap(bookingsLiveData,
+            Function<Map<String, List<Booking>>, LiveData<List<TimeSlot>>> { map ->
+                val liveData = MutableLiveData<List<TimeSlot>>()
+                val bookingInDayList = map[dayInFormat]
+                val listOfTimeSlot: List<TimeSlot> = parseBookingToTimeSlot(bookingInDayList, userId, dateInMilisec)
+                liveData.value = listOfTimeSlot
+                return@Function liveData
+            })
+    }
+
+    private fun parseBookingToTimeSlot(list: List<Booking>?, userId: Int, dateInMilisec: Long): List<TimeSlot> {
+        val listOfTimeSlot = createEmptySlots(dateInMilisec, durationInMilisecLiveData.value!!)
+        listOfTimeSlot.fillBusySlots(list, userId, durationInMilisecLiveData.value!!)
+        return listOfTimeSlot
     }
 }
