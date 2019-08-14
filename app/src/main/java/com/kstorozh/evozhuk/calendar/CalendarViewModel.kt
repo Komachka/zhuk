@@ -1,6 +1,5 @@
 package com.kstorozh.evozhuk.calendar
 
-import android.util.Log
 import androidx.arch.core.util.Function
 import androidx.lifecycle.*
 import com.applandeo.materialcalendarview.EventDay
@@ -17,9 +16,6 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.text.SimpleDateFormat
 import org.joda.time.format.DateTimeFormat
-
-
-
 
 class CalendarViewModel : BaseViewModel(), KoinComponent {
 
@@ -69,8 +65,8 @@ class CalendarViewModel : BaseViewModel(), KoinComponent {
         else R.drawable.other_book_icon
     }
 
-    fun getBookingSlotsPerDay(milisec: Long, userId: Int): LiveData<List<TimeSlot>> {
-        val dt = DateTime(milisec)
+    fun getBookingSlotsPerDay(dateInMilisec: Long, userId: Int): LiveData<List<TimeSlot>> {
+        val dt = DateTime(dateInMilisec)
         val fmt = DateTimeFormat.forPattern(YEAR_MONTH_DAY_FORMAT)
         val dayInFormat = fmt.print(dt)
         return Transformations.switchMap(bookingsLiveData,
@@ -78,35 +74,28 @@ class CalendarViewModel : BaseViewModel(), KoinComponent {
                 val liveData = MutableLiveData<List<TimeSlot>>()
                 val bookingInDayList = map[dayInFormat]
                 bookingInDayList?.let {
-                    val listOfTimeSlot: List<TimeSlot> = parseBookingToTimeSlot(it, userId)
+                    val listOfTimeSlot: List<TimeSlot> = parseBookingToTimeSlot(it, userId, dateInMilisec)
                     liveData.value = listOfTimeSlot
                 }
                 return@Function liveData
             })
     }
 
-    private fun parseBookingToTimeSlot(list: List<Booking>, userId: Int): List<TimeSlot> {
-     val mapOfTimeSlot = mutableMapOf<String, TimeSlot>()
-
+    private fun parseBookingToTimeSlot(list: List<Booking>, userId: Int, dateInMilisec: Long): List<TimeSlot> {
+        val mapOfTimeSlot = mutableMapOf<LongRange, TimeSlot>()
         val slotDuration = durationLiveData.value
-
-
-        val sdt = DateTime(2019, 8, 13, 8,0,0)
-        val edt = DateTime(2019, 8, 13, 20,0,0)
-
-        val firstHour = sdt.millis /1000
+        val sdt = DateTime(dateInMilisec).withHourOfDay(8)
+        val edt = DateTime(dateInMilisec).withHourOfDay(20)
+        val firstHour = sdt.millis / 1000
         val lastHour = edt.millis / 1000
-        val step = slotDuration!!
-        //val step = 900
-        var i = firstHour
-        while (i <= lastHour)
-        {
-            val hour = DateTime(i * 1000).hourOfDay
-            val minute = DateTime(i * 1000).minuteOfHour
-            Log.d(LOG_TAG, "hour $hour minute ${minute}")
-            val startDate = if (hour < 10) "0${hour}:${minute}" else "$hour:${minute}"
-            val endDate = if ((hour + 1) < 10) "0${hour + 1}:${minute}" else "${hour + 1}:${minute}"
-            mapOfTimeSlot[startDate] = TimeSlot(
+        val step = slotDuration!! // in seconds
+        var iSec = firstHour
+        while (iSec <= lastHour) {
+            val tmpStartDate = DateTime(iSec * 1000)
+            val tmpEndDate = DateTime((iSec + step) * 1000)
+            val startDate = tmpStartDate.getStringHourMinuteDate()
+            val endDate = tmpEndDate.getStringHourMinuteDate()
+            mapOfTimeSlot[(iSec..(iSec + step))] = TimeSlot(
                 isMyBooking = false,
                 isOtherBooking = false,
                 isContinue = false,
@@ -114,61 +103,55 @@ class CalendarViewModel : BaseViewModel(), KoinComponent {
                 slotStartDate = startDate,
                 slotEndDate = endDate
             )
-            i+=step
+            iSec += step
         }
 
-
-    /*    for (i in 8..20) // TODO move to const first and last hour
-     {
-         val startDate = if (i < 10) "0$i:00" else "$i:00"
-         val endDate = if (i + 1 < 10) "0${i + 1}:00" else "${i + 1}:00"
-         mapOfTimeSlot[i] = TimeSlot(
-             isMyBooking = false,
-             isOtherBooking = false,
-             isContinue = false,
-             timeLable = startDate,
-             slotStartDate = startDate,
-             slotEndDate = endDate
-         )
-     }*/
-     /*list.forEach {
-         val dateTimeStart = DateTime(it.startDate)
-         val dateTimeEnd = DateTime(it.endDate)
-         if (mapOfTimeSlot.containsKey(dateTimeStart.hourOfDay)) {
-             val item = mapOfTimeSlot[dateTimeStart.hourOfDay]
-             item!!.booking = it
-             item.isContinue = false
-             item.slotEndDate = dateTimeEnd.hourOfDay().asText + ":" + dateTimeEnd.minuteOfHour().asText
-             item.slotStartDate = dateTimeStart.hourOfDay().asText + ":" + dateTimeStart.minuteOfHour().asText
-             if (item.booking!!.userId == userId)
-                 item.isMyBooking = true
-             else
-                 item.isOtherBooking = true
-         }
-         Log.d(LOG_TAG, "duration ${it.duration} sec in hour $SEC_IN_HOUR")
-         val duration = if (it.duration <= SEC_IN_HOUR) it.duration + (SEC_IN_HOUR - it.duration) else it.duration
-         var time = duration
-             while (time / SEC_IN_HOUR > 0) {
-                 Log.d(LOG_TAG, "time ${time} time / SEC_IN_HOUR ${time / SEC_IN_HOUR}")
-                 val startDateTmp = dateTimeStart.millis + ((time / SEC_IN_HOUR) * SEC_IN_HOUR * 1000)
-                 val dateTimeStartTmp = DateTime(startDateTmp)
-                 Log.d(LOG_TAG, "dateTimeStartTmp.hourOfDay ${dateTimeStartTmp.hourOfDay}")
-                 if (mapOfTimeSlot.containsKey(dateTimeStartTmp.hourOfDay))
-                 {
-                     val item = mapOfTimeSlot[dateTimeStartTmp.hourOfDay]
-                     item!!.booking = it
-                     item.isContinue = true
-                     if (item.booking!!.userId == userId)
-                         item.isMyBooking = true
-                     else
-                         item.isOtherBooking = true
-                 }
-                 time -= SEC_IN_HOUR
-             }
-
-     }*/
-
-        Log.d(LOG_TAG, "---------------------")
+        list.forEach { booking ->
+            val dateTimeStart = DateTime(booking.startDate)
+            val dateTimeEnd = DateTime(booking.endDate)
+            var r: LongRange? = null
+            mapOfTimeSlot.forEach { (range, slot) ->
+                if (range.contains(dateTimeStart.millis / 1000))
+                    r = range
+            }
+            r?.let {
+                val item = mapOfTimeSlot[it]
+                item!!.booking = booking
+                item.isContinue = false
+                item.slotEndDate = dateTimeEnd.getStringHourMinuteDate()
+                item.slotStartDate = dateTimeStart.getStringHourMinuteDate()
+                if (item.booking!!.userId == userId)
+                    item.isMyBooking = true
+                else
+                    item.isOtherBooking = true
+            }
+            var time = booking.duration
+            while (time / step > 0.0) {
+                val startDateTmp = dateTimeStart.millis + ((time / step) * step * 1000)
+                val dateTimeStartTmp = DateTime(startDateTmp)
+                var r: LongRange? = null
+                mapOfTimeSlot.forEach { (range, slot) ->
+                    if (range.contains(dateTimeStartTmp.millis / 1000))
+                        r = range
+                }
+                r?.let {
+                    val item = mapOfTimeSlot[it]
+                    item!!.booking = booking
+                    item.isContinue = true
+                    if (item.booking!!.userId == userId)
+                        item.isMyBooking = true
+                    else
+                        item.isOtherBooking = true
+                }
+                time -= step
+            }
+        }
         return mapOfTimeSlot.values.toList()
+    }
+
+    private fun DateTime.getStringHourMinuteDate(): String {
+        val minute = if (this.minuteOfHour <10) "0${this.minuteOfHour}" else "$${this.minuteOfHour}"
+        val hour = if (this.hourOfDay <10) "0${this.hourOfDay}" else "${this.hourOfDay}"
+        return "$hour:$minute"
     }
 }
