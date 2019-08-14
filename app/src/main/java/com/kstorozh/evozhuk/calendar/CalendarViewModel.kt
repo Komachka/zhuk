@@ -150,7 +150,7 @@ class CalendarViewModel : BaseViewModel(), KoinComponent {
     }
 
     private fun DateTime.getStringHourMinuteDate(): String {
-        val minute = if (this.minuteOfHour <10) "0${this.minuteOfHour}" else "$${this.minuteOfHour}"
+        val minute = if (this.minuteOfHour <10) "0${this.minuteOfHour}" else "${this.minuteOfHour}"
         val hour = if (this.hourOfDay <10) "0${this.hourOfDay}" else "${this.hourOfDay}"
         return "$hour:$minute"
     }
