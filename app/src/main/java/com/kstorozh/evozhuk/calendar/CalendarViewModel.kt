@@ -8,7 +8,6 @@ import com.kstorozh.domainapi.GetBookingUseCase
 import com.kstorozh.domainapi.model.Booking
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.R
-import com.kstorozh.evozhuk.utils.getStringHourMinuteDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +17,7 @@ import org.koin.core.inject
 import java.text.SimpleDateFormat
 import org.joda.time.format.DateTimeFormat
 
-class CalendarViewModel : BaseViewModel(), KoinComponent {
+class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
 
     private val getBookingsUseCase: GetBookingUseCase by inject()
     private val applicationScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
@@ -81,73 +80,8 @@ class CalendarViewModel : BaseViewModel(), KoinComponent {
     }
 
     private fun parseBookingToTimeSlot(list: List<Booking>?, userId: Int, dateInMilisec: Long): List<TimeSlot> {
-        val listOfTimeSlot = mutableListOf<TimeSlot>()
-        val slotDuration = durationLiveData.value
-        val sdt = DateTime(dateInMilisec).withHourOfDay(8)
-        val edt = DateTime(dateInMilisec).withHourOfDay(20)
-        val firstHour = sdt.millis / 1000
-        val lastHour = edt.millis / 1000
-        val step = slotDuration!! // in seconds
-        var iSec = firstHour
-        while (iSec <= lastHour) {
-            val tmpStartDate = DateTime(iSec * 1000)
-            val tmpEndDate = DateTime((iSec + step) * 1000)
-            val startDate = tmpStartDate.getStringHourMinuteDate()
-            val endDate = tmpEndDate.getStringHourMinuteDate()
-            listOfTimeSlot.add(
-                TimeSlot(
-                    isMyBooking = false,
-                    isOtherBooking = false,
-                    isContinue = false,
-                    timeLable = startDate,
-                    slotStartDate = startDate,
-                    slotEndDate = endDate,
-                    range = (iSec..(iSec + step))
-                )
-            )
-            iSec += step
-        }
-
-
-        list?.forEach { booking ->
-            val dateTimeStart = DateTime(booking.startDate)
-            val dateTimeEnd = DateTime(booking.endDate)
-            //var r: LongRange? = null
-            val r = listOfTimeSlot.filter {
-                it.range.contains(dateTimeStart.millis / 1000)
-            }
-            if (r.isNotEmpty())
-            {
-                val item = r.first()
-                item.booking = booking
-                item.isContinue = false
-                item.slotEndDate = dateTimeEnd.getStringHourMinuteDate()
-                item.slotStartDate = dateTimeStart.getStringHourMinuteDate()
-                if (item.booking!!.userId == userId)
-                    item.isMyBooking = true
-                else
-                    item.isOtherBooking = true
-            }
-            var time = booking.duration
-            while (time / step > 0.0) {
-                val startDateTmp = dateTimeStart.millis + ((time / step) * step * 1000)
-                val dateTimeStartTmp = DateTime(startDateTmp)
-
-                val r = listOfTimeSlot.filter {
-                    it.range.contains(dateTimeStartTmp.millis / 1000)
-                }
-                if (r.isNotEmpty()) {
-                    val item = r.first()
-                    item.booking = booking
-                    item.isContinue = true
-                    if (item.booking!!.userId == userId)
-                        item.isMyBooking = true
-                    else
-                        item.isOtherBooking = true
-                }
-                time -= step
-            }
-        }
+        val listOfTimeSlot = createEmptySlots(dateInMilisec, durationLiveData.value!!)
+        listOfTimeSlot.fillBusySlots(list, userId, durationLiveData.value!!)
         return listOfTimeSlot
     }
 }
