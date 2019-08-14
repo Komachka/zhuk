@@ -36,6 +36,8 @@ class TimeSlotAdapter(val timeSlot: List<TimeSlot>) : RecyclerView.Adapter<Recyc
 
         fun setMyBookingView(timeSlot: TimeSlot) {
             view.timeTv.text = timeSlot.timeLable
+            if (timeSlot.timeLable[timeSlot.timeLable.lastIndex] != '0')
+                view.timeTv.visibility = View.INVISIBLE
             if (timeSlot.isOtherBooking)
                 view.userIndex.setBackgroundResource(R.color.other_booking_colour)
         }
