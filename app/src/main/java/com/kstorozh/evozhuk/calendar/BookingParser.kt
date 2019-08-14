@@ -1,22 +1,22 @@
 package com.kstorozh.evozhuk.calendar
 
 import com.kstorozh.domainapi.model.Booking
+import com.kstorozh.evozhuk.ONE_SECOND
 import com.kstorozh.evozhuk.utils.getStringHourMinuteDate
 import org.joda.time.DateTime
 
 interface BookingParser {
 
-    fun createEmptySlots(dateInMilisec: Long, slotDuration: Long): List<TimeSlot> {
+    fun createEmptySlots(dateInMilisec: Long, step: Long): List<TimeSlot> {
         val listOfTimeSlot = mutableListOf<TimeSlot>()
         val sdt = DateTime(dateInMilisec).withHourOfDay(8)
         val edt = DateTime(dateInMilisec).withHourOfDay(20)
-        val firstHour = sdt.millis / 1000
-        val lastHour = edt.millis / 1000
-        val step = slotDuration!! // in seconds
+        val firstHour = sdt.millis / ONE_SECOND
+        val lastHour = edt.millis / ONE_SECOND
         var iSec = firstHour
         while (iSec <= lastHour) {
-            val tmpStartDate = DateTime(iSec * 1000)
-            val tmpEndDate = DateTime((iSec + step) * 1000)
+            val tmpStartDate = DateTime(iSec * ONE_SECOND)
+            val tmpEndDate = DateTime((iSec + step) * ONE_SECOND)
             val startDate = tmpStartDate.getStringHourMinuteDate()
             val endDate = tmpEndDate.getStringHourMinuteDate()
             listOfTimeSlot.add(
@@ -36,42 +36,50 @@ interface BookingParser {
     }
 
     fun List<TimeSlot>.fillBusySlots(list: List<Booking>?, userId: Int, step: Long) {
-        list?.forEach { booking ->
-            val dateTimeStart = DateTime(booking.startDate)
-            val dateTimeEnd = DateTime(booking.endDate)
-            val r = this.filter {
-                it.range.contains(dateTimeStart.millis / 1000)
-            }
-            if (r.isNotEmpty()) {
-                val item = r.first()
-                item.booking = booking
-                item.isContinue = false
-                item.slotEndDate = dateTimeEnd.getStringHourMinuteDate()
-                item.slotStartDate = dateTimeStart.getStringHourMinuteDate()
-                if (item.booking!!.userId == userId)
-                    item.isMyBooking = true
-                else
-                    item.isOtherBooking = true
-            }
-            var time = booking.duration
-            while (time / step > 0.0) {
-                val startDateTmp = dateTimeStart.millis + ((time / step) * step * 1000)
-                val dateTimeStartTmp = DateTime(startDateTmp)
+        list?.forEach { book ->
+            val dateTimeStart = DateTime(book.startDate)
+            val dateTimeEnd = DateTime(book.endDate)
 
-                val r = this.filter {
-                    it.range.contains(dateTimeStartTmp.millis / 1000)
-                }
-                if (r.isNotEmpty()) {
-                    val item = r.first()
-                    item.booking = booking
-                    item.isContinue = true
-                    if (item.booking!!.userId == userId)
-                        item.isMyBooking = true
-                    else
-                        item.isOtherBooking = true
+            val listWithRange = this.filter {
+                it.range.contains(dateTimeStart.millis / ONE_SECOND)
+            }
+            if (listWithRange.isNotEmpty()) {
+                listWithRange.first().fill(
+                    isContinueFlag = false,
+                    dateTimeStart = dateTimeStart,
+                    dateTimeEnd = dateTimeEnd,
+                    book = book,
+                    userId = userId
+                )
+            }
+            var time = book.duration
+            while (time / step > 0.0) {
+                val startDateTmp = dateTimeStart.millis + ((time / step) * step * ONE_SECOND)
+                val dateTimeStartTmp = DateTime(startDateTmp)
+                val endDateTmp = DateTime(startDateTmp + step)
+                val listWithRange = this.filter { it.range.contains(dateTimeStartTmp.millis / 1000) }
+                if (listWithRange.isNotEmpty()) {
+                    listWithRange.first().fill(
+                        isContinueFlag = true,
+                        dateTimeStart = dateTimeStartTmp,
+                        dateTimeEnd = endDateTmp,
+                        book = book,
+                        userId = userId
+                    )
                 }
                 time -= step
             }
+        }
+    }
+
+    fun TimeSlot.fill(isContinueFlag: Boolean, dateTimeStart: DateTime, dateTimeEnd: DateTime, book: Booking, userId: Int) {
+        apply {
+            booking = book
+            isContinue = isContinueFlag
+            slotEndDate = dateTimeEnd.getStringHourMinuteDate()
+            slotStartDate = dateTimeStart.getStringHourMinuteDate()
+            if (booking!!.userId == userId) isMyBooking = true
+            else isOtherBooking = true
         }
     }
 }
