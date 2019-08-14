@@ -8,13 +8,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.kstorozh.evozhuk.DATE_FORMAT_NOTIFICATION_MESSAGE
 
 import com.kstorozh.evozhuk.R
 import com.kstorozh.evozhuk.utils.observe
-import com.kstorozh.evozhuk.utils.showSnackbar
 import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 class CalendarDayFragment : Fragment() {
