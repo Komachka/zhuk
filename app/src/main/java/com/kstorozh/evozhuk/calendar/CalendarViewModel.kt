@@ -74,16 +74,13 @@ class CalendarViewModel : BaseViewModel(), KoinComponent {
             Function<Map<String, List<Booking>>, LiveData<List<TimeSlot>>> { map ->
                 val liveData = MutableLiveData<List<TimeSlot>>()
                 val bookingInDayList = map[dayInFormat]
-                bookingInDayList?.let {
-                    val listOfTimeSlot: List<TimeSlot> = parseBookingToTimeSlot(it, userId, dateInMilisec)
-                    liveData.value = listOfTimeSlot
-                }
+                val listOfTimeSlot: List<TimeSlot> = parseBookingToTimeSlot(bookingInDayList, userId, dateInMilisec)
+                liveData.value = listOfTimeSlot
                 return@Function liveData
             })
     }
 
-    private fun parseBookingToTimeSlot(list: List<Booking>, userId: Int, dateInMilisec: Long): List<TimeSlot> {
-        //val mapOfTimeSlot = mutableMapOf<LongRange, TimeSlot>()
+    private fun parseBookingToTimeSlot(list: List<Booking>?, userId: Int, dateInMilisec: Long): List<TimeSlot> {
         val listOfTimeSlot = mutableListOf<TimeSlot>()
         val slotDuration = durationLiveData.value
         val sdt = DateTime(dateInMilisec).withHourOfDay(8)
@@ -112,7 +109,7 @@ class CalendarViewModel : BaseViewModel(), KoinComponent {
         }
 
 
-        list.forEach { booking ->
+        list?.forEach { booking ->
             val dateTimeStart = DateTime(booking.startDate)
             val dateTimeEnd = DateTime(booking.endDate)
             //var r: LongRange? = null
