@@ -24,5 +24,5 @@ val useCaseModules = module(override = true) {
     factory<GetUsersUseCases> { GetUsersUseCasesImpl(get<UserRepository>(), UserDataMapper(), ErrorMapper()) }
     factory<LoginUseCase> { LoginUseCaseImpl(get(), UserDataMapper(), ErrorMapper()) }
     factory<ManageDeviceUseCases> { ManageDeviceUseCasesImpl(get(), DeviceInfoMapper(), ErrorMapper()) }
-    factory<GetBookingUseCase> { GetBookingUseCaseImpl(get(), ErrorMapper(), CalendarMapper()) }
+    factory<GetBookingUseCase> { GetBookingUseCaseImpl(get(), get(), ErrorMapper(), DeviceInfoMapper(), CalendarMapper()) }
 }

@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.GestureDetector
 import android.view.View
 
-
 class RecyclerItemClickListener(
     context: Context,
     recyclerView: RecyclerView,

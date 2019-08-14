@@ -1,6 +1,5 @@
 package com.kstorozh.evozhuk.calendar
 
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,17 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.*
 import com.kstorozh.evozhuk.R
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.kstorozh.evozhuk.TIME_PICKER_INTERVAL
-import com.kstorozh.evozhuk.chooseTime.CustomTime
 import kotlinx.android.synthetic.main.bottom_sheet_dialog.view.*
-
 
 class CalendarDayFragment : Fragment(), BottomSheetDialogHandler {
 
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
-    lateinit var model:CalendarViewModel
+    lateinit var model: CalendarViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,18 +48,11 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler {
                     }
                 })
             )
-
         }
         viewManager = LinearLayoutManager(context)
         fragmentView.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
         }
-
     }
 }
-
-
-
-
-
