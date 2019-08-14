@@ -4,9 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.kstorozh.evozhuk.FIRST_HOUR
 import com.kstorozh.evozhuk.R
 import kotlinx.android.synthetic.main.empty_time_slot.view.timeTv
 import kotlinx.android.synthetic.main.busy_time_slot_with_login_item.view.*
+import org.joda.time.DateTime
 
 class TimeSlotAdapter(val timeSlot: List<TimeSlot>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -75,8 +77,10 @@ class TimeSlotAdapter(val timeSlot: List<TimeSlot>) : RecyclerView.Adapter<Recyc
     }
 
     override fun getItemViewType(position: Int): Int {
+        val date = DateTime(timeSlot[position].range.first)
         return when {
             (timeSlot[position].isMyBooking || timeSlot[position].isOtherBooking) && !timeSlot[position].isContinue -> BOOKING_VIEW_TYPE
+            timeSlot[position].isContinue && date.hourOfDay == FIRST_HOUR && date.minuteOfHour == 0 -> BOOKING_VIEW_TYPE
             timeSlot[position].isContinue -> CONTINUE_BOOKING_VIEW_TYPE
             else -> EMPTY_VIEW_TYPE
         }
