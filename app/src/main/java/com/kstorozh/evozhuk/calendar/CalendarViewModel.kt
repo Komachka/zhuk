@@ -24,6 +24,7 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
     private val bookingsLiveData = MutableLiveData<Map<String, List<Booking>>>()
     private val durationInMilisecLiveData = MutableLiveData<Long>()
 
+
         fun bookings(startDate: Long, endDate: Long): LiveData<Map<String, List<Booking>>> {
             applicationScope.launch {
                 val result = getBookingsUseCase.loadBooking(startDate, endDate)
@@ -71,11 +72,11 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
         val dayInFormat = fmt.print(dt)
         return Transformations.switchMap(bookingsLiveData,
             Function<Map<String, List<Booking>>, LiveData<List<TimeSlot>>> { map ->
-                val liveData = MutableLiveData<List<TimeSlot>>()
                 val bookingInDayList = map[dayInFormat]
                 val listOfTimeSlot: List<TimeSlot> = parseBookingToTimeSlot(bookingInDayList, userId, dateInMilisec)
-                liveData.value = listOfTimeSlot
-                return@Function liveData
+                val timeSlotPerDayLiveData = MutableLiveData<List<TimeSlot>>()
+                timeSlotPerDayLiveData.value = listOfTimeSlot
+                return@Function timeSlotPerDayLiveData
             })
     }
 
@@ -84,5 +85,10 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
         listOfTimeSlot.fillBusySlots(list, userId, durationInMilisecLiveData.value!!)
         return listOfTimeSlot
     }
+
+    /*fun createNewBooking(userId: String, millisec: Long, millisec1: Long): LiveData<Boolean> {
+
+    }*/
+
 
 }

@@ -1,5 +1,6 @@
 package com.kstorozh.evozhuk.calendar
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,18 +11,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.*
-import android.widget.Toast
 import com.kstorozh.evozhuk.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.kstorozh.evozhuk.TIME_PICKER_INTERVAL
+import com.kstorozh.evozhuk.chooseTime.CustomTime
+import kotlinx.android.synthetic.main.bottom_sheet_dialog.view.*
 
 
-
-
-
-class CalendarDayFragment : Fragment() {
+class CalendarDayFragment : Fragment(), BottomSheetDialogHandler {
 
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
+    lateinit var model:CalendarViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +35,7 @@ class CalendarDayFragment : Fragment() {
     override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
         val userId = CalendarDayFragmentArgs.fromBundle(arguments!!).userId
         val milisec = CalendarDayFragmentArgs.fromBundle(arguments!!).milisec
-        val model = activity!!.run {
+        model = activity!!.run {
             ViewModelProviders.of(this)[CalendarViewModel::class.java]
         }
         observe(model.getBookingSlotsPerDay(milisec, userId.toInt())) {
@@ -44,15 +45,7 @@ class CalendarDayFragment : Fragment() {
                 RecyclerItemClickListener(context!!, fragmentView.recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
                     override fun onItemClick(view: View, position: Int) {
                         val itemPosition = fragmentView.recyclerView.getChildLayoutPosition(view)
-                        val item = it[itemPosition]
-                        val mBottomSheetDialog = BottomSheetDialog(activity!!)
-                        val sheetView = activity!!.layoutInflater.inflate(R.layout.bottom_sheet_dialog, null)
-
-
-
-                        mBottomSheetDialog.setContentView(sheetView)
-                        mBottomSheetDialog.show()
-
+                        createDialog(it[itemPosition], userId)
                     }
 
                     override fun onLongItemClick(view: View?, position: Int) {

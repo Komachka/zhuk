@@ -80,7 +80,7 @@
                 android:layout_marginRight="20dp"
         />
         <DatePicker
-                android:id="@+id/ToDatePicker"
+                android:id="@+id/toDatePicker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleX="0.8"
@@ -93,7 +93,7 @@
         />
 
         <com.kstorozh.evozhuk.chooseTime.TimePickerMinInterval
-                android:id="@+id/ToTimePicker"
+                android:id="@+id/toTimePicker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleX="0.8"
