@@ -10,5 +10,6 @@ class TimeSlot(
     var timeLable: String,
     var slotStartDate: String,
     var slotEndDate: String,
-    var booking: Booking? = null
+    var booking: Booking? = null,
+    val range:LongRange
 )

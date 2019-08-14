@@ -8,6 +8,7 @@ import com.kstorozh.domainapi.GetBookingUseCase
 import com.kstorozh.domainapi.model.Booking
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.R
+import com.kstorozh.evozhuk.utils.getStringHourMinuteDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -82,7 +83,8 @@ class CalendarViewModel : BaseViewModel(), KoinComponent {
     }
 
     private fun parseBookingToTimeSlot(list: List<Booking>, userId: Int, dateInMilisec: Long): List<TimeSlot> {
-        val mapOfTimeSlot = mutableMapOf<LongRange, TimeSlot>()
+        //val mapOfTimeSlot = mutableMapOf<LongRange, TimeSlot>()
+        val listOfTimeSlot = mutableListOf<TimeSlot>()
         val slotDuration = durationLiveData.value
         val sdt = DateTime(dateInMilisec).withHourOfDay(8)
         val edt = DateTime(dateInMilisec).withHourOfDay(20)
@@ -95,28 +97,32 @@ class CalendarViewModel : BaseViewModel(), KoinComponent {
             val tmpEndDate = DateTime((iSec + step) * 1000)
             val startDate = tmpStartDate.getStringHourMinuteDate()
             val endDate = tmpEndDate.getStringHourMinuteDate()
-            mapOfTimeSlot[(iSec..(iSec + step))] = TimeSlot(
-                isMyBooking = false,
-                isOtherBooking = false,
-                isContinue = false,
-                timeLable = startDate,
-                slotStartDate = startDate,
-                slotEndDate = endDate
+            listOfTimeSlot.add(
+                TimeSlot(
+                    isMyBooking = false,
+                    isOtherBooking = false,
+                    isContinue = false,
+                    timeLable = startDate,
+                    slotStartDate = startDate,
+                    slotEndDate = endDate,
+                    range = (iSec..(iSec + step))
+                )
             )
             iSec += step
         }
 
+
         list.forEach { booking ->
             val dateTimeStart = DateTime(booking.startDate)
             val dateTimeEnd = DateTime(booking.endDate)
-            var r: LongRange? = null
-            mapOfTimeSlot.forEach { (range, slot) ->
-                if (range.contains(dateTimeStart.millis / 1000))
-                    r = range
+            //var r: LongRange? = null
+            val r = listOfTimeSlot.filter {
+                it.range.contains(dateTimeStart.millis / 1000)
             }
-            r?.let {
-                val item = mapOfTimeSlot[it]
-                item!!.booking = booking
+            if (r.isNotEmpty())
+            {
+                val item = r.first()
+                item.booking = booking
                 item.isContinue = false
                 item.slotEndDate = dateTimeEnd.getStringHourMinuteDate()
                 item.slotStartDate = dateTimeStart.getStringHourMinuteDate()
@@ -129,14 +135,13 @@ class CalendarViewModel : BaseViewModel(), KoinComponent {
             while (time / step > 0.0) {
                 val startDateTmp = dateTimeStart.millis + ((time / step) * step * 1000)
                 val dateTimeStartTmp = DateTime(startDateTmp)
-                var r: LongRange? = null
-                mapOfTimeSlot.forEach { (range, slot) ->
-                    if (range.contains(dateTimeStartTmp.millis / 1000))
-                        r = range
+
+                val r = listOfTimeSlot.filter {
+                    it.range.contains(dateTimeStartTmp.millis / 1000)
                 }
-                r?.let {
-                    val item = mapOfTimeSlot[it]
-                    item!!.booking = booking
+                if (r.isNotEmpty()) {
+                    val item = r.first()
+                    item.booking = booking
                     item.isContinue = true
                     if (item.booking!!.userId == userId)
                         item.isMyBooking = true
@@ -146,12 +151,6 @@ class CalendarViewModel : BaseViewModel(), KoinComponent {
                 time -= step
             }
         }
-        return mapOfTimeSlot.values.toList()
-    }
-
-    private fun DateTime.getStringHourMinuteDate(): String {
-        val minute = if (this.minuteOfHour <10) "0${this.minuteOfHour}" else "${this.minuteOfHour}"
-        val hour = if (this.hourOfDay <10) "0${this.hourOfDay}" else "${this.hourOfDay}"
-        return "$hour:$minute"
+        return listOfTimeSlot
     }
 }
