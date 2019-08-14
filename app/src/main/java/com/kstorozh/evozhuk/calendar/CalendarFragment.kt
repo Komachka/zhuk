@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.kstorozh.evozhuk.HandleErrors
+import com.kstorozh.evozhuk.MONTH_DELTA
 import com.kstorozh.evozhuk.R
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_calendar.view.*
@@ -27,7 +28,7 @@ class CalendarFragment : Fragment(), HandleErrors {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val today = Calendar.getInstance()
         val lastDay = Calendar.getInstance()
-        lastDay.add(Calendar.MONTH, 2)
+        lastDay.add(Calendar.MONTH, MONTH_DELTA)
         view.calendarView.setMaximumDate(lastDay)
         val model = activity!!.run {
             ViewModelProviders.of(this)[CalendarViewModel::class.java]

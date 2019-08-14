@@ -1,22 +1,24 @@
 package com.kstorozh.evozhuk.calendar
 
 import com.kstorozh.domainapi.model.Booking
+import com.kstorozh.evozhuk.FIRST_HOUR
+import com.kstorozh.evozhuk.LAST_HOUR
 import com.kstorozh.evozhuk.ONE_SECOND
 import com.kstorozh.evozhuk.utils.getStringHourMinuteDate
 import org.joda.time.DateTime
 
 interface BookingParser {
 
-    fun createEmptySlots(dateInMilisec: Long, step: Long): List<TimeSlot> {
+    fun createEmptySlots(dateInMilisec: Long, stepInSeconds: Long): List<TimeSlot> {
         val listOfTimeSlot = mutableListOf<TimeSlot>()
-        val sdt = DateTime(dateInMilisec).withHourOfDay(8)
-        val edt = DateTime(dateInMilisec).withHourOfDay(20)
-        val firstHour = sdt.millis / ONE_SECOND
-        val lastHour = edt.millis / ONE_SECOND
+        val sdt = DateTime(dateInMilisec).withHourOfDay(FIRST_HOUR)
+        val edt = DateTime(dateInMilisec).withHourOfDay(LAST_HOUR)
+        val firstHour = sdt.millis
+        val lastHour = edt.millis
         var iSec = firstHour
         while (iSec <= lastHour) {
-            val tmpStartDate = DateTime(iSec * ONE_SECOND)
-            val tmpEndDate = DateTime((iSec + step) * ONE_SECOND)
+            val tmpStartDate = DateTime(iSec)
+            val tmpEndDate = DateTime((iSec + stepInSeconds))
             val startDate = tmpStartDate.getStringHourMinuteDate()
             val endDate = tmpEndDate.getStringHourMinuteDate()
             listOfTimeSlot.add(
@@ -27,10 +29,10 @@ interface BookingParser {
                     timeLable = startDate,
                     slotStartDate = startDate,
                     slotEndDate = endDate,
-                    range = (iSec..(iSec + step))
+                    range = (iSec..(iSec + stepInSeconds))
                 )
             )
-            iSec += step
+            iSec += stepInSeconds
         }
         return listOfTimeSlot
     }
@@ -41,7 +43,7 @@ interface BookingParser {
             val dateTimeEnd = DateTime(book.endDate)
 
             val listWithRange = this.filter {
-                it.range.contains(dateTimeStart.millis / ONE_SECOND)
+                it.range.contains(dateTimeStart.millis)
             }
             if (listWithRange.isNotEmpty()) {
                 listWithRange.first().fill(
@@ -52,12 +54,12 @@ interface BookingParser {
                     userId = userId
                 )
             }
-            var time = book.duration
+            var time = book.duration * ONE_SECOND
             while (time / step > 0.0) {
-                val startDateTmp = dateTimeStart.millis + ((time / step) * step * ONE_SECOND)
+                val startDateTmp = dateTimeStart.millis + ((time / step) * step)
                 val dateTimeStartTmp = DateTime(startDateTmp)
                 val endDateTmp = DateTime(startDateTmp + step)
-                val listWithRange = this.filter { it.range.contains(dateTimeStartTmp.millis / 1000) }
+                val listWithRange = this.filter { it.range.contains(dateTimeStartTmp.millis) }
                 if (listWithRange.isNotEmpty()) {
                     listWithRange.first().fill(
                         isContinueFlag = true,

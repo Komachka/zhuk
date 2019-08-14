@@ -22,14 +22,14 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
     private val getBookingsUseCase: GetBookingUseCase by inject()
     private val applicationScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
     private val bookingsLiveData = MutableLiveData<Map<String, List<Booking>>>()
-    private val durationLiveData = MutableLiveData<Long>()
+    private val durationInMilisecLiveData = MutableLiveData<Long>()
 
         fun bookings(startDate: Long, endDate: Long): LiveData<Map<String, List<Booking>>> {
             applicationScope.launch {
                 val result = getBookingsUseCase.loadBooking(startDate, endDate)
                 result.data?.let {
                     bookingsLiveData.postValue(it.bookingMap)
-                    durationLiveData.postValue(it.duration)
+                    durationInMilisecLiveData.postValue(it.duration * ONE_SECOND)
                 }
                 result.domainError?.let {
                     errors.postValue(it)
@@ -80,8 +80,8 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
     }
 
     private fun parseBookingToTimeSlot(list: List<Booking>?, userId: Int, dateInMilisec: Long): List<TimeSlot> {
-        val listOfTimeSlot = createEmptySlots(dateInMilisec, durationLiveData.value!!)
-        listOfTimeSlot.fillBusySlots(list, userId, durationLiveData.value!!)
+        val listOfTimeSlot = createEmptySlots(dateInMilisec, durationInMilisecLiveData.value!!)
+        listOfTimeSlot.fillBusySlots(list, userId, durationInMilisecLiveData.value!!)
         return listOfTimeSlot
     }
 }
