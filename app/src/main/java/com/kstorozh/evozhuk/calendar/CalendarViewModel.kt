@@ -92,7 +92,8 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
         return listOfTimeSlot
     }
 
-    fun createNewBooking(userId: String, startDate: Long, endDate: Long): LiveData<Map<String, List<Booking>>> {
+    fun createNewBooking(userId: String, startDate: Long, endDate: Long): LiveData<Boolean> {
+        val liveData = MutableLiveData<Boolean>()
         applicationScope.launch {
                 val result = getBookingsUseCase.createBooking(
                     BookingInputData(
@@ -104,11 +105,13 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
                 result.data?.let {
                     bookingsLiveData.postValue(it.bookingMap)
                     durationInMilisecLiveData.postValue(it.duration * ONE_SECOND)
+                    liveData.postValue(true)
                 }
                 result.domainError?.let {
                     errors.postValue(it)
+                    liveData.postValue(false)
                 }
         }
-        return bookingsLiveData
+        return liveData
     }
 }

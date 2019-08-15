@@ -10,13 +10,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.kstorozh.evozhuk.HandleErrors
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.*
 import com.kstorozh.evozhuk.R
 import kotlinx.android.synthetic.main.bottom_sheet_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_info.view.*
 
-class CalendarDayFragment : Fragment(), BottomSheetDialogHandler {
+class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
 
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -44,6 +45,7 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler {
         model = activity!!.run {
             ViewModelProviders.of(this)[CalendarViewModel::class.java]
         }
+        viewLifecycleOwner.handleErrors(model, fragmentView)
         viewLifecycleOwner.observe(model.getBookingSlotsPerDay(milisec, userId.toInt())) {
             viewAdapter = TimeSlotAdapter(it)
             fragmentView.recyclerView.adapter = viewAdapter
