@@ -28,6 +28,8 @@
 
     <color name="create_booking_bg">#3133b3</color>
 
+    <color name="edit_text_focus_view">#4858ca</color>
+
 
 
 </resources>
