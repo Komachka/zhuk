@@ -13,7 +13,7 @@
             android:textSize="14sp"
             android:fontFamily="sans-serif-medium"
             android:textStyle="normal"
-            android:textColor="#ffffff"
+            android:textColor="@color/smallTextColour"
             android:layout_marginTop="32dp"
             android:text="@string/chooseTimeLable"
             android:layout_gravity="center_horizontal"
@@ -31,7 +31,7 @@
                 android:textSize="14sp"
                 android:fontFamily="sans-serif"
                 android:textStyle="normal"
-                android:textColor="#ffffff"
+                android:textColor="@color/smallTextColour"
                 android:gravity="center_horizontal"
                 android:text="@string/fromTV"
                 android:layout_marginRight="20dp"
@@ -74,7 +74,7 @@
                 android:textSize="14sp"
                 android:fontFamily="sans-serif"
                 android:textStyle="normal"
-                android:textColor="#ffffff"
+                android:textColor="@color/smallTextColour"
                 android:gravity="center_horizontal"
                 android:text="@string/toTv"
                 android:layout_marginRight="20dp"
@@ -116,25 +116,4 @@
             android:layout_marginBottom="32dp"
     />
 
-    <!--<LinearLayout
-            android:id="@+id/fragment_history_bottom_sheet_delete"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="horizontal"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:padding="16dp">
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_dot"
-        />
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="16dp"
-                android:text="also dialog"/>
-    </LinearLayout>-->
 </LinearLayout>
