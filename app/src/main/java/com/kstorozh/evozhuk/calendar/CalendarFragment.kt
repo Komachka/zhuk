@@ -33,9 +33,9 @@ class CalendarFragment : Fragment(), HandleErrors {
         val model = activity!!.run {
             ViewModelProviders.of(this)[CalendarViewModel::class.java]
         }
-        handleErrors(model, view)
+        viewLifecycleOwner.handleErrors(model, view)
         val userId = CalendarFragmentArgs.fromBundle(arguments!!).userId
-        observe(model.getBookingEvents(today.timeInMillis, lastDay.timeInMillis, userId.toInt())) {
+        viewLifecycleOwner.observe(model.getBookingEvents(today.timeInMillis, lastDay.timeInMillis, userId.toInt())) {
             view.calendarView.setEvents(it)
         }
         view.calendarView.setOnDayClickListener { eventDay ->

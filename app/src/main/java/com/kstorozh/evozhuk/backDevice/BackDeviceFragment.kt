@@ -40,8 +40,8 @@ class BackDeviceFragment : Fragment(), HandleErrors {
         view.deviceNameTv.text = context?.getDeviceName()
         view.youTakeDeviceLabelTv.text = "${resources.getString(R.string.youTableDeviceLabel)} ${context?.getDeviceName()}"
         val modelBackDevice = ViewModelProviders.of(this).get(BackDeviceViewModel::class.java)
-        handleErrors(modelBackDevice, view)
-        observe(modelBackDevice.getSessionData(), {
+        viewLifecycleOwner.handleErrors(modelBackDevice, view)
+        viewLifecycleOwner.observe(modelBackDevice.getSessionData(), {
             it?.let {
                 val format = SimpleDateFormat(DATE_FORMAT_BACK_DEVICE_SCREEN_TV)
                 dateToBack.text = format.format(it.endData.time)
@@ -57,7 +57,7 @@ class BackDeviceFragment : Fragment(), HandleErrors {
             modelBackDevice.setBookingSession(SessionData(userId, endCalendar))
         }
         view.giveBackBut.setOnClickListener { view ->
-            observe(modelBackDevice.tryReturnDevice()) {
+            viewLifecycleOwner.observe(modelBackDevice.tryReturnDevice()) {
                 if (it) {
                     view.showSnackbar(resources.getString(R.string.device_returned_message))
                     clearAllNotification(context)

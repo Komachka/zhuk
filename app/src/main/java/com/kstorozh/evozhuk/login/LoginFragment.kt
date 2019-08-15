@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.logo_and_info.view.*
 class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler, HandleErrors {
 
     lateinit var model: LogInViewModel
-    lateinit var userNames: ArrayList<String>
+    val userNames = ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,15 +44,15 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler, HandleE
         fragment.deviceNameTv.text = context?.getDeviceName()
         fragment.forgotPassTv.setOnClickListener { show() }
         model = ViewModelProviders.of(this)[LogInViewModel::class.java]
-        handleErrors(model, fragment)
+        viewLifecycleOwner.handleErrors(model, fragment)
         subscribeNamesLiveData()
-        observe(model.isDeviceBooked(context?.applicationContext!!.getInfoAboutDevice()), {
+        viewLifecycleOwner.observe(model.isDeviceBooked(context?.applicationContext!!.getInfoAboutDevice()), {
             if (it)
                 Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_backDeviceFragment)
         })
         fragment.goInBut.setOnClickListener { view ->
             if (fragment.passwordEt.text!!.isNotEmpty() && loginEt.text.isNotEmpty())
-                observe(model.tryLogin(loginEt.text.toString(), passwordEt.text.toString())) {
+                viewLifecycleOwner.observe(model.tryLogin(loginEt.text.toString(), passwordEt.text.toString())) {
                     if (it != USER_ID_NOT_SET) {
                         fragment.setEmptyValues()
                         val action = LoginFragmentDirections.actionLoginFragmentToBookOrTakeFragment(it)
