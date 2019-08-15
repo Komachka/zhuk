@@ -16,7 +16,7 @@ import org.joda.time.DateTime
 
 interface BottomSheetDialogHandler {
 
-    fun CalendarDayFragment.createDialog(item: TimeSlot, userId: String) {
+    fun ChildrenDayFragment.createDialog(item: TimeSlot, userId: String) {
         if (this.context == null)
             return
         val mBottomSheetDialog = BottomSheetDialog(this.context!!)

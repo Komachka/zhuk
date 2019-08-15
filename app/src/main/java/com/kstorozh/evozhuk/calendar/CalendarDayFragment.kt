@@ -1,6 +1,7 @@
 package com.kstorozh.evozhuk.calendar
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,54 +18,106 @@ import com.kstorozh.evozhuk.R
 import kotlinx.android.synthetic.main.bottom_sheet_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_info.view.*
 
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
+import com.kstorozh.evozhuk.LOG_TAG
+import kotlinx.android.synthetic.main.fragment_calendar_parent_view.view.*
+import org.joda.time.DateTime
+import android.widget.LinearLayout
+
+
+
+
+
+
+
+
 class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
 
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
-    private lateinit var viewManager: RecyclerView.LayoutManager
-    lateinit var model: CalendarViewModel
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_calendar_day_view, container, false)
+        return inflater.inflate(R.layout.fragment_calendar_parent_view, container, false)
     }
 
+    private var lastPosition = 0
+    private lateinit var adapter: DayPageAdapter
     override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
 
-        (activity as AppCompatActivity).setSupportActionBar(fragmentView.toolbarDay)
-        fragmentView.toolbarDay.navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
-        fragmentView.toolbarDay.title = resources.getString(R.string.calendar)
-        fragmentView.toolbarDay.setNavigationOnClickListener {
-            val navController = this.findNavController()
-            navController.navigateUp()
-        }
+        adapter = DayPageAdapter(fragmentManager!!, fragmentView.my_viewpager)
+
         val userId = CalendarDayFragmentArgs.fromBundle(arguments!!).userId
         val milisec = CalendarDayFragmentArgs.fromBundle(arguments!!).milisec
-        model = activity!!.run {
-            ViewModelProviders.of(this)[CalendarViewModel::class.java]
-        }
-        viewLifecycleOwner.handleErrors(model, fragmentView)
-        viewLifecycleOwner.observe(model.getBookingSlotsPerDay(milisec, userId.toInt())) {
-            viewAdapter = TimeSlotAdapter(it)
-            fragmentView.recyclerView.adapter = viewAdapter
-            fragmentView.recyclerView.addOnItemTouchListener(
-                RecyclerItemClickListener(context!!, fragmentView.recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
-                    override fun onItemClick(view: View, position: Int) {
-                        val itemPosition = fragmentView.recyclerView.getChildLayoutPosition(view)
-                        createDialog(it[itemPosition], userId)
-                    }
-                    override fun onLongItemClick(view: View?, position: Int) {
-                        // TODO update booking
-                    }
-                })
-            )
-        }
-        viewManager = LinearLayoutManager(context)
-        fragmentView.recyclerView.apply {
-            setHasFixedSize(true)
-            layoutManager = viewManager
-        }
+
+        val dateTime = DateTime(milisec)
+        adapter.addFragment(ChildrenDayFragment.newInstance(dateTime.plusDays(-1).millis, userId.toInt()))
+        adapter.addFragment(ChildrenDayFragment.newInstance(milisec, userId.toInt()))
+        adapter.addFragment(ChildrenDayFragment.newInstance(dateTime.plusDays(1).millis, userId.toInt()))
+
+        fragmentView.my_viewpager.adapter = adapter
+        fragmentView.my_viewpager.currentItem = 1
+        lastPosition = adapter.count - 2
+
+
+        fragmentView.my_viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                //Log.e(LOG_TAG, "$position , $positionOffset , $positionOffsetPixels")
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                if (lastPosition > position) {
+
+
+                    Log.d(LOG_TAG, " LEFT")
+
+                    // TODO remove last fragment
+                    // TODO add fragment -1
+                }else if (lastPosition < position) {
+                    Log.d(LOG_TAG, " RIGHT")
+
+                    val fragment = adapter.getItem(position)
+                    val userId = fragment.arguments?.getInt(USER_ID) ?: 0
+                    val milisec = fragment.arguments?.getLong(MILISEC) ?: 0
+
+                    val maxTime = DateTime(System.currentTimeMillis()).plusDays(10)
+                    //val maxTime = DateTime(milisec).plusMonths(2)
+                    val dateTime = DateTime(milisec)
+
+                    Log.d(LOG_TAG, "${dateTime} ${maxTime}")
+                    if (dateTime.millis < maxTime.millis)
+                        addRight(ChildrenDayFragment.newInstance(dateTime.plusDays(1).millis, userId))
+
+
+                    // TODO remove 0 fragment
+                    // TODO add fragment +1
+                }
+                lastPosition = position
+                Log.d(LOG_TAG, " position $lastPosition")
+            }
+
+        })
     }
+
+    private fun addRight(fragment: Fragment) {
+        adapter.addFragment(fragment)
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun remove(position:Int) {
+        adapter.removeFrag(position)
+        adapter.notifyDataSetChanged()
+    }
+
+
+
 }

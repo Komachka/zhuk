@@ -86,7 +86,7 @@ internal class DeviceRepositoryImpl(
                 device.id
             )) {
                 is ApiResult.Success -> {
-                    bookingBody.id = result.data.data.bookingId
+                    bookingBody.id = result.data.data.bookingId // TODO добавить проверку на bookinId != null
                     Log.d(LOG_TAG, "Booking id " + bookingBody.id.toString())
                     localData.saveBooking(bookingBody)
                     repoResult.data = true
