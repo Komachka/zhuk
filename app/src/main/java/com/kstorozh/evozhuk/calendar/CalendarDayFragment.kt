@@ -55,9 +55,8 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
                         val itemPosition = fragmentView.recyclerView.getChildLayoutPosition(view)
                         createDialog(it[itemPosition], userId)
                     }
-
                     override fun onLongItemClick(view: View?, position: Int) {
-                        // do whatever
+                        // TODO update booking
                     }
                 })
             )
