@@ -33,7 +33,7 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler {
         model = activity!!.run {
             ViewModelProviders.of(this)[CalendarViewModel::class.java]
         }
-        observe(model.getBookingSlotsPerDay(milisec, userId.toInt())) {
+        viewLifecycleOwner.observe(model.getBookingSlotsPerDay(milisec, userId.toInt())) {
             viewAdapter = TimeSlotAdapter(it)
             fragmentView.recyclerView.adapter = viewAdapter
             fragmentView.recyclerView.addOnItemTouchListener(

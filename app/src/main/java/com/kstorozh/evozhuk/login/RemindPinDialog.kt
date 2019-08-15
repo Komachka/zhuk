@@ -25,16 +25,14 @@ interface RemindPinDialog {
         alertDialog.setView(input)
         alertDialog.setPositiveButton(resources.getString(R.string.reset_pass_dealog_pos_but)) { dialog, which ->
             if (input.text.isNotEmpty()) {
-                observe(model.getUserByName(input.text.toString())) { user ->
-                        user?.let { user ->
-                            observe(model.remindPin(user)) {
-                                val message: String = if (it)
-                                    resources.getString(R.string.request_for_reset_success_message)
-                                else
-                                    resources.getString(R.string.request_for_reset_error_message)
-                                view?.showSnackbar(message)
-                            }
-                        }
+                viewLifecycleOwner.observe(model.getUserByName(input.text.toString())) { user ->
+                    viewLifecycleOwner.observe(model.remindPin(user)) {
+                        val message: String = if (it)
+                            resources.getString(R.string.request_for_reset_success_message)
+                        else
+                            resources.getString(R.string.request_for_reset_error_message)
+                        view?.showSnackbar(message)
+                    }
                     }
             } else {
                 view?.showSnackbar(resources.getString(R.string.input_error_message))

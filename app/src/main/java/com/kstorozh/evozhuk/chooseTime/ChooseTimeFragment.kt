@@ -54,7 +54,9 @@ class ChooseTimeFragment : Fragment(), HandleErrors {
         view.youTakeDeviceLabelTv.text =
             "${resources.getString(R.string.time_choose_label)}${context?.getDeviceName()}?"
         val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeViewModel::class.java)
-        handleErrors(modelChooseTime, view)
+        with(viewLifecycleOwner) {
+            handleErrors(modelChooseTime, view)
+        }
         val anotherTimeMilisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
         val userId = ChooseTimeFragmentArgs.fromBundle(arguments!!).userId
         Log.d(LOG_TAG, "userId $userId")
@@ -82,7 +84,7 @@ class ChooseTimeFragment : Fragment(), HandleErrors {
         }
         view.takeDevice.setOnClickListener { view ->
             val selected = buttonTimes.filter { timeBut -> timeBut.isSelected }
-            observe(modelChooseTime.tryBookDevice(selected.first().milisec)) {
+            viewLifecycleOwner.observe(modelChooseTime.tryBookDevice(selected.first().milisec)) {
                 if (it) {
                     view.showSnackbar(resources.getString(R.string.device_booked_message))
                     val action =

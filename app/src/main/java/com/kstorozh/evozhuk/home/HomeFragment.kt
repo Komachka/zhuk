@@ -26,7 +26,7 @@ class HomeFragment : Fragment(), HandleErrors {
     }
 
     private fun View.initDevice(deviceInputData: DeviceInputData) {
-        observe(model.initDevice(deviceInputData)) {
+        viewLifecycleOwner.observe(model.initDevice(deviceInputData)) {
             if (it) {
                 val message = resources.getString(R.string.device_registered_message)
                 this.showSnackbar(message)
@@ -37,10 +37,10 @@ class HomeFragment : Fragment(), HandleErrors {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         model = ViewModelProviders.of(this)[HomeViewModel::class.java]
-        handleErrors(model, view)
+        viewLifecycleOwner.handleErrors(model, view)
         val info = context?.applicationContext!!.getInfoAboutDevice()
         view.welcomeMessageTv.text = info.model
-        observe(model.isDeviceInited(info), {
+        viewLifecycleOwner.observe(model.isDeviceInited(info), {
             if (it) {
                 Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_loginFragment)
             }
