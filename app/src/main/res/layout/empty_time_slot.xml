@@ -6,7 +6,6 @@
                                                    android:layout_height="25dp">
 
     <TextView
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="11sp"
@@ -19,12 +18,12 @@
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp" android:id="@+id/timeTv"/>
 
-    <View android:layout_width="0dp"
-
-          android:layout_height="2dp"
-          android:background="#3133b3" app:layout_constraintStart_toEndOf="@+id/timeTv"
-          app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
-          android:layout_marginLeft="16dp" android:layout_marginStart="16dp"
-          app:layout_constraintTop_toTopOf="@+id/timeTv" android:layout_marginTop="6dp"/>
+    <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#1828a7" app:layout_constraintStart_toEndOf="@+id/timeTv"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
+            android:layout_marginLeft="16dp" android:layout_marginStart="16dp"
+            app:layout_constraintTop_toTopOf="@+id/timeTv" android:layout_marginTop="6dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
