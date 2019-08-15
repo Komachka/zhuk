@@ -5,13 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.*
 import com.kstorozh.evozhuk.R
 import kotlinx.android.synthetic.main.bottom_sheet_dialog.view.*
+import kotlinx.android.synthetic.main.fragment_info.view.*
 
 class CalendarDayFragment : Fragment(), BottomSheetDialogHandler {
 
@@ -28,6 +31,14 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler {
     }
 
     override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
+
+        (activity as AppCompatActivity).setSupportActionBar(fragmentView.toolbarDay)
+        fragmentView.toolbarDay.navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
+        fragmentView.toolbarDay.title = resources.getString(R.string.calendar)
+        fragmentView.toolbarDay.setNavigationOnClickListener {
+            val navController = this.findNavController()
+            navController.navigateUp()
+        }
         val userId = CalendarDayFragmentArgs.fromBundle(arguments!!).userId
         val milisec = CalendarDayFragmentArgs.fromBundle(arguments!!).milisec
         model = activity!!.run {

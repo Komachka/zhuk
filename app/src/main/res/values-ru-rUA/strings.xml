@@ -81,6 +81,7 @@
     <string name="fromTV">С</string>
     <string name="toTv">До</string>
     <string name="chooseTimeLable">Выбери время для брони устройства</string>
+    <string name="calendar">Календарь</string>
 
 
 </resources>

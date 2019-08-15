@@ -86,5 +86,6 @@
     <string name="fromTV">З</string>
     <string name="toTv">До</string>
     <string name="chooseTimeLable">Вибери час для бронювання пристрою</string>
+    <string name="calendar">Календар</string>
 
 </resources>

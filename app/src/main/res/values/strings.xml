@@ -80,5 +80,6 @@
     <string name="fromTV">From</string>
     <string name="toTv">To</string>
     <string name="chooseTimeLable">Choose time for booking</string>
+    <string name="calendar">Calendar</string>
 
 </resources>
