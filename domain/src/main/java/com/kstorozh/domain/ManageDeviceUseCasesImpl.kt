@@ -12,7 +12,11 @@ import org.koin.core.KoinComponent
 
 import java.util.*
 
-class ManageDeviceUseCasesImpl(private val repository: DeviseRepository, val mapper: DeviceInfoMapper, val errorMapper: ErrorMapper) :
+class ManageDeviceUseCasesImpl(
+    private val repository: DeviseRepository,
+    val mapper: DeviceInfoMapper,
+    val errorMapper: ErrorMapper
+) :
     ManageDeviceUseCases, KoinComponent {
 
     override suspend fun isDeviceInited(deviceInputData: DeviceInputData): DomainResult<Boolean> {

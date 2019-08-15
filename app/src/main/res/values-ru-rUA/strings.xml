@@ -75,6 +75,13 @@
     <string name="choose">Вибрать</string>
 
     <string name="book_device">Забронировать</string>
+    <string name="book_bunt_text">Забронировать</string>
+
+    <string name="init">Настроить устройство</string>
+    <string name="fromTV">С</string>
+    <string name="toTv">До</string>
+    <string name="chooseTimeLable">Выбери время для брони устройства</string>
+    <string name="calendar">Календарь</string>
 
 
 </resources>

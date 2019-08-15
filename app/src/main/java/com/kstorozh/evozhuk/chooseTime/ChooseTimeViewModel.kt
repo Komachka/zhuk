@@ -37,7 +37,7 @@ class ChooseTimeViewModel : BaseViewModel(), KoinComponent {
         val bookDeviceLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
         userIdLiveData.value?.let {
             applicationScope.launch {
-                val result = manageDeviceUseCases.takeDevice(BookingInputData(it, Calendar.getInstance().apply { timeInMillis = timeMs }))
+                val result = manageDeviceUseCases.takeDevice(BookingInputData(it, Calendar.getInstance(), Calendar.getInstance().apply { timeInMillis = timeMs }))
                 result.data?.let {
                     bookDeviceLiveData.postValue(it)
                 }

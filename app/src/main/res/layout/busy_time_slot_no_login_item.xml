@@ -29,7 +29,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:background="#4858ca"
             android:layout_width="0dp"
-            android:layout_height="20dp"
+            android:layout_height="35dp"
             app:layout_constraintStart_toEndOf="@+id/timeTv"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp" android:layout_marginRight="8dp" android:layout_marginLeft="16dp"

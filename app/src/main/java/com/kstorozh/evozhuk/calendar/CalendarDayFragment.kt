@@ -5,20 +5,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
-import com.kstorozh.evozhuk.R
+import com.kstorozh.evozhuk.HandleErrors
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.*
-import java.util.*
+import com.kstorozh.evozhuk.R
+import kotlinx.android.synthetic.main.bottom_sheet_dialog.view.*
+import kotlinx.android.synthetic.main.fragment_info.view.*
 
-class CalendarDayFragment : Fragment() {
+class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
 
-    private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
+    lateinit var model: CalendarViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,18 +31,38 @@ class CalendarDayFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_calendar_day_view, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
+
+        (activity as AppCompatActivity).setSupportActionBar(fragmentView.toolbarDay)
+        fragmentView.toolbarDay.navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
+        fragmentView.toolbarDay.title = resources.getString(R.string.calendar)
+        fragmentView.toolbarDay.setNavigationOnClickListener {
+            val navController = this.findNavController()
+            navController.navigateUp()
+        }
         val userId = CalendarDayFragmentArgs.fromBundle(arguments!!).userId
         val milisec = CalendarDayFragmentArgs.fromBundle(arguments!!).milisec
-        val model = activity!!.run {
+        model = activity!!.run {
             ViewModelProviders.of(this)[CalendarViewModel::class.java]
         }
+        viewLifecycleOwner.handleErrors(model, fragmentView)
         viewLifecycleOwner.observe(model.getBookingSlotsPerDay(milisec, userId.toInt())) {
             viewAdapter = TimeSlotAdapter(it)
-            view.recyclerView.adapter = viewAdapter
+            fragmentView.recyclerView.adapter = viewAdapter
+            fragmentView.recyclerView.addOnItemTouchListener(
+                RecyclerItemClickListener(context!!, fragmentView.recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
+                    override fun onItemClick(view: View, position: Int) {
+                        val itemPosition = fragmentView.recyclerView.getChildLayoutPosition(view)
+                        createDialog(it[itemPosition], userId)
+                    }
+                    override fun onLongItemClick(view: View?, position: Int) {
+                        // TODO update booking
+                    }
+                })
+            )
         }
         viewManager = LinearLayoutManager(context)
-        view.recyclerView.apply {
+        fragmentView.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
         }

@@ -12,4 +12,5 @@ interface DeviseRepository {
     suspend fun returnDevice(bookingParam: BookingParam): RepoResult<Boolean>
     suspend fun deviceAlreadyInited(deviceParam: DeviceParam): RepoResult<Boolean>
     suspend fun getBookingSession(): RepoResult<BookingSessionData>
+    suspend fun bookDevice(bookingParam: BookingParam): RepoResult<Boolean>
 }

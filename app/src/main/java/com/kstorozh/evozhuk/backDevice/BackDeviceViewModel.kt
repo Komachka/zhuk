@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.util.*
 
 class BackDeviceViewModel : BaseViewModel(), KoinComponent {
 
@@ -26,7 +27,7 @@ class BackDeviceViewModel : BaseViewModel(), KoinComponent {
         val returnDeviceLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
         applicationScope.launch {
             bookingSession.value?.let {
-                val result = manageDeviceUseCases.returnDevice(BookingInputData(bookingSession.value!!.userId, null))
+                val result = manageDeviceUseCases.returnDevice(BookingInputData(bookingSession.value!!.userId, Calendar.getInstance(), Calendar.getInstance()))
                 result.data?.let {
                     returnDeviceLiveData.postValue(it)
                 }
