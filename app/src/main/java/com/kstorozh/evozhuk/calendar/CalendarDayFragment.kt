@@ -7,29 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.kstorozh.evozhuk.HandleErrors
-import com.kstorozh.evozhuk.utils.observe
-import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.*
 import com.kstorozh.evozhuk.R
-import kotlinx.android.synthetic.main.bottom_sheet_dialog.view.*
-import kotlinx.android.synthetic.main.fragment_info.view.*
 
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
 import com.kstorozh.evozhuk.LOG_TAG
 import kotlinx.android.synthetic.main.fragment_calendar_parent_view.view.*
 import org.joda.time.DateTime
-import android.widget.LinearLayout
-
-
-
-
-
-
 
 
 class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
@@ -49,10 +34,24 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
     private lateinit var adapter: DayPageAdapter
     override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
 
-        adapter = DayPageAdapter(fragmentManager!!, fragmentView.my_viewpager)
+
+        (activity as AppCompatActivity).setSupportActionBar(fragmentView.toolbarDay)
+        fragmentView.toolbarDay.navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
+        fragmentView.toolbarDay.title = resources.getString(R.string.calendar)
+        fragmentView.toolbarDay.setNavigationOnClickListener {
+            val navController = this.findNavController()
+            navController.navigateUp()
+        }
+
+
 
         val userId = CalendarDayFragmentArgs.fromBundle(arguments!!).userId
         val milisec = CalendarDayFragmentArgs.fromBundle(arguments!!).milisec
+
+
+        adapter = DayPageAdapter(fragmentManager!!, fragmentView.my_viewpager, userId.toInt())
+
+
 
         val dateTime = DateTime(milisec)
         adapter.addFragment(ChildrenDayFragment.newInstance(dateTime.plusDays(-1).millis, userId.toInt()))
@@ -61,7 +60,9 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
 
         fragmentView.my_viewpager.adapter = adapter
         fragmentView.my_viewpager.currentItem = 1
-        lastPosition = adapter.count - 2
+        var cuurentTime = DateTime(milisec)
+        lastPosition = 1
+
 
 
         fragmentView.my_viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -75,48 +76,31 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
             }
 
             override fun onPageSelected(position: Int) {
-                if (lastPosition > position) {
 
+                Log.d(LOG_TAG, "cuurentTime ${cuurentTime}")
+                if (position > 1) {
+                    Log.d(LOG_TAG, "<-")
+                    cuurentTime = DateTime(cuurentTime).plusDays(1)
+                    adapter.updateTime(cuurentTime)
+                    fragmentView.my_viewpager.currentItem = 1
+                    lastPosition = position
 
-                    Log.d(LOG_TAG, " LEFT")
+                } else if (position < 1) {
+                    Log.d(LOG_TAG, "->")
+                    cuurentTime = DateTime(cuurentTime).plusDays(-1)
+                    adapter.updateTime(cuurentTime)
+                    fragmentView.my_viewpager.currentItem = 1
+                    lastPosition = position
 
-                    // TODO remove last fragment
-                    // TODO add fragment -1
-                }else if (lastPosition < position) {
-                    Log.d(LOG_TAG, " RIGHT")
-
-                    val fragment = adapter.getItem(position)
-                    val userId = fragment.arguments?.getInt(USER_ID) ?: 0
-                    val milisec = fragment.arguments?.getLong(MILISEC) ?: 0
-
-                    val maxTime = DateTime(System.currentTimeMillis()).plusDays(10)
-                    //val maxTime = DateTime(milisec).plusMonths(2)
-                    val dateTime = DateTime(milisec)
-
-                    Log.d(LOG_TAG, "${dateTime} ${maxTime}")
-                    if (dateTime.millis < maxTime.millis)
-                        addRight(ChildrenDayFragment.newInstance(dateTime.plusDays(1).millis, userId))
-
-
-                    // TODO remove 0 fragment
-                    // TODO add fragment +1
                 }
-                lastPosition = position
-                Log.d(LOG_TAG, " position $lastPosition")
+
+
             }
 
         })
     }
 
-    private fun addRight(fragment: Fragment) {
-        adapter.addFragment(fragment)
-        adapter.notifyDataSetChanged()
-    }
 
-    private fun remove(position:Int) {
-        adapter.removeFrag(position)
-        adapter.notifyDataSetChanged()
-    }
 
 
 

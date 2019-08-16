@@ -56,7 +56,7 @@ interface BottomSheetDialogHandler {
         }
         timePicker.setOnTimeChangedListener { tP, pickerHour, pickerMinute ->
             timeAndDate.hour = pickerHour
-            timeAndDate.minute = pickerMinute * TIME_PICKER_INTERVAL // back to real time
+            timeAndDate.minute = pickerMinute * TIME_PICKER_INTERVAL // back to real updateTime
         }
         datePicker.init(timeAndDate.year, timeAndDate.month, timeAndDate.day) { dP, pickYear, pickMonth, pickDay ->
             timeAndDate.year = pickYear

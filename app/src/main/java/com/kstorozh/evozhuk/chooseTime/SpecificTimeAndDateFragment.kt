@@ -33,7 +33,7 @@ class SpecificTimeAndDateFragment : Fragment() {
         }
         fragment.timePicker.setOnTimeChangedListener { timePicker, pickerHour, pickerMinute ->
             currentTimeAndDate.hour = pickerHour
-            currentTimeAndDate.minute = pickerMinute * TIME_PICKER_INTERVAL // back to real time
+            currentTimeAndDate.minute = pickerMinute * TIME_PICKER_INTERVAL // back to real updateTime
         }
         fragment.datePicker.init(currentTimeAndDate.year, currentTimeAndDate.month, currentTimeAndDate.day) { datePicker, pickYear, pickMonth, pickDay ->
             currentTimeAndDate.year = pickYear

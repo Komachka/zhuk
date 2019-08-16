@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +16,9 @@ import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.*
 import java.text.SimpleDateFormat
+
+
+
 
 
 const val USER_ID = "user_id"
@@ -53,16 +57,13 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         return inflater.inflate(R.layout.fragment_calendar_day_view, container, false)
     }
 
+
+
+
+
     override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
 
 
-        (activity as AppCompatActivity).setSupportActionBar(fragmentView.toolbarDay)
-        fragmentView.toolbarDay.navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
-        fragmentView.toolbarDay.title = resources.getString(R.string.calendar)
-        fragmentView.toolbarDay.setNavigationOnClickListener {
-            val navController = this.findNavController()
-            navController.navigateUp()
-        }
         val userId = arguments?.getInt(USER_ID) ?: 0
         val milisec = arguments?.getLong(MILISEC) ?: 0
         model = activity!!.run {
@@ -92,5 +93,17 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
             setHasFixedSize(true)
             layoutManager = viewManager
         }
+    }
+
+    fun updateUI(milisec: Long, userId: Int) {
+        fragmentManager?. let {
+
+            val args = Bundle()
+            args.putLong(MILISEC, milisec)
+            args.putInt(USER_ID, userId)
+            arguments = args
+
+        }
+
     }
 }
