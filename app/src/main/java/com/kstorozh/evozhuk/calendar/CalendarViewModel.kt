@@ -72,17 +72,18 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
         else R.drawable.other_book_icon
     }
 
-    fun getBookingSlotsPerDay(dateInMilisec: Long, userId: Int): LiveData<List<TimeSlot>> {
+    val bookingSlotsPerDay = MutableLiveData<List<TimeSlot>>()
+
+    fun getBookingSlotsPerDay(dateInMilisec: Long, userId: Int) {
         val dt = DateTime(dateInMilisec)
         val fmt = DateTimeFormat.forPattern(YEAR_MONTH_DAY_FORMAT)
         val dayInFormat = fmt.print(dt)
-        return Transformations.switchMap(bookingsLiveData,
+        Transformations.switchMap(bookingsLiveData,
             Function<Map<String, List<Booking>>, LiveData<List<TimeSlot>>> { map ->
                 val bookingInDayList = map[dayInFormat]
                 val listOfTimeSlot: List<TimeSlot> = parseBookingToTimeSlot(bookingInDayList, userId, dateInMilisec)
-                val timeSlotPerDayLiveData = MutableLiveData<List<TimeSlot>>()
-                timeSlotPerDayLiveData.value = listOfTimeSlot
-                return@Function timeSlotPerDayLiveData
+                bookingSlotsPerDay.value = listOfTimeSlot
+                return@Function bookingSlotsPerDay
             })
     }
 

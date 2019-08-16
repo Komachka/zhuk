@@ -1,25 +1,20 @@
 package com.kstorozh.evozhuk.calendar
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.utils.observe
+import kotlinx.android.synthetic.main.fragment_calendar_day_view.*
 import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.*
+import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.dateTV
 import java.text.SimpleDateFormat
-
-
-
-
 
 const val USER_ID = "user_id"
 const val MILISEC = "milisec"
@@ -30,24 +25,16 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
     private lateinit var viewManager: RecyclerView.LayoutManager
     lateinit var model: CalendarViewModel
 
-
     companion object {
-        fun newInstance(milisec: Long, userId:Int): ChildrenDayFragment {
+        fun newInstance(milisec: Long, userId: Int): ChildrenDayFragment {
             val myFragment = ChildrenDayFragment()
-
             val args = Bundle()
             args.putLong(MILISEC, milisec)
             args.putInt(USER_ID, userId)
             myFragment.arguments = args
-            Log.d(LOG_TAG, "new instance ${userId} milisec ${milisec}")
             return myFragment
         }
     }
-
-
-
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,29 +45,22 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
     }
 
 
-
-
-
     override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
 
 
-        val userId = arguments?.getInt(USER_ID) ?: 0
-        val milisec = arguments?.getLong(MILISEC) ?: 0
         model = activity!!.run {
             ViewModelProviders.of(this)[CalendarViewModel::class.java]
         }
-        fragmentView.dateTV.text = SimpleDateFormat(YEAR_MONTH_DAY_FORMAT).format(milisec)
         viewLifecycleOwner.handleErrors(model, fragmentView)
-        viewLifecycleOwner.observe(model.getBookingSlotsPerDay(milisec, userId)) {
+        viewManager = LinearLayoutManager(context)
+        viewLifecycleOwner.observe(model.bookingSlotsPerDay) {
             viewAdapter = TimeSlotAdapter(it)
             fragmentView.recyclerView.adapter = viewAdapter
             fragmentView.recyclerView.addOnItemTouchListener(
                 RecyclerItemClickListener(context!!, fragmentView.recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
                     override fun onItemClick(view: View, position: Int) {
                         val itemPosition = fragmentView.recyclerView.getChildLayoutPosition(view)
-                        userId?.let {userId ->
-                            createDialog(it[itemPosition], userId.toString())
-                        }
+                        createDialog(it[itemPosition], "")
                     }
                     override fun onLongItemClick(view: View?, position: Int) {
                         // TODO update booking
@@ -88,22 +68,17 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
                 })
             )
         }
-        viewManager = LinearLayoutManager(context)
         fragmentView.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
         }
     }
 
+    lateinit var textView:TextureView
+
     fun updateUI(milisec: Long, userId: Int) {
-        fragmentManager?. let {
 
-            val args = Bundle()
-            args.putLong(MILISEC, milisec)
-            args.putInt(USER_ID, userId)
-            arguments = args
-
-        }
-
+        dateTV.text = SimpleDateFormat(YEAR_MONTH_DAY_FORMAT).format(milisec)
+        model.getBookingSlotsPerDay(milisec, userId)
     }
 }
