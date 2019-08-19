@@ -66,7 +66,8 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
                 RecyclerItemClickListener(context!!, fragmentView.recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
                     override fun onItemClick(view: View, position: Int) {
                         val itemPosition = fragmentView.recyclerView.getChildLayoutPosition(view)
-                        createDialog(it[itemPosition], userId.toString())
+                        if (!it[itemPosition].isMyBooking && !it[itemPosition].isOtherBooking)
+                            createDialog(it[itemPosition], userId.toString())
                     }
                     override fun onLongItemClick(view: View?, position: Int) {
                         // TODO update booking
