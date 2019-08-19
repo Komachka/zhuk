@@ -52,6 +52,10 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         viewManager = LinearLayoutManager(context)
         val milisec = arguments?.getLong(MILISEC) ?: 0
         val userId = arguments?.getInt(USER_ID) ?: 0
+        fragmentView.recyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+        }
         updateUI(milisec, userId)
     }
 
@@ -75,9 +79,6 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
                 })
             )
         }
-        fragmentView.recyclerView.apply {
-            setHasFixedSize(true)
-            layoutManager = viewManager
-        }
+
     }
 }

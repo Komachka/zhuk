@@ -1,6 +1,7 @@
 package com.kstorozh.evozhuk.calendar
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.kstorozh.evozhuk.HandleErrors
 import com.kstorozh.evozhuk.R
 
 import androidx.viewpager.widget.ViewPager
+import com.kstorozh.evozhuk.LOG_TAG
 import kotlinx.android.synthetic.main.fragment_calendar_parent_view.*
 import kotlinx.android.synthetic.main.fragment_calendar_parent_view.view.*
 import kotlinx.android.synthetic.main.fragment_calendar_parent_view.view.my_viewpager
@@ -92,6 +94,7 @@ class MyListener(
         if (state == ViewPager.SCROLL_STATE_IDLE) {
             var date: DateTime? = null
             if (selectedPos < midlePos) {
+                Log.d(LOG_TAG, "selectedPos < midlePos")
                 if (blockLeft) return
                 blockRight = false
                 date = DateTime(cuurentTime).plusDays(-1)
@@ -99,6 +102,7 @@ class MyListener(
                 if (date.dayOfMonth != minTime.dayOfMonth)
                     adapter.setCurrentDate(cuurentTime)
             } else if (selectedPos > midlePos) {
+                Log.d(LOG_TAG, "selectedPos > midlePos")
                 if (blockRight) return
                 blockLeft = false
                 date = DateTime(cuurentTime).plusDays(1)
@@ -119,6 +123,10 @@ class MyListener(
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
     override fun onPageSelected(position: Int) {
-        selectedPos = position
+        selectedPos = when {
+            blockLeft -> 2
+            blockRight -> 0
+            else -> position
+        }
     }
 }
