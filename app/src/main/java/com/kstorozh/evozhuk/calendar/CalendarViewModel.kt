@@ -9,6 +9,7 @@ import com.kstorozh.domainapi.model.Booking
 import com.kstorozh.domainapi.model.BookingInputData
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.R
+import kotlinx.android.synthetic.main.fragment_calendar_day_view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,6 +18,7 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.text.SimpleDateFormat
 import org.joda.time.format.DateTimeFormat
+
 
 class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
 
@@ -72,19 +74,19 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
         else R.drawable.other_book_icon
     }
 
-    val bookingSlotsPerDay = MutableLiveData<List<TimeSlot>>()
-
-    fun getBookingSlotsPerDay(dateInMilisec: Long, userId: Int) {
+    fun bookingSlotsPerDay(dateInMilisec: Long, userId: Int): LiveData<List<TimeSlot>> {
         val dt = DateTime(dateInMilisec)
         val fmt = DateTimeFormat.forPattern(YEAR_MONTH_DAY_FORMAT)
         val dayInFormat = fmt.print(dt)
-        Transformations.switchMap(bookingsLiveData,
-            Function<Map<String, List<Booking>>, LiveData<List<TimeSlot>>> { map ->
-                val bookingInDayList = map[dayInFormat]
-                val listOfTimeSlot: List<TimeSlot> = parseBookingToTimeSlot(bookingInDayList, userId, dateInMilisec)
-                bookingSlotsPerDay.value = listOfTimeSlot
-                return@Function bookingSlotsPerDay
-            })
+
+        return Transformations.switchMap(bookingsLiveData, Function {
+            val bookingInDayList = it[dayInFormat]
+            val listOfTimeSlot: List<TimeSlot> = parseBookingToTimeSlot(bookingInDayList, userId, dateInMilisec)
+            val liveData = MutableLiveData<List<TimeSlot>>()
+            liveData.value = listOfTimeSlot
+            return@Function liveData
+        })
+
     }
 
     private fun parseBookingToTimeSlot(list: List<Booking>?, userId: Int, dateInMilisec: Long): List<TimeSlot> {

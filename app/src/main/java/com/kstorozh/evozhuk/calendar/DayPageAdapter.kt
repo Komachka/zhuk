@@ -2,19 +2,17 @@ package com.kstorozh.evozhuk.calendar
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import org.joda.time.DateTime
 
-
 class DayPageAdapter(manager: FragmentManager, val userId: Int, val milisec: Long) :
-    FragmentPagerAdapter(manager) {
+    FragmentStatePagerAdapter(manager) {
 
     companion object {
         const val size = 3
     }
 
     private val fragments: List<ChildrenDayFragment>
-
 
     init {
         val dateTime = DateTime(milisec)
@@ -34,10 +32,8 @@ class DayPageAdapter(manager: FragmentManager, val userId: Int, val milisec: Lon
     }
 
     fun setCurrentDate(date: DateTime) {
-        fragments[0].updateUI(date.plusDays(-1).millis, userId)
         fragments[1].updateUI(date.millis, userId)
+        fragments[0].updateUI(date.plusDays(-1).millis, userId)
         fragments[2].updateUI(date.plusDays(1).millis, userId)
     }
-
-
 }
