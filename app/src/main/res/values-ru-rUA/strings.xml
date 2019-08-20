@@ -82,6 +82,7 @@
     <string name="toTv">До</string>
     <string name="chooseTimeLable">Выбери время для брони устройства</string>
     <string name="calendar">Календарь</string>
+    <string name="why_message">Зачем тебе это устройство?</string>
 
 
 </resources>

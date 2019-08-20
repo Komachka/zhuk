@@ -87,5 +87,6 @@
     <string name="toTv">До</string>
     <string name="chooseTimeLable">Вибери час для бронювання пристрою</string>
     <string name="calendar">Календар</string>
+    <string name="why_message">Навіщо тобі цей пристрій?</string>
 
 </resources>

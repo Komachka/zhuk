@@ -81,5 +81,6 @@
     <string name="toTv">To</string>
     <string name="chooseTimeLable">Choose time for booking</string>
     <string name="calendar">Calendar</string>
+    <string name="why_message">For what do you need this device?</string>
 
 </resources>

@@ -5,13 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.kstorozh.evozhuk.HandleErrors
 import com.kstorozh.evozhuk.MONTH_DELTA
 import com.kstorozh.evozhuk.R
+import com.kstorozh.evozhuk.USER_ID_NOT_SET
+import com.kstorozh.evozhuk.chooseTime.SpecificTimeAndDateFragmentDirections
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_calendar.view.*
+import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.*
+import kotlinx.android.synthetic.main.fragment_specific_time_and_date.view.*
 
 import java.util.*
 
@@ -26,6 +33,16 @@ class CalendarFragment : Fragment(), HandleErrors {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        (activity as AppCompatActivity).setSupportActionBar(view.toolbar_calendar)
+        view.toolbarDay.apply {
+            navigationIcon = resources.getDrawable(R.drawable.ic_close_black_24dp)
+            toolbarDay.title = resources.getString(R.string.calendar)
+            toolbarDay.setNavigationOnClickListener {
+                val navController = this.findNavController()
+                navController.navigateUp()
+            }
+        }
         val today = Calendar.getInstance()
         val lastDay = Calendar.getInstance()
         lastDay.add(Calendar.MONTH, MONTH_DELTA)

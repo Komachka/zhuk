@@ -24,7 +24,7 @@ class BookOrTakeFragment : Fragment() {
         view.deviceNameTv.text = context?.getDeviceName()
         view.calendarImageBut.setOnClickListener{
             arguments?.let {
-                with(BookOrTakeFragmentDirections.actionBookOrTakeFragmentToChooseTimeFragment(BookOrTakeFragmentArgs.fromBundle(it).userId)) {
+                with(BookOrTakeFragmentDirections.actionBookOrTakeFragmentToCalendarFragment(BookOrTakeFragmentArgs.fromBundle(it).userId)) {
                     Navigation.findNavController(view).navigate(this)
                 }
             }
