@@ -1,7 +1,6 @@
 package com.kstorozh.evozhuk.calendar
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +11,6 @@ import com.kstorozh.evozhuk.HandleErrors
 import com.kstorozh.evozhuk.R
 
 import androidx.viewpager.widget.ViewPager
-import com.kstorozh.evozhuk.LOG_TAG
-import kotlinx.android.synthetic.main.fragment_calendar_parent_view.*
 import kotlinx.android.synthetic.main.fragment_calendar_parent_view.view.*
 import kotlinx.android.synthetic.main.fragment_calendar_parent_view.view.my_viewpager
 import org.joda.time.DateTime
@@ -28,10 +25,9 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         return inflater.inflate(R.layout.fragment_calendar_parent_view, container, false)
     }
 
-    private lateinit var onPageChangeListener: MyListener
+    private lateinit var onPageChangeListener: ViewPagerScrollListener
     private lateinit var fragment: View
 
-    private var lastPosition = 0
     private lateinit var adapter: DayPageAdapter
 
     override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
@@ -52,27 +48,32 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
 
         fragmentView.my_viewpager.adapter = adapter
         fragmentView.my_viewpager.currentItem = 1
-        lastPosition = 1
         val cuurentTime = DateTime(milisec)
-        onPageChangeListener = MyListener(fragmentView.my_viewpager, adapter, cuurentTime)
+        onPageChangeListener = ViewPagerScrollListener(fragmentView.my_viewpager, adapter, cuurentTime)
         fragmentView.my_viewpager.addOnPageChangeListener(onPageChangeListener)
-        // onPageChangeListener.setCurrentDate(cuurentTime)
     }
 }
 
-class MyListener(
+class ViewPagerScrollListener(
     val my_viewpager: ViewPager,
     val adapter: DayPageAdapter,
     var cuurentTime: DateTime
 ) : ViewPager.OnPageChangeListener {
+
+    companion object {
+        const val MIDDLE_POS = 1
+        const val RIGHT_POS = 2
+        const val LEFT_POS = 0
+    }
+
     var selectedPos = 1
     var blockRight = false
     var blockLeft = false
-    val midlePos = 1
+
     val maxTime = DateTime().plusDays(60)
     val minTime = DateTime()
 
-    fun setCurrentDate(dateTime: DateTime) {
+  /*  fun setCurrentDate(dateTime: DateTime) {
         cuurentTime = dateTime
         if (dateTime == minTime) {
             blockLeft = true
@@ -87,22 +88,20 @@ class MyListener(
             blockRight = false
         }
         adapter.setCurrentDate(dateTime)
-    }
+    }*/
 
     override fun onPageScrollStateChanged(state: Int) {
 
         if (state == ViewPager.SCROLL_STATE_IDLE) {
             var date: DateTime? = null
-            if (selectedPos < midlePos) {
-                Log.d(LOG_TAG, "selectedPos < midlePos")
+            if (selectedPos < MIDDLE_POS) {
                 if (blockLeft) return
                 blockRight = false
                 date = DateTime(cuurentTime).plusDays(-1)
                 cuurentTime = date
                 if (date.dayOfMonth != minTime.dayOfMonth)
                     adapter.setCurrentDate(cuurentTime)
-            } else if (selectedPos > midlePos) {
-                Log.d(LOG_TAG, "selectedPos > midlePos")
+            } else if (selectedPos > MIDDLE_POS) {
                 if (blockRight) return
                 blockLeft = false
                 date = DateTime(cuurentTime).plusDays(1)
@@ -115,7 +114,7 @@ class MyListener(
             } else if (date != null && (date.dayOfMonth == minTime.dayOfMonth && date.monthOfYear == minTime.monthOfYear)) {
                 blockLeft = true
             } else {
-                my_viewpager.currentItem = 1
+                my_viewpager.setCurrentItem(MIDDLE_POS,false)
             }
         }
     }
@@ -124,8 +123,8 @@ class MyListener(
 
     override fun onPageSelected(position: Int) {
         selectedPos = when {
-            blockLeft -> 2
-            blockRight -> 0
+            blockLeft -> RIGHT_POS
+            blockRight -> LEFT_POS
             else -> position
         }
     }

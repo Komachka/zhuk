@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import org.joda.time.DateTime
 
 class DayPageAdapter(manager: FragmentManager, val userId: Int, val milisec: Long) :
-    FragmentPagerAdapter(manager) {
+    FragmentStatePagerAdapter(manager) {
 
     companion object {
         const val size = 3

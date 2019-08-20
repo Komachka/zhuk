@@ -81,9 +81,11 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
 
         return Transformations.switchMap(bookingsLiveData, Function {
             val bookingInDayList = it[dayInFormat]
-            val listOfTimeSlot: List<TimeSlot> = parseBookingToTimeSlot(bookingInDayList, userId, dateInMilisec)
             val liveData = MutableLiveData<List<TimeSlot>>()
-            liveData.value = listOfTimeSlot
+            applicationScope.launch {
+                val listOfTimeSlot: List<TimeSlot> = parseBookingToTimeSlot(bookingInDayList, userId, dateInMilisec)
+                liveData.postValue(listOfTimeSlot)
+            }
             return@Function liveData
         })
 
