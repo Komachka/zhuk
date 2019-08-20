@@ -37,6 +37,13 @@ class BackDeviceFragment : Fragment(), HandleErrors {
         view.infoImageBut.setOnClickListener {
             Navigation.findNavController(view).navigate(BackDeviceFragmentDirections.actionBackDeviceFragmentToInfoFragment())
         }
+        view.calendarImageBut.setOnClickListener {
+            arguments?.let {
+                with(BackDeviceFragmentDirections.actionBackDeviceFragmentToCalendarFragment(BackDeviceFragmentArgs.fromBundle(it).userId)) {
+                    Navigation.findNavController(view).navigate(this)
+                }
+            }
+        }
         view.deviceNameTv.text = context?.getDeviceName()
         view.youTakeDeviceLabelTv.text = "${resources.getString(R.string.youTableDeviceLabel)} ${context?.getDeviceName()}"
         val modelBackDevice = ViewModelProviders.of(this).get(BackDeviceViewModel::class.java)

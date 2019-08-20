@@ -1,10 +1,8 @@
 package com.kstorozh.evozhuk.calendar
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.kstorozh.evozhuk.HandleErrors
@@ -25,16 +23,38 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         return inflater.inflate(R.layout.fragment_calendar_parent_view, container, false)
     }
 
+
     private lateinit var onPageChangeListener: ViewPagerScrollListener
     private lateinit var fragment: View
 
     private lateinit var adapter: DayPageAdapter
 
-    override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
+        super.onCreate(savedInstanceState)
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        item?.let {
+            if (it.itemId == R.id.action_info) {
+                // TODO add navigation
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
         fragment = fragmentView
         (activity as AppCompatActivity).setSupportActionBar(fragmentView.toolbarDay)
-        fragmentView.toolbarDay.navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
+        fragmentView.toolbarDay.navigationIcon = resources.getDrawable(R.drawable.ic_close_black_24dp)
         fragmentView.toolbarDay.title = resources.getString(R.string.calendar)
         fragmentView.toolbarDay.setNavigationOnClickListener {
             val navController = this.findNavController()
@@ -97,7 +117,7 @@ class ViewPagerScrollListener(
             } else if (date != null && (date.dayOfMonth == minTime.dayOfMonth && date.monthOfYear == minTime.monthOfYear)) {
                 blockLeft = true
             } else {
-                my_viewpager.setCurrentItem(MIDDLE_POS,false)
+                my_viewpager.setCurrentItem(MIDDLE_POS, false)
             }
         }
     }
@@ -112,3 +132,4 @@ class ViewPagerScrollListener(
         }
     }
 }
+
