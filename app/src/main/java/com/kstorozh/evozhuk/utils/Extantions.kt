@@ -84,10 +84,8 @@ fun Context.getStatFs(): StatFs? {
         Environment.getExternalStorageDirectory()
     }
     var statf: StatFs? = null
-    GlobalScope.launch {
-        if (file != null) {
-            statf = StatFs(file.path)
-        }
+    if (file != null) {
+        statf = StatFs(file.path)
     }
     return statf
 }
