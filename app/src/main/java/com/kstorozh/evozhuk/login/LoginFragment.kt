@@ -43,6 +43,7 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler, HandleE
 
         fragment.deviceNameTv.text = context?.getDeviceName()
         fragment.forgotPassTv.setOnClickListener { show() }
+        fragment.calendarImageBut.visibility = View.INVISIBLE
         model = ViewModelProviders.of(this)[LogInViewModel::class.java]
         viewLifecycleOwner.handleErrors(model, fragment)
         subscribeNamesLiveData()

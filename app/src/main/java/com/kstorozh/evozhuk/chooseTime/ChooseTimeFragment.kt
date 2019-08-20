@@ -57,6 +57,13 @@ class ChooseTimeFragment : Fragment(), HandleErrors {
         with(viewLifecycleOwner) {
             handleErrors(modelChooseTime, view)
         }
+        view.calendarImageBut.setOnClickListener {
+            arguments?.let {
+                with(ChooseTimeFragmentDirections.actionChooseTimeFragmentToCalendarFragment(ChooseTimeFragmentArgs.fromBundle(it).userId)) {
+                    Navigation.findNavController(view).navigate(this)
+                }
+            }
+        }
         val anotherTimeMilisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
         val userId = ChooseTimeFragmentArgs.fromBundle(arguments!!).userId
         Log.d(LOG_TAG, "userId $userId")

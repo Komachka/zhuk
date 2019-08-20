@@ -1,10 +1,8 @@
 package com.kstorozh.evozhuk.calendar
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -31,10 +29,14 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         return inflater.inflate(R.layout.fragment_calendar_day_view, container, false)
     }
 
-    override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
+        super.onCreate(savedInstanceState)
+    }
 
+    override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
         (activity as AppCompatActivity).setSupportActionBar(fragmentView.toolbarDay)
-        fragmentView.toolbarDay.navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
+        fragmentView.toolbarDay.navigationIcon = resources.getDrawable(R.drawable.ic_close_black_24dp)
         fragmentView.toolbarDay.title = resources.getString(R.string.calendar)
         fragmentView.toolbarDay.setNavigationOnClickListener {
             val navController = this.findNavController()
@@ -66,5 +68,20 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
             setHasFixedSize(true)
             layoutManager = viewManager
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        item?.let {
+            if (it.itemId == R.id.action_info) {
+                // TODO add navigation
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
