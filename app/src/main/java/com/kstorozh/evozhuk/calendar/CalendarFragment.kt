@@ -31,7 +31,6 @@ class CalendarFragment : Fragment(), HandleErrors {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         (activity as AppCompatActivity).setSupportActionBar(view.toolbar_calendar)
         view.toolbar_calendar.apply {
             navigationIcon = resources.getDrawable(R.drawable.ic_close_black_24dp)

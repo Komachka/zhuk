@@ -35,7 +35,6 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
     }
 
     override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
-
         (activity as AppCompatActivity).setSupportActionBar(fragmentView.toolbarDay)
         fragmentView.toolbarDay.navigationIcon = resources.getDrawable(R.drawable.ic_close_black_24dp)
         fragmentView.toolbarDay.title = resources.getString(R.string.calendar)
