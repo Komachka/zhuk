@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.BookingInputData
 import com.kstorozh.evozhuk.BaseViewModel
+import com.kstorozh.evozhuk.Event
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,7 +43,7 @@ class ChooseTimeViewModel : BaseViewModel(), KoinComponent {
                     bookDeviceLiveData.postValue(it)
                 }
                 result.domainError?.let {
-                    errors.postValue(it)
+                    errors.postValue(Event(it))
                 }
             }
         }
