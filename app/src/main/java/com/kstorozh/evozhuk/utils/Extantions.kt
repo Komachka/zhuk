@@ -26,8 +26,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.kstorozh.evozhuk.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 
 internal fun Context.getInfoAboutDevice(): DeviceInputData {
