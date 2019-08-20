@@ -82,8 +82,10 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
             if (it.itemId == R.id.action_info)
             {
                 //Navigation.findNavController(item.actionView).navigate(.actionBookOrTakeFragmentToInfoFragment())
+                return true
             }
         }
+        return super.onOptionsItemSelected(item)
 
     }
 }

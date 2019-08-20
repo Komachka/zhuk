@@ -35,10 +35,10 @@ class CalendarFragment : Fragment(), HandleErrors {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         (activity as AppCompatActivity).setSupportActionBar(view.toolbar_calendar)
-        view.toolbarDay.apply {
+        view.toolbar_calendar.apply {
             navigationIcon = resources.getDrawable(R.drawable.ic_close_black_24dp)
-            toolbarDay.title = resources.getString(R.string.calendar)
-            toolbarDay.setNavigationOnClickListener {
+            title = resources.getString(R.string.calendar)
+            setNavigationOnClickListener {
                 val navController = this.findNavController()
                 navController.navigateUp()
             }
