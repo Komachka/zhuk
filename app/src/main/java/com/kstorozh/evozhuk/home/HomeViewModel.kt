@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.DeviceInputData
 import com.kstorozh.evozhuk.BaseViewModel
+import com.kstorozh.evozhuk.Event
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,7 +26,7 @@ class HomeViewModel : BaseViewModel(), KoinComponent {
                 initDeviceLiveData.postValue(it)
             }
             result.domainError?.let {
-                errors.postValue(it)
+                errors.postValue(Event(it))
             }
         }
         return initDeviceLiveData
@@ -39,7 +40,7 @@ class HomeViewModel : BaseViewModel(), KoinComponent {
                 isDeviceInitedLiveData.postValue(it)
             }
             result.domainError?.let {
-                errors.postValue(it)
+                errors.postValue(Event(it))
             }
         }
         return isDeviceInitedLiveData

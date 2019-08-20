@@ -37,7 +37,7 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
                     durationInMilisecLiveData.postValue(it.duration * ONE_SECOND)
                 }
                 result.domainError?.let {
-                    errors.postValue(it)
+                    errors.postValue(Event(it))
                 }
             }
             return bookingsLiveData
@@ -108,7 +108,7 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
                     liveData.postValue(true)
                 }
                 result.domainError?.let {
-                    errors.postValue(it)
+                    errors.postValue(Event(it))
                     liveData.postValue(false)
                 }
         }

@@ -6,6 +6,7 @@ import com.kstorozh.domainapi.LoginUseCase
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.*
 import com.kstorozh.evozhuk.BaseViewModel
+import com.kstorozh.evozhuk.Event
 import com.kstorozh.evozhuk.USER_ID_NOT_SET
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,7 +48,7 @@ class LogInViewModel : BaseViewModel(), KoinComponent {
         applicationScope.launch {
             val domainRes = getUserUseCase.getUsers()
             domainRes.data?.let { users.postValue(it) }
-            domainRes.domainError?.let { errors.postValue(it) }
+            domainRes.domainError?.let { errors.postValue(Event(it)) }
         }
     }
 
@@ -60,7 +61,7 @@ class LogInViewModel : BaseViewModel(), KoinComponent {
             }
             domainRes.domainError?.let {
                 tryLoginLiveData.postValue(USER_ID_NOT_SET)
-                errors.postValue(it)
+                errors.postValue(Event(it))
             }
         }
         return tryLoginLiveData
@@ -71,7 +72,7 @@ class LogInViewModel : BaseViewModel(), KoinComponent {
         applicationScope.launch {
             val domainRes = loginUseCase.remindPin(user)
             domainRes.data?.let { remindPinLiveData.postValue(it) }
-            domainRes.domainError?.let { errors.postValue(it) }
+            domainRes.domainError?.let { errors.postValue(Event(it)) }
         }
         return remindPinLiveData
     }
