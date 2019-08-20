@@ -5,7 +5,6 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -74,18 +73,16 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.menu, menu)
-        super.onCreateOptionsMenu(menu,inflater)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         item?.let {
-            if (it.itemId == R.id.action_info)
-            {
-                //Navigation.findNavController(item.actionView).navigate(.actionBookOrTakeFragmentToInfoFragment())
+            if (it.itemId == R.id.action_info) {
+                // TODO add navigation
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
-
     }
 }

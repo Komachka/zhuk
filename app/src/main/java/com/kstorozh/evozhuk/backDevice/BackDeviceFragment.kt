@@ -13,8 +13,6 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import com.kstorozh.evozhuk.*
-import com.kstorozh.evozhuk.chooseTime.ChooseTimeFragmentArgs
-import com.kstorozh.evozhuk.chooseTime.ChooseTimeFragmentDirections
 import com.kstorozh.evozhuk.notifications.NotificationService
 import com.kstorozh.evozhuk.utils.getDeviceName
 import com.kstorozh.evozhuk.utils.observe
@@ -39,7 +37,7 @@ class BackDeviceFragment : Fragment(), HandleErrors {
         view.infoImageBut.setOnClickListener {
             Navigation.findNavController(view).navigate(BackDeviceFragmentDirections.actionBackDeviceFragmentToInfoFragment())
         }
-        view.calendarImageBut.setOnClickListener{
+        view.calendarImageBut.setOnClickListener {
             arguments?.let {
                 with(BackDeviceFragmentDirections.actionBackDeviceFragmentToCalendarFragment(BackDeviceFragmentArgs.fromBundle(it).userId)) {
                     Navigation.findNavController(view).navigate(this)

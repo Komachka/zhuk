@@ -22,8 +22,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.backDevice.MyNotificationPublisher
-import com.kstorozh.evozhuk.calendar.BookOrTakeFragmentArgs
-import com.kstorozh.evozhuk.calendar.BookOrTakeFragmentDirections
 import com.kstorozh.evozhuk.notifications.CHANEL_ID
 import com.kstorozh.evozhuk.notifications.NotificationService
 import com.kstorozh.evozhuk.utils.getDeviceName
@@ -59,7 +57,7 @@ class ChooseTimeFragment : Fragment(), HandleErrors {
         with(viewLifecycleOwner) {
             handleErrors(modelChooseTime, view)
         }
-        view.calendarImageBut.setOnClickListener{
+        view.calendarImageBut.setOnClickListener {
             arguments?.let {
                 with(ChooseTimeFragmentDirections.actionChooseTimeFragmentToCalendarFragment(ChooseTimeFragmentArgs.fromBundle(it).userId)) {
                     Navigation.findNavController(view).navigate(this)

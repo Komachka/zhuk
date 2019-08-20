@@ -13,8 +13,6 @@ import androidx.navigation.fragment.findNavController
 import com.kstorozh.evozhuk.HandleErrors
 import com.kstorozh.evozhuk.MONTH_DELTA
 import com.kstorozh.evozhuk.R
-import com.kstorozh.evozhuk.USER_ID_NOT_SET
-import com.kstorozh.evozhuk.chooseTime.SpecificTimeAndDateFragmentDirections
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_calendar.view.*
 import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.*
