@@ -1,6 +1,7 @@
 package com.kstorozh.evozhuk.calendar
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -38,6 +39,14 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         }
     }
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val id = arguments?.getInt(FRAGMENT_ID) ?: -1
+        Log.d(LOG_TAG, "oncreate $id")
+        model = activity!!.run { ViewModelProviders.of(this)[CalendarViewModel::class.java] }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,7 +59,7 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
     override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
 
         this.fragmentView = fragmentView
-        model = activity!!.run { ViewModelProviders.of(this)[CalendarViewModel::class.java] }
+
         viewLifecycleOwner.handleErrors(model, fragmentView)
         viewManager = LinearLayoutManager(context)
         val milisec = arguments?.getLong(MILISEC) ?: 0
@@ -63,9 +72,8 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
     }
 
     fun updateUI(milisec: Long, userId: Int) {
-
         if (dateTV == null) return
-        dateTV.text = SimpleDateFormat(YEAR_MONTH_DAY_FORMAT).format(milisec)
+        dateTV.text = SimpleDateFormat(DAY_MONTH_FORMAT).format(milisec)
         viewLifecycleOwner.observe(model.bookingSlotsPerDay(milisec, userId)) {
             viewAdapter = TimeSlotAdapter(it)
             fragmentView.recyclerView.adapter = viewAdapter
