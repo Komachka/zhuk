@@ -73,23 +73,6 @@ class ViewPagerScrollListener(
     val maxTime = DateTime().plusDays(60)
     val minTime = DateTime()
 
-  /*  fun setCurrentDate(dateTime: DateTime) {
-        cuurentTime = dateTime
-        if (dateTime == minTime) {
-            blockLeft = true
-            my_viewpager.currentItem = 0
-            selectedPos = 0
-        } else if (dateTime == maxTime) {
-            blockRight = true
-            my_viewpager.currentItem = 2
-            selectedPos = 2
-        } else {
-            blockLeft = false
-            blockRight = false
-        }
-        adapter.setCurrentDate(dateTime)
-    }*/
-
     override fun onPageScrollStateChanged(state: Int) {
 
         if (state == ViewPager.SCROLL_STATE_IDLE) {

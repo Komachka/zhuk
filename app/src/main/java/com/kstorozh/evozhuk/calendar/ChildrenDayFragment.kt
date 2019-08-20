@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat
 
 const val USER_ID = "user_id"
 const val MILISEC = "milisec"
+const val FRAGMENT_ID = "id"
 
 class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
 
@@ -26,11 +27,12 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
     lateinit var fragmentView: View
 
     companion object {
-        fun newInstance(milisec: Long, userId: Int): ChildrenDayFragment {
+        fun newInstance(milisec: Long, userId: Int, id:Int): ChildrenDayFragment {
             val myFragment = ChildrenDayFragment()
             val args = Bundle()
             args.putLong(MILISEC, milisec)
             args.putInt(USER_ID, userId)
+            args.putInt(FRAGMENT_ID, id)
             myFragment.arguments = args
             return myFragment
         }

@@ -18,9 +18,9 @@ class DayPageAdapter(manager: FragmentManager, val userId: Int, val milisec: Lon
     init {
         val dateTime = DateTime(milisec)
         fragments = listOf(
-            ChildrenDayFragment.newInstance(dateTime.plusDays(-1).millis, userId),
-            ChildrenDayFragment.newInstance(milisec, userId),
-            ChildrenDayFragment.newInstance(dateTime.plusDays(1).millis, userId)
+            ChildrenDayFragment.newInstance(dateTime.plusDays(-1).millis, userId, 0),
+            ChildrenDayFragment.newInstance(milisec, userId, 1),
+            ChildrenDayFragment.newInstance(dateTime.plusDays(1).millis, userId, 2)
         )
     }
 
