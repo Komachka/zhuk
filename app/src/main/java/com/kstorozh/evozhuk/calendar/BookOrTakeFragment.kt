@@ -22,6 +22,13 @@ class BookOrTakeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         view.deviceNameTv.text = context?.getDeviceName()
+        view.calendarImageBut.setOnClickListener{
+            arguments?.let {
+                with(BookOrTakeFragmentDirections.actionBookOrTakeFragmentToChooseTimeFragment(BookOrTakeFragmentArgs.fromBundle(it).userId)) {
+                    Navigation.findNavController(view).navigate(this)
+                }
+            }
+        }
         view.infoImageBut
             .setOnClickListener {
                 Navigation.findNavController(view).navigate(BookOrTakeFragmentDirections.actionBookOrTakeFragmentToInfoFragment())
