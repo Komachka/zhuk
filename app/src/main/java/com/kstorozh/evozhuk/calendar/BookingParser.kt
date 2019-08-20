@@ -51,7 +51,7 @@ interface BookingParser {
                     userId = userId
                 )
             }
-            var time = book.duration * ONE_SECOND
+            var time = book.duration * ONE_SECOND - step
             while (time / step > 0.0) {
                 val startDateTmp = dateTimeStart.millis + ((time / step) * step)
                 val dateTimeStartTmp = DateTime(startDateTmp)
