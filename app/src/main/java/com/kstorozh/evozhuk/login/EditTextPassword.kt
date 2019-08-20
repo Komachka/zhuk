@@ -13,7 +13,7 @@ import android.text.InputType
 import com.kstorozh.evozhuk.utils.onTextChanged
 
 const val END_IMAGE_INDEX = 2
-const val VISIBLE_PASSWORD_TYPE = InputType.TYPE_CLASS_TEXT
+const val VISIBLE_PASSWORD_TYPE = (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_NORMAL)
 const val INVISIBLE_PASSWORD_TYPE = (InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD)
 class EditTextPassword : AppCompatEditText {
     private lateinit var hintPassImg: Drawable
@@ -40,10 +40,12 @@ class EditTextPassword : AppCompatEditText {
                     if (event.action == MotionEvent.ACTION_DOWN) {
                         inputType = VISIBLE_PASSWORD_TYPE
                         showImage()
+                        setSelection(text!!.length)
                     }
                     if (event.action == MotionEvent.ACTION_UP) {
                         inputType = INVISIBLE_PASSWORD_TYPE
                         showImage()
+                        setSelection(text!!.length)
                         return true
                     }
                 }
