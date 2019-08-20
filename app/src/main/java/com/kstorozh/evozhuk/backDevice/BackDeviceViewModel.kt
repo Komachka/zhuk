@@ -7,6 +7,7 @@ import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.BookingInputData
 import com.kstorozh.domainapi.model.SessionData
 import com.kstorozh.evozhuk.BaseViewModel
+import com.kstorozh.evozhuk.Event
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,7 +33,7 @@ class BackDeviceViewModel : BaseViewModel(), KoinComponent {
                     returnDeviceLiveData.postValue(it)
                 }
                 result.domainError?.let {
-                    errors.postValue(it)
+                    errors.postValue(Event(it))
                 }
             }
         }
@@ -46,7 +47,7 @@ class BackDeviceViewModel : BaseViewModel(), KoinComponent {
                 bookingSession.postValue(it)
             }
             domainResult.domainError?.let {
-                errors.postValue(it)
+                errors.postValue(Event(it))
             }
         }
         return bookingSession

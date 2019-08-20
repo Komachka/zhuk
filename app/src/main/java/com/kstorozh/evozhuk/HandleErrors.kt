@@ -9,12 +9,15 @@ interface HandleErrors {
 
     fun LifecycleOwner.handleErrors(viewModel: BaseViewModel, view: View) {
         observe(viewModel.errors) {
-            it.message?.let { view.showSnackbar(it) }
-            if (it.message == null) {
-                it.throwable?.message?.let {
-                    view.showSnackbar(it)
+            it.getContentIfNotHandled()?.let {
+                it.message?.let { view.showSnackbar(it) }
+                if (it.message == null) {
+                    it.throwable?.message?.let {
+                        view.showSnackbar(it)
+                    }
                 }
             }
+
         }
     }
 }
