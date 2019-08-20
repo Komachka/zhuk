@@ -82,7 +82,7 @@
     <string name="book_device">Забронювати</string>
     <string name="book_bunt_text">Забронювати</string>
 
-    <string name="init">Налаштувати пристрій</string>
+    <string name="init">Додати пристрій</string>
     <string name="fromTV">З</string>
     <string name="toTv">До</string>
     <string name="chooseTimeLable">Вибери час для бронювання пристрою</string>

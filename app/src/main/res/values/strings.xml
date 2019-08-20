@@ -72,7 +72,7 @@
     <string name="memory">Memory</string>
     <string name="storage">Storage</string>
     <string name="info">Information</string>
-    <string name="init">Init device</string>
+    <string name="init">Add device</string>
     <string name="choose">Choose</string>
     <string name="book_device">Book device</string>
 
