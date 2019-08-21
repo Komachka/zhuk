@@ -19,7 +19,6 @@ import org.koin.core.inject
 import java.text.SimpleDateFormat
 import org.joda.time.format.DateTimeFormat
 
-
 class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
 
     private val getBookingsUseCase: GetBookingUseCase by inject()
@@ -88,7 +87,6 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
             }
             return@Function liveData
         })
-
     }
 
     private fun parseBookingToTimeSlot(list: List<Booking>?, userId: Int, dateInMilisec: Long): List<TimeSlot> {

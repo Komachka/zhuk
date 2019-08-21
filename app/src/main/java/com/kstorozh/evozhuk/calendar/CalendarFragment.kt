@@ -17,7 +17,6 @@ import kotlinx.android.synthetic.main.fragment_calendar.view.*
 
 import org.joda.time.DateTime
 
-
 import java.util.*
 
 class CalendarFragment : Fragment(), HandleErrors {

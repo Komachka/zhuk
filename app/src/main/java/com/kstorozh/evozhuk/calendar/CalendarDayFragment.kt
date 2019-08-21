@@ -1,7 +1,6 @@
 package com.kstorozh.evozhuk.calendar
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
@@ -10,13 +9,9 @@ import com.kstorozh.evozhuk.HandleErrors
 import com.kstorozh.evozhuk.R
 
 import androidx.viewpager.widget.ViewPager
-import com.kstorozh.evozhuk.LOG_TAG
 import kotlinx.android.synthetic.main.fragment_calendar_parent_view.view.*
 import kotlinx.android.synthetic.main.fragment_calendar_parent_view.view.my_viewpager
 import org.joda.time.DateTime
-
-
-
 
 class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
 
@@ -28,18 +23,15 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         return inflater.inflate(R.layout.fragment_calendar_parent_view, container, false)
     }
 
-
     private lateinit var onPageChangeListener: ViewPagerScrollListener
     private lateinit var fragment: View
 
     private lateinit var adapter: DayPageAdapter
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.menu, menu)
@@ -98,13 +90,7 @@ class ViewPagerScrollListener(
     val maxTime = DateTime().plusDays(60)
     val minTime = DateTime()
 
-
-    val thresholdOffset = 0.5f
-    var scrollStarted: Boolean = false
-    var checkDirection: Boolean = false
-
     override fun onPageScrollStateChanged(state: Int) {
-
 
         if (state == ViewPager.SCROLL_STATE_IDLE) {
 
@@ -132,17 +118,9 @@ class ViewPagerScrollListener(
                 my_viewpager.setCurrentItem(MIDDLE_POS, false)
             }
         }
-
-        if (!scrollStarted && state == ViewPager.SCROLL_STATE_SETTLING) {
-            scrollStarted = true
-            checkDirection = true
-        } else {
-            scrollStarted = false
-        }
     }
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
     }
 
     override fun onPageSelected(position: Int) {
@@ -153,4 +131,3 @@ class ViewPagerScrollListener(
         }
     }
 }
-

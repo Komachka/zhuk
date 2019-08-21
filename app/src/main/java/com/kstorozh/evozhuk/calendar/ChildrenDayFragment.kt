@@ -28,7 +28,7 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
     lateinit var fragmentView: View
 
     companion object {
-        fun newInstance(milisec: Long, userId: Int, id:Int): ChildrenDayFragment {
+        fun newInstance(milisec: Long, userId: Int, id: Int): ChildrenDayFragment {
             val myFragment = ChildrenDayFragment()
             val args = Bundle()
             args.putLong(MILISEC, milisec)
@@ -38,7 +38,6 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
             return myFragment
         }
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,6 +89,5 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
                 })
             )
         }
-
     }
 }
