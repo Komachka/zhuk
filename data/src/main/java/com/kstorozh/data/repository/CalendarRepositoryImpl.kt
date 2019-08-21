@@ -1,7 +1,8 @@
 package com.kstorozh.data.repository
 
+import BOOKING_CACHE_EMPTY_ERROR
 import BOOKING_DATA_EMPTY_ERROR
-import com.kstorozh.data.BookingsCashe
+import com.kstorozh.data.BookingsCache
 import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.data.network.RemoteData
@@ -17,7 +18,7 @@ import java.lang.NullPointerException
 internal class CalendarRepositoryImpl(
     private val remoteData: RemoteData,
     private val bookingDataMapper: BookingDataMapper,
-    private val bookingStorage: BookingsCashe
+    private val bookingStorage: BookingsCache
 ) : CalendarRepository, KoinComponent {
     override suspend fun getBookingFromLocal(): RepoResult<CalendarBookingData> {
         val repoResult: RepoResult<CalendarBookingData> = RepoResult()
@@ -27,7 +28,7 @@ internal class CalendarRepositoryImpl(
         }
         repoResult.apply {
             data = null
-            error = DataError(ErrorStatus.UNEXPECTED_ERROR, "Booking in local storage is not exists", NullPointerException("Booking in local storage is not exists"))
+            error = DataError(ErrorStatus.UNEXPECTED_ERROR, BOOKING_CACHE_EMPTY_ERROR, NullPointerException(BOOKING_CACHE_EMPTY_ERROR))
         }
         return repoResult
     }

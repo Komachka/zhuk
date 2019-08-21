@@ -2,6 +2,6 @@ package com.kstorozh.data
 
 import com.kstorozh.dataimpl.model.out.CalendarBookingData
 
-class BookingsCashe {
+class BookingsCache {
     var data: CalendarBookingData? = null
 }
