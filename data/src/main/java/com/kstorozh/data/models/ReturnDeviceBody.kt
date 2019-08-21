@@ -5,6 +5,5 @@ import com.google.gson.annotations.SerializedName
 
 internal data class ReturnDeviceBody(
     @Expose @SerializedName("user_id") val userId: Int,
-    @Expose @SerializedName("device_id") val deviceId: Int,
-    @Expose @SerializedName("is_active") val isActive: Boolean = false
+    @Expose @SerializedName("device_id") val deviceId: Int
 )

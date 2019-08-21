@@ -35,4 +35,6 @@ internal interface DeviceApi {
         @Body status: ReturnDeviceBody,
         @Path("id") bookingId: Int
     ): Response<BaseResponse>
+
+
 }
