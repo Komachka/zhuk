@@ -27,7 +27,7 @@ class CalendarMapper {
 
     private fun mapToBooking(calendarDay: CalendarDay): Booking {
 
-        val foramtter = ISODateTimeFormat.dateTimeNoMillis()
+        val foramtter = ISODateTimeFormat.dateTimeParser()
         val start = foramtter.parseDateTime(calendarDay.startDate)
         val end = foramtter.parseDateTime(calendarDay.endDate)
 
