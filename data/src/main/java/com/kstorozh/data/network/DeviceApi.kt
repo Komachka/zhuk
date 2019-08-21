@@ -30,9 +30,10 @@ internal interface DeviceApi {
         @Body bookingBody: BookingBody
     ): Response<BookingCreated>
 
-    @PUT(RETURN_DEVISE_URL)
+    @POST(RETURN_DEVISE_URL)
     suspend fun returnDevice(
         @Body status: ReturnDeviceBody,
         @Path("id") bookingId: Int
     ): Response<BaseResponse>
+
 }
