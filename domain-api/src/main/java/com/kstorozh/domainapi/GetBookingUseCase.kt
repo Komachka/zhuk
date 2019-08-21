@@ -7,5 +7,5 @@ import com.kstorozh.domainapi.model.DomainResult
 interface GetBookingUseCase {
     suspend fun getUpdatedBookingData(startDate: Long, endDate: Long): DomainResult<BookingInfo>
     suspend fun createBooking(bookingInputData: BookingInputData, startDate: Long, endDate: Long): DomainResult<BookingInfo>
-    suspend fun getBookingLocal() : DomainResult<BookingInfo>
+    suspend fun getBookingLocal(): DomainResult<BookingInfo>
 }
