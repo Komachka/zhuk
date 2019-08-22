@@ -29,7 +29,8 @@ class DeviceInfoMapper {
         return BookingParam(
             bookingInputData.userId,
             startDate?.let { format.format(startDate.time) } ?: "2019-07-07T00:00:00+03:00",
-            bookingInputData.endDate?.let { format.format(bookingInputData.endDate!!.time) } ?: "2019-07-07T00:00:00+03:00"
+            bookingInputData.endDate?.let { format.format(bookingInputData.endDate!!.time) } ?: "2019-07-07T00:00:00+03:00",
+            bookingInputData.isForce
         )
     }
 
