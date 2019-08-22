@@ -82,5 +82,10 @@
     <string name="chooseTimeLable">Choose time for booking</string>
     <string name="calendar">Calendar</string>
     <string name="why_message">For what do you need this device?</string>
+    <string name="conflict_title">There is a conflict with another booking</string>
+    <string name="this_booking_is_reserved">This booking time is not empty. Do you want to change current booking?
+    </string>
+    <string name="take_device_now">I don`t care</string>
+    <string name="dont_take_a_device">Don`t take it now</string>
 
 </resources>

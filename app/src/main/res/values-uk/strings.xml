@@ -88,5 +88,9 @@
     <string name="chooseTimeLable">Вибери час для бронювання пристрою</string>
     <string name="calendar">Календар</string>
     <string name="why_message">Навіщо тобі цей пристрій?</string>
+    <string name="conflict_title">Конфлікт з іншим бронюванням</string>
+    <string name="this_booking_is_reserved">Цей час зайнятий кимось іншим. Ти впевненний що хочеш взяти пристрій зараз?</string>
+    <string name="take_device_now">Взяти всеодно</string>
+    <string name="dont_take_a_device">Не брати зараз</string>
 
 </resources>
