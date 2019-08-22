@@ -1,5 +1,6 @@
 package com.kstorozh.data.utils
 
+import CONFLICT_STATUS_CODE
 import ERROR_STATUS_CODE
 import LOG_TAG
 import NOT_FOUND_STATUS_CODE
@@ -55,6 +56,8 @@ internal fun createError(endpoints: Endpoints, result: ApiResult.Error<*>, koinC
         try {
             val error = tryConvertError(ApiErrorBodyWithError::class.java, it, koinComponent)
             message = error?.errors
+            if (message == null)
+                message = error?.msg
         } catch (e: Exception) {
             Log.d(LOG_TAG, "Can not convert error message ${it.string()} because ${e.message}")
             message = null
@@ -68,6 +71,7 @@ private fun Int.getErrorStatusByCode(error: ErrorStatus, unauthorised: ErrorStat
         ERROR_STATUS_CODE -> error
         UNAUTHORIZED_STATUS_CODE -> unauthorised
         NOT_FOUND_STATUS_CODE -> notFound
+        CONFLICT_STATUS_CODE -> ErrorStatus.CONFLICT_ERROR
         else -> ErrorStatus.UNEXPECTED_ERROR
     }
 }

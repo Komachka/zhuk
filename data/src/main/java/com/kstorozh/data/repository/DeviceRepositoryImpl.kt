@@ -95,6 +95,7 @@ internal class DeviceRepositoryImpl(
                 is ApiResult.Error<*> -> {
                     repoResult.data = false
                     repoResult.error = createError(Endpoints.TAKE_DEVICE, result, this)
+                    Log.d(LOG_TAG, "Error " + repoResult.error.toString())
                     repoResult
                 }
             }
@@ -108,22 +109,19 @@ internal class DeviceRepositoryImpl(
         val repoResult: RepoResult<Boolean> = RepoResult()
         device?.let {
             val bookingBody = mapper.mapBookingDeviceInfo(bookingParam, device.id, isActive = false)
-            Log.d(LOG_TAG, " in method bookingparam $bookingParam")
-            Log.d(LOG_TAG, "bookingBody $bookingBody")
             return when (val result = remoteData.takeDevise(
                 bookingBody,
                 device.id
             )) {
                 is ApiResult.Success -> {
                     bookingBody.id = result.data.data.bookingId
-                    Log.d(LOG_TAG, "Booking id " + bookingBody.id.toString())
-                    // localData.saveBooking(bookingBody)
                     repoResult.data = true
                     repoResult
                 }
                 is ApiResult.Error<*> -> {
                     repoResult.data = false
                     repoResult.error = createError(Endpoints.TAKE_DEVICE, result, this)
+                    Log.d(LOG_TAG, "Error " + repoResult.error.toString())
                     repoResult
                 }
             }

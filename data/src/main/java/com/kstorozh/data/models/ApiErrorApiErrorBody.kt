@@ -11,7 +11,21 @@ internal data class ApiErrorWithField(
 internal data class ApiErrorBodyWithError(
     @SerializedName("errors")
     @Expose
-    var errors: String? = null
+    var errors: String? = null,
+
+    @SerializedName("msg")
+    @Expose
+    var msg: String? = null,
+
+    @SerializedName("data")
+    @Expose
+    var data: ErrorData? = null
+)
+
+internal data class ErrorData(
+    @SerializedName("booking_id")
+    @Expose
+    val bookingId: Int
 )
 
 internal data class ApiErrorBodyWithMsg(
