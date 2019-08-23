@@ -20,7 +20,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.google.gson.GsonBuilder
-import com.kstorozh.data.network.*
+import com.kstorozh.data.BookingsCache
 import com.kstorozh.data.network.AuthInterceptor
 import com.kstorozh.data.network.CalendarApi
 import com.kstorozh.data.network.DeviceApi
@@ -60,7 +60,8 @@ val networkModule = module(override = true) {
 val repositoryModule = module(override = true) {
     single<DeviseRepository> { DeviceRepositoryImpl(get(), get(), DeviceDataMapper(), get()) }
     single<UserRepository> { UserRepositoryImpl(get(), UserDataMapper()) }
-    single<CalendarRepository> { CalendarRepositoryImpl(get(), BookingDataMapper()) }
+    single<BookingsCache> { BookingsCache() }
+    single<CalendarRepository> { CalendarRepositoryImpl(get(), BookingDataMapper(), get()) }
 }
 
 private fun provideGson(): Gson {
