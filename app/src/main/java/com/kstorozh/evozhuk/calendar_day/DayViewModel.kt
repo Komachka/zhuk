@@ -29,7 +29,6 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
 
     private val durationInMilisecLiveData = MutableLiveData<Long>().also { liveData ->
         applicationScope.launch {
-
             val result = getBookingsUseCase.getBookingLocal()
             result.data?.let {
                 liveData.postValue(it.duration * ONE_SECOND)
@@ -42,7 +41,6 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
 
     private val bookingsLiveData = MutableLiveData<Map<String, List<Booking>>>().also { liveData ->
         applicationScope.launch {
-
             val result = getBookingsUseCase.getBookingLocal()
             result.data?.let {
                 liveData.postValue(it.bookingMap)
