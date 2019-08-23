@@ -59,10 +59,12 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         fragmentView.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
+            viewAdapter = TimeSlotAdapter()
+            fragmentView.recyclerView.adapter = viewAdapter
         }
         viewLifecycleOwner.observe(model.bookingSlotsPerDay) {
-            viewAdapter = TimeSlotAdapter(it)
-            fragmentView.recyclerView.adapter = viewAdapter
+            (viewAdapter as TimeSlotAdapter).updateData(it)
+            viewAdapter.notifyDataSetChanged()
             fragmentView.recyclerView.addOnItemTouchListener(
                 RecyclerItemClickListener(
                     context!!,

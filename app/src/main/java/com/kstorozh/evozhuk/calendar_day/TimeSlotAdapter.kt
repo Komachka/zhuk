@@ -10,11 +10,20 @@ import kotlinx.android.synthetic.main.empty_time_slot.view.timeTv
 import kotlinx.android.synthetic.main.busy_time_slot_with_login_item.view.*
 import org.joda.time.DateTime
 
-class TimeSlotAdapter(val timeSlot: List<TimeSlot>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TimeSlotAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val EMPTY_VIEW_TYPE = 0
     private val BOOKING_VIEW_TYPE = 1
     private val CONTINUE_BOOKING_VIEW_TYPE = 2
+
+
+    var timeSlot:List<TimeSlot>  = ArrayList<TimeSlot>()
+
+    fun updateData(slots: List<TimeSlot>) {
+        timeSlot = slots
+        notifyDataSetChanged()
+    }
+
 
     class EmptySlotViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
@@ -46,18 +55,16 @@ class TimeSlotAdapter(val timeSlot: List<TimeSlot>) : RecyclerView.Adapter<Recyc
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View
         return when (viewType) {
-            EMPTY_VIEW_TYPE ->
-            {
+            EMPTY_VIEW_TYPE -> {
                 view = LayoutInflater.from(parent.context).inflate(R.layout.empty_time_slot, parent, false)
                 EmptySlotViewHolder(view)
             }
-            BOOKING_VIEW_TYPE ->
-            {
-                view = LayoutInflater.from(parent.context).inflate(R.layout.busy_time_slot_with_login_item, parent, false)
+            BOOKING_VIEW_TYPE -> {
+                view =
+                    LayoutInflater.from(parent.context).inflate(R.layout.busy_time_slot_with_login_item, parent, false)
                 BusySlotWithLoginViewHolder(view)
             }
-            else ->
-            {
+            else -> {
                 view = LayoutInflater.from(parent.context).inflate(R.layout.busy_time_slot_no_login_item, parent, false)
                 BusySlotNoLoginViewHolder(view)
             }
@@ -70,8 +77,12 @@ class TimeSlotAdapter(val timeSlot: List<TimeSlot>) : RecyclerView.Adapter<Recyc
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         when {
-            getItemViewType(position) == BOOKING_VIEW_TYPE -> (viewHolder as BusySlotWithLoginViewHolder).setMyBookingView(timeSlot[position])
-            getItemViewType(position) == EMPTY_VIEW_TYPE -> (viewHolder as EmptySlotViewHolder).setMyBookingView(timeSlot[position])
+            getItemViewType(position) == BOOKING_VIEW_TYPE -> (viewHolder as BusySlotWithLoginViewHolder).setMyBookingView(
+                timeSlot[position]
+            )
+            getItemViewType(position) == EMPTY_VIEW_TYPE -> (viewHolder as EmptySlotViewHolder).setMyBookingView(
+                timeSlot[position]
+            )
             else -> (viewHolder as BusySlotNoLoginViewHolder).setMyBookingView(timeSlot[position])
         }
     }
