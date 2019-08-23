@@ -57,7 +57,7 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         }
         val userId = CalendarDayFragmentArgs.fromBundle(arguments!!).userId
         val milisec = CalendarDayFragmentArgs.fromBundle(arguments!!).milisec
-        adapter = DayPageAdapter(fragmentManager!!, userId.toInt(), milisec)
+        adapter = DayPageAdapter(childFragmentManager, userId.toInt(), milisec)
         fragmentView.my_viewpager.adapter = adapter
         fragmentView.my_viewpager.currentItem = 1
         val cuurentTime = DateTime(milisec)

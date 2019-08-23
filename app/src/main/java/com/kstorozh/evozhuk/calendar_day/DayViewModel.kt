@@ -1,5 +1,6 @@
 package com.kstorozh.evozhuk.calendar_day
 
+import android.util.Log
 import androidx.arch.core.util.Function
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,10 +8,7 @@ import androidx.lifecycle.Transformations
 import com.kstorozh.domainapi.GetBookingUseCase
 import com.kstorozh.domainapi.model.Booking
 import com.kstorozh.domainapi.model.BookingInputData
-import com.kstorozh.evozhuk.BaseViewModel
-import com.kstorozh.evozhuk.Event
-import com.kstorozh.evozhuk.ONE_SECOND
-import com.kstorozh.evozhuk.YEAR_MONTH_DAY_FORMAT
+import com.kstorozh.evozhuk.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,7 +25,7 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
     val query = MutableLiveData<Pair<Long, Int>>()
     val bookingSlotsPerDay: LiveData<List<TimeSlot>> = Transformations.switchMap(query, ::getBookingSlotsPerDay)
 
-    private val durationInMilisecLiveData = MutableLiveData<Long>().also { liveData ->
+    val durationInMilisecLiveData = MutableLiveData<Long>().also { liveData ->
         applicationScope.launch {
             val result = getBookingsUseCase.getBookingLocal()
             result.data?.let {
@@ -58,10 +56,9 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
         return Transformations.switchMap(bookingsLiveData, Function {
             val bookingInDayList = it[dayInFormat]
             val liveData = MutableLiveData<List<TimeSlot>>()
-            applicationScope.launch {
-                val listOfTimeSlot: List<TimeSlot> = parseBookingToTimeSlot(bookingInDayList, params.second, params.first)
-                liveData.postValue(listOfTimeSlot)
-            }
+            val listOfTimeSlot: List<TimeSlot> = parseBookingToTimeSlot(bookingInDayList, params.second, params.first)
+            Log.d(LOG_TAG, "getBookingSlots $listOfTimeSlot")
+            liveData.postValue(listOfTimeSlot)
             return@Function liveData
         })
     }
@@ -72,10 +69,16 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
 
     private fun parseBookingToTimeSlot(list: List<Booking>?, userId: Int, dateInMilisec: Long): List<TimeSlot> {
         val listOfTimeSlot = mutableListOf<TimeSlot>()
-        durationInMilisecLiveData.value?.let {
+
+        durationInMilisecLiveData.value!!.let {
             listOfTimeSlot.addAll(createEmptySlots(dateInMilisec, it))
             listOfTimeSlot.fillBusySlots(list, userId, it)
         }
+
+        /*durationInMilisecLiveData.value?.let {
+            listOfTimeSlot.addAll(createEmptySlots(dateInMilisec, it))
+            listOfTimeSlot.fillBusySlots(list, userId, it)
+        }*/
         return listOfTimeSlot
     }
 

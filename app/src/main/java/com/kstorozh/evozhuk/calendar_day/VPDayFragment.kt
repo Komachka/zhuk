@@ -1,6 +1,7 @@
 package com.kstorozh.evozhuk.calendar_day
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -62,29 +63,33 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
             viewAdapter = TimeSlotAdapter()
             fragmentView.recyclerView.adapter = viewAdapter
         }
-        viewLifecycleOwner.observe(model.bookingSlotsPerDay) {
-            (viewAdapter as TimeSlotAdapter).updateData(it)
-            viewAdapter.notifyDataSetChanged()
-            fragmentView.recyclerView.addOnItemTouchListener(
-                RecyclerItemClickListener(
-                    context!!,
-                    fragmentView.recyclerView,
-                    object : RecyclerItemClickListener.OnItemClickListener {
-                        override fun onItemClick(view: View, position: Int) {
-                            val itemPosition = fragmentView.recyclerView.getChildLayoutPosition(view)
-                            if (!it[itemPosition].isMyBooking && !it[itemPosition].isOtherBooking)
-                                createDialog(it[itemPosition], userId.toString())
-                        }
-                        override fun onLongItemClick(view: View?, position: Int) {
-                            // TODO update booking
-                        }
-                    })
-            )
+        viewLifecycleOwner.observe(model.durationInMilisecLiveData){
+            viewLifecycleOwner.observe(model.bookingSlotsPerDay) {
+                Log.d(LOG_TAG, "after observe list size ${it.size} ${it.toString()}")
+                (viewAdapter as TimeSlotAdapter).updateData(it)
+                fragmentView.recyclerView.addOnItemTouchListener(
+                    RecyclerItemClickListener(
+                        context!!,
+                        fragmentView.recyclerView,
+                        object : RecyclerItemClickListener.OnItemClickListener {
+                            override fun onItemClick(view: View, position: Int) {
+                                if (it.isEmpty()) return
+                                val itemPosition = fragmentView.recyclerView.getChildLayoutPosition(view)
+                                if (!it[itemPosition].isMyBooking && !it[itemPosition].isOtherBooking)
+                                    createDialog(it[itemPosition], userId.toString())
+                            }
+                            override fun onLongItemClick(view: View?, position: Int) {
+                                // TODO update booking
+                            }
+                        })
+                )
+            }
         }
         updateUI(milisec, userId)
     }
 
     fun updateUI(milisec: Long, userId: Int) {
+        Log.d(LOG_TAG, "update UI ${SimpleDateFormat(DAY_MONTH_FORMAT).format(milisec)}")
         if (dateTV == null) return
         model.getBookingInfo(milisec, userId)
         dateTV.text = SimpleDateFormat(DAY_MONTH_FORMAT).format(milisec)

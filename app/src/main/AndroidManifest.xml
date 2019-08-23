@@ -10,7 +10,7 @@
             android:name=".App"
             android:allowBackup="false"
             tools:replace="android:allowBackup"
-            android:roundIcon="@mipmap/android_icon"
+            android:icon="@mipmap/android_icon"
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:vmSafeMode="true"

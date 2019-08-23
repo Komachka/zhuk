@@ -2,11 +2,12 @@ package com.kstorozh.evozhuk.calendar_day
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import org.joda.time.DateTime
 
 class DayPageAdapter(manager: FragmentManager, val userId: Int, val milisec: Long) :
-    FragmentStatePagerAdapter(manager) {
+    FragmentPagerAdapter(manager) {
 
     companion object {
         const val size = 3

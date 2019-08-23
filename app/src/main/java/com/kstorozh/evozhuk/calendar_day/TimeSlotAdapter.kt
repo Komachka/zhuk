@@ -1,27 +1,58 @@
 package com.kstorozh.evozhuk.calendar_day
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kstorozh.evozhuk.FIRST_HOUR
+import com.kstorozh.evozhuk.LOG_TAG
 import com.kstorozh.evozhuk.R
 import kotlinx.android.synthetic.main.empty_time_slot.view.timeTv
 import kotlinx.android.synthetic.main.busy_time_slot_with_login_item.view.*
 import org.joda.time.DateTime
 
-class TimeSlotAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TimeSlotAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val EMPTY_VIEW_TYPE = 0
     private val BOOKING_VIEW_TYPE = 1
     private val CONTINUE_BOOKING_VIEW_TYPE = 2
 
 
-    var timeSlot:List<TimeSlot>  = ArrayList<TimeSlot>()
+    //private val asynkListDiffer:AsyncListDiffer<TimeSlot>
+    /*init {
+        val diffUtil =object :DiffUtil.ItemCallback<TimeSlot>()
+        {
+            override fun areItemsTheSame(oldItem: TimeSlot, newItem: TimeSlot): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: TimeSlot, newItem: TimeSlot): Boolean {
+               return oldItem.range == newItem.range
+            }
+
+        }
+        asynkListDiffer = AsyncListDiffer(this, diffUtil)
+    }*/
+
+
+    private val timeSlot  = mutableListOf<TimeSlot>()
 
     fun updateData(slots: List<TimeSlot>) {
-        timeSlot = slots
-        notifyDataSetChanged()
+
+        Log.d(LOG_TAG, "update_data $timeSlot and $slots")
+
+
+        val diffRes = DiffUtil.calculateDiff(SlotsDiffCallback(timeSlot, slots))
+
+
+        timeSlot.clear()
+        timeSlot.addAll(slots)
+        diffRes.dispatchUpdatesTo(this)
+
+        //notifyDataSetChanged()
     }
 
 
@@ -87,6 +118,7 @@ class TimeSlotAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+
     override fun getItemViewType(position: Int): Int {
         val date = DateTime(timeSlot[position].range.first)
         return when {
@@ -97,3 +129,33 @@ class TimeSlotAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 }
+
+
+class SlotsDiffCallback(private val oldList:List<TimeSlot>, private val newList: List<TimeSlot>): DiffUtil.Callback() {
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val t = oldList[oldItemPosition].range == newList[newItemPosition].range
+        Log.d(LOG_TAG, "are items the same $t")
+        return t
+    }
+
+    override fun getOldListSize(): Int {
+        Log.d(LOG_TAG, "old size ${oldList.size}")
+        return oldList.size
+    }
+
+    override fun getNewListSize(): Int {
+        Log.d(LOG_TAG, "new size ${newList.size}")
+        return  newList.size
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val r =  oldList[oldItemPosition] == newList[newItemPosition]
+        Log.d(LOG_TAG, "are content are the same $r")
+        return r
+    }
+
+
+}
+
+
