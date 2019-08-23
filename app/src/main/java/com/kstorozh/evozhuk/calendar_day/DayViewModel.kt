@@ -20,11 +20,14 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.util.*
 
-class DayViewModel: BaseViewModel(), KoinComponent, BookingParser {
+class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
 
     private val getBookingsUseCase: GetBookingUseCase by inject()
     private val applicationScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
-    private val durationInMilisecLiveData = MutableLiveData<Long>().also {liveData ->
+    val query = MutableLiveData<Pair<Long, Int>>()
+    val bookingSlotsPerDay: LiveData<List<TimeSlot>> = Transformations.switchMap(query, ::getBookingSlotsPerDay)
+
+    private val durationInMilisecLiveData = MutableLiveData<Long>().also { liveData ->
         applicationScope.launch {
 
             val result = getBookingsUseCase.getBookingLocal()
@@ -48,13 +51,9 @@ class DayViewModel: BaseViewModel(), KoinComponent, BookingParser {
                 errors.postValue(Event(it))
             }
         }
-
     }
 
-    val query = MutableLiveData<Pair<Long, Int>>()
-    val bookingSlotsPerDay: LiveData<List<TimeSlot>> = Transformations.switchMap(query, ::getBookingSlotsPerDay)
-
-    private fun getBookingSlotsPerDay(params:Pair<Long, Int>) :  LiveData<List<TimeSlot>> {
+    private fun getBookingSlotsPerDay(params: Pair<Long, Int>): LiveData<List<TimeSlot>> {
         val dt = DateTime(params.first)
         val fmt = DateTimeFormat.forPattern(YEAR_MONTH_DAY_FORMAT)
         val dayInFormat = fmt.print(dt)
@@ -69,14 +68,16 @@ class DayViewModel: BaseViewModel(), KoinComponent, BookingParser {
         })
     }
 
-
     fun getBookingInfo(dateInMilisec: Long, userId: Int) = apply {
-        query.value  =  dateInMilisec to userId
+        query.value = dateInMilisec to userId
     }
 
     private fun parseBookingToTimeSlot(list: List<Booking>?, userId: Int, dateInMilisec: Long): List<TimeSlot> {
-        val listOfTimeSlot = createEmptySlots(dateInMilisec, durationInMilisecLiveData.value!!)
-        listOfTimeSlot.fillBusySlots(list, userId, durationInMilisecLiveData.value!!)
+        val listOfTimeSlot = mutableListOf<TimeSlot>()
+        durationInMilisecLiveData.value?.let {
+            listOfTimeSlot.addAll(createEmptySlots(dateInMilisec, it))
+            listOfTimeSlot.fillBusySlots(list, userId, it)
+        }
         return listOfTimeSlot
     }
 
@@ -89,7 +90,7 @@ class DayViewModel: BaseViewModel(), KoinComponent, BookingParser {
                     startDate = Calendar.getInstance().apply { timeInMillis = startDate },
                     endDate = Calendar.getInstance().apply { timeInMillis = endDate }),
                 startDate,
-                endDate) // TODO check if is not working
+                endDate)
             result.data?.let {
                 bookingsLiveData.postValue(it.bookingMap)
                 durationInMilisecLiveData.postValue(it.duration * ONE_SECOND)

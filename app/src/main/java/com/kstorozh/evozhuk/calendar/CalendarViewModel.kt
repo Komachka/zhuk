@@ -6,19 +6,14 @@ import com.applandeo.materialcalendarview.EventDay
 import java.util.*
 import com.kstorozh.domainapi.GetBookingUseCase
 import com.kstorozh.domainapi.model.Booking
-import com.kstorozh.domainapi.model.BookingInputData
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.R
-import com.kstorozh.evozhuk.calendar_day.BookingParser
-import com.kstorozh.evozhuk.calendar_day.TimeSlot
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.joda.time.DateTime
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.text.SimpleDateFormat
-import org.joda.time.format.DateTimeFormat
 
 class CalendarViewModel : BaseViewModel(), KoinComponent {
 
@@ -72,6 +67,4 @@ class CalendarViewModel : BaseViewModel(), KoinComponent {
         else if (isOnlyMyBooking) R.drawable.my_book_icon
         else R.drawable.other_book_icon
     }
-
-
 }
