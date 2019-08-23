@@ -1,6 +1,7 @@
 package com.kstorozh.evozhuk.calendar
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kstorozh.evozhuk.HandleErrors
+import com.kstorozh.evozhuk.LOG_TAG
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.*
 import com.kstorozh.evozhuk.R
@@ -58,10 +60,31 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
                         createDialog(it[itemPosition], userId)
                     }
                     override fun onLongItemClick(view: View?, position: Int) {
-                        // TODO update booking
+                        view?.let {view->
+
+                            val itemPosition = fragmentView.recyclerView.getChildLayoutPosition(view)
+                            Log.d(LOG_TAG, "onLongItemClick itemPosition ${itemPosition}")
+                            it[itemPosition].isActive = true
+                            viewAdapter.notifyItemChanged(itemPosition)
+                        }
                     }
                 })
             )
+            fragmentView.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+
+                    for ((index, slot) in it.withIndex()) {
+                        if (slot.isActive) {
+                            slot.isActive = false
+                            viewAdapter.notifyItemChanged(index)
+                        }
+                    }
+
+
+
+                }
+            })
         }
         viewManager = LinearLayoutManager(context)
         fragmentView.recyclerView.apply {

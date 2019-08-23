@@ -31,6 +31,16 @@ class TimeSlotAdapter(val timeSlot: List<TimeSlot>) : RecyclerView.Adapter<Recyc
             view.timeTv.text = timeSlot.timeLable
             view.slackNameTv.text = timeSlot.booking!!.slackUserName
             view.timePeriodTv.text = "${timeSlot.slotStartDate}-${timeSlot.slotEndDate}"
+            if (timeSlot.isActive)
+            {
+                view.editIV.visibility = View.VISIBLE
+                view.deleteIV.visibility = View.VISIBLE
+            }
+            else if (!timeSlot.isActive)
+            {
+                view.editIV.visibility = View.INVISIBLE
+                view.deleteIV.visibility = View.INVISIBLE
+            }
         }
     }
 
@@ -40,6 +50,16 @@ class TimeSlotAdapter(val timeSlot: List<TimeSlot>) : RecyclerView.Adapter<Recyc
             view.timeTv.text = timeSlot.timeLable
             if (timeSlot.isOtherBooking)
                 view.userIndex.setBackgroundResource(R.color.other_booking_colour)
+            if (timeSlot.isActive)
+            {
+                view.editIV.visibility = View.VISIBLE
+                view.deleteIV.visibility = View.VISIBLE
+            }
+            else if (!timeSlot.isActive)
+            {
+                view.editIV.visibility = View.INVISIBLE
+                view.deleteIV.visibility = View.INVISIBLE
+            }
         }
     }
 
