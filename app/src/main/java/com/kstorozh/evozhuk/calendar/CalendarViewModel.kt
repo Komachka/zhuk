@@ -32,7 +32,7 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
             firstDay = startDate
             lastDay = endDate
             applicationScope.launch {
-                val result = getBookingsUseCase.loadBooking(startDate, endDate)
+                val result = getBookingsUseCase.getUpdatedBookingData(startDate, endDate)
                 result.data?.let {
                     bookingsLiveData.postValue(it.bookingMap)
                     durationInMilisecLiveData.postValue(it.duration * ONE_SECOND)

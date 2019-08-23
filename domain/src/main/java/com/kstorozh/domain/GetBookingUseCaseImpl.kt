@@ -20,8 +20,14 @@ class GetBookingUseCaseImpl(
     val deviceMapper: DeviceInfoMapper,
     val mapper: CalendarMapper
 ) : GetBookingUseCase {
+    override suspend fun getBookingLocal(): DomainResult<BookingInfo> {
+        val repoResult = bookingRepository.getBookingFromLocal()
+        val domainError = errorMapper.mapToDomainError(repoResult.error)
+        val data = repoResult.data?.let { mapper.mapCalendarBookingDataToBooking(it) }
+        return DomainResult(data, domainError)
+    }
 
-    override suspend fun loadBooking(startDate: Long, endDate: Long): DomainResult<BookingInfo> {
+    override suspend fun getUpdatedBookingData(startDate: Long, endDate: Long): DomainResult<BookingInfo> {
         val dateFormat = SimpleDateFormat(DAY_MONTH_YEAR_FORMAT)
         val repoResult = bookingRepository.getBookingByDate(
             dateFormat.format(startDate), dateFormat.format(endDate))
@@ -34,7 +40,7 @@ class GetBookingUseCaseImpl(
         val repoResult = repository.bookDevice(deviceMapper.mapBookingParam(bookingInputData, bookingInputData.startDate))
         repoResult.data?.let {
             if (it)
-                return loadBooking(startDate, endDate)
+                return getUpdatedBookingData(startDate, endDate)
         }
         return DomainResult(null, DomainErrors(message = "Booking was not created"))
     }

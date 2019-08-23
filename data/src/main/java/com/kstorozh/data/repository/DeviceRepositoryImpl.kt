@@ -117,7 +117,6 @@ internal class DeviceRepositoryImpl(
                 is ApiResult.Success -> {
                     bookingBody.id = result.data.data.bookingId
                     Log.d(LOG_TAG, "Booking id " + bookingBody.id.toString())
-                    // localData.saveBooking(bookingBody)
                     repoResult.data = true
                     repoResult
                 }
