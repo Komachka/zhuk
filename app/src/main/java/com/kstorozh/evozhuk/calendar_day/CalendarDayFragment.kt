@@ -9,6 +9,7 @@ import com.kstorozh.evozhuk.HandleErrors
 import com.kstorozh.evozhuk.R
 
 import androidx.viewpager.widget.ViewPager
+import com.kstorozh.evozhuk.MONTH_DELTA
 import kotlinx.android.synthetic.main.fragment_calendar_parent_view.view.*
 import kotlinx.android.synthetic.main.fragment_calendar_parent_view.view.my_viewpager
 import org.joda.time.DateTime
@@ -25,7 +26,6 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
 
     private lateinit var onPageChangeListener: ViewPagerScrollListener
     private lateinit var fragment: View
-
     private lateinit var adapter: DayPageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,12 +57,9 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
             val navController = this.findNavController()
             navController.navigateUp()
         }
-
         val userId = CalendarDayFragmentArgs.fromBundle(arguments!!).userId
         val milisec = CalendarDayFragmentArgs.fromBundle(arguments!!).milisec
-
         adapter = DayPageAdapter(fragmentManager!!, userId.toInt(), milisec)
-
         fragmentView.my_viewpager.adapter = adapter
         fragmentView.my_viewpager.currentItem = 1
         val cuurentTime = DateTime(milisec)
@@ -73,7 +70,7 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
 }
 
 class ViewPagerScrollListener(
-    val my_viewpager: ViewPager,
+    val viewPager: ViewPager,
     val adapter: DayPageAdapter,
     var cuurentTime: DateTime
 ) : ViewPager.OnPageChangeListener {
@@ -88,13 +85,11 @@ class ViewPagerScrollListener(
     var blockRight = false
     var blockLeft = false
 
-    val maxTime = DateTime().plusDays(60)
+    val maxTime = DateTime().plusMonths(MONTH_DELTA)
     val minTime = DateTime()
 
     override fun onPageScrollStateChanged(state: Int) {
-
         if (state == ViewPager.SCROLL_STATE_IDLE) {
-
             var date: DateTime? = null
             if (selectedPos < MIDDLE_POS) {
                 if (blockLeft) return
@@ -116,14 +111,12 @@ class ViewPagerScrollListener(
             } else if (date != null && (date.dayOfMonth == minTime.dayOfMonth && date.monthOfYear == minTime.monthOfYear)) {
                 blockLeft = true
             } else {
-                my_viewpager.setCurrentItem(MIDDLE_POS, false)
+                viewPager.setCurrentItem(MIDDLE_POS, false)
             }
         }
     }
 
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-    }
-
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
     override fun onPageSelected(position: Int) {
         selectedPos = when {
             blockLeft -> RIGHT_POS
