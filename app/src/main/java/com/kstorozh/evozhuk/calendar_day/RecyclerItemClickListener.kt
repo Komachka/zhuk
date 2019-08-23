@@ -1,4 +1,4 @@
-package com.kstorozh.evozhuk.calendar
+package com.kstorozh.evozhuk.calendar_day
 
 import android.content.Context
 import android.view.MotionEvent

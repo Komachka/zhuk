@@ -1,4 +1,4 @@
-package com.kstorozh.evozhuk.calendar
+package com.kstorozh.evozhuk.calendar_day
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -17,9 +17,17 @@ class DayPageAdapter(manager: FragmentManager, val userId: Int, val milisec: Lon
     init {
         val dateTime = DateTime(milisec)
         fragments = listOf(
-            ChildrenDayFragment.newInstance(dateTime.plusDays(-1).millis, userId, 0),
+            ChildrenDayFragment.newInstance(
+                dateTime.plusDays(-1).millis,
+                userId,
+                0
+            ),
             ChildrenDayFragment.newInstance(milisec, userId, 1),
-            ChildrenDayFragment.newInstance(dateTime.plusDays(1).millis, userId, 2)
+            ChildrenDayFragment.newInstance(
+                dateTime.plusDays(1).millis,
+                userId,
+                2
+            )
         )
     }
 

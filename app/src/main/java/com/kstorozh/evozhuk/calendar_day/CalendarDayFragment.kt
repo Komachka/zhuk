@@ -1,4 +1,4 @@
-package com.kstorozh.evozhuk.calendar
+package com.kstorozh.evozhuk.calendar_day
 
 import android.os.Bundle
 import android.view.*
@@ -66,7 +66,8 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         fragmentView.my_viewpager.adapter = adapter
         fragmentView.my_viewpager.currentItem = 1
         val cuurentTime = DateTime(milisec)
-        onPageChangeListener = ViewPagerScrollListener(fragmentView.my_viewpager, adapter, cuurentTime)
+        onPageChangeListener =
+            ViewPagerScrollListener(fragmentView.my_viewpager, adapter, cuurentTime)
         fragmentView.my_viewpager.addOnPageChangeListener(onPageChangeListener)
     }
 }

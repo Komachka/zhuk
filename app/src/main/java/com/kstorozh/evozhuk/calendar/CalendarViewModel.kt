@@ -9,7 +9,8 @@ import com.kstorozh.domainapi.model.Booking
 import com.kstorozh.domainapi.model.BookingInputData
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.R
-import kotlinx.android.synthetic.main.fragment_calendar_day_view.*
+import com.kstorozh.evozhuk.calendar_day.BookingParser
+import com.kstorozh.evozhuk.calendar_day.TimeSlot
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,12 +20,12 @@ import org.koin.core.inject
 import java.text.SimpleDateFormat
 import org.joda.time.format.DateTimeFormat
 
-class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
+class CalendarViewModel : BaseViewModel(), KoinComponent {
 
     private val getBookingsUseCase: GetBookingUseCase by inject()
     private val applicationScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
     private val bookingsLiveData = MutableLiveData<Map<String, List<Booking>>>()
-    private val durationInMilisecLiveData = MutableLiveData<Long>()
+
     private var firstDay: Long = 0
     private var lastDay: Long = 0
 
@@ -35,7 +36,6 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
                 val result = getBookingsUseCase.getUpdatedBookingData(startDate, endDate)
                 result.data?.let {
                     bookingsLiveData.postValue(it.bookingMap)
-                    durationInMilisecLiveData.postValue(it.duration * ONE_SECOND)
                 }
                 result.domainError?.let {
                     errors.postValue(Event(it))
@@ -73,48 +73,5 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
         else R.drawable.other_book_icon
     }
 
-    fun bookingSlotsPerDay(dateInMilisec: Long, userId: Int): LiveData<List<TimeSlot>> {
-        val dt = DateTime(dateInMilisec)
-        val fmt = DateTimeFormat.forPattern(YEAR_MONTH_DAY_FORMAT)
-        val dayInFormat = fmt.print(dt)
 
-        return Transformations.switchMap(bookingsLiveData, Function {
-            val bookingInDayList = it[dayInFormat]
-            val liveData = MutableLiveData<List<TimeSlot>>()
-            applicationScope.launch {
-                val listOfTimeSlot: List<TimeSlot> = parseBookingToTimeSlot(bookingInDayList, userId, dateInMilisec)
-                liveData.postValue(listOfTimeSlot)
-            }
-            return@Function liveData
-        })
-    }
-
-    private fun parseBookingToTimeSlot(list: List<Booking>?, userId: Int, dateInMilisec: Long): List<TimeSlot> {
-        val listOfTimeSlot = createEmptySlots(dateInMilisec, durationInMilisecLiveData.value!!)
-        listOfTimeSlot.fillBusySlots(list, userId, durationInMilisecLiveData.value!!)
-        return listOfTimeSlot
-    }
-
-    fun createNewBooking(userId: String, startDate: Long, endDate: Long): LiveData<Boolean> {
-        val liveData = MutableLiveData<Boolean>()
-        applicationScope.launch {
-                val result = getBookingsUseCase.createBooking(
-                    BookingInputData(
-                        userId,
-                        startDate = Calendar.getInstance().apply { timeInMillis = startDate },
-                        endDate = Calendar.getInstance().apply { timeInMillis = endDate }),
-                    firstDay,
-                    lastDay)
-                result.data?.let {
-                    bookingsLiveData.postValue(it.bookingMap)
-                    durationInMilisecLiveData.postValue(it.duration * ONE_SECOND)
-                    liveData.postValue(true)
-                }
-                result.domainError?.let {
-                    errors.postValue(Event(it))
-                    liveData.postValue(false)
-                }
-        }
-        return liveData
-    }
 }

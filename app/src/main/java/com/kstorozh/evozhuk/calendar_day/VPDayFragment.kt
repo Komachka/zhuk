@@ -1,4 +1,4 @@
-package com.kstorozh.evozhuk.calendar
+package com.kstorozh.evozhuk.calendar_day
 
 import android.os.Bundle
 import android.util.Log
@@ -10,10 +10,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kstorozh.evozhuk.*
+import com.kstorozh.evozhuk.calendar.CalendarViewModel
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_calendar_day_view.*
 import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.*
-import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.dateTV
 import java.text.SimpleDateFormat
 
 const val USER_ID = "user_id"
@@ -24,7 +24,7 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
 
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
-    lateinit var model: CalendarViewModel
+    lateinit var model: DayViewModel
     lateinit var fragmentView: View
 
     companion object {
@@ -43,7 +43,7 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         super.onCreate(savedInstanceState)
         val id = arguments?.getInt(FRAGMENT_ID) ?: -1
         Log.d(LOG_TAG, "oncreate $id")
-        model = activity!!.run { ViewModelProviders.of(this)[CalendarViewModel::class.java] }
+        model =  ViewModelProviders.of(this)[DayViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -67,27 +67,35 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
             setHasFixedSize(true)
             layoutManager = viewManager
         }
+        viewLifecycleOwner.observe(model.bookingSlotsPerDay) {
+            viewAdapter = TimeSlotAdapter(it)
+            fragmentView.recyclerView.adapter = viewAdapter
+            fragmentView.recyclerView.addOnItemTouchListener(
+                RecyclerItemClickListener(
+                    context!!,
+                    fragmentView.recyclerView,
+                    object : RecyclerItemClickListener.OnItemClickListener {
+                        override fun onItemClick(view: View, position: Int) {
+                            val itemPosition = fragmentView.recyclerView.getChildLayoutPosition(view)
+                            if (!it[itemPosition].isMyBooking && !it[itemPosition].isOtherBooking)
+                                createDialog(it[itemPosition], userId.toString())
+                        }
+
+                        override fun onLongItemClick(view: View?, position: Int) {
+                            // TODO update booking
+                        }
+                    })
+            )
+        }
+
+
         updateUI(milisec, userId)
     }
 
     fun updateUI(milisec: Long, userId: Int) {
         if (dateTV == null) return
         dateTV.text = SimpleDateFormat(DAY_MONTH_FORMAT).format(milisec)
-        viewLifecycleOwner.observe(model.bookingSlotsPerDay(milisec, userId)) {
-            viewAdapter = TimeSlotAdapter(it)
-            fragmentView.recyclerView.adapter = viewAdapter
-            fragmentView.recyclerView.addOnItemTouchListener(
-                RecyclerItemClickListener(context!!, fragmentView.recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
-                    override fun onItemClick(view: View, position: Int) {
-                        val itemPosition = fragmentView.recyclerView.getChildLayoutPosition(view)
-                        if (!it[itemPosition].isMyBooking && !it[itemPosition].isOtherBooking)
-                            createDialog(it[itemPosition], userId.toString())
-                    }
-                    override fun onLongItemClick(view: View?, position: Int) {
-                        // TODO update booking
-                    }
-                })
-            )
-        }
+        model.getBookingInfo(milisec, userId)
+
     }
 }

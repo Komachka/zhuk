@@ -1,4 +1,4 @@
-package com.kstorozh.evozhuk.calendar
+package com.kstorozh.evozhuk.calendar_day
 
 import android.os.Build
 import android.util.Log
@@ -9,6 +9,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kstorozh.evozhuk.LOG_TAG
 import com.kstorozh.evozhuk.R
 import com.kstorozh.evozhuk.TIME_PICKER_INTERVAL
+import com.kstorozh.evozhuk.calendar_day.ChildrenDayFragment
+import com.kstorozh.evozhuk.calendar_day.TimeSlot
 import com.kstorozh.evozhuk.chooseTime.CustomTime
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.bottom_sheet_dialog.view.*
