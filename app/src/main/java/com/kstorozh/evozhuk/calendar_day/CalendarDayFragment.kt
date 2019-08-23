@@ -8,8 +8,6 @@ import androidx.navigation.fragment.findNavController
 import com.kstorozh.evozhuk.HandleErrors
 import com.kstorozh.evozhuk.R
 
-import androidx.viewpager.widget.ViewPager
-import com.kstorozh.evozhuk.MONTH_DELTA
 import kotlinx.android.synthetic.main.fragment_calendar_parent_view.view.*
 import kotlinx.android.synthetic.main.fragment_calendar_parent_view.view.my_viewpager
 import org.joda.time.DateTime
@@ -68,4 +66,3 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         fragmentView.my_viewpager.addOnPageChangeListener(onPageChangeListener)
     }
 }
-
