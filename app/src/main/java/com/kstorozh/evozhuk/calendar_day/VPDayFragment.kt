@@ -86,6 +86,5 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         if (dateTV == null) return
         model.getBookingInfo(milisec, userId)
         dateTV.text = SimpleDateFormat(DAY_MONTH_FORMAT).format(milisec)
-
     }
 }

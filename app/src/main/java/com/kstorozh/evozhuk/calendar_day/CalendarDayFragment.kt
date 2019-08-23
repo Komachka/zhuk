@@ -89,6 +89,7 @@ class ViewPagerScrollListener(
     val minTime = DateTime()
 
     override fun onPageScrollStateChanged(state: Int) {
+
         if (state == ViewPager.SCROLL_STATE_IDLE) {
             var date: DateTime? = null
             if (selectedPos < MIDDLE_POS) {
@@ -116,7 +117,8 @@ class ViewPagerScrollListener(
         }
     }
 
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+    }
     override fun onPageSelected(position: Int) {
         selectedPos = when {
             blockLeft -> RIGHT_POS
