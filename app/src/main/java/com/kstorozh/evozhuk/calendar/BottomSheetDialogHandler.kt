@@ -51,8 +51,8 @@ interface BottomSheetDialogHandler {
         val fromTimeAndDate = setTimeAndDate(sheetView.fromTimePicker, sheetView.fromDatePicker, startDate)
         val toTimeAndDate = setTimeAndDate(sheetView.toTimePicker, sheetView.toDatePicker, endDate)
         sheetView.bookBut.setOnClickListener {
-            if (!item.isOtherBooking && !item.isMyBooking) {
-                observe(model.createNewBooking(userId, fromTimeAndDate.getMillisec(), toTimeAndDate.getMillisec())) {
+            if (item.isMyBooking) {
+                observe(model.editBooking(userId, item.booking!!, fromTimeAndDate.getMillisec(), toTimeAndDate.getMillisec())) {
                     mBottomSheetDialog.cancel()
                 }
             }

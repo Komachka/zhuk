@@ -1,6 +1,7 @@
 package com.kstorozh.data.network
 
 import BOOKING_CALENDAR_ERROR
+import BOOKING_EDIT_ERROR
 import BOOKING_ERROR
 import DELETE_BOOKING_ERROR
 import GET_USERS_ERROR
@@ -22,6 +23,11 @@ internal class RemoteDataImpl(
     private val userApi: UserApi,
     private val calendarApi: CalendarApi
 ) : RemoteData {
+    override suspend fun editBooking(bookingBody: BookingBody, bookingId: String): ApiResult<BaseResponse> {
+        return getApiResult(BOOKING_EDIT_ERROR) {
+            deviceApi.editBooking(bookingBody, bookingId.toInt())
+        }
+    }
 
     override suspend fun deleteBooking(
         deleteBookingBody: DeleteBookingBody,

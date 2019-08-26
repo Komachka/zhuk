@@ -36,4 +36,7 @@ internal interface RemoteData {
 
     @WorkerThread
     suspend fun deleteBooking(returnBookingBody: DeleteBookingBody, bookingId: Int): ApiResult<BaseResponse>
+
+    @WorkerThread
+    suspend fun editBooking(bookingBody: BookingBody, bookingId: String): ApiResult<BaseResponse>
 }

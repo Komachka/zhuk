@@ -1,5 +1,6 @@
 package com.kstorozh.data.network
 
+import EDIT_BOOKING_URL
 import INIT_DEVISE_URL
 import RETURN_DEVISE_URL
 import TAKE_DEVISE_URL
@@ -33,6 +34,12 @@ internal interface DeviceApi {
     @POST(RETURN_DEVISE_URL)
     suspend fun returnDevice(
         @Body status: ReturnDeviceBody,
+        @Path("id") bookingId: Int
+    ): Response<BaseResponse>
+
+    @PUT(EDIT_BOOKING_URL)
+    suspend fun editBooking(
+        @Body status: BookingBody,
         @Path("id") bookingId: Int
     ): Response<BaseResponse>
 }

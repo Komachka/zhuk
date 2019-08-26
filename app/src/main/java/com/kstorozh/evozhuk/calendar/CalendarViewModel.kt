@@ -131,4 +131,26 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
         }
         return liveData
     }
+
+    fun editBooking(userId: String, booking: Booking, startDate: Long, endDate: Long): LiveData<Boolean> {
+        val liveData = MutableLiveData<Boolean>()
+        applicationScope.launch {
+            val result = getBookingsUseCase.editBooking(
+                BookingInputData(
+                    userId,
+                    startDate = Calendar.getInstance().apply { timeInMillis = startDate },
+                    endDate = Calendar.getInstance().apply { timeInMillis = endDate }),
+                booking.id, firstDay, lastDay)
+            result.data?.let {
+                liveData.postValue(true)
+                bookingsLiveData.postValue(it.bookingMap)
+                durationInMilisecLiveData.postValue(it.duration * ONE_SECOND)
+            }
+            result.domainError?.let {
+                errors.postValue(Event(it))
+                liveData.postValue(false)
+            }
+        }
+        return liveData
+    }
 }
