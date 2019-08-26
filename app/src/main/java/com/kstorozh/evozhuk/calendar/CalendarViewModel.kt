@@ -114,4 +114,21 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
         }
         return liveData
     }
+
+    fun deleteBooking(userId: String, booking: Booking): LiveData<Boolean> {
+        val liveData = MutableLiveData<Boolean>()
+        applicationScope.launch {
+            val result = getBookingsUseCase.deleteBooking(booking.id, userId, firstDay, lastDay)
+            result.data?.let {
+                liveData.postValue(true)
+                bookingsLiveData.postValue(it.bookingMap)
+                durationInMilisecLiveData.postValue(it.duration * ONE_SECOND)
+            }
+            result.domainError?.let {
+                errors.postValue(Event(it))
+                liveData.postValue(false)
+            }
+        }
+        return liveData
+    }
 }

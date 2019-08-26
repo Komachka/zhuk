@@ -1,6 +1,7 @@
 package com.kstorozh.data.repository
 
 import com.kstorozh.data.models.BookingBody
+import com.kstorozh.data.models.DeleteBookingBody
 import com.kstorozh.data.models.Device
 import com.kstorozh.data.models.ReturnDeviceBody
 import com.kstorozh.dataimpl.model.into.BookingParam
@@ -26,4 +27,5 @@ internal class DeviceDataMapper {
         isActive = isActive)
 
     fun mapBookingParamForReturn(bookingParam: BookingParam, id: String) = ReturnDeviceBody(bookingParam.userId.toInt(), id.toInt())
+    fun mapToDeleteBookingModel(userId: String, deviceId: String) = DeleteBookingBody(userId, deviceId)
 }
