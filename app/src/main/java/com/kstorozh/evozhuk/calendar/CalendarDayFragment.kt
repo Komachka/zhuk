@@ -55,12 +55,10 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
                 createBookingDialog(it[itemPosition], userId)
             }
             (viewAdapter as TimeSlotAdapter).editBookingListener = { pos ->
-                val itemPosition = pos
-                editBookingDialog(it[itemPosition], userId)
+                editBookingDialog(it[pos], userId)
             }
             (viewAdapter as TimeSlotAdapter).deleteBookingListener = { pos ->
-                val itemPosition = pos
-                deleteBookingDialog(it[itemPosition]) {
+                deleteBookingDialog(it[pos]) {
                     viewLifecycleOwner.observe(model.deleteBooking(userId, it)) {
                         view?.showSnackbar(resources.getString(R.string.bookin_removed))
                     }
