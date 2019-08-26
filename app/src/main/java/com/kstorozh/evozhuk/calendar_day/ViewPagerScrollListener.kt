@@ -32,15 +32,17 @@ class ViewPagerScrollListener(
                 blockRight = false
                 date = DateTime(cuurentTime).plusDays(-1)
                 cuurentTime = date
-                if (date.dayOfMonth != minTime.dayOfMonth)
+                if (date.dayOfMonth != minTime.dayOfMonth) {
                     adapter.setCurrentDate(cuurentTime)
+                }
             } else if (selectedPos > MIDDLE_POS) {
                 if (blockRight) return
                 blockLeft = false
                 date = DateTime(cuurentTime).plusDays(1)
                 cuurentTime = date
-                if (date.dayOfMonth != maxTime.dayOfMonth)
+                if (date.dayOfMonth != maxTime.dayOfMonth) {
                     adapter.setCurrentDate(cuurentTime)
+                }
             }
             if (date != null && date.dayOfMonth == maxTime.dayOfMonth && date.monthOfYear == maxTime.monthOfYear) {
                 blockRight = true

@@ -37,11 +37,6 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val id = arguments?.getInt(FRAGMENT_ID) ?: -1
-        model = ViewModelProviders.of(this)[DayViewModel::class.java]
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,10 +48,12 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
     }
 
     override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
+        model = ViewModelProviders.of(this)[DayViewModel::class.java]
         viewLifecycleOwner.handleErrors(model, fragmentView)
         viewManager = LinearLayoutManager(context)
         val milisec = arguments?.getLong(MILISEC) ?: 0
         val userId = arguments?.getInt(USER_ID) ?: 0
+
         fragmentView.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
@@ -65,7 +62,6 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         }
         viewLifecycleOwner.observe(model.durationInMilisecLiveData){
             viewLifecycleOwner.observe(model.bookingSlotsPerDay) {
-                Log.d(LOG_TAG, "after observe list size ${it.size} ${it.toString()}")
                 (viewAdapter as TimeSlotAdapter).updateData(it)
                 fragmentView.recyclerView.addOnItemTouchListener(
                     RecyclerItemClickListener(
@@ -89,7 +85,6 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
     }
 
     fun updateUI(milisec: Long, userId: Int) {
-        Log.d(LOG_TAG, "update UI ${SimpleDateFormat(DAY_MONTH_FORMAT).format(milisec)}")
         if (dateTV == null) return
         model.getBookingInfo(milisec, userId)
         dateTV.text = SimpleDateFormat(DAY_MONTH_FORMAT).format(milisec)

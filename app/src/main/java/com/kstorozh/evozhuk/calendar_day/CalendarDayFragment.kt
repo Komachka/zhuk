@@ -60,6 +60,7 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         adapter = DayPageAdapter(childFragmentManager, userId.toInt(), milisec)
         fragmentView.my_viewpager.adapter = adapter
         fragmentView.my_viewpager.currentItem = 1
+
         val cuurentTime = DateTime(milisec)
         onPageChangeListener =
             ViewPagerScrollListener(fragmentView.my_viewpager, adapter, cuurentTime)

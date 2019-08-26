@@ -21,39 +21,44 @@ class TimeSlotAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val CONTINUE_BOOKING_VIEW_TYPE = 2
 
 
-    //private val asynkListDiffer:AsyncListDiffer<TimeSlot>
-    /*init {
-        val diffUtil =object :DiffUtil.ItemCallback<TimeSlot>()
-        {
-            override fun areItemsTheSame(oldItem: TimeSlot, newItem: TimeSlot): Boolean {
-                return oldItem == newItem
-            }
-
-            override fun areContentsTheSame(oldItem: TimeSlot, newItem: TimeSlot): Boolean {
-               return oldItem.range == newItem.range
-            }
-
-        }
-        asynkListDiffer = AsyncListDiffer(this, diffUtil)
-    }*/
-
-
     private val timeSlot  = mutableListOf<TimeSlot>()
+    inner class SlotsDiffCallback(private val oldList:List<TimeSlot>, private val newList: List<TimeSlot>): DiffUtil.Callback() {
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val t = oldList[oldItemPosition].timeLable == newList[newItemPosition].timeLable
+            Log.d(LOG_TAG, "are items the same $t")
+            return t
+        }
+
+        override fun getOldListSize(): Int {
+            Log.d(LOG_TAG, "old size ${oldList.size}")
+            return oldList.size
+        }
+
+        override fun getNewListSize(): Int {
+            Log.d(LOG_TAG, "new size ${newList.size}")
+            return  newList.size
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val r =  oldList[oldItemPosition] == newList[newItemPosition]
+            Log.d(LOG_TAG, "are content are the same $r")
+            return r
+        }
+    }
 
     fun updateData(slots: List<TimeSlot>) {
-
-        Log.d(LOG_TAG, "update_data $timeSlot and $slots")
-
-
-        val diffRes = DiffUtil.calculateDiff(SlotsDiffCallback(timeSlot, slots))
-
-
+        val calback = SlotsDiffCallback(timeSlot, slots)
+        val diffRes = DiffUtil.calculateDiff(calback)
         timeSlot.clear()
         timeSlot.addAll(slots)
-        diffRes.dispatchUpdatesTo(this)
-
-        //notifyDataSetChanged()
+        //diffRes.dispatchUpdatesTo(this) //TODO doe not work
+        notifyDataSetChanged()
     }
+
+
+
+
 
 
     class EmptySlotViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -131,31 +136,6 @@ class TimeSlotAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 }
 
 
-class SlotsDiffCallback(private val oldList:List<TimeSlot>, private val newList: List<TimeSlot>): DiffUtil.Callback() {
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val t = oldList[oldItemPosition].range == newList[newItemPosition].range
-        Log.d(LOG_TAG, "are items the same $t")
-        return t
-    }
-
-    override fun getOldListSize(): Int {
-        Log.d(LOG_TAG, "old size ${oldList.size}")
-        return oldList.size
-    }
-
-    override fun getNewListSize(): Int {
-        Log.d(LOG_TAG, "new size ${newList.size}")
-        return  newList.size
-    }
-
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val r =  oldList[oldItemPosition] == newList[newItemPosition]
-        Log.d(LOG_TAG, "are content are the same $r")
-        return r
-    }
-
-
-}
 
 
