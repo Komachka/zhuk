@@ -74,6 +74,12 @@ class BackDeviceFragment : Fragment(), HandleErrors {
                     view.showSnackbar(resources.getString(R.string.device_not_returned_message))
             }
         }
+        reNewBut.setOnClickListener{
+            viewLifecycleOwner.observe(modelBackDevice.getNearbyBooking())
+            {
+
+            }
+        }
     }
 
     private fun clearAllNotification(context: Context?) {

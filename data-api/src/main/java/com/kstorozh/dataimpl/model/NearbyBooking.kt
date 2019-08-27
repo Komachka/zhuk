@@ -1,0 +1,11 @@
+package com.kstorozh.dataimpl.model
+
+
+class NearbyBooking (
+    var id: Int,
+    var userId: Int,
+    var deviceId: Int,
+    var startDate: String,
+    var endDate: String,
+    var isActive: Boolean
+)

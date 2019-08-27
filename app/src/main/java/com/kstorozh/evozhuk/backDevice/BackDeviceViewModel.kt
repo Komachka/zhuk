@@ -2,8 +2,10 @@ package com.kstorozh.evozhuk.backDevice
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.kstorozh.domainapi.GetBookingUseCase
 
 import com.kstorozh.domainapi.ManageDeviceUseCases
+import com.kstorozh.domainapi.model.Booking
 import com.kstorozh.domainapi.model.BookingInputData
 import com.kstorozh.domainapi.model.SessionData
 import com.kstorozh.evozhuk.BaseViewModel
@@ -22,6 +24,7 @@ class BackDeviceViewModel : BaseViewModel(), KoinComponent {
     }
 
     private val manageDeviceUseCases: ManageDeviceUseCases by inject()
+    private val getBookingUseCase:GetBookingUseCase by inject()
     private val applicationScope = CoroutineScope(Dispatchers.Default)
 
     fun tryReturnDevice(): LiveData<Boolean> {
@@ -55,5 +58,14 @@ class BackDeviceViewModel : BaseViewModel(), KoinComponent {
 
     fun setBookingSession(sessionData: SessionData) {
         bookingSession.value = sessionData
+    }
+
+    fun getNearbyBooking(): LiveData<Booking> {
+        val liveData = MutableLiveData<Booking>()
+        applicationScope.launch {
+            getBookingUseCase.getNearbyBooking()
+        }
+        return liveData
+
     }
 }

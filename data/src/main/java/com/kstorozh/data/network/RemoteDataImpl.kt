@@ -23,6 +23,12 @@ internal class RemoteDataImpl(
     private val userApi: UserApi,
     private val calendarApi: CalendarApi
 ) : RemoteData {
+    override suspend fun getNearbyBooking(id: String): ApiResult<NewarBookingResult> {
+        return getApiResult("nearby booking error") {
+            calendarApi.getNearBooking(id)
+        }
+    }
+
     override suspend fun editBooking(bookingBody: BookingBody, bookingId: String): ApiResult<BaseResponse> {
         return getApiResult(BOOKING_EDIT_ERROR) {
             deviceApi.editBooking(bookingBody, bookingId.toInt())

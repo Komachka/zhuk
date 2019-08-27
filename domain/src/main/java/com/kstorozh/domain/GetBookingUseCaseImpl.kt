@@ -6,10 +6,7 @@ import com.kstorozh.domain.mapper.CalendarMapper
 import com.kstorozh.domain.mapper.DeviceInfoMapper
 import com.kstorozh.domain.mapper.ErrorMapper
 import com.kstorozh.domainapi.GetBookingUseCase
-import com.kstorozh.domainapi.model.BookingInfo
-import com.kstorozh.domainapi.model.BookingInputData
-import com.kstorozh.domainapi.model.DomainErrors
-import com.kstorozh.domainapi.model.DomainResult
+import com.kstorozh.domainapi.model.*
 import java.text.SimpleDateFormat
 
 class GetBookingUseCaseImpl(
@@ -19,6 +16,15 @@ class GetBookingUseCaseImpl(
     val deviceMapper: DeviceInfoMapper,
     val mapper: CalendarMapper
 ) : GetBookingUseCase {
+
+    override suspend fun getNearbyBooking(): DomainResult<BookingInfo> {
+        val repoResult = bookingRepository.getNearbyBooking()
+        val domainError = errorMapper.mapToDomainError(repoResult.error)
+        val data = repoResult.data?.let { mapper.mapCalendarBookingDataToBooking(it) }
+        return DomainResult(data, domainError)
+
+    }
+
     override suspend fun getBookingLocal(): DomainResult<BookingInfo> {
         val repoResult = bookingRepository.getBookingFromLocal()
         val domainError = errorMapper.mapToDomainError(repoResult.error)

@@ -1,7 +1,9 @@
 package com.kstorozh.data.repository
 
+import com.kstorozh.data.models.Booking
 import com.kstorozh.data.models.BookingDataByDay
 import com.kstorozh.data.models.Day
+import com.kstorozh.dataimpl.model.NearbyBooking
 import com.kstorozh.dataimpl.model.out.CalendarBookingData
 import com.kstorozh.dataimpl.model.out.CalendarDay
 
@@ -32,4 +34,14 @@ internal class BookingDataMapper {
             }
         }
     }
+
+    fun maptonearbyBooking(booking: Booking) = NearbyBooking(
+        booking.id!!,
+        booking.userId!!,
+        booking.deviceId!!,
+        booking.startDate!!,
+        booking.endDate!!,
+        booking.isActive!!
+    )
+
 }
