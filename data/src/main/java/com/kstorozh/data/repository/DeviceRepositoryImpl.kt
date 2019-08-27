@@ -47,13 +47,15 @@ internal class DeviceRepositoryImpl(
                 device.id = result.data.data.deviceId.toString()
                 localData.insertDevice(device)
                 tokenRepository.setToken(device.id)
-                repoResult.data = true
-                repoResult
+                repoResult.apply {
+                    data = true
+                }
             }
             is ApiResult.Error<*> -> {
-                repoResult.data = false
-                repoResult.error = createError(Endpoints.INIT_DEVICE, result, this)
-                repoResult
+                repoResult.apply {
+                    data = false
+                    error = createError(Endpoints.INIT_DEVICE, result, this as KoinComponent)
+                }
             }
         }
     }
@@ -64,13 +66,15 @@ internal class DeviceRepositoryImpl(
         return when (val result = remoteData.updateDevice(device, deviceParam.uid)) {
             is ApiResult.Success -> {
                 localData.updateDevice(device)
-                repoResult.data = true
-                repoResult
+                repoResult.apply {
+                    data = true
+                }
             }
             is ApiResult.Error<*> -> {
-                repoResult.data = false
-                repoResult.error = createError(Endpoints.UPDATE_DEVICE, result, this)
-                repoResult
+                repoResult.apply {
+                    data = false
+                    error = createError(Endpoints.UPDATE_DEVICE, result, this as KoinComponent)
+                }
             }
         }
     }
@@ -87,15 +91,16 @@ internal class DeviceRepositoryImpl(
             )) {
                 is ApiResult.Success -> {
                     bookingBody.id = result.data.data.bookingId
-                    Log.d(LOG_TAG, "Booking id " + bookingBody.id.toString())
                     localData.saveBooking(bookingBody)
-                    repoResult.data = true
-                    repoResult
+                    repoResult.apply {
+                        data = true
+                    }
                 }
                 is ApiResult.Error<*> -> {
-                    repoResult.data = false
-                    repoResult.error = createError(Endpoints.TAKE_DEVICE, result, this)
-                    repoResult
+                    repoResult.apply {
+                        data = false
+                        error = createError(Endpoints.TAKE_DEVICE, result, this as KoinComponent)
+                    }
                 }
             }
         }
@@ -108,23 +113,21 @@ internal class DeviceRepositoryImpl(
         val repoResult: RepoResult<Boolean> = RepoResult()
         device?.let {
             val bookingBody = mapper.mapBookingDeviceInfo(bookingParam, device.id, isActive = false)
-            Log.d(LOG_TAG, " in method bookingparam $bookingParam")
-            Log.d(LOG_TAG, "bookingBody $bookingBody")
             return when (val result = remoteData.takeDevise(
                 bookingBody,
                 device.id
             )) {
                 is ApiResult.Success -> {
                     bookingBody.id = result.data.data.bookingId
-                    Log.d(LOG_TAG, "Booking id " + bookingBody.id.toString())
-                    // localData.saveBooking(bookingBody)
-                    repoResult.data = true
-                    repoResult
+                    repoResult.apply {
+                        data = true
+                    }
                 }
                 is ApiResult.Error<*> -> {
-                    repoResult.data = false
-                    repoResult.error = createError(Endpoints.TAKE_DEVICE, result, this)
-                    repoResult
+                    repoResult.apply {
+                        data = false
+                        error = createError(Endpoints.TAKE_DEVICE, result, this as KoinComponent)
+                    }
                 }
             }
         }
@@ -143,13 +146,15 @@ internal class DeviceRepositoryImpl(
                 bookingParam.bookingId!!
             )) {
                 is ApiResult.Success -> {
-                    repoResult.data = true
-                    repoResult
+                    repoResult.apply {
+                        data = true
+                    }
                 }
                 is ApiResult.Error<*> -> {
-                    repoResult.data = false
-                    repoResult.error = createError(Endpoints.TAKE_DEVICE, result, this)
-                    repoResult
+                    repoResult.apply {
+                        data = false
+                        error = createError(Endpoints.TAKE_DEVICE, result, this as KoinComponent)
+                    }
                 }
             }
         }
@@ -162,22 +167,20 @@ internal class DeviceRepositoryImpl(
         val repoResult: RepoResult<Boolean> = RepoResult()
         device?.let {
             val deleteBookingBody = mapper.mapToDeleteBookingModel(userId, device.id)
-            Log.d(LOG_TAG, "delete booking $deleteBookingBody")
             return when (val result = remoteData.deleteBooking(
                 deleteBookingBody,
                 bookingId
             )) {
                 is ApiResult.Success -> {
-                    // bookingBody.id = result.data.data.bookingId
-                    // Log.d(LOG_TAG, "Booking id " + bookingBody.id.toString())
-                    // localData.saveBooking(bookingBody)
-                    repoResult.data = true
-                    repoResult
+                    repoResult.apply {
+                        data = true
+                    }
                 }
                 is ApiResult.Error<*> -> {
-                    repoResult.data = false
-                    repoResult.error = createError(Endpoints.TAKE_DEVICE, result, this)
-                    repoResult
+                    repoResult.apply {
+                        data = false
+                        error = createError(Endpoints.TAKE_DEVICE, result, this as KoinComponent)
+                    }
                 }
             }
         }
@@ -194,13 +197,15 @@ internal class DeviceRepositoryImpl(
                 remoteData.returnDevice(mapper.mapBookingParamForReturn(bookingParam, device.id), booking!!.id)) {
                 is ApiResult.Success -> {
                     localData.deleteBookingInfo()
-                    repoResult.data = true
-                    repoResult
+                    repoResult.apply {
+                        data = true
+                    }
                 }
                 is ApiResult.Error<*> -> {
-                    repoResult.data = false
-                    repoResult.error = createError(Endpoints.RETURN_DEVICE, result, this)
-                    repoResult
+                    repoResult.apply {
+                        data = false
+                        error = createError(Endpoints.RETURN_DEVICE, result, this as KoinComponent)
+                    }
                 }
             }
         }
