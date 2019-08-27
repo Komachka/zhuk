@@ -5,6 +5,7 @@ import com.kstorozh.dataimpl.model.into.BookingParam
 import com.kstorozh.dataimpl.model.into.DeviceParam
 import com.kstorozh.dataimpl.model.out.BookingSessionData
 import com.kstorozh.domainapi.model.BookingInputData
+import com.kstorozh.domainapi.model.DeviceInfo
 import com.kstorozh.domainapi.model.DeviceInputData
 import com.kstorozh.domainapi.model.SessionData
 import java.text.SimpleDateFormat
@@ -40,4 +41,12 @@ class DeviceInfoMapper {
         endDateCalendar.setTime(format.parse(bookingSession.endDate)!!)
         return SessionData(bookingSession.userId, endDateCalendar)
     }
+
+    fun mapToDeviceInfo(data: DeviceParam) = DeviceInfo(
+        data.osVersion,
+        data.model,
+        data.uid,
+        data.memory.toString(), // TODO convert to gb here
+        data.storage.toString()
+    )
 }

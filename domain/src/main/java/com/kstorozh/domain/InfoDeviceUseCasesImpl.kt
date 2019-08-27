@@ -15,6 +15,9 @@ class InfoDeviceUseCasesImpl(val repository: DeviseRepository,
 
 
     override suspend fun getDeviceInfo(): DomainResult<DeviceInfo> {
-        val result = repository.getDeviceInfo()
+        val repoResult = repository.getDeviceInfo()
+        val domainError = errorMapper.mapToDomainError(repoResult.error)
+        val data = repoResult.data?.let { mapper.mapToDeviceInfo(it) }
+        return DomainResult(data, domainError)
     }
 }

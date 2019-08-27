@@ -22,14 +22,20 @@ class InfoViewModel:BaseViewModel(), KoinComponent {
     {
         applicationScope.launch {
             val result = infoUseCase.getDeviceInfo()
-            val infoList = listOf(
-                INFO_VERSION to result.version,
-                INFO_MODEL to result.model,
-                INFO_ID to result.id,
-                INFO_MEMORY to result.memory,
-                INFO_STORAGE to result.storage
-            )
-            deviceInfo.postValue(infoList)
+            result.data?.let {
+                val infoList = listOf(
+                    INFO_VERSION to it.version,
+                    INFO_MODEL to it.model,
+                    INFO_ID to it.id,
+                    INFO_MEMORY to it.memory,
+                    INFO_STORAGE to it.storage
+                )
+                deviceInfo.postValue(infoList)
+            }
+            result.domainError?.let {
+                errors.postValue(Event(it))
+            }
+
         }
 
     }
