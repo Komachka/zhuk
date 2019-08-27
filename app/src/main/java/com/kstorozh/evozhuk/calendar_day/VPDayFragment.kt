@@ -1,7 +1,6 @@
 package com.kstorozh.evozhuk.calendar_day
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -37,7 +36,6 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         }
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,7 +58,7 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
             viewAdapter = TimeSlotAdapter()
             fragmentView.recyclerView.adapter = viewAdapter
         }
-        viewLifecycleOwner.observe(model.durationInMilisecLiveData){
+        viewLifecycleOwner.observe(model.durationInMilisecLiveData) {
             viewLifecycleOwner.observe(model.bookingSlotsPerDay) {
                 (viewAdapter as TimeSlotAdapter).updateData(it)
                 fragmentView.recyclerView.addOnItemTouchListener(
