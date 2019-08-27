@@ -5,10 +5,11 @@ import END_DATE
 import GET_BOOKING_URL
 import NEARBY_BOOKING_URL
 import START_DATE
+import com.kstorozh.data.models.*
 import com.kstorozh.data.models.BaseResponse
 import com.kstorozh.data.models.BookingDataByDay
 import com.kstorozh.data.models.DeleteBookingBody
-import com.kstorozh.data.models.NewarBookingResult
+import com.kstorozh.data.models.DeviceId
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -25,6 +26,6 @@ internal interface CalendarApi {
 
     @POST(NEARBY_BOOKING_URL)
     suspend fun getNearBooking(
-        @Body deviceId: String
+        @Body deviceId: DeviceId
     ): Response<NewarBookingResult>
 }

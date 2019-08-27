@@ -1,9 +1,11 @@
 package com.kstorozh.domain.mapper
 
+import com.kstorozh.dataimpl.model.NearbyBooking
 import com.kstorozh.dataimpl.model.out.CalendarBookingData
 import com.kstorozh.dataimpl.model.out.CalendarDay
 import com.kstorozh.domainapi.model.Booking
 import com.kstorozh.domainapi.model.BookingInfo
+import com.kstorozh.domainapi.model.NearbyDomainBooking
 import org.joda.time.format.ISODateTimeFormat
 
 class CalendarMapper {
@@ -39,4 +41,12 @@ class CalendarMapper {
             calendarDay.duration
         )
     }
+
+    fun mapToNearbyBooking(nearbyBooking: NearbyBooking) =  NearbyDomainBooking(
+        nearbyBooking.id,
+        nearbyBooking.deviceId,
+        nearbyBooking.userId,
+        nearbyBooking.startDate,
+        nearbyBooking.endDate
+    )
 }

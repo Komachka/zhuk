@@ -17,10 +17,10 @@ class GetBookingUseCaseImpl(
     val mapper: CalendarMapper
 ) : GetBookingUseCase {
 
-    override suspend fun getNearbyBooking(): DomainResult<BookingInfo> {
+    override suspend fun getNearbyBooking(): DomainResult<NearbyDomainBooking> {
         val repoResult = bookingRepository.getNearbyBooking()
         val domainError = errorMapper.mapToDomainError(repoResult.error)
-        val data = repoResult.data?.let { mapper.mapCalendarBookingDataToBooking(it) }
+        val data = repoResult.data?.let { mapper.mapToNearbyBooking(it) }
         return DomainResult(data, domainError)
 
     }

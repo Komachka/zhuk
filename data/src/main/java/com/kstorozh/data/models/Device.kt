@@ -31,3 +31,9 @@ internal data class Device(
     @Expose
     val storage: Int
 )
+
+internal data class DeviceId(
+    @SerializedName("device_id")
+    @Expose
+    val deviceId: Int
+)

@@ -25,7 +25,7 @@ internal class RemoteDataImpl(
 ) : RemoteData {
     override suspend fun getNearbyBooking(id: String): ApiResult<NewarBookingResult> {
         return getApiResult("nearby booking error") {
-            calendarApi.getNearBooking(id)
+            calendarApi.getNearBooking(DeviceId(id.toInt()))
         }
     }
 

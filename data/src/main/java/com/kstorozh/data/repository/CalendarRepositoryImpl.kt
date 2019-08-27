@@ -32,8 +32,9 @@ internal class CalendarRepositoryImpl(
                 is ApiResult.Success -> {
                     repoResult.apply {
                         try {
-                            data = bookingDataMapper.maptonearbyBooking(result.data.data.booking)
-
+                            result.data.data?.booking?.let {
+                                data = bookingDataMapper.maptonearbyBooking(it)
+                            }
                         } catch (e: Throwable) {
                             data = null
                             error = DataError(ErrorStatus.UNEXPECTED_ERROR, BOOKING_DATA_EMPTY_ERROR, e)
@@ -49,8 +50,7 @@ internal class CalendarRepositoryImpl(
                 }
             }
         }
-
-
+        return repoResult
     }
 
     override suspend fun getBookingFromLocal(): RepoResult<CalendarBookingData> {

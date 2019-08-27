@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.kstorozh.domainapi.GetBookingUseCase
 
 import com.kstorozh.domainapi.ManageDeviceUseCases
-import com.kstorozh.domainapi.model.Booking
 import com.kstorozh.domainapi.model.BookingInputData
+import com.kstorozh.domainapi.model.NearbyDomainBooking
 import com.kstorozh.domainapi.model.SessionData
 import com.kstorozh.evozhuk.BaseViewModel
 import com.kstorozh.evozhuk.Event
@@ -26,6 +26,9 @@ class BackDeviceViewModel : BaseViewModel(), KoinComponent {
     private val manageDeviceUseCases: ManageDeviceUseCases by inject()
     private val getBookingUseCase:GetBookingUseCase by inject()
     private val applicationScope = CoroutineScope(Dispatchers.Default)
+
+    val nearbyBooking = MutableLiveData<NearbyDomainBooking>()
+
 
     fun tryReturnDevice(): LiveData<Boolean> {
         val returnDeviceLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
@@ -60,12 +63,19 @@ class BackDeviceViewModel : BaseViewModel(), KoinComponent {
         bookingSession.value = sessionData
     }
 
-    fun getNearbyBooking(): LiveData<Booking> {
-        val liveData = MutableLiveData<Booking>()
+    fun getNearbyBooking(): LiveData<Boolean> {
+        val isBookingExistsliveData = MutableLiveData<Boolean>()
         applicationScope.launch {
-            getBookingUseCase.getNearbyBooking()
+            val result = getBookingUseCase.getNearbyBooking()
+            result.data?.let {
+                nearbyBooking.postValue(it)
+                isBookingExistsliveData.postValue(true) }
+            result.domainError?.let {
+                errors.postValue(Event(it))
+                isBookingExistsliveData.postValue(false)
+            }
         }
-        return liveData
+        return isBookingExistsliveData
 
     }
 }
