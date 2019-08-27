@@ -22,6 +22,8 @@ internal class DeviceRepositoryImpl(
     private val tokenRepository: TokenRepository
 ) : DeviseRepository, KoinComponent {
 
+    private val koin = this as KoinComponent
+
     override suspend fun deviceAlreadyInited(deviceParam: DeviceParam): RepoResult<Boolean> {
         val res = tokenRepository.getToken()?.let { true } ?: false
         return RepoResult(res)
@@ -54,7 +56,7 @@ internal class DeviceRepositoryImpl(
             is ApiResult.Error<*> -> {
                 repoResult.apply {
                     data = false
-                    error = createError(Endpoints.INIT_DEVICE, result, this as KoinComponent)
+                    error = createError(Endpoints.INIT_DEVICE, result, koin)
                 }
             }
         }
@@ -73,7 +75,7 @@ internal class DeviceRepositoryImpl(
             is ApiResult.Error<*> -> {
                 repoResult.apply {
                     data = false
-                    error = createError(Endpoints.UPDATE_DEVICE, result, this as KoinComponent)
+                    error = createError(Endpoints.UPDATE_DEVICE, result, koin)
                 }
             }
         }
@@ -99,7 +101,7 @@ internal class DeviceRepositoryImpl(
                 is ApiResult.Error<*> -> {
                     repoResult.apply {
                         data = false
-                        error = createError(Endpoints.TAKE_DEVICE, result, this as KoinComponent)
+                        error = createError(Endpoints.TAKE_DEVICE, result, koin)
                     }
                 }
             }
@@ -126,7 +128,7 @@ internal class DeviceRepositoryImpl(
                 is ApiResult.Error<*> -> {
                     repoResult.apply {
                         data = false
-                        error = createError(Endpoints.TAKE_DEVICE, result, this as KoinComponent)
+                        error = createError(Endpoints.TAKE_DEVICE, result, koin)
                     }
                 }
             }
@@ -151,9 +153,10 @@ internal class DeviceRepositoryImpl(
                     }
                 }
                 is ApiResult.Error<*> -> {
+
                     repoResult.apply {
                         data = false
-                        error = createError(Endpoints.TAKE_DEVICE, result, this as KoinComponent)
+                        error = createError(Endpoints.TAKE_DEVICE, result, koin)
                     }
                 }
             }
@@ -179,7 +182,7 @@ internal class DeviceRepositoryImpl(
                 is ApiResult.Error<*> -> {
                     repoResult.apply {
                         data = false
-                        error = createError(Endpoints.TAKE_DEVICE, result, this as KoinComponent)
+                        error = createError(Endpoints.TAKE_DEVICE, result, koin)
                     }
                 }
             }
@@ -204,7 +207,7 @@ internal class DeviceRepositoryImpl(
                 is ApiResult.Error<*> -> {
                     repoResult.apply {
                         data = false
-                        error = createError(Endpoints.RETURN_DEVICE, result, this as KoinComponent)
+                        error = createError(Endpoints.RETURN_DEVICE, result, koin)
                     }
                 }
             }
