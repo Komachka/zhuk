@@ -57,7 +57,6 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
             val bookingInDayList = it[dayInFormat]
             val liveData = MutableLiveData<List<TimeSlot>>()
             val listOfTimeSlot: List<TimeSlot> = parseBookingToTimeSlot(bookingInDayList, params.second, params.first)
-            Log.d(LOG_TAG, "getBookingSlots $listOfTimeSlot")
             liveData.postValue(listOfTimeSlot)
             return@Function liveData
         })
@@ -74,11 +73,6 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
             listOfTimeSlot.addAll(createEmptySlots(dateInMilisec, it))
             listOfTimeSlot.fillBusySlots(list, userId, it)
         }
-
-        /*durationInMilisecLiveData.value?.let {
-            listOfTimeSlot.addAll(createEmptySlots(dateInMilisec, it))
-            listOfTimeSlot.fillBusySlots(list, userId, it)
-        }*/
         return listOfTimeSlot
     }
 
