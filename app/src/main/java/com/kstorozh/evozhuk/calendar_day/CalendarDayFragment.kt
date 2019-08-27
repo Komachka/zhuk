@@ -7,9 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.kstorozh.evozhuk.HandleErrors
 import com.kstorozh.evozhuk.R
+import kotlinx.android.synthetic.main.fragment_calendar_parent_view.*
 
 import kotlinx.android.synthetic.main.fragment_calendar_parent_view.view.*
 import kotlinx.android.synthetic.main.fragment_calendar_parent_view.view.my_viewpager
+import kotlinx.android.synthetic.main.fragment_calendar_parent_view.view.toolbarDay
 import org.joda.time.DateTime
 
 class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
@@ -23,7 +25,6 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
     }
 
     private lateinit var onPageChangeListener: ViewPagerScrollListener
-    private lateinit var fragment: View
     private lateinit var adapter: DayPageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,23 +48,21 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
     }
 
     override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
-        fragment = fragmentView
         (activity as AppCompatActivity).setSupportActionBar(fragmentView.toolbarDay)
-        fragmentView.toolbarDay.navigationIcon = resources.getDrawable(R.drawable.ic_close_black_24dp)
-        fragmentView.toolbarDay.title = resources.getString(R.string.calendar)
-        fragmentView.toolbarDay.setNavigationOnClickListener {
+        toolbarDay.navigationIcon = resources.getDrawable(R.drawable.ic_close_black_24dp)
+        toolbarDay.title = resources.getString(R.string.calendar)
+        toolbarDay.setNavigationOnClickListener {
             val navController = this.findNavController()
             navController.navigateUp()
         }
         val userId = CalendarDayFragmentArgs.fromBundle(arguments!!).userId
         val milisec = CalendarDayFragmentArgs.fromBundle(arguments!!).milisec
         adapter = DayPageAdapter(childFragmentManager, userId.toInt(), milisec)
-        fragmentView.my_viewpager.adapter = adapter
-        fragmentView.my_viewpager.currentItem = 1
-
+        my_viewpager.adapter = adapter
+        my_viewpager.currentItem = 1
         val cuurentTime = DateTime(milisec)
         onPageChangeListener =
-            ViewPagerScrollListener(fragmentView.my_viewpager, adapter, cuurentTime)
-        fragmentView.my_viewpager.addOnPageChangeListener(onPageChangeListener)
+            ViewPagerScrollListener(my_viewpager, adapter, cuurentTime)
+        my_viewpager.addOnPageChangeListener(onPageChangeListener)
     }
 }
