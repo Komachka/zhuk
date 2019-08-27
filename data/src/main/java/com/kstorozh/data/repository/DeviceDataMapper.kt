@@ -26,4 +26,13 @@ internal class DeviceDataMapper {
         isActive = isActive)
 
     fun mapBookingParamForReturn(bookingParam: BookingParam, id: String) = ReturnDeviceBody(bookingParam.userId.toInt(), id.toInt())
+
+    fun mapDeviceInfo(device: Device) = DeviceParam(
+        device.uid,
+        device.model,
+        device.os,
+        device.osVersion,
+        device.memory,
+        device.storage
+    )
 }

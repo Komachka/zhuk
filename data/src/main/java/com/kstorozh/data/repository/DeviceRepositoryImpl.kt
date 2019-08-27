@@ -8,12 +8,15 @@ import com.kstorozh.data.network.Endpoints
 import com.kstorozh.data.network.RemoteData
 import com.kstorozh.data.network.TokenRepository
 import com.kstorozh.data.utils.*
+import com.kstorozh.dataimpl.DataError
 import com.kstorozh.dataimpl.model.into.BookingParam
 import com.kstorozh.dataimpl.model.into.DeviceParam
 import com.kstorozh.dataimpl.DeviseRepository
+import com.kstorozh.dataimpl.ErrorStatus
 import com.kstorozh.dataimpl.model.out.BookingSessionData
 import com.kstorozh.dataimpl.model.out.RepoResult
 import org.koin.core.KoinComponent
+import java.lang.NullPointerException
 
 internal class DeviceRepositoryImpl(
     private val localData: LocalDataStorage,
@@ -21,6 +24,14 @@ internal class DeviceRepositoryImpl(
     private val mapper: DeviceDataMapper,
     private val tokenRepository: TokenRepository
 ) : DeviseRepository, KoinComponent {
+
+    override suspend fun getDeviceInfo(): RepoResult<DeviceParam> {
+        val repoResult: RepoResult<DeviceParam> = RepoResult()
+        localData.getDeviceInfo()?.let {
+            return repoResult.apply { data = mapper.mapDeviceInfo(it) }
+        }
+        return repoResult.apply { error = DataError(ErrorStatus.UNEXPECTED_ERROR, "device info is empty", NullPointerException("device info is empty")) }
+    }
 
     override suspend fun deviceAlreadyInited(deviceParam: DeviceParam): RepoResult<Boolean> {
         val res = tokenRepository.getToken()?.let { true } ?: false
