@@ -38,4 +38,22 @@ class GetBookingUseCaseImpl(
         }
         return DomainResult(null, DomainErrors(message = "Booking was not created"))
     }
+
+    override suspend fun deleteBooking(bookingId: Int, userId: String, startDate: Long, endDate: Long): DomainResult<BookingInfo> {
+        val repoResult = repository.deleteBooking(bookingId, userId)
+        repoResult.data?.let {
+            if (it)
+                return loadBooking(startDate, endDate)
+        }
+        return DomainResult(null, DomainErrors(message = "Booking was not deleted"))
+    }
+
+    override suspend fun editBooking(bookingInputData: BookingInputData, bookingId: Int, startDate: Long, endDate: Long): DomainResult<BookingInfo> {
+        val repoResult = repository.editBooking(deviceMapper.mapBookingParam(bookingInputData, bookingInputData.startDate, bookingId.toString()))
+        repoResult.data?.let {
+            if (it)
+                return loadBooking(startDate, endDate)
+        }
+        return DomainResult(null, DomainErrors(message = "Booking was not edited"))
+    }
 }

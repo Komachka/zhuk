@@ -12,5 +12,5 @@ class TimeSlot(
     var slotEndDate: String,
     var booking: Booking? = null,
     val range: LongRange,
-    var isActive:Boolean = false
+    var isActive: Boolean = false
 )

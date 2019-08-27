@@ -5,7 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.DatePicker
 import android.widget.TimePicker
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.kstorozh.domainapi.model.Booking
 import com.kstorozh.evozhuk.LOG_TAG
 import com.kstorozh.evozhuk.R
 import com.kstorozh.evozhuk.TIME_PICKER_INTERVAL
@@ -13,10 +15,11 @@ import com.kstorozh.evozhuk.chooseTime.CustomTime
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.bottom_sheet_dialog.view.*
 import org.joda.time.DateTime
+import androidx.appcompat.view.ContextThemeWrapper
 
 interface BottomSheetDialogHandler {
 
-    fun CalendarDayFragment.createDialog(item: TimeSlot, userId: String) {
+    fun CalendarDayFragment.createBookingDialog(item: TimeSlot, userId: String) {
         if (this.context == null)
             return
         val mBottomSheetDialog = BottomSheetDialog(this.context!!)
@@ -35,6 +38,45 @@ interface BottomSheetDialogHandler {
         }
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
+    }
+
+    fun CalendarDayFragment.editBookingDialog(item: TimeSlot, userId: String) {
+        if (this.context == null)
+            return
+        val mBottomSheetDialog = BottomSheetDialog(this.context!!)
+        val sheetView = LayoutInflater.from(this.context).inflate(R.layout.bottom_sheet_dialog, null)
+        val startDate = DateTime(item.range.first)
+        val endDate = DateTime(item.range.last)
+
+        val fromTimeAndDate = setTimeAndDate(sheetView.fromTimePicker, sheetView.fromDatePicker, startDate)
+        val toTimeAndDate = setTimeAndDate(sheetView.toTimePicker, sheetView.toDatePicker, endDate)
+        sheetView.bookBut.setOnClickListener {
+            if (item.isMyBooking) {
+                observe(model.editBooking(userId, item.booking!!, fromTimeAndDate.getMillisec(), toTimeAndDate.getMillisec())) {
+                    mBottomSheetDialog.cancel()
+                }
+            }
+        }
+        mBottomSheetDialog.setContentView(sheetView)
+        mBottomSheetDialog.show()
+    }
+
+    fun CalendarDayFragment.deleteBookingDialog(item: TimeSlot, delete: (Booking) -> Unit) {
+        if (this.context == null)
+            return
+
+        if (item.booking != null) {
+            context?.applicationContext?.let {
+                val alertDialog = AlertDialog.Builder(ContextThemeWrapper(context, R.style.myDialog))
+                alertDialog.setTitle(resources.getString(R.string.delete_title))
+                alertDialog.setPositiveButton(resources.getString(R.string.delete_booking)) { dialog, which ->
+                    delete.invoke(item.booking!!)
+                }
+                alertDialog.setNegativeButton(resources.getString(R.string.dont_delete_booking)) { dialog, which ->
+                }
+                alertDialog.show()
+            }
+        }
     }
 
     fun setTimeAndDate(timePicker: TimePicker, datePicker: DatePicker, date: DateTime): CustomTime {
