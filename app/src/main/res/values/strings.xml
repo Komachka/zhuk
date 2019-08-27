@@ -82,5 +82,7 @@
     <string name="chooseTimeLable">Choose time for booking</string>
     <string name="calendar">Calendar</string>
     <string name="why_message">For what do you need this device?</string>
+    <string name="note">Note</string>
+    <string name="add_new_note">Add the note about device</string>
 
 </resources>

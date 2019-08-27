@@ -83,6 +83,8 @@
     <string name="chooseTimeLable">Выбери время для брони устройства</string>
     <string name="calendar">Календарь</string>
     <string name="why_message">Зачем тебе это устройство?</string>
+    <string name="note">Заметка</string>
+    <string name="add_new_note">Добавь свою заметку про устройство</string>
 
 
 </resources>

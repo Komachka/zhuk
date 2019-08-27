@@ -11,7 +11,11 @@ class InfoDeviceUseCasesImpl(val repository: DeviseRepository,
                              val mapper: DeviceInfoMapper,
                              val errorMapper: ErrorMapper
 ):InfoDeviceUseCases {
-
+    override suspend fun saveNote(note: String): DomainResult<Boolean> {
+        val repoResult = repository.saveNote(note)
+        val domainError = errorMapper.mapToDomainError(repoResult.error)
+        return DomainResult(repoResult.data, domainError)
+    }
 
 
     override suspend fun getDeviceInfo(): DomainResult<DeviceInfo> {

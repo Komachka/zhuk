@@ -28,7 +28,8 @@ class InfoViewModel:BaseViewModel(), KoinComponent {
                     INFO_MODEL to it.model,
                     INFO_ID to it.id,
                     INFO_MEMORY to it.memory,
-                    INFO_STORAGE to it.storage
+                    INFO_STORAGE to it.storage,
+                    INFO_NOTE to it.note
                 )
                 deviceInfo.postValue(infoList)
             }
@@ -38,5 +39,14 @@ class InfoViewModel:BaseViewModel(), KoinComponent {
 
         }
 
+    }
+
+    fun saveNote(note: String) {
+        applicationScope.launch {
+            val result = infoUseCase.saveNote(note)
+            result.domainError?.let {
+                errors.postValue(Event(it))
+            }
+        }
     }
 }

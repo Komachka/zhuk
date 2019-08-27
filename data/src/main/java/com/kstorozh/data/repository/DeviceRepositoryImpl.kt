@@ -16,6 +16,7 @@ import com.kstorozh.dataimpl.ErrorStatus
 import com.kstorozh.dataimpl.model.out.BookingSessionData
 import com.kstorozh.dataimpl.model.out.RepoResult
 import org.koin.core.KoinComponent
+import java.lang.Exception
 import java.lang.NullPointerException
 
 internal class DeviceRepositoryImpl(
@@ -24,6 +25,26 @@ internal class DeviceRepositoryImpl(
     private val mapper: DeviceDataMapper,
     private val tokenRepository: TokenRepository
 ) : DeviseRepository, KoinComponent {
+
+    override suspend fun saveNote(note: String): RepoResult<Boolean> {
+        val device = localData.getDeviceInfo()
+        val repoResult: RepoResult<Boolean> = RepoResult()
+        device?.let {
+            it.note = note
+            localData.insertDevice(device)
+            when (val result = remoteData.initDevice(device)) {
+                is ApiResult.Success -> {
+                    repoResult.data = true
+                }
+                is ApiResult.Error<*> -> {
+                    repoResult.data = false
+                    repoResult.error = createError(Endpoints.INIT_DEVICE, result, this)
+                }
+            }
+        }
+        if (device == null) repoResult.error = DataError(ErrorStatus.UNEXPECTED_ERROR, "Device is not store in local data base", Exception("Device is not store in local data base"))
+        return repoResult
+    }
 
     override suspend fun getDeviceInfo(): RepoResult<DeviceParam> {
         val repoResult: RepoResult<DeviceParam> = RepoResult()

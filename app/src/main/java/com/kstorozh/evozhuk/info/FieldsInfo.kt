@@ -7,5 +7,6 @@ enum class FieldsInfo(val resursId: Int) {
     MODEL(R.string.model),
     ID(R.string.id),
     MEMORY(R.string.memory),
-    STORAGE(R.string.storage)
+    STORAGE(R.string.storage),
+    NOTE(R.string.note)
 }

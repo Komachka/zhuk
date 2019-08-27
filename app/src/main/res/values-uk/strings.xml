@@ -88,5 +88,7 @@
     <string name="chooseTimeLable">Вибери час для бронювання пристрою</string>
     <string name="calendar">Календар</string>
     <string name="why_message">Навіщо тобі цей пристрій?</string>
+    <string name="note">Нотатка</string>
+    <string name="add_new_note">Додай нотатку про пристрій</string>
 
 </resources>

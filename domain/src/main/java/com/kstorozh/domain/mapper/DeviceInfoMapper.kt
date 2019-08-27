@@ -24,7 +24,8 @@ class DeviceInfoMapper {
             deviceInputData.os,
             deviceInputData.osVersion,
             deviceInputData.memory,
-            deviceInputData.storage
+            deviceInputData.storage,
+            deviceInputData.note
         )
 
     @SuppressLint("SimpleDateFormat")
@@ -54,7 +55,8 @@ class DeviceInfoMapper {
         data.model,
         data.uid,
             "${df.format(data.memory.toLong().mgToGb())} Gb",
-            "${df.format(data.storage.toLong().mgToGb())} Gb")
+            "${df.format(data.storage.toLong().mgToGb())} Gb",
+        data.note)
     }
 
 

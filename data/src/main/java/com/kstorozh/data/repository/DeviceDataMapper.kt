@@ -15,7 +15,8 @@ internal class DeviceDataMapper {
         deviceParam.os,
         deviceParam.osVersion,
         deviceParam.memory,
-        deviceParam.storage)
+        deviceParam.storage,
+        deviceParam.note)
 
     fun mapBookingDeviceInfo(bookingParam: BookingParam, deviceId: String, isActive: Boolean = true) = BookingBody(
         1,
@@ -33,6 +34,7 @@ internal class DeviceDataMapper {
         device.os,
         device.osVersion,
         device.memory,
-        device.storage
+        device.storage,
+        device.note
     )
 }

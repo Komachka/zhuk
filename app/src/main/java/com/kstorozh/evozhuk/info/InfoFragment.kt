@@ -44,6 +44,9 @@ class InfoFragment : Fragment() {
         }
         viewManager = LinearLayoutManager(context) as RecyclerView.LayoutManager
         infoAdapter = InfoAdapter()
+        (infoAdapter as InfoAdapter).saveNoteListener = {
+            model.saveNote(it)
+        }
         fragment.infoRv.apply {
             setHasFixedSize(true)
             layoutManager = viewManager

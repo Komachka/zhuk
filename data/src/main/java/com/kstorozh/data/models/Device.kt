@@ -29,5 +29,8 @@ internal data class Device(
     val memory: Int,
 
     @Expose
-    val storage: Int
+    val storage: Int,
+
+    @Expose
+    var note: String
 )
