@@ -1,6 +1,5 @@
 package com.kstorozh.evozhuk.info
 
-import android.os.Build
 import androidx.lifecycle.MutableLiveData
 import com.kstorozh.domainapi.InfoDeviceUseCases
 import com.kstorozh.evozhuk.*
@@ -9,17 +8,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import java.text.DecimalFormat
 
-class InfoViewModel:BaseViewModel(), KoinComponent {
+class InfoViewModel : BaseViewModel(), KoinComponent {
 
     val deviceInfo = MutableLiveData<List<Pair<DeviceInfoName, DeviceInfoParam>>>()
     private val applicationScope = CoroutineScope(Dispatchers.Default)
     private val infoUseCase: InfoDeviceUseCases by inject()
 
-
-    fun getDeviceInfo()
-    {
+    fun getDeviceInfo() {
         applicationScope.launch {
             val result = infoUseCase.getDeviceInfo()
             result.data?.let {
@@ -36,9 +32,7 @@ class InfoViewModel:BaseViewModel(), KoinComponent {
             result.domainError?.let {
                 errors.postValue(Event(it))
             }
-
         }
-
     }
 
     fun saveNote(note: String) {

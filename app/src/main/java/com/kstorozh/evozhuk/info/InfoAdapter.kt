@@ -38,7 +38,6 @@ class InfoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return infoAboutDevice.size
     }
 
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when {
             getItemViewType(position) == R.layout.note_item -> (holder as NoteViewHolder).bindData(infoAboutDevice[position])
@@ -54,8 +53,7 @@ class InfoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-
-    lateinit var saveNoteListener : (String) -> Unit
+    lateinit var saveNoteListener: (String) -> Unit
 
     inner class NoteViewHolder(val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
@@ -72,10 +70,8 @@ class InfoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         view.newNoteEt.visibility = View.GONE
                         view.submitNoteBtn.visibility = View.GONE
                     }
-
                 }
-                if (v.id == R.id.noteMessageTv)
-                {
+                if (v.id == R.id.noteMessageTv) {
                     view.noteMessageTv.visibility = View.GONE
                     view.newNoteEt.visibility = View.VISIBLE
                     view.submitNoteBtn.visibility = View.VISIBLE

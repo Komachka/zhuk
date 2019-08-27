@@ -6,14 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.kstorozh.evozhuk.R
-import com.kstorozh.evozhuk.utils.getInfoPairs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_info.view.*
@@ -57,7 +55,7 @@ class InfoFragment : Fragment() {
             (viewManager as LinearLayoutManager).orientation
         )
         fragment.infoRv.addItemDecoration(dividerItemDecoration)
-        viewLifecycleOwner.observe(model.deviceInfo){
+        viewLifecycleOwner.observe(model.deviceInfo) {
             (infoAdapter as InfoAdapter).updateInfo(it)
         }
     }

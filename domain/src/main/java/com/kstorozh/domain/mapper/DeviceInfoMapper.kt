@@ -1,7 +1,6 @@
 package com.kstorozh.domain.mapper
 
 import android.annotation.SuppressLint
-import android.os.Build
 import com.kstorozh.dataimpl.model.into.BookingParam
 import com.kstorozh.dataimpl.model.into.DeviceParam
 import com.kstorozh.dataimpl.model.out.BookingSessionData
@@ -48,7 +47,7 @@ class DeviceInfoMapper {
 
     private fun Long.mgToGb() = this * 0.001
 
-    fun mapToDeviceInfo(data: DeviceParam) : DeviceInfo {
+    fun mapToDeviceInfo(data: DeviceParam): DeviceInfo {
         val df = DecimalFormat(MEMORY_DECIMAL_FORMAT)
         return DeviceInfo(
         data.osVersion,
@@ -58,6 +57,4 @@ class DeviceInfoMapper {
             "${df.format(data.storage.toLong().mgToGb())} Gb",
         data.note)
     }
-
-
 }

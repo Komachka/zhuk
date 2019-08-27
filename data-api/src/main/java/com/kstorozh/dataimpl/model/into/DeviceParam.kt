@@ -7,5 +7,5 @@ class DeviceParam(
     val osVersion: String,
     val memory: Int,
     val storage: Int,
-    val note:String
+    val note: String
 )

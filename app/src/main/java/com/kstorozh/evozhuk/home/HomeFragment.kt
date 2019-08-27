@@ -27,7 +27,7 @@ class HomeFragment : Fragment(), HandleErrors {
     }
 
     private fun View.initDevice(deviceInputData: DeviceInputData) {
-        Log.d("MainActivity", "deviceInputData ${deviceInputData}")
+        Log.d("MainActivity", "deviceInputData $deviceInputData")
         viewLifecycleOwner.observe(model.initDevice(deviceInputData)) {
             if (it) {
                 val message = resources.getString(R.string.device_registered_message)

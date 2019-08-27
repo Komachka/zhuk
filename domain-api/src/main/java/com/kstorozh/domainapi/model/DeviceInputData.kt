@@ -7,5 +7,5 @@ data class DeviceInputData(
     val osVersion: String,
     val memory: Int,
     val storage: Int,
-    val note:String
+    val note: String
 )
