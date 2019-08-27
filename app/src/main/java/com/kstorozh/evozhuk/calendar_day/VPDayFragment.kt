@@ -14,10 +14,6 @@ import kotlinx.android.synthetic.main.fragment_calendar_day_view.*
 import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.*
 import java.text.SimpleDateFormat
 
-const val USER_ID = "user_id"
-const val MILISEC = "milisec"
-const val FRAGMENT_ID = "id"
-
 class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
 
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
@@ -25,6 +21,10 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
     lateinit var model: DayViewModel
 
     companion object {
+        private const val USER_ID = "user_id"
+        private const val MILISEC = "milisec"
+        private const val FRAGMENT_ID = "id"
+
         fun newInstance(milisec: Long, userId: Int, id: Int): ChildrenDayFragment {
             val myFragment = ChildrenDayFragment()
             val args = Bundle()
