@@ -86,5 +86,6 @@
     <string name="delete_booking">Yes</string>
     <string name="dont_delete_booking">No</string>
     <string name="bookin_removed">Booking was deleted</string>
+    <string name="renew_bunt">Renew</string>
 
 </resources>
