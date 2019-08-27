@@ -8,18 +8,20 @@
         tools:context="com.kstorozh.evozhuk.calendar.CalendarFragment"
         android:background="@color/background">
 
+
         <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar_calendar"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_width="0dp"
+                app:layout_constraintStart_toEndOf="parent"
+                android:layout_height="?attr/actionBarSize"
                 android:minHeight="?attr/actionBarSize"
                 android:background="@color/tool_bar_background"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_constraintTop_toTopOf="parent"
+                android:fitsSystemWindows="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:fitsSystemWindows="true"
-                app:layout_constraintHorizontal_bias="0.0"/>
+                app:layout_constraintTop_toTopOf="parent"/>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:background="@drawable/round_rectangle"

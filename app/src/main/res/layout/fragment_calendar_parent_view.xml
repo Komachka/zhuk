@@ -7,8 +7,9 @@
 
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarDay"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="0dp"
+            app:layout_constraintStart_toEndOf="parent"
+            android:layout_height="?attr/actionBarSize"
             android:minHeight="?attr/actionBarSize"
             android:background="@color/tool_bar_background"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -22,11 +23,11 @@
                                          android:id="@+id/my_viewpager"
                                          app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
                                          android:layout_marginStart="8dp"
-                                         android:layout_marginBottom="8dp"
                                          app:layout_constraintBottom_toBottomOf="parent"
                                          app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-                                         android:layout_marginRight="8dp" android:layout_marginTop="8dp"
-                                         app:layout_constraintTop_toBottomOf="@+id/toolbarDay">
+                                         android:layout_marginRight="8dp"
+                                         app:layout_constraintTop_toBottomOf="@+id/toolbarDay"
+                                         app:layout_constraintVertical_bias="0.0">
 
     </androidx.viewpager.widget.ViewPager>
 
