@@ -13,7 +13,7 @@ import java.text.DecimalFormat
 
 class InfoViewModel:BaseViewModel(), KoinComponent {
 
-    private val deviceInfo = MutableLiveData<List<Pair<DeviceInfoName, DeviceInfoParam>>>()
+    val deviceInfo = MutableLiveData<List<Pair<DeviceInfoName, DeviceInfoParam>>>()
     private val applicationScope = CoroutineScope(Dispatchers.Default)
     private val infoUseCase: InfoDeviceUseCases by inject()
 

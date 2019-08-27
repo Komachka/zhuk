@@ -1,6 +1,7 @@
 package com.kstorozh.evozhuk.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ class HomeFragment : Fragment(), HandleErrors {
     }
 
     private fun View.initDevice(deviceInputData: DeviceInputData) {
+        Log.d("MainActivity", "deviceInputData ${deviceInputData}")
         viewLifecycleOwner.observe(model.initDevice(deviceInputData)) {
             if (it) {
                 val message = resources.getString(R.string.device_registered_message)

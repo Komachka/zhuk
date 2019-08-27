@@ -1,6 +1,7 @@
 package com.kstorozh.domain.mapper
 
 import android.annotation.SuppressLint
+import android.os.Build
 import com.kstorozh.dataimpl.model.into.BookingParam
 import com.kstorozh.dataimpl.model.into.DeviceParam
 import com.kstorozh.dataimpl.model.out.BookingSessionData
@@ -8,10 +9,12 @@ import com.kstorozh.domainapi.model.BookingInputData
 import com.kstorozh.domainapi.model.DeviceInfo
 import com.kstorozh.domainapi.model.DeviceInputData
 import com.kstorozh.domainapi.model.SessionData
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
 import java.util.*
 
+const val MEMORY_DECIMAL_FORMAT = "#.##"
 class DeviceInfoMapper {
 
     fun mapDeviceInfoToDeviceParam(deviceInputData: DeviceInputData) =
@@ -42,11 +45,17 @@ class DeviceInfoMapper {
         return SessionData(bookingSession.userId, endDateCalendar)
     }
 
-    fun mapToDeviceInfo(data: DeviceParam) = DeviceInfo(
+    private fun Long.mgToGb() = this * 0.001
+
+    fun mapToDeviceInfo(data: DeviceParam) : DeviceInfo {
+        val df = DecimalFormat(MEMORY_DECIMAL_FORMAT)
+        return DeviceInfo(
         data.osVersion,
         data.model,
         data.uid,
-        data.memory.toString(), // TODO convert to gb here
-        data.storage.toString()
-    )
+            "${df.format(data.memory.toLong().mgToGb())} Gb",
+            "${df.format(data.storage.toLong().mgToGb())} Gb")
+    }
+
+
 }

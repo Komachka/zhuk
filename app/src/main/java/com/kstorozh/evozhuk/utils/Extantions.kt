@@ -33,8 +33,8 @@ internal fun Context.getInfoAboutDevice(): DeviceInputData {
         Build.ID,
         getDeviceName(),
         OS, Build.VERSION.RELEASE,
-        getTotalMemoryInfoInBite().mgToGb().toInt(),
-        getTotalStorageInfoInBite().mgToGb().toInt())
+        getTotalMemoryInfoInBite().biteToMg().toInt(),
+        getTotalStorageInfoInBite().biteToMg().toInt())
 }
 
 internal fun Context.getDeviceName(): String {

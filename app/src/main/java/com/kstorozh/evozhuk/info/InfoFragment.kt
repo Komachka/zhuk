@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kstorozh.evozhuk.R
 import com.kstorozh.evozhuk.utils.getInfoPairs
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_info.view.*
 
 class InfoFragment : Fragment() {
@@ -41,8 +42,8 @@ class InfoFragment : Fragment() {
             val navController = this.findNavController()
             navController.navigateUp()
         }
-        viewManager = LinearLayoutManager(context)
-        infoAdapter = InfoAdapter(context?.applicationContext!!.getInfoPairs())
+        viewManager = LinearLayoutManager(context) as RecyclerView.LayoutManager
+        infoAdapter = InfoAdapter()
         fragment.infoRv.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
@@ -53,5 +54,8 @@ class InfoFragment : Fragment() {
             (viewManager as LinearLayoutManager).orientation
         )
         fragment.infoRv.addItemDecoration(dividerItemDecoration)
+        viewLifecycleOwner.observe(model.deviceInfo){
+            (infoAdapter as InfoAdapter).updateInfo(it)
+        }
     }
 }

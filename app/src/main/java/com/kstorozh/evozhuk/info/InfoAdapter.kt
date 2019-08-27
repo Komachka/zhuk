@@ -10,7 +10,17 @@ import com.kstorozh.evozhuk.DeviceInfoParam
 import com.kstorozh.evozhuk.R
 import kotlinx.android.synthetic.main.info_item.view.*
 
-class InfoAdapter(private val infoAboutDevice: List<Pair<DeviceInfoName, DeviceInfoParam>>) : RecyclerView.Adapter<InfoAdapter.InfoViewHolder>() {
+class InfoAdapter : RecyclerView.Adapter<InfoAdapter.InfoViewHolder>() {
+
+    private val infoAboutDevice = ArrayList<Pair<DeviceInfoName, DeviceInfoParam>>()
+
+    fun updateInfo(info: List<Pair<DeviceInfoName, DeviceInfoParam>>)
+    {
+        infoAboutDevice.clear()
+        infoAboutDevice.addAll(info)
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.info_item, parent, false)
