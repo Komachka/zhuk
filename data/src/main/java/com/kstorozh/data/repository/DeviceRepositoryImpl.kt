@@ -25,6 +25,7 @@ internal class DeviceRepositoryImpl(
     private val tokenRepository: TokenRepository
 ) : DeviseRepository, KoinComponent {
 
+    private val koin = this as KoinComponent
     override suspend fun saveNote(note: String): RepoResult<Boolean> {
         val device = localData.getDeviceInfo()
         val repoResult: RepoResult<Boolean> = RepoResult()
@@ -36,8 +37,10 @@ internal class DeviceRepositoryImpl(
                     repoResult.data = true
                 }
                 is ApiResult.Error<*> -> {
-                    repoResult.data = false
-                    repoResult.error = createError(Endpoints.INIT_DEVICE, result, this)
+                    repoResult.apply {
+                        data = false
+                        error = createError(Endpoints.INIT_DEVICE, result, koin)
+                    }
                 }
             }
         }
