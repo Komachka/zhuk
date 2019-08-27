@@ -12,7 +12,6 @@ import com.kstorozh.domainapi.model.DomainErrors
 import com.kstorozh.domainapi.model.DomainResult
 import java.text.SimpleDateFormat
 
-const val DAY_MONTH_YEAR_FORMAT = "dd-MM-yyyy"
 class GetBookingUseCaseImpl(
     private val bookingRepository: CalendarRepository,
     private val repository: DeviseRepository,
@@ -42,6 +41,24 @@ class GetBookingUseCaseImpl(
             if (it)
                 return getUpdatedBookingData(startDate, endDate)
         }
-        return DomainResult(null, DomainErrors(message = "Booking was not created"))
+        return DomainResult(null, DomainErrors(message = BOOKING_NOT_CREATED))
+    }
+
+    override suspend fun deleteBooking(bookingId: Int, userId: String, startDate: Long, endDate: Long): DomainResult<BookingInfo> {
+        val repoResult = repository.deleteBooking(bookingId, userId)
+        repoResult.data?.let {
+            if (it)
+                return getUpdatedBookingData(startDate, endDate)
+        }
+        return DomainResult(null, DomainErrors(message = BOOKING_NOT_DELETED))
+    }
+
+    override suspend fun editBooking(bookingInputData: BookingInputData, bookingId: Int, startDate: Long, endDate: Long): DomainResult<BookingInfo> {
+        val repoResult = repository.editBooking(deviceMapper.mapBookingParam(bookingInputData, bookingInputData.startDate, bookingId.toString()))
+        repoResult.data?.let {
+            if (it)
+                return getUpdatedBookingData(startDate, endDate)
+        }
+        return DomainResult(null, DomainErrors(message = BOOKING_NOT_EDITED))
     }
 }

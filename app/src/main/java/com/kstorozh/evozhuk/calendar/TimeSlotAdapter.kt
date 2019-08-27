@@ -16,14 +16,57 @@ class TimeSlotAdapter(val timeSlot: List<TimeSlot>) : RecyclerView.Adapter<Recyc
     private val BOOKING_VIEW_TYPE = 1
     private val CONTINUE_BOOKING_VIEW_TYPE = 2
 
-    class EmptySlotViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    lateinit var createDialogListener: (View) -> Unit
+    lateinit var editBookingListener: (Int) -> Unit
+    lateinit var deleteBookingListener: (Int) -> Unit
+
+    inner class EmptySlotViewHolder(val view: View) : RecyclerView.ViewHolder(view),
+        View.OnClickListener {
+
+        init {
+            view.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            createDialogListener.invoke(view)
+        }
 
         fun setMyBookingView(timeSlot: TimeSlot) {
             view.timeTv.text = timeSlot.timeLable
         }
     }
 
-    class BusySlotWithLoginViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    inner class BusySlotWithLoginViewHolder(val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener {
+
+        init {
+            view.setOnLongClickListener(this)
+            view.setOnClickListener(this)
+            view.editIV.setOnClickListener(this)
+            view.deleteIV.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            v?.let {
+                when {
+                    it.id == view.editIV.id -> {
+                        editBookingListener.invoke(adapterPosition)
+                    }
+                    it.id == view.deleteIV.id -> {
+                        deleteBookingListener.invoke(adapterPosition)
+                    }
+                    else -> {
+                        it.editIV?.visibility = View.INVISIBLE
+                        it.deleteIV?.visibility = View.INVISIBLE
+                    }
+                }
+            }
+        }
+
+        override fun onLongClick(v: View?): Boolean {
+            v?.editIV?.visibility = View.VISIBLE
+            v?.deleteIV?.visibility = View.VISIBLE
+            return true
+        }
 
         fun setMyBookingView(timeSlot: TimeSlot) {
             if (timeSlot.isOtherBooking)
@@ -31,15 +74,59 @@ class TimeSlotAdapter(val timeSlot: List<TimeSlot>) : RecyclerView.Adapter<Recyc
             view.timeTv.text = timeSlot.timeLable
             view.slackNameTv.text = timeSlot.booking!!.slackUserName
             view.timePeriodTv.text = "${timeSlot.slotStartDate}-${timeSlot.slotEndDate}"
+            if (timeSlot.isActive) {
+                view.editIV.visibility = View.VISIBLE
+                view.deleteIV.visibility = View.VISIBLE
+            } else if (!timeSlot.isActive) {
+                view.editIV.visibility = View.INVISIBLE
+                view.deleteIV.visibility = View.INVISIBLE
+            }
         }
     }
 
-    class BusySlotNoLoginViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    inner class BusySlotNoLoginViewHolder(val view: View) : RecyclerView.ViewHolder(view), View.OnLongClickListener, View.OnClickListener {
+
+        init {
+            view.setOnLongClickListener(this)
+            view.setOnClickListener(this)
+            view.editIV.setOnClickListener(this)
+            view.deleteIV.setOnClickListener(this)
+        }
+
+        override fun onLongClick(v: View?): Boolean {
+            v?.editIV?.visibility = View.VISIBLE
+            v?.deleteIV?.visibility = View.VISIBLE
+            return true
+        }
+
+        override fun onClick(v: View?) {
+            v?.let {
+                when {
+                    it.id == view.editIV.id -> {
+                        editBookingListener.invoke(adapterPosition)
+                    }
+                    it.id == view.deleteIV.id -> {
+                        deleteBookingListener.invoke(adapterPosition)
+                    }
+                    else -> {
+                        it.editIV?.visibility = View.INVISIBLE
+                        it.deleteIV?.visibility = View.INVISIBLE
+                    }
+                }
+            }
+        }
 
         fun setMyBookingView(timeSlot: TimeSlot) {
             view.timeTv.text = timeSlot.timeLable
             if (timeSlot.isOtherBooking)
                 view.userIndex.setBackgroundResource(R.color.other_booking_colour)
+            if (timeSlot.isActive) {
+                view.editIV.visibility = View.VISIBLE
+                view.deleteIV.visibility = View.VISIBLE
+            } else if (!timeSlot.isActive) {
+                view.editIV.visibility = View.INVISIBLE
+                view.deleteIV.visibility = View.INVISIBLE
+            }
         }
     }
 

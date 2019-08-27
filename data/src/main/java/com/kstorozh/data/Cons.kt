@@ -22,8 +22,9 @@ internal const val LOGIN_URL = "/api/mobile/login"
 internal const val GET_BOOKING_URL = "/api/mobile/booking?"
 internal const val START_DATE = "start"
 internal const val END_DATE = "end"
+internal const val DELETE_BOOKING_URL = "/api/mobile/booking/delete/{id}"
+internal const val EDIT_BOOKING_URL = "/api/mobile/booking/{id}"
 
-// internal const val BASE_URL = "http://wh.evo.dev"
 internal const val BASE_URL = "http://evozhuk.tk"
 
 internal const val ERROR_STATUS_CODE = 422
@@ -44,4 +45,9 @@ internal const val GET_USERS_ERROR = "api problem with getting list of users"
 internal const val REMIND_PIN_ERROR = "api problem with reminding pin"
 internal const val BOOKING_CALENDAR_ERROR = "api problem with getting booking by date"
 internal const val BOOKING_DATA_EMPTY_ERROR = "Booking data is empty"
+
 internal const val BOOKING_CACHE_EMPTY_ERROR = "Booking cache storage is empty"
+
+internal const val DELETE_BOOKING_ERROR = "Booking was not removed"
+internal const val BOOKING_EDIT_ERROR = "Booking was not edited"
+

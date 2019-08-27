@@ -12,8 +12,7 @@ import com.kstorozh.evozhuk.HandleErrors
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.*
 import com.kstorozh.evozhuk.R
-import kotlinx.android.synthetic.main.bottom_sheet_dialog.view.*
-import kotlinx.android.synthetic.main.fragment_info.view.*
+import com.kstorozh.evozhuk.utils.showSnackbar
 
 class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
 
@@ -51,17 +50,20 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         viewLifecycleOwner.observe(model.getBookingSlotsPerDay(milisec, userId.toInt())) {
             viewAdapter = TimeSlotAdapter(it)
             fragmentView.recyclerView.adapter = viewAdapter
-            fragmentView.recyclerView.addOnItemTouchListener(
-                RecyclerItemClickListener(context!!, fragmentView.recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
-                    override fun onItemClick(view: View, position: Int) {
-                        val itemPosition = fragmentView.recyclerView.getChildLayoutPosition(view)
-                        createDialog(it[itemPosition], userId)
+            (viewAdapter as TimeSlotAdapter).createDialogListener = { view ->
+                val itemPosition = fragmentView.recyclerView.getChildLayoutPosition(view)
+                createBookingDialog(it[itemPosition], userId)
+            }
+            (viewAdapter as TimeSlotAdapter).editBookingListener = { pos ->
+                editBookingDialog(it[pos], userId)
+            }
+            (viewAdapter as TimeSlotAdapter).deleteBookingListener = { pos ->
+                deleteBookingDialog(it[pos]) {
+                    viewLifecycleOwner.observe(model.deleteBooking(userId, it)) {
+                        view?.showSnackbar(resources.getString(R.string.bookin_removed))
                     }
-                    override fun onLongItemClick(view: View?, position: Int) {
-                        // TODO update booking
-                    }
-                })
-            )
+                }
+            }
         }
         viewManager = LinearLayoutManager(context)
         fragmentView.recyclerView.apply {
