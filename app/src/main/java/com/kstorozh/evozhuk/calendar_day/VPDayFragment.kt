@@ -16,8 +16,6 @@ import java.text.SimpleDateFormat
 
 class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
 
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
-    private lateinit var viewManager: RecyclerView.LayoutManager
     lateinit var model: DayViewModel
 
     companion object {
@@ -48,19 +46,17 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
     override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
         model = ViewModelProviders.of(this)[DayViewModel::class.java]
         viewLifecycleOwner.handleErrors(model, fragmentView)
-        viewManager = LinearLayoutManager(context)
         val milisec = arguments?.getLong(MILISEC) ?: 0
         val userId = arguments?.getInt(USER_ID) ?: 0
 
         fragmentView.recyclerView.apply {
             setHasFixedSize(true)
-            layoutManager = viewManager
-            viewAdapter = TimeSlotAdapter()
-            fragmentView.recyclerView.adapter = viewAdapter
+            layoutManager = LinearLayoutManager(context)
+            fragmentView.recyclerView.adapter = TimeSlotAdapter()
         }
         viewLifecycleOwner.observe(model.durationInMilisecLiveData) {
             viewLifecycleOwner.observe(model.bookingSlotsPerDay) {
-                (viewAdapter as TimeSlotAdapter).updateData(it)
+                (fragmentView.recyclerView.adapter as TimeSlotAdapter).updateData(it)
                 fragmentView.recyclerView.addOnItemTouchListener(
                     RecyclerItemClickListener(
                         context!!,
