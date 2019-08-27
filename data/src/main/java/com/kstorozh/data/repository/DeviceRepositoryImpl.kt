@@ -1,7 +1,6 @@
 package com.kstorozh.data.repository
 
-import LOG_TAG
-import android.util.Log
+import DEVICE_INFO_CACHE_EMPTY_ERROR
 import com.kstorozh.data.database.LocalDataStorage
 import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
@@ -42,7 +41,7 @@ internal class DeviceRepositoryImpl(
                 }
             }
         }
-        if (device == null) repoResult.error = DataError(ErrorStatus.UNEXPECTED_ERROR, "Device is not store in local data base", Exception("Device is not store in local data base"))
+        if (device == null) repoResult.error = DataError(ErrorStatus.UNEXPECTED_ERROR, DEVICE_INFO_CACHE_EMPTY_ERROR, Exception(DEVICE_INFO_CACHE_EMPTY_ERROR))
         return repoResult
     }
 
@@ -51,7 +50,7 @@ internal class DeviceRepositoryImpl(
         localData.getDeviceInfo()?.let {
             return repoResult.apply { data = mapper.mapDeviceInfo(it) }
         }
-        return repoResult.apply { error = DataError(ErrorStatus.UNEXPECTED_ERROR, "device info is empty", NullPointerException("device info is empty")) }
+        return repoResult.apply { error = DataError(ErrorStatus.UNEXPECTED_ERROR, DEVICE_INFO_CACHE_EMPTY_ERROR, NullPointerException(DEVICE_INFO_CACHE_EMPTY_ERROR)) }
     }
 
     override suspend fun deviceAlreadyInited(deviceParam: DeviceParam): RepoResult<Boolean> {
@@ -119,7 +118,6 @@ internal class DeviceRepositoryImpl(
             )) {
                 is ApiResult.Success -> {
                     bookingBody.id = result.data.data.bookingId
-                    Log.d(LOG_TAG, "Booking id " + bookingBody.id.toString())
                     localData.saveBooking(bookingBody)
                     repoResult.data = true
                     repoResult
@@ -140,15 +138,12 @@ internal class DeviceRepositoryImpl(
         val repoResult: RepoResult<Boolean> = RepoResult()
         device?.let {
             val bookingBody = mapper.mapBookingDeviceInfo(bookingParam, device.id, isActive = false)
-            Log.d(LOG_TAG, " in method bookingparam $bookingParam")
-            Log.d(LOG_TAG, "bookingBody $bookingBody")
             return when (val result = remoteData.takeDevise(
                 bookingBody,
                 device.id
             )) {
                 is ApiResult.Success -> {
                     bookingBody.id = result.data.data.bookingId
-                    Log.d(LOG_TAG, "Booking id " + bookingBody.id.toString())
                     repoResult.data = true
                     repoResult
                 }
