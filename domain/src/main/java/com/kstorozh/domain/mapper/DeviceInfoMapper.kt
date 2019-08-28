@@ -5,13 +5,16 @@ import com.kstorozh.dataimpl.model.into.BookingParam
 import com.kstorozh.dataimpl.model.into.DeviceParam
 import com.kstorozh.dataimpl.model.out.BookingSessionData
 import com.kstorozh.domainapi.model.BookingInputData
+import com.kstorozh.domainapi.model.DeviceInfo
 import com.kstorozh.domainapi.model.DeviceInputData
 import com.kstorozh.domainapi.model.SessionData
 import org.joda.time.DateTime
 import org.joda.time.format.ISODateTimeFormat
+import java.text.DecimalFormat
 
 import java.util.*
 
+const val MEMORY_DECIMAL_FORMAT = "#.##"
 class DeviceInfoMapper {
 
     fun mapDeviceInfoToDeviceParam(deviceInputData: DeviceInputData) =
@@ -21,7 +24,8 @@ class DeviceInfoMapper {
             deviceInputData.os,
             deviceInputData.osVersion,
             deviceInputData.memory,
-            deviceInputData.storage
+            deviceInputData.storage,
+            deviceInputData.note
         )
 
     @SuppressLint("SimpleDateFormat")
@@ -45,5 +49,18 @@ class DeviceInfoMapper {
         val foramatter = ISODateTimeFormat.dateTimeParser()
         endDateCalendar.time = foramatter.parseDateTime(bookingSession.endDate).toDate()
         return SessionData(bookingSession.userId, endDateCalendar)
+    }
+
+    private fun Long.mgToGb() = this * 0.001
+
+    fun mapToDeviceInfo(data: DeviceParam): DeviceInfo {
+        val df = DecimalFormat(MEMORY_DECIMAL_FORMAT)
+        return DeviceInfo(
+        data.osVersion,
+        data.model,
+        data.uid,
+            "${df.format(data.memory.toLong().mgToGb())} Gb",
+            "${df.format(data.storage.toLong().mgToGb())} Gb",
+        data.note)
     }
 }

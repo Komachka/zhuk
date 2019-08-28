@@ -16,4 +16,6 @@ interface DeviseRepository {
     suspend fun deleteBooking(bookingId: Int, userId: String): RepoResult<Boolean>
     suspend fun editBooking(mapBookingParam: BookingParam): RepoResult<Boolean>
     suspend fun editCurrentBooking(startDate: String, endDate: String): RepoResult<Boolean>
+    suspend fun getDeviceInfo(): RepoResult<DeviceParam>
+    suspend fun saveNote(note: String): RepoResult<Boolean>
 }

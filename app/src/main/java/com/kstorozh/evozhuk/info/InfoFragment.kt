@@ -6,13 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.kstorozh.evozhuk.R
-import com.kstorozh.evozhuk.utils.getInfoPairs
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_info.view.*
 
 class InfoFragment : Fragment() {
@@ -29,6 +30,9 @@ class InfoFragment : Fragment() {
     }
 
     override fun onViewCreated(fragment: View, savedInstanceState: Bundle?) {
+
+        val model = ViewModelProviders.of(this)[InfoViewModel::class.java]
+        model.getDeviceInfo()
         (activity as AppCompatActivity).setSupportActionBar(fragment.toolbar)
         fragment.toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
         fragment.toolbar.title = resources.getString(R.string.info)
@@ -36,8 +40,11 @@ class InfoFragment : Fragment() {
             val navController = this.findNavController()
             navController.navigateUp()
         }
-        viewManager = LinearLayoutManager(context)
-        infoAdapter = InfoAdapter(context?.applicationContext!!.getInfoPairs())
+        viewManager = LinearLayoutManager(context) as RecyclerView.LayoutManager
+        infoAdapter = InfoAdapter()
+        (infoAdapter as InfoAdapter).saveNoteListener = {
+            model.saveNote(it)
+        }
         fragment.infoRv.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
@@ -48,5 +55,8 @@ class InfoFragment : Fragment() {
             (viewManager as LinearLayoutManager).orientation
         )
         fragment.infoRv.addItemDecoration(dividerItemDecoration)
+        viewLifecycleOwner.observe(model.deviceInfo) {
+            (infoAdapter as InfoAdapter).updateInfo(it)
+        }
     }
 }

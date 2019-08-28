@@ -1,3 +1,5 @@
+
+
 /**
  *   Database constance
  */
@@ -47,9 +49,8 @@ internal const val GET_USERS_ERROR = "api problem with getting list of users"
 internal const val REMIND_PIN_ERROR = "api problem with reminding pin"
 internal const val BOOKING_CALENDAR_ERROR = "api problem with getting booking by date"
 internal const val BOOKING_DATA_EMPTY_ERROR = "Booking data is empty"
-
 internal const val BOOKING_CACHE_EMPTY_ERROR = "Booking cache storage is empty"
-
 internal const val DELETE_BOOKING_ERROR = "Booking was not removed"
 internal const val BOOKING_EDIT_ERROR = "Booking was not edited"
 internal const val GET_NEARBY_BOOKING_ERROR = "nearby booking error"
+internal const val DEVICE_INFO_CACHE_EMPTY_ERROR = "Device is not store in local data base"

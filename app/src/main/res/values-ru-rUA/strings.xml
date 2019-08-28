@@ -94,6 +94,7 @@
     <string name="renew_bunt">Продлить</string>
     <string name="renew_error">Невозможно продлить бронь</string>
     <string name="nearby_booking_message">Ближайшая бронь сегодня в</string>
-
+    <string name="note">Заметка</string>
+    <string name="add_new_note">Добавь свою заметку про устройство</string>
 
 </resources>

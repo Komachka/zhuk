@@ -16,7 +16,8 @@ internal class DeviceDataMapper {
         deviceParam.os,
         deviceParam.osVersion,
         deviceParam.memory,
-        deviceParam.storage)
+        deviceParam.storage,
+        deviceParam.note)
 
     fun mapBookingDeviceInfo(bookingParam: BookingParam, deviceId: String, isActive: Boolean = true) = BookingBody(
         1,
@@ -28,5 +29,16 @@ internal class DeviceDataMapper {
         isForce = bookingParam.isForce)
 
     fun mapBookingParamForReturn(bookingParam: BookingParam, id: String) = ReturnDeviceBody(bookingParam.userId.toInt(), id.toInt())
+
     fun mapToDeleteBookingModel(userId: String, deviceId: String) = DeleteBookingBody(userId, deviceId)
+
+    fun mapDeviceInfo(device: Device) = DeviceParam(
+        device.uid,
+        device.model,
+        device.os,
+        device.osVersion,
+        device.memory,
+        device.storage,
+        device.note
+    )
 }

@@ -94,6 +94,8 @@
     <string name="renew_bunt">Renew</string>
     <string name="renew_error">Can not renew current booking</string>
     <string name="nearby_booking_message">Closest booking for today in</string>
+    <string name="note">Note</string>
+    <string name="add_new_note">Add the note about device</string>
 
 
 </resources>
