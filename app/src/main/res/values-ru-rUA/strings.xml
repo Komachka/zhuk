@@ -68,7 +68,7 @@
     <string name="chargeDeviceMessage">Поставь меня на зарядку, пожалуйста</string>
     <string name="model">Модель</string>
     <string name="version">Версия</string>
-    <string name="id">UID</string>
+    <string name="id">MAC адрес</string>
     <string name="memory">Память</string>
     <string name="storage">Хранилище</string>
     <string name="info">Информация</string>
@@ -96,5 +96,6 @@
     <string name="nearby_booking_message">Ближайшая бронь сегодня в</string>
     <string name="note">Заметка</string>
     <string name="add_new_note">Добавь свою заметку про устройство</string>
+    <string name="storage_empty">Доступно</string>
 
 </resources>

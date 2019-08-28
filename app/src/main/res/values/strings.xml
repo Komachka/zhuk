@@ -68,7 +68,7 @@
 
     <string name="model">Model</string>
     <string name="version">Version</string>
-    <string name="id">id</string>
+    <string name="id">MAC address</string>
     <string name="memory">Memory</string>
     <string name="storage">Storage</string>
     <string name="info">Information</string>
@@ -96,6 +96,7 @@
     <string name="nearby_booking_message">Closest booking for today in</string>
     <string name="note">Note</string>
     <string name="add_new_note">Add the note about device</string>
+    <string name="storage_empty">Empty</string>
 
 
 </resources>
