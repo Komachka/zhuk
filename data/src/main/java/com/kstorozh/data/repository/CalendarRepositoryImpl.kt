@@ -2,8 +2,6 @@ package com.kstorozh.data.repository
 
 import BOOKING_CACHE_EMPTY_ERROR
 import BOOKING_DATA_EMPTY_ERROR
-import LOG_TAG
-import android.util.Log
 import com.kstorozh.data.BookingsCache
 import com.kstorozh.data.database.LocalDataStorage
 import com.kstorozh.data.models.ApiResult

@@ -10,8 +10,6 @@ import android.os.Build
 import android.view.MotionEvent
 import android.view.View
 import android.text.InputType
-import android.util.Log
-import com.kstorozh.evozhuk.LOG_TAG
 import com.kstorozh.evozhuk.utils.onTextChanged
 
 const val END_IMAGE_INDEX = 2

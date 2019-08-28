@@ -20,7 +20,7 @@ class BookingData {
     var booking: Booking? = null
 }
 
-class Booking (
+class Booking(
 
     @SerializedName("booking_id")
     @Expose
