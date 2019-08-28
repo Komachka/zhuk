@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.notifications.NotificationService
 import com.kstorozh.evozhuk.utils.getDeviceName
@@ -32,17 +33,19 @@ class BackDeviceFragment : Fragment(), HandleErrors {
         return inflater.inflate(R.layout.fragment_back_device, container, false)
     }
 
+    private var userId: String? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.infoImageBut.setOnClickListener {
             Navigation.findNavController(view).navigate(BackDeviceFragmentDirections.actionBackDeviceFragmentToInfoFragment())
         }
         view.calendarImageBut.setOnClickListener {
-            arguments?.let {
-                with(BackDeviceFragmentDirections.actionBackDeviceFragmentToCalendarFragment(BackDeviceFragmentArgs.fromBundle(it).userId)) {
+            if (userId != null) {
+                with(BackDeviceFragmentDirections.actionBackDeviceFragmentToCalendarFragment(userId!!)) {
                     Navigation.findNavController(view).navigate(this)
                 }
             }
+
         }
         view.deviceNameTv.text = context?.getDeviceName()
         view.youTakeDeviceLabelTv.text = "${resources.getString(R.string.youTableDeviceLabel)} ${context?.getDeviceName()}"
@@ -52,16 +55,18 @@ class BackDeviceFragment : Fragment(), HandleErrors {
             it?.let {
                 val format = SimpleDateFormat(DATE_FORMAT_BACK_DEVICE_SCREEN_TV)
                 dateToBack.text = format.format(it.endData.time)
+                userId = it.userId
             }
         })
         arguments?.let {
             val (endDate, userId) = Pair(
-                BackDeviceFragmentArgs.fromBundle(arguments!!).endTime,
-                BackDeviceFragmentArgs.fromBundle(arguments!!).userId)
+                BackDeviceFragmentArgs.fromBundle(it).endTime,
+                BackDeviceFragmentArgs.fromBundle(it).userId)
 
             val endCalendar = GregorianCalendar.getInstance()
             endCalendar.timeInMillis = endDate
-            modelBackDevice.setBookingSession(SessionData(userId, endCalendar))
+            if (userId != USER_ID_NOT_SET) // set only if came from choose time fragment
+                modelBackDevice.setBookingSession(SessionData(userId, endCalendar))
         }
         view.giveBackBut.setOnClickListener { view ->
             viewLifecycleOwner.observe(modelBackDevice.tryReturnDevice()) {
@@ -85,7 +90,7 @@ class BackDeviceFragment : Fragment(), HandleErrors {
                                     BackDeviceFragmentDirections.actionBackDeviceFragmentToSpecificTimeAndDate(
                                         session.endData.timeInMillis,
                                         modelBackDevice.nearbyBooking.value!!.startDate,
-                                        "BackDeviceFragmentDirections"
+                                        BACK_DEVICE_FRAGMENT_DIR
                                     )
                                 )
                             }

@@ -7,15 +7,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 
 import android.os.Build
+import androidx.lifecycle.ViewModelProviders
 import com.kstorozh.evozhuk.*
+import com.kstorozh.evozhuk.utils.observe
+import com.kstorozh.evozhuk.utils.showSnackbar
 import kotlinx.android.synthetic.main.fragment_specific_time_and_date.*
 import kotlinx.android.synthetic.main.fragment_specific_time_and_date.view.*
 import kotlinx.android.synthetic.main.fragment_specific_time_and_date.view.timePicker
 import org.joda.time.DateTime
 
-class SpecificTimeAndDateFragment : Fragment() {
+class SpecificTimeAndDateFragment : Fragment(), HandleErrors {
 
     private lateinit var currentTimeAndDate: CustomTime
+    private lateinit var model: SpecificTimeAndDateViewModel
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,9 +29,12 @@ class SpecificTimeAndDateFragment : Fragment() {
     }
 
     override fun onViewCreated(fragment: View, savedInstanceState: Bundle?) {
+        model = ViewModelProviders.of(this)[SpecificTimeAndDateViewModel::class.java]
+        viewLifecycleOwner.handleErrors(model, fragment)
         currentTimeAndDate = CustomTime()
         arguments?.let {
-            val currentMs = SpecificTimeAndDateFragmentArgs.fromBundle(it).currentMilisec
+            var currentMs = SpecificTimeAndDateFragmentArgs.fromBundle(it).currentMilisec
+            currentMs = if (currentMs < System.currentTimeMillis()) System.currentTimeMillis() else currentMs
             val maxMs = SpecificTimeAndDateFragmentArgs.fromBundle(it).maxMilisec
             val currentDt = DateTime(currentMs)
             val maxDt = DateTime(maxMs)
@@ -54,7 +61,11 @@ class SpecificTimeAndDateFragment : Fragment() {
             currentTimeAndDate.hour = pickerHour
             currentTimeAndDate.minute = pickerMinute * TIME_PICKER_INTERVAL // back to real time
         }
-        fragment.datePicker.init(currentTimeAndDate.year, currentTimeAndDate.month, currentTimeAndDate.day) { datePicker, pickYear, pickMonth, pickDay ->
+        fragment.datePicker.init(
+            currentTimeAndDate.year,
+            currentTimeAndDate.month,
+            currentTimeAndDate.day
+        ) { datePicker, pickYear, pickMonth, pickDay ->
             currentTimeAndDate.year = pickYear
             currentTimeAndDate.month = pickMonth
             currentTimeAndDate.day = pickDay
@@ -71,14 +82,24 @@ class SpecificTimeAndDateFragment : Fragment() {
     private fun View.navigateBackWithTime() {
         val view = this
         arguments?.let {
-            if (SpecificTimeAndDateFragmentArgs.fromBundle(it).backDiraction == "ChooseTimeFragmentDirections") {
-                val action = SpecificTimeAndDateFragmentDirections.actionSpecificTimeAndDateToChooseTimeFragment(USER_ID_NOT_SET)
+            if (SpecificTimeAndDateFragmentArgs.fromBundle(it).backDiraction == CHOOSE_TIME_FRAGMENT_DIR) {
+                val action =
+                    SpecificTimeAndDateFragmentDirections.actionSpecificTimeAndDateToChooseTimeFragment(USER_ID_NOT_SET)
                 action.milisec = currentTimeAndDate.getMillisec()
                 Navigation.findNavController(view).navigate(action)
-            } else if (SpecificTimeAndDateFragmentArgs.fromBundle(it).backDiraction == "BackDeviceFragmentDirections") {
-                val action = SpecificTimeAndDateFragmentDirections
-                    .actionSpecificTimeAndDateToBackDeviceFragment(USER_ID_NOT_SET, currentTimeAndDate.getMillisec())
-                Navigation.findNavController(view).navigate(action)
+            } else if (SpecificTimeAndDateFragmentArgs.fromBundle(it).backDiraction == BACK_DEVICE_FRAGMENT_DIR) {
+                viewLifecycleOwner.observe(model.editCurrentBooking(currentTimeAndDate.getMillisec()))
+                {
+                    if (it) {
+                        val action = SpecificTimeAndDateFragmentDirections
+                            .actionSpecificTimeAndDateToBackDeviceFragment(
+                                USER_ID_NOT_SET,
+                                currentTimeAndDate.getMillisec()
+                            )
+                        Navigation.findNavController(view).navigate(action)
+                    }
+                }
+
             }
         }
     }

@@ -12,4 +12,5 @@ interface ManageDeviceUseCases {
     suspend fun returnDevice(bookingParam: BookingInputData): DomainResult<Boolean>
     suspend fun getSession(): DomainResult<SessionData>
     suspend fun isDeviceInited(deviceInputData: DeviceInputData): DomainResult<Boolean>
+    suspend fun editCurrentBooking(endDate: Long): DomainResult<Boolean>
 }

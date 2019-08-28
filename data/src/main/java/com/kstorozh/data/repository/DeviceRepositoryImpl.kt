@@ -110,6 +110,37 @@ internal class DeviceRepositoryImpl(
         return repoResult
     }
 
+
+    override suspend fun editCurrentBooking(startdate:String, endDate: String): RepoResult<Boolean> {
+        val repoResult: RepoResult<Boolean> = RepoResult()
+        localData.getDeviceInfo()?.let {device ->
+            val currentBooking = localData.getBookingByDeviceId(device.id)
+            currentBooking?.let {bookingBody ->
+                currentBooking.endDate = endDate
+                currentBooking.startDate = startdate
+                return when (val result = remoteData.editBooking(
+                    bookingBody,
+                    bookingBody.id.toString()
+                )) {
+                    is ApiResult.Success -> {
+                        localData.saveBooking(bookingBody)
+                        repoResult.apply {
+                            data = true
+                        }
+                    }
+                    is ApiResult.Error<*> -> {
+                        repoResult.apply {
+                            data = false
+                            error = createError(Endpoints.TAKE_DEVICE, result, koin)
+                        }
+                    }
+                }
+            }
+        }
+        return repoResult.apply { data = false }
+    }
+
+
     override suspend fun bookDevice(bookingParam: BookingParam): RepoResult<Boolean> {
         val device = localData.getDeviceInfo()
         val repoResult: RepoResult<Boolean> = RepoResult()

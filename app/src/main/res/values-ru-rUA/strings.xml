@@ -88,6 +88,7 @@
     <string name="dont_delete_booking">No</string>
     <string name="bookin_removed">Booking was deleted</string>
     <string name="renew_bunt">Renew</string>
+    <string name="renew_error">Can not renew current booking</string>
 
 
 </resources>
