@@ -9,7 +9,6 @@ import com.kstorozh.domainapi.model.DeviceInputData
 import com.kstorozh.domainapi.model.SessionData
 import org.joda.time.DateTime
 import org.joda.time.format.ISODateTimeFormat
-import java.text.SimpleDateFormat
 
 import java.util.*
 
@@ -29,8 +28,8 @@ class DeviceInfoMapper {
 
     fun mapBookingParam(bookingInputData: BookingInputData, startDate: Calendar? = null): BookingParam {
         val foramtter = ISODateTimeFormat.dateTime()
-        val start =  startDate?.let { foramtter.print(it.timeInMillis) } ?: DateTime().toString()
-        val end =  bookingInputData.endDate?.let { foramtter.print(it.timeInMillis) } ?: DateTime().toString()
+        val start = startDate?.let { foramtter.print(it.timeInMillis) } ?: DateTime().toString()
+        val end = bookingInputData.endDate?.let { foramtter.print(it.timeInMillis) } ?: DateTime().toString()
         return BookingParam(
             bookingInputData.userId,
             bookingInputData.userId,

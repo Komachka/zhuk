@@ -54,8 +54,8 @@ class GetBookingUseCaseImpl(
     }
 
     override suspend fun editBooking(bookingInputData: BookingInputData, bookingId: Int, startDate: Long, endDate: Long): DomainResult<BookingInfo> {
-        val repoResult = repository.
-            editBooking(deviceMapper.mapBookingParam(bookingInputData, bookingInputData.startDate))
+        val repoResult = repository
+            .editBooking(deviceMapper.mapBookingParam(bookingInputData, bookingInputData.startDate))
         repoResult.data?.let {
             if (it)
                 return getUpdatedBookingData(startDate, endDate)

@@ -103,7 +103,6 @@ internal class DeviceRepositoryImpl(
                         data = false
                         error = createError(Endpoints.TAKE_DEVICE, result, koin)
                     }
-
                 }
             }
         }
@@ -191,7 +190,6 @@ internal class DeviceRepositoryImpl(
                     repoResult.data = false
                     repoResult.error = createError(Endpoints.TAKE_DEVICE, result, this)
                     repoResult
-
                 }
             }
         }
