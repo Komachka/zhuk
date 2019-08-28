@@ -9,7 +9,6 @@ import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,7 +66,6 @@ class ChooseTimeFragment : Fragment(), HandleErrors, ConflictDialog {
         }
         val anotherTimeMilisec = ChooseTimeFragmentArgs.fromBundle(arguments!!).milisec
         val userId = ChooseTimeFragmentArgs.fromBundle(arguments!!).userId
-        Log.d(LOG_TAG, "userId $userId")
         if (userId != USER_ID_NOT_SET)
             modelChooseTime.setUserId(userId)
         modelChooseTime.setCalendar(anotherTimeMilisec)
@@ -80,7 +78,7 @@ class ChooseTimeFragment : Fragment(), HandleErrors, ConflictDialog {
             TimeButton(res.getString(R.string.twoDays), TimeUtils.getTimeInMsFromHours(48)),
             TimeButton(res.getString(R.string.anotherTime), anotherTimeMilisec, navigation =
             { Navigation.findNavController(view).navigate(ChooseTimeFragmentDirections.actionChooseTimeFragmentToSpecificTimeAndDate(
-                System.currentTimeMillis(), TimeUtils.getTimeInMsForNextTwoMonth(), "ChooseTimeFragmentDirections"))
+                System.currentTimeMillis(), TimeUtils.getTimeInMsForNextTwoMonth(), CHOOSE_TIME_FRAGMENT_DIR))
             }).apply {
                 if (anotherTimeMilisec != 0L) isSelected = true }
         )

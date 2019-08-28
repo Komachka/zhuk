@@ -2,6 +2,7 @@ package com.kstorozh.evozhuk.login
 
 import androidx.arch.core.util.Function
 import androidx.lifecycle.*
+import com.kstorozh.domainapi.GetBookingUseCase
 import com.kstorozh.domainapi.LoginUseCase
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.*
@@ -20,6 +21,7 @@ class LogInViewModel : BaseViewModel(), KoinComponent {
     private val getUserUseCase: GetUsersUseCases by inject()
     private val initDeviceUseCases: ManageDeviceUseCases by inject()
     private val applicationScope = CoroutineScope(Dispatchers.Default)
+    private val getBookingUseCase: GetBookingUseCase by inject()
     private val users: MutableLiveData<List<User>> by lazy { MutableLiveData<List<User>>().also {
         loadUsers()
     } }
@@ -84,5 +86,18 @@ class LogInViewModel : BaseViewModel(), KoinComponent {
             if (result.data != null) isDeviceBookedLiveData.postValue(true) else isDeviceBookedLiveData.postValue(false)
         }
         return isDeviceBookedLiveData
+    }
+
+    fun getNearbyBooking(): LiveData<NearbyDomainBooking> {
+        val isBookingExistsliveData = MutableLiveData<NearbyDomainBooking>()
+        applicationScope.launch {
+            val result = getBookingUseCase.getNearbyBooking()
+            result.data?.let {
+                isBookingExistsliveData.postValue(it) }
+            result.domainError?.let {
+                errors.postValue(Event(it))
+            }
+        }
+        return isBookingExistsliveData
     }
 }

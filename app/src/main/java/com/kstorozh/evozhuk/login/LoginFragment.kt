@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_login.view.loginEt
 import kotlinx.android.synthetic.main.fragment_login.view.passwordEt
 import kotlinx.android.synthetic.main.logo_and_info.view.*
 
-class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler, HandleErrors {
+class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler, HandleErrors, NearbyBookingInfo {
 
     lateinit var model: LogInViewModel
     val userNames = ArrayList<String>()
@@ -51,6 +51,9 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler, HandleE
             if (it)
                 Navigation.findNavController(fragment).navigate(R.id.action_loginFragment_to_backDeviceFragment)
         })
+        viewLifecycleOwner.observe(model.getNearbyBooking()) {
+            showBookingInfo(it)
+        }
         fragment.goInBut.setOnClickListener { view ->
             if (fragment.passwordEt.text!!.isNotEmpty() && loginEt.text.isNotEmpty())
                 viewLifecycleOwner.observe(model.tryLogin(loginEt.text.toString(), passwordEt.text.toString())) {

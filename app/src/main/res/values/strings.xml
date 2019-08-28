@@ -93,6 +93,7 @@
     <string name="dont_take_a_device">Don`t take it now</string>
     <string name="renew_bunt">Renew</string>
     <string name="renew_error">Can not renew current booking</string>
+    <string name="nearby_booking_message">Closest booking for today in</string>
 
 
 </resources>
