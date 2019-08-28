@@ -1,7 +1,6 @@
 package com.kstorozh.dataimpl.model
 
-
-class NearbyBooking (
+class NearbyBooking(
     var id: Int,
     var userId: Int,
     var deviceId: Int,

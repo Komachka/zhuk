@@ -11,16 +11,13 @@ class NewarBookingResult {
     @SerializedName("data")
     @Expose
     var data: BookingData? = null
-
 }
-
 
 class BookingData {
 
     @SerializedName("booking")
     @Expose
     var booking: Booking? = null
-
 }
 
 class Booking {
@@ -43,5 +40,4 @@ class Booking {
     @SerializedName("is_active")
     @Expose
     var isActive: Boolean? = null
-
 }

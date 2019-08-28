@@ -42,11 +42,15 @@ class CalendarMapper {
         )
     }
 
-    fun mapToNearbyBooking(nearbyBooking: NearbyBooking) =  NearbyDomainBooking(
-        nearbyBooking.id,
-        nearbyBooking.deviceId,
-        nearbyBooking.userId,
-        nearbyBooking.startDate,
-        nearbyBooking.endDate
-    )
+    fun mapToNearbyBooking(nearbyBooking: NearbyBooking): NearbyDomainBooking {
+        val foramtter = ISODateTimeFormat.dateTimeParser()
+        val start = foramtter.parseDateTime(nearbyBooking.startDate)
+        val end = foramtter.parseDateTime(nearbyBooking.endDate)
+        return NearbyDomainBooking(
+            nearbyBooking.id,
+            nearbyBooking.deviceId,
+            nearbyBooking.userId,
+            start.millis, end.millis
+        )
+    }
 }

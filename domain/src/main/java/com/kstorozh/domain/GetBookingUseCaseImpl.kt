@@ -22,7 +22,6 @@ class GetBookingUseCaseImpl(
         val domainError = errorMapper.mapToDomainError(repoResult.error)
         val data = repoResult.data?.let { mapper.mapToNearbyBooking(it) }
         return DomainResult(data, domainError)
-
     }
 
     override suspend fun getBookingLocal(): DomainResult<BookingInfo> {

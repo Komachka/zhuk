@@ -48,6 +48,11 @@
         <action android:id="@+id/action_specificTimeAndDate_to_chooseTimeFragment"
                 app:destination="@id/chooseTimeFragment">
         </action>
+        <argument android:name="currentMilisec" app:argType="long"/>
+        <argument android:name="maxMilisec" app:argType="long"/>
+        <argument android:name="backDiraction" app:argType="string"/>
+        <action android:id="@+id/action_specificTimeAndDate_to_backDeviceFragment"
+                app:destination="@id/backDeviceFragment"/>
     </fragment>
     <fragment android:id="@+id/returnDeviceFragment"
               android:name="com.kstorozh.evozhuk.returnDevice.ReturnDeviceFragment"

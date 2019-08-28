@@ -8,7 +8,10 @@ import androidx.navigation.Navigation
 
 import android.os.Build
 import com.kstorozh.evozhuk.*
+import kotlinx.android.synthetic.main.fragment_specific_time_and_date.*
 import kotlinx.android.synthetic.main.fragment_specific_time_and_date.view.*
+import kotlinx.android.synthetic.main.fragment_specific_time_and_date.view.timePicker
+import org.joda.time.DateTime
 
 class SpecificTimeAndDateFragment : Fragment() {
 
@@ -23,6 +26,21 @@ class SpecificTimeAndDateFragment : Fragment() {
 
     override fun onViewCreated(fragment: View, savedInstanceState: Bundle?) {
         currentTimeAndDate = CustomTime()
+        arguments?.let {
+            val currentMs = SpecificTimeAndDateFragmentArgs.fromBundle(it).currentMilisec
+            val maxMs = SpecificTimeAndDateFragmentArgs.fromBundle(it).maxMilisec
+            val currentDt = DateTime(currentMs)
+            val maxDt = DateTime(maxMs)
+            currentTimeAndDate.year = currentDt.year
+            currentTimeAndDate.month = currentDt.monthOfYear - 1
+            currentTimeAndDate.day = currentDt.dayOfMonth
+            currentTimeAndDate.hour = currentDt.hourOfDay
+            currentTimeAndDate.minute = currentDt.minuteOfHour
+            currentTimeAndDate.seconds = currentDt.secondOfMinute
+            datePicker.maxDate = maxDt.millis
+            datePicker.minDate = System.currentTimeMillis()
+        }
+
         currentTimeAndDate.countMinutesWithTimePickerInterval(TIME_PICKER_INTERVAL)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             fragment.timePicker.hour = currentTimeAndDate.hour
@@ -31,6 +49,7 @@ class SpecificTimeAndDateFragment : Fragment() {
             fragment.timePicker.setCurrentHour(currentTimeAndDate.hour)
             fragment.timePicker.setCurrentMinute(currentTimeAndDate.minute)
         }
+
         fragment.timePicker.setOnTimeChangedListener { timePicker, pickerHour, pickerMinute ->
             currentTimeAndDate.hour = pickerHour
             currentTimeAndDate.minute = pickerMinute * TIME_PICKER_INTERVAL // back to real time
@@ -44,16 +63,23 @@ class SpecificTimeAndDateFragment : Fragment() {
         fragment.toolbar.apply {
             navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
             title = resources.getString(R.string.time_choose_tool_bar)
-            setNavigationOnClickListener { navigateBack() }
+            setNavigationOnClickListener { Navigation.findNavController(fragment).popBackStack() }
         }
-        fragment.chooseTimeBut.setOnClickListener { fragment.navigateBack() }
+        fragment.chooseTimeBut.setOnClickListener { fragment.navigateBackWithTime() }
     }
 
-    private fun View.navigateBack() {
+    private fun View.navigateBackWithTime() {
         val view = this
-        with(SpecificTimeAndDateFragmentDirections.actionSpecificTimeAndDateToChooseTimeFragment(USER_ID_NOT_SET)) {
-            milisec = currentTimeAndDate.getMillisec()
-            Navigation.findNavController(view).navigate(this)
+        arguments?.let {
+            if (SpecificTimeAndDateFragmentArgs.fromBundle(it).backDiraction == "ChooseTimeFragmentDirections") {
+                val action = SpecificTimeAndDateFragmentDirections.actionSpecificTimeAndDateToChooseTimeFragment(USER_ID_NOT_SET)
+                action.milisec = currentTimeAndDate.getMillisec()
+                Navigation.findNavController(view).navigate(action)
+            } else if (SpecificTimeAndDateFragmentArgs.fromBundle(it).backDiraction == "BackDeviceFragmentDirections") {
+                val action = SpecificTimeAndDateFragmentDirections
+                    .actionSpecificTimeAndDateToBackDeviceFragment(USER_ID_NOT_SET, currentTimeAndDate.getMillisec())
+                Navigation.findNavController(view).navigate(action)
+            }
         }
     }
 }

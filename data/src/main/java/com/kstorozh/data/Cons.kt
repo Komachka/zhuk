@@ -51,4 +51,3 @@ internal const val BOOKING_CACHE_EMPTY_ERROR = "Booking cache storage is empty"
 
 internal const val DELETE_BOOKING_ERROR = "Booking was not removed"
 internal const val BOOKING_EDIT_ERROR = "Booking was not edited"
-

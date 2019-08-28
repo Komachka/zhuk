@@ -43,5 +43,4 @@ internal class BookingDataMapper {
         booking.endDate!!,
         booking.isActive!!
     )
-
 }

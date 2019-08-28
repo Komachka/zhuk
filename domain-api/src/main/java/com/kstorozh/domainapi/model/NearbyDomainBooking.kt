@@ -1,9 +1,9 @@
 package com.kstorozh.domainapi.model
 
-class NearbyDomainBooking(
-    id: Int,
-    deviceId: Int,
-    userId: Int,
-    startDate: String,
-    endDate: String
+data class NearbyDomainBooking(
+    val id: Int,
+    val deviceId: Int,
+    val userId: Int,
+    val startDate: Long,
+    val endDate: Long
 )

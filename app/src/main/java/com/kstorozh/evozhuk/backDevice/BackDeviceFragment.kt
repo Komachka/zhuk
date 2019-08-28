@@ -12,7 +12,6 @@ import java.text.SimpleDateFormat
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.notifications.NotificationService
 import com.kstorozh.evozhuk.utils.getDeviceName
@@ -75,16 +74,26 @@ class BackDeviceFragment : Fragment(), HandleErrors {
                     view.showSnackbar(resources.getString(R.string.device_not_returned_message))
             }
         }
-        reNewBut.setOnClickListener{ view->
-            viewLifecycleOwner.observe(modelBackDevice.getNearbyBooking())
-            {
-                if (it)
-                    view.showSnackbar("it $it " + modelBackDevice.nearbyBooking.value.toString())
-                else {
-                    Navigation.findNavController(view).navigate(BackDeviceFragmentDirections.actionBackDeviceFragmentToSpecificTimeAndDate())
-                    view.showSnackbar("No booking")
+        reNewBut.setOnClickListener { view ->
+            viewLifecycleOwner.observe(modelBackDevice.getNearbyBooking()) {
+                it.getContentIfNotHandled()?.let {
+                    if (it) {
+                        view.showSnackbar("it $it " + modelBackDevice.nearbyBooking.value.toString())
+                        viewLifecycleOwner.observe(modelBackDevice.getSessionData(), { session ->
+                            session?.let {
+                                Navigation.findNavController(view).navigate(
+                                    BackDeviceFragmentDirections.actionBackDeviceFragmentToSpecificTimeAndDate(
+                                        session.endData.timeInMillis,
+                                        modelBackDevice.nearbyBooking.value!!.startDate,
+                                        "BackDeviceFragmentDirections"
+                                    )
+                                )
+                            }
+                        })
+                    } else {
+                        view.showSnackbar("No booking")
+                    }
                 }
-
             }
         }
     }

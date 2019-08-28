@@ -24,11 +24,10 @@ class BackDeviceViewModel : BaseViewModel(), KoinComponent {
     }
 
     private val manageDeviceUseCases: ManageDeviceUseCases by inject()
-    private val getBookingUseCase:GetBookingUseCase by inject()
+    private val getBookingUseCase: GetBookingUseCase by inject()
     private val applicationScope = CoroutineScope(Dispatchers.Default)
 
     val nearbyBooking = MutableLiveData<NearbyDomainBooking>()
-
 
     fun tryReturnDevice(): LiveData<Boolean> {
         val returnDeviceLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
@@ -63,19 +62,18 @@ class BackDeviceViewModel : BaseViewModel(), KoinComponent {
         bookingSession.value = sessionData
     }
 
-    fun getNearbyBooking(): LiveData<Boolean> {
-        val isBookingExistsliveData = MutableLiveData<Boolean>()
+    fun getNearbyBooking(): LiveData<Event<Boolean>> {
+        val isBookingExistsliveData = MutableLiveData<Event<Boolean>>()
         applicationScope.launch {
             val result = getBookingUseCase.getNearbyBooking()
             result.data?.let {
                 nearbyBooking.postValue(it)
-                isBookingExistsliveData.postValue(true) }
+                isBookingExistsliveData.postValue(Event(true)) }
             result.domainError?.let {
                 errors.postValue(Event(it))
-                isBookingExistsliveData.postValue(false)
+                isBookingExistsliveData.postValue(Event(false))
             }
         }
         return isBookingExistsliveData
-
     }
 }
