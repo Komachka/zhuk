@@ -24,5 +24,12 @@ class TimeUtils {
             mCalendar.timeZone = getCurrentTimeZone()
             return mCalendar.timeInMillis
         }
+
+        fun getTimeInMsForNextTwoMonth(): Long {
+            val currentTime = GregorianCalendar.getInstance()
+            currentTime.add(Calendar.MONTH, 2)
+            currentTime.timeZone = getCurrentTimeZone()
+            return currentTime.timeInMillis
+        }
     }
 }

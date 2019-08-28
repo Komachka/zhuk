@@ -96,6 +96,8 @@
     <string name="this_booking_is_reserved">Цей час зайнятий кимось іншим. Ти впевненний що хочеш взяти пристрій зараз?</string>
     <string name="take_device_now">Взяти всеодно</string>
     <string name="dont_take_a_device">Не брати зараз</string>
+    <string name="renew_bunt">Продовжити</string>
+    <string name="renew_error">Неможливо продовжити бронювання</string>
 
 
 </resources>

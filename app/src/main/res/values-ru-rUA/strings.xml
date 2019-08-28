@@ -91,6 +91,9 @@
     <string name="this_booking_is_reserved">Это время занято чей-то бронью. Ты действительно хочешь взять устройство сейчас?</string>
     <string name="take_device_now">Взять всеровно</string>
     <string name="dont_take_a_device">Не брать сейчас</string>
+    <string name="renew_bunt">Продлить</string>
+    <string name="renew_error">Невозможно продлить бронь</string>
+
 
 
 </resources>

@@ -4,6 +4,7 @@ import BOOKING_CALENDAR_ERROR
 import BOOKING_EDIT_ERROR
 import BOOKING_ERROR
 import DELETE_BOOKING_ERROR
+import GET_NEARBY_BOOKING_ERROR
 import GET_USERS_ERROR
 import INIT_ERROR
 import LOGIN_ERROR
@@ -23,6 +24,12 @@ internal class RemoteDataImpl(
     private val userApi: UserApi,
     private val calendarApi: CalendarApi
 ) : RemoteData {
+    override suspend fun getNearbyBooking(id: String): ApiResult<NewarBookingResult> {
+        return getApiResult(GET_NEARBY_BOOKING_ERROR) {
+            calendarApi.getNearBooking(DeviceId(id.toInt()))
+        }
+    }
+
     override suspend fun editBooking(bookingBody: BookingBody, bookingId: String): ApiResult<BaseResponse> {
         return getApiResult(BOOKING_EDIT_ERROR) {
             deviceApi.editBooking(bookingBody, bookingId.toInt())

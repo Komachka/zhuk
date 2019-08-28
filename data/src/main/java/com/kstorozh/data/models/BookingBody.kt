@@ -21,11 +21,11 @@ internal data class BookingBody(
 
     @Expose
     @SerializedName("start_date")
-    val startDate: String,
+    var startDate: String,
 
     @Expose
     @SerializedName("end_date")
-    val endDate: String,
+    var endDate: String,
 
     @Expose
     @SerializedName("is_active")

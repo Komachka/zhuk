@@ -20,7 +20,7 @@ import java.util.*
 
 class ChooseTimeViewModel : BaseViewModel(), KoinComponent {
 
-    private val manageDeviceUseCases: ManageDeviceUseCases by inject()
+    private val manageDeviceUseCases: ManageDeviceUseCases by inject() // TODO add from constructor
     private val applicationScope = CoroutineScope(Dispatchers.Default)
     val conflictBookingLiveData = MutableLiveData<Boolean>()
 

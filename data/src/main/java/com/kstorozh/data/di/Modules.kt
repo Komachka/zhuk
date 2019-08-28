@@ -61,7 +61,7 @@ val repositoryModule = module(override = true) {
     single<DeviseRepository> { DeviceRepositoryImpl(get(), get(), DeviceDataMapper(), get()) }
     single<UserRepository> { UserRepositoryImpl(get(), UserDataMapper()) }
     single<BookingsCache> { BookingsCache() }
-    single<CalendarRepository> { CalendarRepositoryImpl(get(), BookingDataMapper(), get()) }
+    single<CalendarRepository> { CalendarRepositoryImpl(get(), BookingDataMapper(), get(), get()) }
 }
 
 private fun provideGson(): Gson {

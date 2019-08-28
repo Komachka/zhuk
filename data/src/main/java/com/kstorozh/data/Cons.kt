@@ -24,6 +24,7 @@ internal const val START_DATE = "start"
 internal const val END_DATE = "end"
 internal const val DELETE_BOOKING_URL = "/api/mobile/booking/delete/{id}"
 internal const val EDIT_BOOKING_URL = "/api/mobile/booking/{id}"
+internal const val NEARBY_BOOKING_URL = "/api/mobile/booking/nearby"
 
 internal const val BASE_URL = "http://evozhuk.tk"
 
@@ -51,3 +52,4 @@ internal const val BOOKING_CACHE_EMPTY_ERROR = "Booking cache storage is empty"
 
 internal const val DELETE_BOOKING_ERROR = "Booking was not removed"
 internal const val BOOKING_EDIT_ERROR = "Booking was not edited"
+internal const val GET_NEARBY_BOOKING_ERROR = "nearby booking error"

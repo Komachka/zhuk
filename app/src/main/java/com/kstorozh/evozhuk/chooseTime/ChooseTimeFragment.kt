@@ -79,7 +79,9 @@ class ChooseTimeFragment : Fragment(), HandleErrors, ConflictDialog {
             TimeButton(res.getString(R.string.tillSevenOClock), TimeUtils.getTimeInMsForEndOfWorkDay()),
             TimeButton(res.getString(R.string.twoDays), TimeUtils.getTimeInMsFromHours(48)),
             TimeButton(res.getString(R.string.anotherTime), anotherTimeMilisec, navigation =
-            { Navigation.findNavController(view).navigate(R.id.action_chooseTimeFragment_to_specificTimeAndDate) }).apply {
+            { Navigation.findNavController(view).navigate(ChooseTimeFragmentDirections.actionChooseTimeFragmentToSpecificTimeAndDate(
+                System.currentTimeMillis(), TimeUtils.getTimeInMsForNextTwoMonth(), "ChooseTimeFragmentDirections"))
+            }).apply {
                 if (anotherTimeMilisec != 0L) isSelected = true }
         )
         viewManager = GridLayoutManager(this.context, SPAN_COUNT)

@@ -8,6 +8,7 @@ import com.kstorozh.domainapi.model.BookingInputData
 import com.kstorozh.domainapi.model.DeviceInputData
 import com.kstorozh.domainapi.model.DomainResult
 import com.kstorozh.domainapi.model.SessionData
+import org.joda.time.format.ISODateTimeFormat
 import org.koin.core.KoinComponent
 
 import java.util.*
@@ -19,6 +20,16 @@ class ManageDeviceUseCasesImpl(
 ) :
     ManageDeviceUseCases, KoinComponent {
 
+    override suspend fun editCurrentBooking(endDate: Long): DomainResult<Boolean> {
+        val foramtter = ISODateTimeFormat.dateTime()
+        val end = foramtter.print(endDate)
+        val start = foramtter.print(System.currentTimeMillis())
+
+        val repoResult = repository.editCurrentBooking(start, end)
+        val domainError = errorMapper.mapToDomainError(repoResult.error)
+        return DomainResult(repoResult.data, domainError)
+    }
+
     override suspend fun isDeviceInited(deviceInputData: DeviceInputData): DomainResult<Boolean> {
         val deviceParam = mapper.mapDeviceInfoToDeviceParam(deviceInputData)
         val repoResult = repository.deviceAlreadyInited(deviceParam)
@@ -29,7 +40,6 @@ class ManageDeviceUseCasesImpl(
     override suspend fun getSession(): DomainResult<SessionData> {
         val repoResult = repository.getBookingSession()
         val domainResult: DomainResult<SessionData> = DomainResult()
-
         repoResult.data?.let {
             domainResult.data = mapper.mapBookingSession(it)
         }

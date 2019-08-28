@@ -58,3 +58,6 @@ const val PACKAGE = "android"
 
 const val TIME_PICKER_ERROR = "Can not set to timePicker this data set: "
 const val DELY_NAVIGATION_ERROR = "Already navigated to another screen"
+
+const val CHOOSE_TIME_FRAGMENT_DIR = "ChooseTimeFragmentDirections"
+const val BACK_DEVICE_FRAGMENT_DIR = "BackDeviceFragmentDirections"

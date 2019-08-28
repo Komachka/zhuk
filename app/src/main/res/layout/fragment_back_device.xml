@@ -67,11 +67,20 @@
             android:layout_height="wrap_content"
             style="@style/goInButton"
             android:id="@+id/giveBackBut"
-            tools:layout_editor_absoluteY="407dp"
-            android:layout_marginTop="40dp"
-            app:layout_constraintTop_toBottomOf="@+id/dataLinerL"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView"/>
+
+    <Button
+            android:background="@drawable/but_with_border_green"
+            android:text="@string/renew_bunt"
+            android:layout_width="264dp"
+            android:layout_height="wrap_content"
+            style="@style/goInButton"
+            android:id="@+id/reNewBut"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp" app:layout_constraintTop_toBottomOf="@+id/giveBackBut"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -81,9 +90,10 @@
             android:textStyle="normal"
             android:textColor="@color/smallTextColour"
             android:text="@string/returnMessage"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/giveBackBut" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"/>
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/dataLinerL" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/textView"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
