@@ -18,6 +18,7 @@ ext {
     device_names = "1.1.9"
     calendar = "1.6.0"
     jodaTime = "2.10.2"
+    datePicker = "2.1.5"
 
     commonDependencies = [
             kotlin : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin",
@@ -42,7 +43,8 @@ ext {
             navigationktx: "android.arch.navigation:navigation-ui-ktx:$nav_dep",
             recycler: "com.android.support:recyclerview-v7:$recycler",
             deveseNames:"com.jaredrummler:android-device-names:$device_names",
-            calendar:"com.applandeo:material-calendar-view:$calendar"
+            calendar:"com.applandeo:material-calendar-view:$calendar",
+            datePicker: "com.github.florent37:singledateandtimepicker:$datePicker"
     ]
 
     domainDependencies = [
