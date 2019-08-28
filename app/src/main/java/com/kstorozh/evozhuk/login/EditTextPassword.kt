@@ -10,6 +10,8 @@ import android.os.Build
 import android.view.MotionEvent
 import android.view.View
 import android.text.InputType
+import android.util.Log
+import com.kstorozh.evozhuk.LOG_TAG
 import com.kstorozh.evozhuk.utils.onTextChanged
 
 const val END_IMAGE_INDEX = 2
@@ -17,7 +19,7 @@ const val VISIBLE_PASSWORD_TYPE = (InputType.TYPE_CLASS_TEXT or InputType.TYPE_T
 const val INVISIBLE_PASSWORD_TYPE = (InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD)
 class EditTextPassword : AppCompatEditText {
     private lateinit var hintPassImg: Drawable
-    private var iconStartCoordinate: Float = 0F
+    private var iconStartCoordinate: Int = 0
 
     constructor(context: Context) : super(context) { initContext() }
     constructor(context: Context, attr: AttributeSet) : super(context, attr) { initContext() }
@@ -25,7 +27,6 @@ class EditTextPassword : AppCompatEditText {
 
     private fun initContext() {
         hintPassImg = ResourcesCompat.getDrawable(resources, R.mipmap.ic_hide, null)!!
-        iconStartCoordinate = ((width - paddingRight - hintPassImg.intrinsicWidth).toFloat())
         onTextChanged { start -> if (start == 0) hideImage() else showImage() }
         handleShowPassOnIconClick()
     }
@@ -35,6 +36,7 @@ class EditTextPassword : AppCompatEditText {
             override fun onTouch(v: View, event: MotionEvent): Boolean {
                 if (!checkIfImageExists()) return false
                 var isShowPassIconClicked = false
+                iconStartCoordinate = width - paddingRight - hintPassImg.intrinsicWidth
                 if (event.x > iconStartCoordinate) { isShowPassIconClicked = true }
                 if (isShowPassIconClicked) {
                     if (event.action == MotionEvent.ACTION_DOWN) {

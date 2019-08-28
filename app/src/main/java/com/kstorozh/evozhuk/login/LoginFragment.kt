@@ -49,11 +49,6 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler, HandleE
                 Navigation.findNavController(fragment).navigate(LoginFragmentDirections.actionLoginFragmentToInfoFragment())
             }
 
-        fragment.passwordEt
-
-
-
-
 
 
         fragment.deviceNameTv.text = context?.getDeviceName()
