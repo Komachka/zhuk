@@ -34,7 +34,8 @@ class BackDeviceViewModel : BaseViewModel(), KoinComponent {
         applicationScope.launch {
             bookingSession.value?.let {
                 val result = manageDeviceUseCases.returnDevice(
-                    BookingInputData(bookingSession.value!!.userId, Calendar.getInstance(), Calendar.getInstance(), false)) // TODO check id return will work correct
+                    BookingInputData(bookingSession.value!!.userId, Calendar.getInstance(),
+                        Calendar.getInstance(), false))
                 result.data?.let {
                     returnDeviceLiveData.postValue(it)
                 }
