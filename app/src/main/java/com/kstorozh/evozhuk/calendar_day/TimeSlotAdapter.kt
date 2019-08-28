@@ -90,8 +90,10 @@ class TimeSlotAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         override fun onLongClick(v: View?): Boolean {
-            v?.editIV?.visibility = View.VISIBLE
-            v?.deleteIV?.visibility = View.VISIBLE
+            if (timeSlot[adapterPosition].isMyBooking) {
+                v?.editIV?.visibility = View.VISIBLE
+                v?.deleteIV?.visibility = View.VISIBLE
+            }
             return true
         }
 
@@ -123,8 +125,10 @@ class TimeSlotAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         override fun onLongClick(v: View?): Boolean {
-            v?.editIV?.visibility = View.VISIBLE
-            v?.deleteIV?.visibility = View.VISIBLE
+            if (timeSlot[adapterPosition].isMyBooking) {
+                v?.editIV?.visibility = View.VISIBLE
+                v?.deleteIV?.visibility = View.VISIBLE
+            }
             return true
         }
 
