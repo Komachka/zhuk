@@ -22,6 +22,7 @@ import java.util.*
 import kotlinx.android.synthetic.main.fragment_back_device.*
 import kotlinx.android.synthetic.main.fragment_back_device.view.*
 import kotlinx.android.synthetic.main.logo_and_info.view.*
+import org.joda.time.DateTime
 
 class BackDeviceFragment : Fragment(), HandleErrors {
 
@@ -83,7 +84,6 @@ class BackDeviceFragment : Fragment(), HandleErrors {
             viewLifecycleOwner.observe(modelBackDevice.getNearbyBooking()) {
                 it.getContentIfNotHandled()?.let {
                     if (it) {
-                        view.showSnackbar("it $it " + modelBackDevice.nearbyBooking.value.toString())
                         viewLifecycleOwner.observe(modelBackDevice.getSessionData(), { session ->
                             session?.let {
                                 Navigation.findNavController(view).navigate(
@@ -96,7 +96,12 @@ class BackDeviceFragment : Fragment(), HandleErrors {
                             }
                         })
                     } else {
-                        view.showSnackbar("No booking")
+                        Navigation.findNavController(view).navigate(
+                            BackDeviceFragmentDirections.actionBackDeviceFragmentToSpecificTimeAndDate(
+                                DateTime().plusMonths(2).millis,
+                                DateTime().millis,
+                                BACK_DEVICE_FRAGMENT_DIR
+                            ))
                     }
                 }
             }
