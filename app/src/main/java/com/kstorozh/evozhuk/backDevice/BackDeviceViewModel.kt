@@ -28,7 +28,8 @@ class BackDeviceViewModel : BaseViewModel(), KoinComponent {
         val returnDeviceLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
         applicationScope.launch {
             bookingSession.value?.let {
-                val result = manageDeviceUseCases.returnDevice(BookingInputData(bookingSession.value!!.userId, Calendar.getInstance(), Calendar.getInstance()))
+                val result = manageDeviceUseCases.returnDevice(
+                    BookingInputData(bookingSession.value!!.userId, Calendar.getInstance(), Calendar.getInstance(), false)) // TODO check id return will work correct
                 result.data?.let {
                     returnDeviceLiveData.postValue(it)
                 }

@@ -33,10 +33,11 @@ import kotlinx.android.synthetic.main.fragment_time_choose.view.*
 import kotlinx.android.synthetic.main.fragment_time_choose.view.buttonsRv
 import kotlinx.android.synthetic.main.logo_and_info.view.*
 
-class ChooseTimeFragment : Fragment(), HandleErrors {
+class ChooseTimeFragment : Fragment(), HandleErrors, ConflictDialog {
 
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var modelChooseTime: ChooseTimeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +54,7 @@ class ChooseTimeFragment : Fragment(), HandleErrors {
         view.deviceNameTv.text = context?.getDeviceName()
         view.youTakeDeviceLabelTv.text =
             "${resources.getString(R.string.time_choose_label)}${context?.getDeviceName()}?"
-        val modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeViewModel::class.java)
+        modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeViewModel::class.java)
         with(viewLifecycleOwner) {
             handleErrors(modelChooseTime, view)
         }
@@ -91,17 +92,30 @@ class ChooseTimeFragment : Fragment(), HandleErrors {
         }
         view.takeDevice.setOnClickListener { view ->
             val selected = buttonTimes.filter { timeBut -> timeBut.isSelected }
-            viewLifecycleOwner.observe(modelChooseTime.tryBookDevice(selected.first().milisec)) {
-                if (it) {
-                    view.showSnackbar(resources.getString(R.string.device_booked_message))
-                    val action =
-                        ChooseTimeFragmentDirections.actionChooseTimeFragmentToBackDeviceFragment(
-                            modelChooseTime.userIdLiveData.value!!,
-                            modelChooseTime.chooseCalendar.value!!.timeInMillis)
-                    startForegroundServiceNotification(selected.first().milisec)
-                    context!!.startScheduleNotification(selected.first().milisec)
-                    Navigation.findNavController(view).navigate(action)
+            view.bookDevice(selected.first().milisec)
+        }
+        viewLifecycleOwner.observe(modelChooseTime.conflictBookingLiveData) { conflict ->
+            val selected = buttonTimes.filter { timeBut -> timeBut.isSelected }
+            showFixConflictDialog {
+                if (conflict) {
+                    view.bookDevice(selected.first().milisec, true)
                 }
+            }
+        }
+    }
+
+    private fun View.bookDevice(milisec: Long, isForsed: Boolean = false) {
+        viewLifecycleOwner.observe(modelChooseTime.tryBookDevice(milisec, isForsed)) {
+            if (it) { // TODO put in method
+                this.showSnackbar(resources.getString(R.string.device_booked_message))
+                val action =
+                    ChooseTimeFragmentDirections.actionChooseTimeFragmentToBackDeviceFragment(
+                        modelChooseTime.userIdLiveData.value!!,
+                        modelChooseTime.chooseCalendar.value!!.timeInMillis
+                    )
+                startForegroundServiceNotification(milisec)
+                context!!.startScheduleNotification(milisec)
+                Navigation.findNavController(this).navigate(action)
             }
         }
     }

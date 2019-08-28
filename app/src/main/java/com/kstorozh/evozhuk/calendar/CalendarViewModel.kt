@@ -99,7 +99,8 @@ class CalendarViewModel : BaseViewModel(), KoinComponent, BookingParser {
                     BookingInputData(
                         userId,
                         startDate = Calendar.getInstance().apply { timeInMillis = startDate },
-                        endDate = Calendar.getInstance().apply { timeInMillis = endDate }),
+                        endDate = Calendar.getInstance().apply { timeInMillis = endDate },
+                        isForce = false),
                     firstDay,
                     lastDay)
                 result.data?.let {

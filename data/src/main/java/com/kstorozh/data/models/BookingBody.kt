@@ -29,7 +29,11 @@ internal data class BookingBody(
 
     @Expose
     @SerializedName("is_active")
-    val isActive: Boolean
+    val isActive: Boolean,
+
+    @Expose
+    @SerializedName("force")
+    val isForce: Boolean
 
 )
 

@@ -30,6 +30,7 @@ internal const val BASE_URL = "http://evozhuk.tk"
 internal const val ERROR_STATUS_CODE = 422
 internal const val UNAUTHORIZED_STATUS_CODE = 401
 internal const val NOT_FOUND_STATUS_CODE = 400
+internal const val CONFLICT_STATUS_CODE = 409
 
 internal const val LOG_TAG = "MainActivity"
 
