@@ -1,5 +1,6 @@
 package com.kstorozh.evozhuk.login
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -16,6 +17,13 @@ import kotlinx.android.synthetic.main.fragment_login.view.forgotPassTv
 import kotlinx.android.synthetic.main.fragment_login.view.loginEt
 import kotlinx.android.synthetic.main.fragment_login.view.passwordEt
 import kotlinx.android.synthetic.main.logo_and_info.view.*
+import android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
+import android.widget.EditText
+
+
 
 class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler, HandleErrors, NearbyBookingInfo {
 
@@ -40,6 +48,13 @@ class LoginFragment : Fragment(), RemindPinDialog, UserNamesDataHandler, HandleE
             .setOnClickListener {
                 Navigation.findNavController(fragment).navigate(LoginFragmentDirections.actionLoginFragmentToInfoFragment())
             }
+
+        fragment.passwordEt
+
+
+
+
+
 
         fragment.deviceNameTv.text = context?.getDeviceName()
         fragment.forgotPassTv.setOnClickListener { show() }
