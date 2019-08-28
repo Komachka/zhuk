@@ -6,5 +6,6 @@ data class DeviceInfo(
     val id: String,
     val memory: String,
     val storage: String,
+    val storageEmpty: String,
     val note: String
 )

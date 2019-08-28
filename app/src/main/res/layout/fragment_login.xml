@@ -64,6 +64,7 @@
 
 
     <com.kstorozh.evozhuk.login.EditTextPassword
+            android:focusableInTouchMode="true"
             android:textSize="14sp"
             style="@style/edit_text_field"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"

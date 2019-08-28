@@ -20,9 +20,10 @@ const val OS = "android"
 
 const val INFO_VERSION = "VERSION"
 const val INFO_MODEL = "MODEL"
-const val INFO_ID = "ID"
+const val INFO_MAC = "MAC"
 const val INFO_MEMORY = "MEMORY"
 const val INFO_STORAGE = "STORAGE"
+const val INFO_STORAGE_EMPTY = "STORAGE_EMPTY"
 const val INFO_NOTE = "NOTE"
 
 const val TIME_PICKER_INTERVAL: Int = 15

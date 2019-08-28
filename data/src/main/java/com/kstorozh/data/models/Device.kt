@@ -15,6 +15,9 @@ internal data class Device(
     val uid: String,
 
     @Expose
+    val mac: String,
+
+    @Expose
     val model: String,
 
     @Expose
@@ -30,6 +33,8 @@ internal data class Device(
 
     @Expose
     val storage: Int,
+
+    val storageEmpty: Int,
 
     @Expose
     var note: String

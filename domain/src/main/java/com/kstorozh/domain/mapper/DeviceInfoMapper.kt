@@ -25,6 +25,7 @@ class DeviceInfoMapper {
             deviceInputData.osVersion,
             deviceInputData.memory,
             deviceInputData.storage,
+            deviceInputData.storageEmpty,
             deviceInputData.note
         )
 
@@ -61,6 +62,7 @@ class DeviceInfoMapper {
         data.uid,
             "${df.format(data.memory.toLong().mgToGb())} Gb",
             "${df.format(data.storage.toLong().mgToGb())} Gb",
+            "${df.format(data.storageEmpty.toLong().mgToGb())} Gb",
         data.note)
     }
 }

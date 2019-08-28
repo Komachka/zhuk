@@ -35,6 +35,7 @@ internal fun Context.getInfoAboutDevice(): DeviceInputData {
         OS, Build.VERSION.RELEASE,
         getTotalMemoryInfoInBite().biteToMg().toInt(),
         getTotalStorageInfoInBite().biteToMg().toInt(),
+        getFreeStorageInfoInBite().biteToMg().toInt(),
         "")
 }
 
@@ -47,9 +48,10 @@ internal fun Context.getInfoPairs(): List<Pair<DeviceInfoName, DeviceInfoParam>>
     return listOf(
         INFO_VERSION to Build.VERSION.RELEASE.toString(),
         INFO_MODEL to getDeviceName(),
-        INFO_ID to Build.ID,
+        INFO_MAC to Build.ID,
         INFO_MEMORY to "${df.format(getTotalMemoryInfoInBite().biteToGb())} Gb",
-        INFO_STORAGE to "${df.format(getTotalStorageInfoInBite().biteToGb())} Gb"
+        INFO_STORAGE to "${df.format(getTotalStorageInfoInBite().biteToGb())} Gb",
+        INFO_STORAGE_EMPTY to "${df.format(getFreeStorageInfoInBite().biteToGb())} Gb"
     )
 }
 
