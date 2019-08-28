@@ -1,9 +1,9 @@
-package com.kstorozh.evozhuk.calendar
+package com.kstorozh.evozhuk.calendar_day
 
 import com.kstorozh.domainapi.model.Booking
 import java.util.*
 
-class TimeSlot(
+data class TimeSlot(
     var isMyBooking: Boolean,
     var isOtherBooking: Boolean,
     var isContinue: Boolean,

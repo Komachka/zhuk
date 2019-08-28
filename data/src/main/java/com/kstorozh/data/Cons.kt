@@ -14,6 +14,7 @@ internal const val BOOKING_TABLE_NAME = "booking_table"
  */
 // internal const val ACCESS_TOKEN = "X-ACCESS-TOKEN"
 internal const val ACCESS_TOKEN = "X-DEVICE-ID"
+
 internal const val INIT_DEVISE_URL = "/api/mobile/devices"
 internal const val UPDATE_DEVISE_URL = "/api/mobile/devices/:{id}"
 internal const val TAKE_DEVISE_URL = "/api/mobile/booking"
@@ -21,6 +22,9 @@ internal const val RETURN_DEVISE_URL = "/api/mobile/booking/return/{id}"
 internal const val GET_USERS_URL = "/api/mobile/users"
 internal const val REMIND_PIN_URL = "/api/mobile/users/{id}/pin/remind"
 internal const val LOGIN_URL = "/api/mobile/login"
+
+// internal const val BASE_URL = "http://wh.evo.dev"
+
 internal const val GET_BOOKING_URL = "/api/mobile/booking?"
 internal const val START_DATE = "start"
 internal const val END_DATE = "end"

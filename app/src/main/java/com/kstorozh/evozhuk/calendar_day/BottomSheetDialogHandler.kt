@@ -1,4 +1,4 @@
-package com.kstorozh.evozhuk.calendar
+package com.kstorozh.evozhuk.calendar_day
 
 import android.os.Build
 import android.util.Log
@@ -19,7 +19,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 
 interface BottomSheetDialogHandler {
 
-    fun CalendarDayFragment.createBookingDialog(item: TimeSlot, userId: String) {
+    fun ChildrenDayFragment.createBookingDialog(item: TimeSlot, userId: String) {
         if (this.context == null)
             return
         val mBottomSheetDialog = BottomSheetDialog(this.context!!)
@@ -31,6 +31,7 @@ interface BottomSheetDialogHandler {
         val toTimeAndDate = setTimeAndDate(sheetView.toTimePicker, sheetView.toDatePicker, endDate)
         sheetView.bookBut.setOnClickListener {
             if (!item.isOtherBooking && !item.isMyBooking) {
+
                 observe(model.createNewBooking(userId, fromTimeAndDate.getMillisec(), toTimeAndDate.getMillisec())) {
                     mBottomSheetDialog.cancel()
                 }
@@ -40,7 +41,7 @@ interface BottomSheetDialogHandler {
         mBottomSheetDialog.show()
     }
 
-    fun CalendarDayFragment.editBookingDialog(item: TimeSlot, userId: String) {
+    fun ChildrenDayFragment.editBookingDialog(item: TimeSlot, userId: String) {
         if (this.context == null)
             return
         val mBottomSheetDialog = BottomSheetDialog(this.context!!)
@@ -61,7 +62,7 @@ interface BottomSheetDialogHandler {
         mBottomSheetDialog.show()
     }
 
-    fun CalendarDayFragment.deleteBookingDialog(item: TimeSlot, delete: (Booking) -> Unit) {
+    fun ChildrenDayFragment.deleteBookingDialog(item: TimeSlot, delete: (Booking) -> Unit) {
         if (this.context == null)
             return
 
@@ -98,7 +99,7 @@ interface BottomSheetDialogHandler {
         }
         timePicker.setOnTimeChangedListener { tP, pickerHour, pickerMinute ->
             timeAndDate.hour = pickerHour
-            timeAndDate.minute = pickerMinute * TIME_PICKER_INTERVAL // back to real time
+            timeAndDate.minute = pickerMinute * TIME_PICKER_INTERVAL // back to real updateTime
         }
         datePicker.init(timeAndDate.year, timeAndDate.month, timeAndDate.day) { dP, pickYear, pickMonth, pickDay ->
             timeAndDate.year = pickYear
