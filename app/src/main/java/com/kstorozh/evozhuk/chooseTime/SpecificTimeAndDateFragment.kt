@@ -24,6 +24,7 @@ class SpecificTimeAndDateFragment : Fragment(), HandleErrors {
 
     //private lateinit var currentTimeAndDate: CustomTime
     private lateinit var model: SpecificTimeAndDateViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,7 +33,7 @@ class SpecificTimeAndDateFragment : Fragment(), HandleErrors {
         return inflater.inflate(R.layout.fragment_specific_time_and_date, container, false)
     }
 
-    lateinit var dateTime:DateTime
+    lateinit var dateTime: DateTime
     override fun onViewCreated(fragment: View, savedInstanceState: Bundle?) {
         model = ViewModelProviders.of(this)[SpecificTimeAndDateViewModel::class.java]
         viewLifecycleOwner.handleErrors(model, fragment)
@@ -45,7 +46,16 @@ class SpecificTimeAndDateFragment : Fragment(), HandleErrors {
             currentMs = if (currentMs < System.currentTimeMillis()) System.currentTimeMillis() else currentMs
             Log.d(LOG_TAG, "current time $currentMs")
             val maxMs = SpecificTimeAndDateFragmentArgs.fromBundle(it).maxMilisec
-            val currentDt = DateTime(currentMs)
+            var currentDt = DateTime(currentMs)
+
+            Log.d(LOG_TAG, "minites ${currentDt.minuteOfHour}")
+            Log.d(LOG_TAG, "hour ${currentDt.hourOfDay}")
+
+            Log.d(LOG_TAG, "currentDt.minuteOfHour%15 ${currentDt.minuteOfHour % 15}")
+            if (currentDt.minuteOfHour % 15 != 0) {
+                currentDt = currentDt.plusMinutes(15)
+            }
+
             val maxDt = DateTime(maxMs)
             dateTime.withMillis(currentMs)
             time_and_date.setDefaultDate(currentDt.toDate())
