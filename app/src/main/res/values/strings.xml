@@ -100,4 +100,7 @@
     <string name="storage_empty">Empty</string>
 
 
+    <string name="problem_title">Write your problem</string>
+    <string name="problem_message">Your report will helps us</string>
+
 </resources>

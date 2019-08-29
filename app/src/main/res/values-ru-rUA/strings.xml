@@ -99,5 +99,7 @@
     <string name="note">Заметка</string>
     <string name="add_new_note">Добавь свою заметку про устройство</string>
     <string name="storage_empty">Доступно</string>
+    <string name="problem_title">Опишите проблему</string>
+    <string name="problem_message">Ваш отзыв поможет нам улучшить жука</string>
 
 </resources>
