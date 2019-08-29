@@ -136,6 +136,7 @@ internal class DeviceRepositoryImpl(
                 is ApiResult.Error<*> -> {
                     repoResult.apply {
                         data = false
+
                         error = createError(Endpoints.TAKE_DEVICE, result, koin)
                     }
                 }

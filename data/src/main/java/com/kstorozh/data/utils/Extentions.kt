@@ -9,6 +9,7 @@ import android.util.Log
 import com.kstorozh.data.models.ApiErrorBodyWithError
 
 import com.kstorozh.data.models.ApiResult
+import com.kstorozh.data.models.ErrorData
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.dataimpl.ErrorStatus
 import com.kstorozh.dataimpl.DataError
@@ -45,25 +46,28 @@ internal fun Response<*>.getErrorStatus(endpoint: Endpoints): ErrorStatus {
     }
 }
 
-internal fun getError(errorStatus: ErrorStatus?, message: String?, exception: Exception): DataError {
-    return DataError(errorStatus, message, exception)
+internal fun getError(errorStatus: ErrorStatus?, message: String?, exception: Exception, data: ErrorData?): DataError {
+    return DataError(errorStatus, message, exception, data?.mapToDomainError())
 }
 
 internal fun createError(endpoints: Endpoints, result: ApiResult.Error<*>, koinComponent: KoinComponent): DataError {
     val errorStatus = result.errorResponse?.getErrorStatus(endpoints) ?: ErrorStatus.UNEXPECTED_ERROR
     var message: String? = null
+    var data: ErrorData? = null
     result.errorResponse?.errorBody()?.let {
         try {
             val error = tryConvertError(ApiErrorBodyWithError::class.java, it, koinComponent)
             message = error?.errors
             if (message == null)
                 message = error?.msg
+            data = error?.data
+            Log.d(LOG_TAG, "error data $data")
         } catch (e: Exception) {
             Log.d(LOG_TAG, "Can not convert error message ${it.string()} because ${e.message}")
             message = null
         }
     }
-    return getError(errorStatus, message, result.exception)
+    return getError(errorStatus, message, result.exception, data)
 }
 
 private fun Int.getErrorStatusByCode(error: ErrorStatus, unauthorised: ErrorStatus = ErrorStatus.UNAUTHORIZED, notFound: ErrorStatus): ErrorStatus {

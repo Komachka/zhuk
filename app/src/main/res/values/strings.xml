@@ -87,10 +87,11 @@
     <string name="dont_delete_booking">No</string>
     <string name="bookin_removed">Booking was deleted</string>
     <string name="conflict_title">There is a conflict with another booking</string>
-    <string name="this_booking_is_reserved">This booking time is not empty. Do you want to change current booking?
-    </string>
-    <string name="take_device_now">I don`t care</string>
-    <string name="dont_take_a_device">Don`t take it now</string>
+    <string name="this_booking_is_reserved">Device is booked by</string>
+    <string name="this_booking_is_reserved_from">from</string>
+    <string name="this_booking_is_reserved_to">to</string>
+    <string name="take_device_now">Go to calendar</string>
+    <string name="dont_take_a_device">Take anyway</string>
     <string name="renew_bunt">Renew</string>
     <string name="renew_error">Can not renew current booking</string>
     <string name="nearby_booking_message">Closest booking for today in</string>

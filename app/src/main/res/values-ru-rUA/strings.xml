@@ -87,10 +87,12 @@
     <string name="delete_booking">Yes</string>
     <string name="dont_delete_booking">No</string>
     <string name="bookin_removed">Booking was deleted</string>
-    <string name="conflict_title">Пересичение с другой бронью</string>
-    <string name="this_booking_is_reserved">Это время занято чей-то бронью. Ты действительно хочешь взять устройство сейчас?</string>
-    <string name="take_device_now">Взять всеровно</string>
-    <string name="dont_take_a_device">Не брать сейчас</string>
+    <string name="conflict_title">Пересечение с другой бронью</string>
+    <string name="this_booking_is_reserved">Устройство под бронью</string>
+    <string name="this_booking_is_reserved_from">c</string>
+    <string name="this_booking_is_reserved_to">по</string>
+    <string name="take_device_now">Взять все ровно</string>
+    <string name="dont_take_a_device">Забронировать</string>
     <string name="renew_bunt">Продлить</string>
     <string name="renew_error">Невозможно продлить бронь</string>
     <string name="nearby_booking_message">Ближайшая бронь сегодня в</string>
