@@ -7,7 +7,7 @@
     <string name="login_message">Увійди за допомогою логіна</string>
     <string name="login">Логін</string>
     <string name="password">Пінкод</string>
-    <string name="forgot_pass_message">Забули пін?</string>
+    <string name="forgot_pass_message">Забули PIN?</string>
     <string name="login_bunt_text">Увійти</string>
     <string name="device_name">Назва пристрою</string>
     <string name="returnMessage">Не забудь повернути вчасно</string>
