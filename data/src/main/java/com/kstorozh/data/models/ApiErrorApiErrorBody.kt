@@ -2,6 +2,7 @@ package com.kstorozh.data.models
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.kstorozh.dataimpl.model.TmpErrorData
 
 internal data class ApiErrorWithField(
 
@@ -25,8 +26,28 @@ internal data class ApiErrorBodyWithError(
 internal data class ErrorData(
     @SerializedName("booking_id")
     @Expose
-    val bookingId: Int
-)
+    val bookingId: Int? = null,
+
+    @SerializedName("username")
+    @Expose
+    val username: String? = null,
+
+    @SerializedName("start")
+    @Expose
+    val start: String? = null,
+
+    @SerializedName("end")
+    @Expose
+    val end: String? = null
+) {
+    fun mapToDomainError(): TmpErrorData {
+        return TmpErrorData(
+            bookingId,
+            username,
+            start,
+            end)
+    }
+}
 
 internal data class ApiErrorBodyWithMsg(
     @SerializedName("msg")

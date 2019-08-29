@@ -1,16 +1,15 @@
 package com.kstorozh.evozhuk.chooseTime
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.BookingInputData
+import com.kstorozh.domainapi.model.DomainErrorData
 import com.kstorozh.domainapi.model.ErrorStatus
 import com.kstorozh.evozhuk.BaseViewModel
 import com.kstorozh.evozhuk.Event
-import com.kstorozh.evozhuk.LOG_TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,7 +21,7 @@ class ChooseTimeViewModel : BaseViewModel(), KoinComponent {
 
     private val manageDeviceUseCases: ManageDeviceUseCases by inject() // TODO add from constructor
     private val applicationScope = CoroutineScope(Dispatchers.Default)
-    val conflictBookingLiveData = MutableLiveData<Boolean>()
+    val conflictBookingLiveData = MutableLiveData<Event<DomainErrorData?>>()
 
     val chooseCalendar: MutableLiveData<Calendar> by lazy { MutableLiveData<Calendar>().also {
         it.value = GregorianCalendar.getInstance()
@@ -49,9 +48,8 @@ class ChooseTimeViewModel : BaseViewModel(), KoinComponent {
                 }
                 result.domainError?.let {
                     if (it.errorStatus != null) {
-                        Log.d(LOG_TAG, "${it.errorStatus}")
                         if (it.errorStatus == ErrorStatus.CONFLICT_ERROR) {
-                            conflictBookingLiveData.postValue(true)
+                            conflictBookingLiveData.postValue(Event(it.errorData))
                         }
                     }
                     errors.postValue(Event(it))

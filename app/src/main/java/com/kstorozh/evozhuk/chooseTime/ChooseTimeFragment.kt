@@ -48,7 +48,8 @@ class ChooseTimeFragment : Fragment(), HandleErrors, ConflictDialog {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         view.infoImageBut.setOnClickListener {
-            Navigation.findNavController(view).navigate(ChooseTimeFragmentDirections.actionChooseTimeFragmentToInfoFragment())
+            Navigation.findNavController(view)
+                .navigate(ChooseTimeFragmentDirections.actionChooseTimeFragmentToInfoFragment())
         }
         view.deviceNameTv.text = context?.getDeviceName()
         view.youTakeDeviceLabelTv.text =
@@ -59,7 +60,13 @@ class ChooseTimeFragment : Fragment(), HandleErrors, ConflictDialog {
         }
         view.calendarImageBut.setOnClickListener {
             arguments?.let {
-                with(ChooseTimeFragmentDirections.actionChooseTimeFragmentToCalendarFragment(ChooseTimeFragmentArgs.fromBundle(it).userId)) {
+                with(
+                    ChooseTimeFragmentDirections.actionChooseTimeFragmentToCalendarFragment(
+                        ChooseTimeFragmentArgs.fromBundle(
+                            it
+                        ).userId
+                    )
+                ) {
                     Navigation.findNavController(view).navigate(this)
                 }
             }
@@ -71,16 +78,24 @@ class ChooseTimeFragment : Fragment(), HandleErrors, ConflictDialog {
         modelChooseTime.setCalendar(anotherTimeMilisec)
         val res = context?.applicationContext?.resources as Resources
         val buttonTimes = listOf<TimeButton>(
-            TimeButton(res.getString(R.string.oneHour), TimeUtils.getTimeInMsFromHours(1)).apply { if (anotherTimeMilisec == 0L) isSelected = true },
+            TimeButton(
+                res.getString(R.string.oneHour),
+                TimeUtils.getTimeInMsFromHours(1)
+            ).apply { if (anotherTimeMilisec == 0L) isSelected = true },
             TimeButton(res.getString(R.string.twoHour), TimeUtils.getTimeInMsFromHours(2)),
             TimeButton(res.getString(R.string.foutHour), TimeUtils.getTimeInMsFromHours(4)),
             TimeButton(res.getString(R.string.tillSevenOClock), TimeUtils.getTimeInMsForEndOfWorkDay()),
             TimeButton(res.getString(R.string.twoDays), TimeUtils.getTimeInMsFromHours(48)),
             TimeButton(res.getString(R.string.anotherTime), anotherTimeMilisec, navigation =
-            { Navigation.findNavController(view).navigate(ChooseTimeFragmentDirections.actionChooseTimeFragmentToSpecificTimeAndDate(
-                System.currentTimeMillis(), TimeUtils.getTimeInMsForNextTwoMonth(), CHOOSE_TIME_FRAGMENT_DIR))
+            {
+                Navigation.findNavController(view).navigate(
+                    ChooseTimeFragmentDirections.actionChooseTimeFragmentToSpecificTimeAndDate(
+                        System.currentTimeMillis(), TimeUtils.getTimeInMsForNextTwoMonth(), CHOOSE_TIME_FRAGMENT_DIR
+                    )
+                )
             }).apply {
-                if (anotherTimeMilisec != 0L) isSelected = true }
+                if (anotherTimeMilisec != 0L) isSelected = true
+            }
         )
         viewManager = GridLayoutManager(this.context, SPAN_COUNT)
         viewAdapter = ButtonTimeAdapter(buttonTimes)
@@ -95,11 +110,24 @@ class ChooseTimeFragment : Fragment(), HandleErrors, ConflictDialog {
             view.bookDevice(selected.first().milisec)
         }
         viewLifecycleOwner.observe(modelChooseTime.conflictBookingLiveData) { conflict ->
-            val selected = buttonTimes.filter { timeBut -> timeBut.isSelected }
-            showFixConflictDialog {
-                if (conflict) {
+
+            conflict.getContentIfNotHandled()?.let { conflict ->
+                val selected = buttonTimes.filter { timeBut -> timeBut.isSelected }
+                showFixConflictDialog(conflict, {
                     view.bookDevice(selected.first().milisec, true)
-                }
+                }, {
+                    arguments?.let {
+                        with(
+                            ChooseTimeFragmentDirections.actionChooseTimeFragmentToCalendarFragment(
+                                ChooseTimeFragmentArgs.fromBundle(
+                                    it
+                                ).userId
+                            )
+                        ) {
+                            Navigation.findNavController(view).navigate(this)
+                        }
+                    }
+                })
             }
         }
     }
@@ -131,14 +159,20 @@ class ChooseTimeFragment : Fragment(), HandleErrors, ConflictDialog {
         deltaTime.timeInMillis = endTime
         deltaTime.add(Calendar.MINUTE, -MUTUTS_BEFORE_TIME_IS_UP_NOTIFICATION)
         val currentTime = GregorianCalendar.getInstance()
-        val delay: Long = if (deltaTime.timeInMillis < currentTime.timeInMillis) 1000L else deltaTime.timeInMillis - currentTime.timeInMillis
+        val delay: Long =
+            if (deltaTime.timeInMillis < currentTime.timeInMillis) 1000L else deltaTime.timeInMillis - currentTime.timeInMillis
         val notificationId = 1
         val notification = createNotification(endTime, notificationId)
         val notificationIntentBroadcast = Intent(context?.applicationContext, MyNotificationPublisher::class.java)
         notificationIntentBroadcast.putExtra(MyNotificationPublisher.NOTIFICATION_ID, notificationId)
         notificationIntentBroadcast.putExtra(MyNotificationPublisher.NOTIFICATION, notification)
         val pendingIntent =
-            PendingIntent.getBroadcast(context?.applicationContext, notificationId, notificationIntentBroadcast, PendingIntent.FLAG_CANCEL_CURRENT)
+            PendingIntent.getBroadcast(
+                context?.applicationContext,
+                notificationId,
+                notificationIntentBroadcast,
+                PendingIntent.FLAG_CANCEL_CURRENT
+            )
         val futureInMillis = SystemClock.elapsedRealtime() + delay
         val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent)
@@ -155,11 +189,13 @@ class ChooseTimeFragment : Fragment(), HandleErrors, ConflictDialog {
             .setColor(color)
             .setAutoCancel(false)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN &&
-            Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.O
+        ) {
             builder.priority = NotificationCompat.PRIORITY_LOW
         }
         val intent = Intent(context, MainActivity::class.java)
-        val pendingIntentActivity = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+        val pendingIntentActivity =
+            PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT)
         builder.setContentIntent(pendingIntentActivity)
         return builder.build()
     }
