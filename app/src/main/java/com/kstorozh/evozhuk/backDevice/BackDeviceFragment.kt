@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.notifications.NotificationService
 import com.kstorozh.evozhuk.utils.getDeviceName
@@ -20,8 +21,11 @@ import com.kstorozh.evozhuk.utils.showSnackbar
 import java.util.*
 import kotlinx.android.synthetic.main.fragment_back_device.*
 import kotlinx.android.synthetic.main.fragment_back_device.view.*
+import kotlinx.android.synthetic.main.logo_and_info.*
 import kotlinx.android.synthetic.main.logo_and_info.view.*
+import kotlinx.android.synthetic.main.logo_and_info.view.infoImageBut
 import org.joda.time.DateTime
+import java.lang.Exception
 
 class BackDeviceFragment : Fragment(), HandleErrors {
 
@@ -34,22 +38,24 @@ class BackDeviceFragment : Fragment(), HandleErrors {
     }
 
     private var userId: String? = null
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        view.infoImageBut.setOnClickListener {
-            Navigation.findNavController(view).navigate(BackDeviceFragmentDirections.actionBackDeviceFragmentToInfoFragment())
+    override fun onViewCreated(fragment: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(fragment, savedInstanceState)
+        infoImageBut.setOnClickListener {
+            Navigation.findNavController(fragment)
+                .navigate(BackDeviceFragmentDirections.actionBackDeviceFragmentToInfoFragment())
         }
-        view.calendarImageBut.setOnClickListener {
+        calendarImageBut.setOnClickListener {
             if (userId != null) {
                 with(BackDeviceFragmentDirections.actionBackDeviceFragmentToCalendarFragment(userId!!)) {
-                    Navigation.findNavController(view).navigate(this)
+                    Navigation.findNavController(fragment).navigate(this)
                 }
             }
         }
-        view.deviceNameTv.text = context?.getDeviceName()
-        view.youTakeDeviceLabelTv.text = "${resources.getString(R.string.youTableDeviceLabel)} ${context?.getDeviceName()}"
+        deviceNameTv.text = context?.getDeviceName()
+        youTakeDeviceLabelTv.text =
+            "${resources.getString(R.string.youTableDeviceLabel)} ${context?.getDeviceName()}"
         val modelBackDevice = ViewModelProviders.of(this).get(BackDeviceViewModel::class.java)
-        viewLifecycleOwner.handleErrors(modelBackDevice, view)
+        viewLifecycleOwner.handleErrors(modelBackDevice, fragment)
         viewLifecycleOwner.observe(modelBackDevice.getSessionData(), {
             it?.let {
                 val format = SimpleDateFormat(DATE_FORMAT_BACK_DEVICE_SCREEN_TV)
@@ -60,14 +66,15 @@ class BackDeviceFragment : Fragment(), HandleErrors {
         arguments?.let {
             val (endDate, userId) = Pair(
                 BackDeviceFragmentArgs.fromBundle(it).endTime,
-                BackDeviceFragmentArgs.fromBundle(it).userId)
+                BackDeviceFragmentArgs.fromBundle(it).userId
+            )
 
             val endCalendar = GregorianCalendar.getInstance()
             endCalendar.timeInMillis = endDate
             if (userId != USER_ID_NOT_SET) // set only if came from choose time fragment
                 modelBackDevice.setBookingSession(SessionData(userId, endCalendar))
         }
-        view.giveBackBut.setOnClickListener { view ->
+        giveBackBut.setOnClickListener { view ->
             viewLifecycleOwner.observe(modelBackDevice.tryReturnDevice()) {
                 if (it) {
                     view.showSnackbar(resources.getString(R.string.device_returned_message))
@@ -79,35 +86,38 @@ class BackDeviceFragment : Fragment(), HandleErrors {
             }
         }
         reNewBut.setOnClickListener { view ->
-            viewLifecycleOwner.observe(modelBackDevice.getNearbyBooking()) {
-                it.getContentIfNotHandled()?.let {
-                    if (it) {
-                        viewLifecycleOwner.observe(modelBackDevice.getSessionData(), { session ->
-                            session?.let {
-                                Navigation.findNavController(view).navigate(
+            viewLifecycleOwner.observe(modelBackDevice.getSessionData(), { session ->
+                session?.let {
+                    viewLifecycleOwner.observe(modelBackDevice.getNearbyBooking()) {
+                        it.getContentIfNotHandled()?.let { isNearbyBookingExists ->
+                            var endDate = DateTime().plusMonths(2).millis
+                            if (isNearbyBookingExists) {
+                                endDate = modelBackDevice.nearbyBooking.value!!.startDate
+                            }
+                            try {
+                                Navigation.findNavController(fragment).navigate(
                                     BackDeviceFragmentDirections.actionBackDeviceFragmentToSpecificTimeAndDate(
                                         session.endData.timeInMillis,
-                                        modelBackDevice.nearbyBooking.value!!.startDate,
+                                        endDate,
                                         BACK_DEVICE_FRAGMENT_DIR
                                     )
                                 )
+                            } catch (e: Exception) {
+                                Log.d(LOG_TAG, "Can't open 2 links at once!")
                             }
-                        })
-                    } else {
-                        Navigation.findNavController(view).navigate(
-                            BackDeviceFragmentDirections.actionBackDeviceFragmentToSpecificTimeAndDate(
-                                DateTime().plusMonths(2).millis,
-                                DateTime().millis,
-                                BACK_DEVICE_FRAGMENT_DIR
-                            ))
+                        }
                     }
+
+
                 }
-            }
+            })
+
         }
     }
 
     private fun clearAllNotification(context: Context?) {
-        val notificationManager: NotificationManager = context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager: NotificationManager =
+            context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancelAll()
     }
 

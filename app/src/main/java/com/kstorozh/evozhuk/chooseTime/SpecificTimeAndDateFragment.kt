@@ -36,7 +36,7 @@ class SpecificTimeAndDateFragment : Fragment(), HandleErrors {
     override fun onViewCreated(fragment: View, savedInstanceState: Bundle?) {
         model = ViewModelProviders.of(this)[SpecificTimeAndDateViewModel::class.java]
         viewLifecycleOwner.handleErrors(model, fragment)
-      //  currentTimeAndDate = CustomTime()
+
 
         dateTime = DateTime()
         arguments?.let {

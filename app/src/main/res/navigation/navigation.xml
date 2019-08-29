@@ -21,7 +21,7 @@
         <argument android:name="milisec" app:argType="long" android:defaultValue="0L"/>
 
         <action android:id="@+id/action_chooseTimeFragment_to_specificTimeAndDate"
-                app:destination="@id/specificTimeAndDate"/>
+                app:destination="@id/specificTimeAndDate" app:popUpTo="@+id/chooseTimeFragment"/>
         <argument android:name="userId" app:argType="string"/>
         <action android:id="@+id/action_chooseTimeFragment_to_infoFragment" app:destination="@id/infoFragment"/>
         <action android:id="@+id/action_chooseTimeFragment_to_calendarFragment" app:destination="@id/calendarFragment"/>
@@ -38,7 +38,7 @@
         <action android:id="@+id/action_backDeviceFragment_to_infoFragment" app:destination="@id/infoFragment"/>
         <action android:id="@+id/action_backDeviceFragment_to_calendarFragment" app:destination="@id/calendarFragment"/>
         <action android:id="@+id/action_backDeviceFragment_to_specificTimeAndDate"
-                app:destination="@id/specificTimeAndDate"/>
+                app:destination="@id/specificTimeAndDate" app:popUpTo="@+id/backDeviceFragment"/>
     </fragment>
 
 
