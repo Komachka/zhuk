@@ -13,6 +13,7 @@ dependencies {
     implementation commonDependencies.files
     implementation commonDependencies.koin
     implementation commonDependencies.koinAX
+    implementation appDependencies.datePicker
     implementation appDependencies.livedataKTX
     implementation domainDependencies.jodaTime
     implementation project(':domain-api')

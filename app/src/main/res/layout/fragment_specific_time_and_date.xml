@@ -30,30 +30,19 @@
             android:id="@+id/linearLayout"
             android:layout_marginTop="130dp" app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <DatePicker
-                android:id="@+id/datePicker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleX="0.8"
-                android:scaleY="0.8"
-                android:layout_marginLeft="-30dp"
-                android:layout_marginRight="-30dp"
-                android:datePickerMode="spinner"
-                android:calendarViewShown="false"
 
+        <com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker
+                android:id="@+id/time_and_date"
+                android:layout_width="wrap_content"
+                android:layout_height="230dp"
+                app:picker_textColor="@color/smallTextColour"
+                app:picker_selectedTextColor="@color/smallTextColour"
+                app:picker_selectorColor="@color/edit_text_focus_view"
+                app:picker_curved="true"
+                app:picker_cyclic="false"
+                app:picker_visibleItemCount="7"
         />
 
-        <com.kstorozh.evozhuk.chooseTime.TimePickerMinInterval
-                android:id="@+id/timePicker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleX="0.8"
-                android:scaleY="0.8"
-                android:layout_marginLeft="-30dp"
-                android:layout_marginRight="-30dp"
-                android:timePickerMode="spinner"
-
-        />
     </LinearLayout>
 
     <Button

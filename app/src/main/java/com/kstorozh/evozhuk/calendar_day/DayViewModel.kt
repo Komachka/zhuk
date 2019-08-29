@@ -1,5 +1,6 @@
 package com.kstorozh.evozhuk.calendar_day
 
+import android.util.Log
 import androidx.arch.core.util.Function
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -22,6 +23,7 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
     private val getBookingsUseCase: GetBookingUseCase by inject()
     private val applicationScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
     val query = MutableLiveData<Pair<Long, Int>>()
+
     val bookingSlotsPerDay: LiveData<List<TimeSlot>> = Transformations.switchMap(query, ::getBookingSlotsPerDay)
 
     val durationInMilisecLiveData = MutableLiveData<Long>().also { liveData ->
@@ -36,7 +38,7 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
         }
     }
 
-    private val bookingsLiveData = MutableLiveData<Map<String, List<Booking>>>().also { liveData ->
+    val bookingsLiveData = MutableLiveData<Map<String, List<Booking>>>().also { liveData ->
         applicationScope.launch {
             val result = getBookingsUseCase.getBookingLocal()
             result.data?.let {
@@ -135,5 +137,44 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
             }
         }
         return liveData
+    }
+
+    fun getNearbyBookings(timeSlot: TimeSlot): LiveData<Pair<Booking?, Booking?>> { // min booking and max booking
+
+        return Transformations.switchMap(bookingsLiveData, Function {
+
+            val liveData = MutableLiveData<Pair<Booking?, Booking?>>()
+            var earlyBooking: Booking? = null
+
+            var nextBooking: Booking? = null
+
+            var closerMinTime = 0L
+            var closerMaxTime = Long.MAX_VALUE
+
+            it.forEach { (k, v) ->
+                v.forEach {
+
+                    if (it.endDate < timeSlot.range.first) {
+                        if (it.endDate > closerMinTime) {
+                            earlyBooking = it
+                            closerMinTime = it.endDate
+                        }
+                    }
+
+                    if (it.startDate > timeSlot.range.last) {
+                        if (it.startDate < closerMaxTime) {
+                            nextBooking = it
+                            closerMinTime = it.startDate
+                        }
+                    }
+                }
+            }
+
+            Log.d(LOG_TAG, "earlyer $earlyBooking ")
+            Log.d(LOG_TAG, "next $nextBooking ")
+
+            liveData.value = earlyBooking to nextBooking //
+            return@Function liveData
+        })
     }
 }
