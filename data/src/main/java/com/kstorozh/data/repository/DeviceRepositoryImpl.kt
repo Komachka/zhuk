@@ -152,6 +152,7 @@ internal class DeviceRepositoryImpl(
             currentBooking?.let { bookingBody ->
                 currentBooking.endDate = endDate
                 currentBooking.startDate = startdate
+                currentBooking.isForce = null
                 return when (val result = remoteData.editBooking(
                     bookingBody,
                     bookingBody.id.toString()
@@ -207,6 +208,7 @@ internal class DeviceRepositoryImpl(
         val repoResult: RepoResult<Boolean> = RepoResult()
         device?.let {
             val bookingBody = mapper.mapBookingDeviceInfo(bookingParam, device.id, isActive = false)
+            bookingBody.isForce = null
             return when (val result = remoteData.editBooking(
                 bookingBody,
                 bookingParam.bookingId!!
