@@ -31,13 +31,8 @@ internal class CalendarRepositoryImpl(
             return when (val result = remoteData.getNearbyBooking(device.id)) {
                 is ApiResult.Success -> {
                     repoResult.apply {
-                        try {
-                            result.data.data?.booking?.let {
-                                data = bookingDataMapper.maptonearbyBooking(it)
-                            }
-                        } catch (e: Throwable) {
-                            data = null
-                            error = DataError(ErrorStatus.UNEXPECTED_ERROR, BOOKING_DATA_EMPTY_ERROR, e)
+                        result.data.data?.booking?.let {
+                            data = bookingDataMapper.maptonearbyBooking(it)
                         }
                     }
                 }

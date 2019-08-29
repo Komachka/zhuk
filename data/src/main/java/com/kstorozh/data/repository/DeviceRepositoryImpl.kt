@@ -1,6 +1,8 @@
 package com.kstorozh.data.repository
 
 import DEVICE_INFO_CACHE_EMPTY_ERROR
+import LOG_TAG
+import android.util.Log
 import com.kstorozh.data.database.LocalDataStorage
 import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
@@ -150,6 +152,7 @@ internal class DeviceRepositoryImpl(
             currentBooking?.let { bookingBody ->
                 currentBooking.endDate = endDate
                 currentBooking.startDate = startdate
+                currentBooking.isForce = null
                 return when (val result = remoteData.editBooking(
                     bookingBody,
                     bookingBody.id.toString()
@@ -200,10 +203,12 @@ internal class DeviceRepositoryImpl(
     }
 
     override suspend fun editBooking(bookingParam: BookingParam): RepoResult<Boolean> {
+        Log.d(LOG_TAG, bookingParam.toString())
         val device = localData.getDeviceInfo()
         val repoResult: RepoResult<Boolean> = RepoResult()
         device?.let {
             val bookingBody = mapper.mapBookingDeviceInfo(bookingParam, device.id, isActive = false)
+            bookingBody.isForce = null
             return when (val result = remoteData.editBooking(
                 bookingBody,
                 bookingParam.bookingId!!
@@ -244,13 +249,6 @@ internal class DeviceRepositoryImpl(
                         data = false
                         error = createError(Endpoints.TAKE_DEVICE, result, koin)
                     }
-                    repoResult.data = true
-                    repoResult
-                }
-                is ApiResult.Error<*> -> {
-                    repoResult.data = false
-                    repoResult.error = createError(Endpoints.TAKE_DEVICE, result, this)
-                    repoResult
                 }
             }
         }

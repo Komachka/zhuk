@@ -36,11 +36,11 @@ internal class BookingDataMapper {
     }
 
     fun maptonearbyBooking(booking: Booking) = NearbyBooking(
-        booking.id!!,
-        booking.userId!!,
-        booking.deviceId!!,
-        booking.startDate!!,
-        booking.endDate!!,
-        booking.isActive!!
+        booking.id,
+        booking.userId,
+        booking.userName,
+        booking.startDate,
+        booking.endDate,
+        booking.isActive
     )
 }

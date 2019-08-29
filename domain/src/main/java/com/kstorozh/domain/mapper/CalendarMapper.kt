@@ -48,7 +48,7 @@ class CalendarMapper {
         val end = foramtter.parseDateTime(nearbyBooking.endDate)
         return NearbyDomainBooking(
             nearbyBooking.id,
-            nearbyBooking.deviceId,
+            nearbyBooking.userName,
             nearbyBooking.userId,
             start.millis, end.millis
         )

@@ -55,16 +55,18 @@ class GetBookingUseCaseImpl(
             if (it)
                 return getUpdatedBookingData(startDate, endDate)
         }
-        return DomainResult(null, DomainErrors(message = BOOKING_NOT_DELETED))
+        val domainError = errorMapper.mapToDomainError(repoResult.error)
+        return DomainResult(null, domainError)
     }
 
     override suspend fun editBooking(bookingInputData: BookingInputData, bookingId: Int, startDate: Long, endDate: Long): DomainResult<BookingInfo> {
         val repoResult = repository
-            .editBooking(deviceMapper.mapBookingParam(bookingInputData, bookingInputData.startDate))
+            .editBooking(deviceMapper.mapBookingParam(bookingInputData, bookingInputData.startDate, bookingId.toString()))
         repoResult.data?.let {
             if (it)
                 return getUpdatedBookingData(startDate, endDate)
         }
-        return DomainResult(null, DomainErrors(message = BOOKING_NOT_EDITED))
+        val domainError = errorMapper.mapToDomainError(repoResult.error)
+        return DomainResult(null, domainError)
     }
 }
