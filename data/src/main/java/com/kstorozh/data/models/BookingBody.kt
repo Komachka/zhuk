@@ -33,7 +33,7 @@ internal data class BookingBody(
 
     @Expose
     @SerializedName("force")
-    val isForce: Boolean
+    var isForce: Boolean?
 
 )
 
