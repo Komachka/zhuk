@@ -36,54 +36,7 @@ interface BottomSheetDialogHandler {
         sheetView.toDatePicker.addOnDateChangedListener { displayed, date ->
             endDate = endDate.withMillis(date.time)
         }
-
         setUpMinAndMaxDate(item, sheetView)
-
-        /*       model.getNearbyBookings(item).observe(viewLifecycleOwner, Observer {
-
-                   if (it.first != null) {
-                       val minBooking = it.first!!
-                       if (minBooking != item.booking)
-                       {
-                           if (minBooking.endDate >= System.currentTimeMillis()) {
-                               sheetView.fromDatePicker.minDate = Date(minBooking.endDate)
-                               sheetView.toDatePicker.minDate = DateTime(minBooking.endDate).plusMinutes(15).toDate()
-                           }
-                               else {
-                               sheetView.fromDatePicker.minDate = Date()
-                               sheetView.toDatePicker.minDate = DateTime().plusMinutes(15).toDate()
-                           }
-                       }
-                       else {
-                           sheetView.fromDatePicker.minDate = Date()
-                           sheetView.toDatePicker.minDate = DateTime().plusMinutes(15).toDate()
-                       }
-
-                   } else {
-                       sheetView.fromDatePicker.minDate = Date()
-                       sheetView.toDatePicker.minDate = DateTime().plusMinutes(15).toDate()
-                   }
-
-
-                   if (it.second != null) {
-
-                       val maxBooking = it.second!!
-                       if (maxBooking != item.booking)
-                       {
-
-                           sheetView.fromDatePicker.maxDate = DateTime(maxBooking.startDate).plusMinutes(-15).toDate()
-                           sheetView.toDatePicker.maxDate = Date(maxBooking.startDate)
-                       }
-                       else {
-                           sheetView.fromDatePicker.maxDate = DateTime().plusMinutes(-15).plusMonths(2).toDate()
-                           sheetView.toDatePicker.maxDate = DateTime().plusMonths(2).toDate()
-                       }
-                   } else {
-                       sheetView.fromDatePicker.maxDate = DateTime().plusMinutes(-15).plusMonths(2).toDate()
-                       sheetView.toDatePicker.maxDate = DateTime().plusMonths(2).toDate()
-                   }
-               })*/
-
         sheetView.bookBut.setOnClickListener {
             if (!item.isOtherBooking && !item.isMyBooking) {
 
