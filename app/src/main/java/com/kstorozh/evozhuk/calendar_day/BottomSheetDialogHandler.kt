@@ -27,7 +27,7 @@ interface BottomSheetDialogHandler {
         val startDate = DateTime(item.range.first)
         val endDate = DateTime(item.range.last)
 
-        val fromTimeAndDate = setTimeAndDate(sheetView.fromTimePicker, sheetView.fromDatePicker, startDate)
+        /*val fromTimeAndDate = setTimeAndDate(sheetView.fromTimePicker, sheetView.fromDatePicker, startDate)
         val toTimeAndDate = setTimeAndDate(sheetView.toTimePicker, sheetView.toDatePicker, endDate)
         sheetView.bookBut.setOnClickListener {
             if (!item.isOtherBooking && !item.isMyBooking) {
@@ -36,7 +36,7 @@ interface BottomSheetDialogHandler {
                     mBottomSheetDialog.cancel()
                 }
             }
-        }
+        }*/
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
     }
@@ -49,7 +49,7 @@ interface BottomSheetDialogHandler {
         val startDate = DateTime(item.range.first)
         val endDate = DateTime(item.range.last)
 
-        val fromTimeAndDate = setTimeAndDate(sheetView.fromTimePicker, sheetView.fromDatePicker, startDate)
+        /*val fromTimeAndDate = setTimeAndDate(sheetView.fromTimePicker, sheetView.fromDatePicker, startDate)
         val toTimeAndDate = setTimeAndDate(sheetView.toTimePicker, sheetView.toDatePicker, endDate)
         sheetView.bookBut.setOnClickListener {
             if (item.isMyBooking) {
@@ -57,7 +57,7 @@ interface BottomSheetDialogHandler {
                     mBottomSheetDialog.cancel()
                 }
             }
-        }
+        }*/
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
     }
@@ -80,7 +80,7 @@ interface BottomSheetDialogHandler {
         }
     }
 
-    fun setTimeAndDate(timePicker: TimePicker, datePicker: DatePicker, date: DateTime): CustomTime {
+    /*fun setTimeAndDate(timePicker: TimePicker, datePicker: DatePicker, date: DateTime): CustomTime {
         Log.d(LOG_TAG, date.toString())
         val timeAndDate = CustomTime()
         timeAndDate.hour = date.hourOfDay
@@ -107,5 +107,5 @@ interface BottomSheetDialogHandler {
             timeAndDate.day = pickDay
         }
         return timeAndDate
-    }
+    }*/
 }

@@ -42,20 +42,12 @@ class SpecificTimeAndDateFragment : Fragment(), HandleErrors {
         dateTime = DateTime()
         arguments?.let {
             var currentMs = SpecificTimeAndDateFragmentArgs.fromBundle(it).currentMilisec
-            Log.d(LOG_TAG, "current time $currentMs")
             currentMs = if (currentMs < System.currentTimeMillis()) System.currentTimeMillis() else currentMs
-            Log.d(LOG_TAG, "current time $currentMs")
             val maxMs = SpecificTimeAndDateFragmentArgs.fromBundle(it).maxMilisec
             var currentDt = DateTime(currentMs)
-
-            Log.d(LOG_TAG, "minites ${currentDt.minuteOfHour}")
-            Log.d(LOG_TAG, "hour ${currentDt.hourOfDay}")
-
-            Log.d(LOG_TAG, "currentDt.minuteOfHour%15 ${currentDt.minuteOfHour % 15}")
             if (currentDt.minuteOfHour % 15 != 0) {
                 currentDt = currentDt.plusMinutes(15)
             }
-
             val maxDt = DateTime(maxMs)
             dateTime.withMillis(currentMs)
             time_and_date.setDefaultDate(currentDt.toDate())
@@ -88,10 +80,9 @@ class SpecificTimeAndDateFragment : Fragment(), HandleErrors {
                 action.milisec = dateTime.millis
                 Navigation.findNavController(view).navigate(action)
             } else if (SpecificTimeAndDateFragmentArgs.fromBundle(it).backDiraction == BACK_DEVICE_FRAGMENT_DIR) {
-                Log.d(LOG_TAG, "edit current booking")
+
                 viewLifecycleOwner.observe(model.editCurrentBooking(dateTime.millis)) {
                     if (it) {
-                        Log.d(LOG_TAG, "edit current booking true")
                         val action = SpecificTimeAndDateFragmentDirections
                             .actionSpecificTimeAndDateToBackDeviceFragment(
                                 USER_ID_NOT_SET,
