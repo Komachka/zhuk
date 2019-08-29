@@ -107,11 +107,8 @@ class BackDeviceFragment : Fragment(), HandleErrors {
                             }
                         }
                     }
-
-
                 }
             })
-
         }
     }
 

@@ -15,6 +15,5 @@ interface NearbyBookingInfo {
                 "${resources.getString(R.string.nearby_booking_message)} ${start.hourOfDay}:$minute @${it.userName}"
             LowBatterySnackbar.make(this.snackbarlocationLogin, message)?.show()
         }
-
     }
 }

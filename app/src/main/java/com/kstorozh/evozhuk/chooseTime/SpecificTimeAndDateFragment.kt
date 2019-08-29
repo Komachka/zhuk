@@ -6,23 +6,18 @@ import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 
-import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
-import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_specific_time_and_date.*
 import kotlinx.android.synthetic.main.fragment_specific_time_and_date.view.*
 import org.joda.time.DateTime
-import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 import java.util.*
-
 
 class SpecificTimeAndDateFragment : Fragment(), HandleErrors {
 
-    //private lateinit var currentTimeAndDate: CustomTime
+    // private lateinit var currentTimeAndDate: CustomTime
     private lateinit var model: SpecificTimeAndDateViewModel
 
     override fun onCreateView(
@@ -37,7 +32,6 @@ class SpecificTimeAndDateFragment : Fragment(), HandleErrors {
     override fun onViewCreated(fragment: View, savedInstanceState: Bundle?) {
         model = ViewModelProviders.of(this)[SpecificTimeAndDateViewModel::class.java]
         viewLifecycleOwner.handleErrors(model, fragment)
-
 
         dateTime = DateTime()
         arguments?.let {
@@ -55,7 +49,6 @@ class SpecificTimeAndDateFragment : Fragment(), HandleErrors {
             time_and_date.minDate = currentDt.toDate()
             time_and_date.mustBeOnFuture()
         }
-
 
         time_and_date.setStepMinutes(15)
         time_and_date.addOnDateChangedListener { displayed, date ->
