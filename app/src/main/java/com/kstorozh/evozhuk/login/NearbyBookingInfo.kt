@@ -9,8 +9,12 @@ import org.joda.time.DateTime
 interface NearbyBookingInfo {
     fun LoginFragment.showBookingInfo(it: NearbyDomainBooking) {
         val start = DateTime(it.startDate)
-        val minute = if (start.minuteOfHour > 9) "${start.minuteOfHour}" else "0" + start.minuteOfHour
-        val message = "${resources.getString(R.string.nearby_booking_message)} ${start.hourOfDay}:$minute"
-        LowBatterySnackbar.make(this.snackbarlocationLogin, message)?.show()
+        if (start.dayOfMonth == DateTime().dayOfMonth) {
+            val minute = if (start.minuteOfHour > 9) "${start.minuteOfHour}" else "0" + start.minuteOfHour
+            val message =
+                "${resources.getString(R.string.nearby_booking_message)} ${start.hourOfDay}:$minute @${it.userName}"
+            LowBatterySnackbar.make(this.snackbarlocationLogin, message)?.show()
+        }
+
     }
 }

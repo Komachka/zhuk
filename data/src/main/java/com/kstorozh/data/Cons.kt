@@ -23,7 +23,7 @@ internal const val GET_USERS_URL = "/api/mobile/users"
 internal const val REMIND_PIN_URL = "/api/mobile/users/{id}/pin/remind"
 internal const val LOGIN_URL = "/api/mobile/login"
 
-// internal const val BASE_URL = "http://wh.evo.dev"
+ //internal const val BASE_URL = "http://wh.evo.dev"
 
 internal const val GET_BOOKING_URL = "/api/mobile/booking?"
 internal const val START_DATE = "start"

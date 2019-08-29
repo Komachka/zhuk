@@ -1,42 +1,106 @@
 package com.kstorozh.evozhuk.calendar_day
 
-import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.DatePicker
-import android.widget.TimePicker
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kstorozh.domainapi.model.Booking
 import com.kstorozh.evozhuk.LOG_TAG
 import com.kstorozh.evozhuk.R
-import com.kstorozh.evozhuk.TIME_PICKER_INTERVAL
-import com.kstorozh.evozhuk.chooseTime.CustomTime
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.bottom_sheet_dialog.view.*
 import org.joda.time.DateTime
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.bottom_sheet_dialog.view.fromDatePicker
+import java.util.*
 
 interface BottomSheetDialogHandler {
 
     fun ChildrenDayFragment.createBookingDialog(item: TimeSlot, userId: String) {
         if (this.context == null)
             return
+        if (item.range.first < System.currentTimeMillis()) return
         val mBottomSheetDialog = BottomSheetDialog(this.context!!)
         val sheetView = LayoutInflater.from(this.context).inflate(R.layout.bottom_sheet_dialog, null)
-        val startDate = DateTime(item.range.first)
-        val endDate = DateTime(item.range.last)
+        var startDate = DateTime(item.range.first)
+        var endDate = DateTime(item.range.last).plusMinutes(1)
 
-        /*val fromTimeAndDate = setTimeAndDate(sheetView.fromTimePicker, sheetView.fromDatePicker, startDate)
-        val toTimeAndDate = setTimeAndDate(sheetView.toTimePicker, sheetView.toDatePicker, endDate)
+        sheetView.fromDatePicker.setDefaultDate(startDate.toDate())
+        sheetView.fromDatePicker.setStepMinutes(15)
+        sheetView.fromDatePicker.addOnDateChangedListener { displayed, date ->
+            startDate = startDate.withMillis(date.time)
+
+        }
+
+        sheetView.toDatePicker.setDefaultDate(endDate.toDate())
+        sheetView.toDatePicker.setStepMinutes(15)
+        sheetView.toDatePicker.addOnDateChangedListener { displayed, date ->
+            endDate = endDate.withMillis(date.time)
+        }
+
+        setUpMinAndMaxDate(item, sheetView)
+
+
+
+ /*       model.getNearbyBookings(item).observe(viewLifecycleOwner, Observer {
+
+            if (it.first != null) {
+                val minBooking = it.first!!
+                if (minBooking != item.booking)
+                {
+                    if (minBooking.endDate >= System.currentTimeMillis()) {
+                        sheetView.fromDatePicker.minDate = Date(minBooking.endDate)
+                        sheetView.toDatePicker.minDate = DateTime(minBooking.endDate).plusMinutes(15).toDate()
+                    }
+                        else {
+                        sheetView.fromDatePicker.minDate = Date()
+                        sheetView.toDatePicker.minDate = DateTime().plusMinutes(15).toDate()
+                    }
+                }
+                else {
+                    sheetView.fromDatePicker.minDate = Date()
+                    sheetView.toDatePicker.minDate = DateTime().plusMinutes(15).toDate()
+                }
+
+            } else {
+                sheetView.fromDatePicker.minDate = Date()
+                sheetView.toDatePicker.minDate = DateTime().plusMinutes(15).toDate()
+            }
+
+
+            if (it.second != null) {
+
+                val maxBooking = it.second!!
+                if (maxBooking != item.booking)
+                {
+
+                    sheetView.fromDatePicker.maxDate = DateTime(maxBooking.startDate).plusMinutes(-15).toDate()
+                    sheetView.toDatePicker.maxDate = Date(maxBooking.startDate)
+                }
+                else {
+                    sheetView.fromDatePicker.maxDate = DateTime().plusMinutes(-15).plusMonths(2).toDate()
+                    sheetView.toDatePicker.maxDate = DateTime().plusMonths(2).toDate()
+                }
+            } else {
+                sheetView.fromDatePicker.maxDate = DateTime().plusMinutes(-15).plusMonths(2).toDate()
+                sheetView.toDatePicker.maxDate = DateTime().plusMonths(2).toDate()
+            }
+        })*/
+
+
         sheetView.bookBut.setOnClickListener {
             if (!item.isOtherBooking && !item.isMyBooking) {
 
-                observe(model.createNewBooking(userId, fromTimeAndDate.getMillisec(), toTimeAndDate.getMillisec())) {
+                observe(model.createNewBooking(userId, startDate.millis, endDate.millis)) {
                     mBottomSheetDialog.cancel()
                 }
             }
-        }*/
+        }
+
+
+
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
     }
@@ -46,18 +110,42 @@ interface BottomSheetDialogHandler {
             return
         val mBottomSheetDialog = BottomSheetDialog(this.context!!)
         val sheetView = LayoutInflater.from(this.context).inflate(R.layout.bottom_sheet_dialog, null)
-        val startDate = DateTime(item.range.first)
-        val endDate = DateTime(item.range.last)
+        var startDate = DateTime(item.range.first)
+        var endDate = DateTime(item.range.last)
 
-        /*val fromTimeAndDate = setTimeAndDate(sheetView.fromTimePicker, sheetView.fromDatePicker, startDate)
-        val toTimeAndDate = setTimeAndDate(sheetView.toTimePicker, sheetView.toDatePicker, endDate)
+
+        if (startDate.minuteOfHour % 15 != 0) {
+            startDate = startDate.plusMinutes(15)
+        }
+
+        if (endDate.minuteOfHour % 15 != 0) {
+            endDate = endDate.plusMinutes(15)
+        }
+
+        sheetView.fromDatePicker.setDefaultDate(startDate.toDate())
+        sheetView.fromDatePicker.setStepMinutes(15)
+        sheetView.fromDatePicker.addOnDateChangedListener { displayed, date ->
+           startDate = startDate.withMillis(date.time)
+
+        }
+
+        sheetView.toDatePicker.setDefaultDate(endDate.toDate())
+        sheetView.toDatePicker.setStepMinutes(15)
+        sheetView.toDatePicker.addOnDateChangedListener { displayed, date ->
+            endDate = endDate.withMillis(date.time)
+        }
+
+
+        setUpMinAndMaxDate(item, sheetView)
+
+
         sheetView.bookBut.setOnClickListener {
             if (item.isMyBooking) {
-                observe(model.editBooking(userId, item.booking!!, fromTimeAndDate.getMillisec(), toTimeAndDate.getMillisec())) {
+                observe(model.editBooking(userId, item.booking!!, startDate.millis, endDate.millis)) {
                     mBottomSheetDialog.cancel()
                 }
             }
-        }*/
+        }
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
     }
@@ -80,32 +168,51 @@ interface BottomSheetDialogHandler {
         }
     }
 
-    /*fun setTimeAndDate(timePicker: TimePicker, datePicker: DatePicker, date: DateTime): CustomTime {
-        Log.d(LOG_TAG, date.toString())
-        val timeAndDate = CustomTime()
-        timeAndDate.hour = date.hourOfDay
-        timeAndDate.minute = date.minuteOfHour
-        timeAndDate.day = date.dayOfMonth
-        timeAndDate.month = date.monthOfYear - 1
-        timeAndDate.year = date.year
+}
 
-        timeAndDate.countMinutesWithTimePickerInterval(TIME_PICKER_INTERVAL)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            timePicker.hour = timeAndDate.hour
-            timePicker.minute = (timeAndDate.minute)
+private fun ChildrenDayFragment.setUpMinAndMaxDate(item: TimeSlot, view:View) {
+    model.getNearbyBookings(item).observe(viewLifecycleOwner, Observer {
+
+        if (it.first != null) {
+            val minBooking = it.first!!
+            if (minBooking != item.booking)
+            {
+                if (minBooking.endDate >= System.currentTimeMillis()) {
+                    view.fromDatePicker.minDate = Date(minBooking.endDate)
+                    view.toDatePicker.minDate = DateTime(minBooking.endDate).plusMinutes(15).toDate()
+                }
+                else {
+                    view.fromDatePicker.minDate = Date()
+                    view.toDatePicker.minDate = DateTime().plusMinutes(15).toDate()
+                }
+            }
+            else {
+                view.fromDatePicker.minDate = Date()
+                view.toDatePicker.minDate = DateTime().plusMinutes(15).toDate()
+            }
+
         } else {
-            timePicker.setCurrentHour(timeAndDate.hour)
-            timePicker.setCurrentMinute(timeAndDate.minute)
+            view.fromDatePicker.minDate = Date()
+            view.toDatePicker.minDate = DateTime().plusMinutes(15).toDate()
         }
-        timePicker.setOnTimeChangedListener { tP, pickerHour, pickerMinute ->
-            timeAndDate.hour = pickerHour
-            timeAndDate.minute = pickerMinute * TIME_PICKER_INTERVAL // back to real updateTime
+
+
+        if (it.second != null) {
+
+            val maxBooking = it.second!!
+            if (maxBooking != item.booking)
+            {
+
+                view.fromDatePicker.maxDate = DateTime(maxBooking.startDate).plusMinutes(-15).toDate()
+                view.toDatePicker.maxDate = Date(maxBooking.startDate)
+            }
+            else {
+                view.fromDatePicker.maxDate = DateTime().plusMinutes(-15).plusMonths(2).toDate()
+                view.toDatePicker.maxDate = DateTime().plusMonths(2).toDate()
+            }
+        } else {
+            view.fromDatePicker.maxDate = DateTime().plusMinutes(-15).plusMonths(2).toDate()
+            view.toDatePicker.maxDate = DateTime().plusMonths(2).toDate()
         }
-        datePicker.init(timeAndDate.year, timeAndDate.month, timeAndDate.day) { dP, pickYear, pickMonth, pickDay ->
-            timeAndDate.year = pickYear
-            timeAndDate.month = pickMonth
-            timeAndDate.day = pickDay
-        }
-        return timeAndDate
-    }*/
+    })
 }
