@@ -76,5 +76,6 @@
               android:label="fragment_calendar_day_view" tools:layout="@layout/fragment_calendar_day_view">
         <argument android:name="userId" app:argType="string"/>
         <argument android:name="milisec" app:argType="long"/>
+        <action android:id="@+id/action_calendarDayView_to_infoFragment" app:destination="@id/infoFragment"/>
     </fragment>
 </navigation>
