@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kstorozh.evozhuk.R
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.kstorozh.evozhuk.utils.observe
+import kotlinx.android.synthetic.main.fragment_info.*
 import kotlinx.android.synthetic.main.fragment_info.view.*
+import kotlinx.android.synthetic.main.fragment_info.view.toolbar
 
 class InfoFragment : Fragment() {
 
@@ -34,9 +36,10 @@ class InfoFragment : Fragment() {
         val model = ViewModelProviders.of(this)[InfoViewModel::class.java]
         model.getDeviceInfo()
         (activity as AppCompatActivity).setSupportActionBar(fragment.toolbar)
-        fragment.toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
-        fragment.toolbar.title = resources.getString(R.string.info)
-        fragment.toolbar.setNavigationOnClickListener {
+        toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
+        toolbar.setTitleTextColor(resources.getColor(R.color.logoTextColour))
+        toolbar.title = resources.getString(R.string.info)
+        toolbar.setNavigationOnClickListener {
             val navController = this.findNavController()
             navController.navigateUp()
         }
@@ -45,7 +48,7 @@ class InfoFragment : Fragment() {
         (infoAdapter as InfoAdapter).saveNoteListener = {
             model.saveNote(it)
         }
-        fragment.infoRv.apply {
+        infoRv.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = infoAdapter

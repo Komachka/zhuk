@@ -14,6 +14,7 @@ import com.kstorozh.evozhuk.MONTH_DELTA
 import com.kstorozh.evozhuk.R
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_calendar.view.*
+import kotlinx.android.synthetic.main.fragment_calendar_parent_view.*
 
 import org.joda.time.DateTime
 
@@ -34,6 +35,7 @@ class CalendarFragment : Fragment(), HandleErrors {
         view.toolbar_calendar.apply {
             navigationIcon = resources.getDrawable(R.drawable.ic_close_black_24dp)
             title = resources.getString(R.string.calendar)
+            setTitleTextColor(resources.getColor(R.color.logoTextColour))
             setNavigationOnClickListener {
                 val navController = this.findNavController()
                 navController.navigateUp()

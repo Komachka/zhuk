@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.kstorozh.evozhuk.HandleErrors
 import com.kstorozh.evozhuk.R
@@ -38,7 +39,9 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         item?.let {
             if (it.itemId == R.id.action_info) {
-                // TODO add navigation
+                view?.let {
+                    Navigation.findNavController(it).navigate(R.id.action_calendarDayView_to_infoFragment)
+                }
                 return true
             }
         }
@@ -49,6 +52,7 @@ class CalendarDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         (activity as AppCompatActivity).setSupportActionBar(fragmentView.toolbarDay)
         toolbarDay.navigationIcon = resources.getDrawable(R.drawable.ic_close_black_24dp)
         toolbarDay.title = resources.getString(R.string.calendar)
+        toolbarDay.setTitleTextColor(resources.getColor(R.color.logoTextColour))
         toolbarDay.setNavigationOnClickListener {
             val navController = this.findNavController()
             navController.navigateUp()

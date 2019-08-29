@@ -53,12 +53,12 @@ class SpecificTimeAndDateFragment : Fragment(), HandleErrors {
         time_and_date.setStepMinutes(15)
         time_and_date.addOnDateChangedListener { displayed, date ->
             dateTime = dateTime.withMillis(date.time)
-            Toast.makeText(context, dateTime.toString(), Toast.LENGTH_LONG).show()
         }
         (activity as AppCompatActivity).setSupportActionBar(fragment.toolbar)
         fragment.toolbar.apply {
             navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)
             title = resources.getString(R.string.time_choose_tool_bar)
+            setTitleTextColor(resources.getColor(R.color.logoTextColour))
             setNavigationOnClickListener { Navigation.findNavController(fragment).popBackStack() }
         }
         fragment.chooseTimeBut.setOnClickListener { fragment.navigateBackWithTime() }
