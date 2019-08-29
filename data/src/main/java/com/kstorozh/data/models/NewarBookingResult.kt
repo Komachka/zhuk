@@ -20,24 +20,24 @@ class BookingData {
     var booking: Booking? = null
 }
 
-class Booking {
+class Booking(
 
-    @SerializedName("id")
+    @SerializedName("booking_id")
     @Expose
-    var id: Int? = null
-    @SerializedName("user_id")
+    var id: Int,
+    @SerializedName("booking_user_id")
     @Expose
-    var userId: Int? = null
-    @SerializedName("device_id")
+    var userId: Int,
+    @SerializedName("user_slack_username")
     @Expose
-    var deviceId: Int? = null
-    @SerializedName("start_date")
+    var userName: String,
+    @SerializedName("booking_start_date")
     @Expose
-    var startDate: String? = null
-    @SerializedName("end_date")
+    var startDate: String,
+    @SerializedName("booking_end_date")
     @Expose
-    var endDate: String? = null
+    var endDate: String,
     @SerializedName("is_active")
     @Expose
-    var isActive: Boolean? = null
-}
+    var isActive: Boolean
+)

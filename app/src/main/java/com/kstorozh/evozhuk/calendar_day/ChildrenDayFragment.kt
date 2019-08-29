@@ -69,7 +69,8 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
                     deleteBookingDialog(it[pos]) {
                         viewLifecycleOwner.observe(model.deleteBooking(userId.toString(), it,
                             DateTime().millis, DateTime().plusMonths(2).millis)) {
-                            view?.showSnackbar(resources.getString(R.string.bookin_removed))
+                            if (it)
+                                view?.showSnackbar(resources.getString(R.string.bookin_removed))
                         }
                     }
                 }

@@ -1,6 +1,8 @@
 package com.kstorozh.data.repository
 
 import DEVICE_INFO_CACHE_EMPTY_ERROR
+import LOG_TAG
+import android.util.Log
 import com.kstorozh.data.database.LocalDataStorage
 import com.kstorozh.data.models.ApiResult
 import com.kstorozh.data.network.Endpoints
@@ -200,6 +202,7 @@ internal class DeviceRepositoryImpl(
     }
 
     override suspend fun editBooking(bookingParam: BookingParam): RepoResult<Boolean> {
+        Log.d(LOG_TAG, bookingParam.toString())
         val device = localData.getDeviceInfo()
         val repoResult: RepoResult<Boolean> = RepoResult()
         device?.let {
@@ -244,13 +247,6 @@ internal class DeviceRepositoryImpl(
                         data = false
                         error = createError(Endpoints.TAKE_DEVICE, result, koin)
                     }
-                    repoResult.data = true
-                    repoResult
-                }
-                is ApiResult.Error<*> -> {
-                    repoResult.data = false
-                    repoResult.error = createError(Endpoints.TAKE_DEVICE, result, this)
-                    repoResult
                 }
             }
         }

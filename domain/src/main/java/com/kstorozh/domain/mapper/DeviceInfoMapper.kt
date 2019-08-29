@@ -31,12 +31,12 @@ class DeviceInfoMapper {
 
     @SuppressLint("SimpleDateFormat")
 
-    fun mapBookingParam(bookingInputData: BookingInputData, startDate: Calendar? = null): BookingParam {
+    fun mapBookingParam(bookingInputData: BookingInputData, startDate: Calendar? = null, bookingId: String? = null): BookingParam {
         val foramtter = ISODateTimeFormat.dateTime()
         val start = startDate?.let { foramtter.print(it.timeInMillis) } ?: DateTime().toString()
         val end = bookingInputData.endDate?.let { foramtter.print(it.timeInMillis) } ?: DateTime().toString()
         return BookingParam(
-            bookingInputData.userId,
+            bookingId,
             bookingInputData.userId,
             start,
             end,
