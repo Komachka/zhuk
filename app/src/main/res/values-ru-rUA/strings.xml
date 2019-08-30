@@ -101,5 +101,6 @@
     <string name="storage_empty">Доступно</string>
     <string name="problem_title">Опишите проблему</string>
     <string name="problem_message">Ваш отзыв поможет нам улучшить жука</string>
+    <string name="exit">Выйти</string>
 
 </resources>

@@ -108,6 +108,7 @@
 
     <string name="problem_title">Опишиіть проблему</string>
     <string name="problem_message">Ваш відгук допоможе нам покращити жука</string>
+    <string name="exit">Вийти</string>
 
 
 </resources>

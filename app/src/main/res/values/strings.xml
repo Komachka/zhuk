@@ -102,5 +102,6 @@
 
     <string name="problem_title">Write your problem</string>
     <string name="problem_message">Your report will helps us</string>
+    <string name="exit">Exit</string>
 
 </resources>
