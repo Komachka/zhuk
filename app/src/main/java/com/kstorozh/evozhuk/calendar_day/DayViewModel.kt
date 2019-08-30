@@ -169,8 +169,7 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
                 }
             }
 
-            Log.d(LOG_TAG, "earlyerbookings $earlyerBookings ")
-            Log.d(LOG_TAG, "nextBookings $nextBookings ")
+
 
 
             it.forEach { (k, v) ->
@@ -185,17 +184,12 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
 
                     if (it.startDate > timeSlot.range.last) {
                         if (it.startDate < closerMaxTime) {
-                            Log.d(LOG_TAG, "it.startDate < closerMaxTime ${it} ")
-                            Log.d(LOG_TAG, "closerMaxTime ${closerMaxTime} ")
                             nextBooking = it
                             closerMaxTime = it.startDate
                         }
                     }
                 }
             }
-
-            Log.d(LOG_TAG, "earlyer $earlyBooking ")
-            Log.d(LOG_TAG, "next $nextBooking ")
 
             liveData.value = earlyBooking to nextBooking //
             return@Function liveData

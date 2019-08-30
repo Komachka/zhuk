@@ -118,8 +118,6 @@ interface BottomSheetDialogHandler {
 private fun ChildrenDayFragment.setUpMinAndMaxDate(item: TimeSlot, view: View) {
     model.getNearbyBookings(item).observe(viewLifecycleOwner, Observer {
 
-        //Log.d(LOG_TAG, "min booking ${Date(it.first!!.endDate)}")
-        //Log.d(LOG_TAG, "max booking ${Date(it.second!!.startDate)}")
         if (it.first != null) {
             val minBooking = it.first!!
             if (minBooking != item.booking) {
