@@ -8,10 +8,10 @@
         tools:context=".calendar.BookOrTakeFragment"
         android:background="@color/background">
 
-   <!-- <include
+    <include
             layout="@layout/logo_and_info" android:id="@+id/include" tools:layout_editor_absoluteY="170dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"/>-->
+            android:layout_marginStart="16dp"/>
 
 
     <Button

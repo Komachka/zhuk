@@ -103,5 +103,8 @@
     <string name="problem_title">Write your problem</string>
     <string name="problem_message">Your report will helps us</string>
     <string name="exit">Exit</string>
+    <string name="send">Подтвердить</string>
+    <string name="reportMessage">Write what do you think</string>
+    <string name="reportMessSuc">Repost was sent</string>
 
 </resources>

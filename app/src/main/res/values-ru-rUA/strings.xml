@@ -102,5 +102,7 @@
     <string name="problem_title">Опишите проблему</string>
     <string name="problem_message">Ваш отзыв поможет нам улучшить жука</string>
     <string name="exit">Выйти</string>
+    <string name="send">Подтвердить</string>
+    <string name="reportMessage">Напиши свои мысти тут</string>
 
 </resources>

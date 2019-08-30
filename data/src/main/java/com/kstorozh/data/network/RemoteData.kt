@@ -42,4 +42,7 @@ internal interface RemoteData {
 
     @WorkerThread
     suspend fun getNearbyBooking(id: String): ApiResult<NewarBookingResult>
+
+    @WorkerThread
+    suspend fun sendRepo(report: Report): ApiResult<BaseResponse>
 }

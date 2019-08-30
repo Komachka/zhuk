@@ -20,6 +20,12 @@ class ManageDeviceUseCasesImpl(
 ) :
     ManageDeviceUseCases, KoinComponent {
 
+    override suspend fun sendReport(state: String, msg: String): DomainResult<Boolean> {
+        val repoResult = repository.sendReport(state, msg)
+        val domainError = errorMapper.mapToDomainError(repoResult.error)
+        return DomainResult(repoResult.data, domainError)
+    }
+
     override suspend fun editCurrentBooking(endDate: Long): DomainResult<Boolean> {
         val foramtter = ISODateTimeFormat.dateTime()
         val end = foramtter.print(endDate)

@@ -5,6 +5,7 @@ import LOG_TAG
 import android.util.Log
 import com.kstorozh.data.database.LocalDataStorage
 import com.kstorozh.data.models.ApiResult
+import com.kstorozh.data.models.Report
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.data.network.RemoteData
 import com.kstorozh.data.network.TokenRepository
@@ -26,6 +27,32 @@ internal class DeviceRepositoryImpl(
     private val mapper: DeviceDataMapper,
     private val tokenRepository: TokenRepository
 ) : DeviseRepository, KoinComponent {
+
+
+
+    override suspend fun sendReport(state: String, msg: String): RepoResult<Boolean> {
+        var user: Int?  = null
+        var deviceId = "0"
+        val repoResult: RepoResult<Boolean> = RepoResult()
+        localData.getDeviceInfo()?.let { device ->
+            deviceId = device.id
+            localData.getBookingByDeviceId(device.id)?.let {
+                user = it.userId.toInt()
+            }
+        }
+        when (val result = remoteData.sendRepo(Report(user, state, msg, deviceId))) {
+            is ApiResult.Success -> {
+                repoResult.data = true
+            }
+            is ApiResult.Error<*> -> {
+                repoResult.apply {
+                    data = false
+                    error = createError(Endpoints.UPDATE_DEVICE, result, koin)
+                }
+            }
+        }
+        return repoResult
+    }
 
     private val koin = this as KoinComponent
 

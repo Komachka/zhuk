@@ -12,8 +12,13 @@ import android.hardware.SensorManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.kstorozh.evozhuk.login.LogInViewModel
 import com.kstorozh.evozhuk.shake_detector.ShakeDetector
+import com.kstorozh.evozhuk.utils.observe
+import com.kstorozh.evozhuk.utils.showSnackbar
+import kotlinx.android.synthetic.main.bug_ot_wish_bottom_sheet_dialog.view.*
 
 import kotlin.math.sqrt
 
@@ -28,8 +33,6 @@ class MainActivity : AppCompatActivity(), ShakeDetector.OnShakeListener {
     private lateinit var sensorManager: SensorManager
     private var shake: Sensor? = null
     private var shakeDetector: ShakeDetector? = null
-    
-    
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,10 +59,32 @@ class MainActivity : AppCompatActivity(), ShakeDetector.OnShakeListener {
     }
 
 
-    fun showDialog()
-    {
+    fun showDialog() {
+        val model = ViewModelProviders.of(this)[BaseViewModel::class.java]
+        var state = "wish"
         val mBottomSheetDialog = BottomSheetDialog(this@MainActivity)
         val sheetView = LayoutInflater.from(this@MainActivity).inflate(R.layout.bug_ot_wish_bottom_sheet_dialog, null)
+
+        sheetView.wish.isChecked = true
+        sheetView.wishOrBug.setOnCheckedChangeListener { radiogroup, id ->
+            if (id == R.id.wish) {
+                state = "wish"
+            } else {
+                state = "bug"
+            }
+        }
+
+        sheetView.sentBut.setOnClickListener { view ->
+            observe(model.sendReport(state, sheetView.editText.text.toString()))
+            {
+                it.getContentIfNotHandled()?.let {
+                    if (it) {
+                        view.showSnackbar(resources.getString(R.string.reportMessSuc))
+                    }
+                }
+            }
+            mBottomSheetDialog.cancel()
+        }
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
     }

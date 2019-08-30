@@ -1,5 +1,6 @@
 package com.kstorozh.evozhuk.calendar_day
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -11,6 +12,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_dialog.view.*
 import org.joda.time.DateTime
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.lifecycle.Observer
+import com.kstorozh.evozhuk.LOG_TAG
 import kotlinx.android.synthetic.main.bottom_sheet_dialog.view.fromDatePicker
 import java.util.*
 
@@ -21,6 +23,8 @@ interface BottomSheetDialogHandler {
             return
         if (item.range.first < System.currentTimeMillis()) return
         val mBottomSheetDialog = BottomSheetDialog(this.context!!)
+
+
         val sheetView = LayoutInflater.from(this.context).inflate(R.layout.bottom_sheet_dialog, null)
         var startDate = DateTime(item.range.first)
         var endDate = DateTime(item.range.last).plusMinutes(1)
@@ -54,6 +58,7 @@ interface BottomSheetDialogHandler {
         if (this.context == null)
             return
         val mBottomSheetDialog = BottomSheetDialog(this.context!!)
+
         val sheetView = LayoutInflater.from(this.context).inflate(R.layout.bottom_sheet_dialog, null)
         var startDate = DateTime(item.range.first)
         var endDate = DateTime(item.range.last)
@@ -113,6 +118,8 @@ interface BottomSheetDialogHandler {
 private fun ChildrenDayFragment.setUpMinAndMaxDate(item: TimeSlot, view: View) {
     model.getNearbyBookings(item).observe(viewLifecycleOwner, Observer {
 
+        //Log.d(LOG_TAG, "min booking ${Date(it.first!!.endDate)}")
+        //Log.d(LOG_TAG, "max booking ${Date(it.second!!.startDate)}")
         if (it.first != null) {
             val minBooking = it.first!!
             if (minBooking != item.booking) {

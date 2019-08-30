@@ -22,8 +22,9 @@ internal const val RETURN_DEVISE_URL = "/api/mobile/booking/return/{id}"
 internal const val GET_USERS_URL = "/api/mobile/users"
 internal const val REMIND_PIN_URL = "/api/mobile/users/{id}/pin/remind"
 internal const val LOGIN_URL = "/api/mobile/login"
+internal const val REPORT_URL = "/api/web/reports"
 
-// internal const val BASE_URL = "http://wh.evo.dev"
+internal const val BASE_URL = "https://wh.evo.dev"
 
 internal const val GET_BOOKING_URL = "/api/mobile/booking?"
 internal const val START_DATE = "start"
@@ -32,7 +33,7 @@ internal const val DELETE_BOOKING_URL = "/api/mobile/booking/delete/{id}"
 internal const val EDIT_BOOKING_URL = "/api/mobile/booking/{id}"
 internal const val NEARBY_BOOKING_URL = "/api/mobile/booking/nearby"
 
-internal const val BASE_URL = "http://evozhuk.tk"
+//internal const val BASE_URL = "http://evozhuk.tk"
 
 internal const val ERROR_STATUS_CODE = 422
 internal const val UNAUTHORIZED_STATUS_CODE = 401
@@ -58,3 +59,4 @@ internal const val DELETE_BOOKING_ERROR = "Booking was not removed"
 internal const val BOOKING_EDIT_ERROR = "Booking was not edited"
 internal const val GET_NEARBY_BOOKING_ERROR = "nearby booking error"
 internal const val DEVICE_INFO_CACHE_EMPTY_ERROR = "Device is not store in local data base"
+internal const val SEND_REPORT_ERROR = "Report was not sent"
