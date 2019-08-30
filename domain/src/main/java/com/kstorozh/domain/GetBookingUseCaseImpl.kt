@@ -39,7 +39,6 @@ class GetBookingUseCaseImpl(
             dateFormat.format(startDate), dateFormat.format(endDate))
         val domainError = errorMapper.mapToDomainError(repoResult.error)
         val data = repoResult.data?.let { mapper.mapCalendarBookingDataToBooking(it) }
-        Log.d("MainActivity", "data " + data.toString())
         return DomainResult(data, domainError)
     }
 

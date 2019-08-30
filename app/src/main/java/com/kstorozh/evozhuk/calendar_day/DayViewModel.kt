@@ -38,6 +38,10 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
         }
     }
 
+
+
+
+
     val bookingsLiveData = MutableLiveData<Map<String, List<Booking>>>().also { liveData ->
         applicationScope.launch {
             val result = getBookingsUseCase.getBookingLocal()

@@ -79,7 +79,20 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         updateUI(milisec, userId)
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        val milisec = arguments?.getLong(MILISEC) ?: 0
+        val userId = arguments?.getInt(USER_ID) ?: 0
+        updateUI(milisec, userId)
+    }
+
     fun updateUI(milisec: Long, userId: Int) {
+        val args = Bundle()
+        args.putLong(MILISEC, milisec)
+        args.putInt(USER_ID, userId)
+        args.putInt(FRAGMENT_ID, id)
+        arguments = args
         if (dateTV == null) return
         model.getBookingInfo(milisec, userId)
         dateTV.text = SimpleDateFormat(DAY_MONTH_FORMAT).format(milisec)
