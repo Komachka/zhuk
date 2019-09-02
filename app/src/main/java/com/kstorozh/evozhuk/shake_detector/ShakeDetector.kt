@@ -6,13 +6,12 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import kotlin.math.sqrt
 
-class ShakeDetector(val mListener: OnShakeListener) : SensorEventListener {
+class ShakeDetector(private val mListener: OnShakeListener) : SensorEventListener {
 
     companion object {
-
-        private val SHAKE_THRESHOLD_GRAVITY = 2.7f
-        private val SHAKE_SLOP_TIME_MS = 500
-        private val SHAKE_COUNT_RESET_TIME_MS = 3000
+        private const val SHAKE_THRESHOLD_GRAVITY = 2.7f
+        private const val SHAKE_SLOP_TIME_MS = 500
+        private const val SHAKE_COUNT_RESET_TIME_MS = 3000
     }
 
     private var mShakeTimestamp: Long = 0
@@ -22,9 +21,7 @@ class ShakeDetector(val mListener: OnShakeListener) : SensorEventListener {
         fun onShake(count: Int)
     }
 
-    override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
-        // ignore
-    }
+    override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
 
     override fun onSensorChanged(event: SensorEvent) {
 
@@ -45,16 +42,13 @@ class ShakeDetector(val mListener: OnShakeListener) : SensorEventListener {
             if (mShakeTimestamp + SHAKE_SLOP_TIME_MS > now) {
                 return
             }
-
             // reset the shake count after 3 seconds of no shakes
             if (mShakeTimestamp + SHAKE_COUNT_RESET_TIME_MS < now) {
                 mShakeCount = 0
             }
-
             mShakeTimestamp = now
             mShakeCount++
-
-                mListener.onShake(mShakeCount)
-            }
+            mListener.onShake(mShakeCount)
         }
+    }
 }
