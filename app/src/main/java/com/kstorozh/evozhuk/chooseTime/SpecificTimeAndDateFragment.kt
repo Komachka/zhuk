@@ -6,18 +6,16 @@ import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 
-import androidx.lifecycle.ViewModelProviders
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_specific_time_and_date.*
 import kotlinx.android.synthetic.main.fragment_specific_time_and_date.view.*
 import org.joda.time.DateTime
-import java.util.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class SpecificTimeAndDateFragment : Fragment(), HandleErrors {
 
-    // private lateinit var currentTimeAndDate: CustomTime
-    private lateinit var model: SpecificTimeAndDateViewModel
+    private val model: SpecificTimeAndDateViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,9 +27,7 @@ class SpecificTimeAndDateFragment : Fragment(), HandleErrors {
 
     lateinit var dateTime: DateTime
     override fun onViewCreated(fragment: View, savedInstanceState: Bundle?) {
-        model = ViewModelProviders.of(this)[SpecificTimeAndDateViewModel::class.java]
         viewLifecycleOwner.handleErrors(model, fragment)
-
         dateTime = DateTime()
         arguments?.let {
             var currentMs = SpecificTimeAndDateFragmentArgs.fromBundle(it).currentMilisec

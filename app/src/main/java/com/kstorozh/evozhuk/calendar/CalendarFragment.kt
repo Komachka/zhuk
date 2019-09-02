@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.kstorozh.evozhuk.HandleErrors
@@ -17,10 +16,13 @@ import kotlinx.android.synthetic.main.fragment_calendar.view.*
 import kotlinx.android.synthetic.main.fragment_calendar_parent_view.*
 
 import org.joda.time.DateTime
+import org.koin.android.viewmodel.ext.android.viewModel
 
 import java.util.*
 
 class CalendarFragment : Fragment(), HandleErrors {
+
+    val model: CalendarViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,9 +48,6 @@ class CalendarFragment : Fragment(), HandleErrors {
         lastDay.add(Calendar.MONTH, MONTH_DELTA)
 
         view.init(today, lastDay)
-        val model = activity!!.run {
-            ViewModelProviders.of(this)[CalendarViewModel::class.java]
-        }
         viewLifecycleOwner.handleErrors(model, view)
         val userId = CalendarFragmentArgs.fromBundle(arguments!!).userId
         viewLifecycleOwner.observe(model.getBookingEvents(today.timeInMillis, lastDay.timeInMillis, userId.toInt())) {

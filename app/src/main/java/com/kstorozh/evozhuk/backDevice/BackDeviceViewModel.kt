@@ -11,16 +11,13 @@ import com.kstorozh.domainapi.model.SessionData
 import com.kstorozh.evozhuk.BaseViewModel
 import com.kstorozh.evozhuk.Event
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import java.util.*
 
 class BackDeviceViewModel(
     private val manageDeviceUseCases: ManageDeviceUseCases,
     private val getBookingUseCase: GetBookingUseCase,
-    private val applicationScope:CoroutineScope
+    private val applicationScope: CoroutineScope
 ) : BaseViewModel() {
 
     private val bookingSession: MutableLiveData<SessionData> by lazy {

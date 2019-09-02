@@ -11,18 +11,15 @@ import com.kstorozh.domainapi.model.ErrorStatus
 import com.kstorozh.evozhuk.BaseViewModel
 import com.kstorozh.evozhuk.Event
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import java.util.*
 
-class ChooseTimeViewModel : BaseViewModel(), KoinComponent {
+class ChooseTimeViewModel(
+    private val manageDeviceUseCases: ManageDeviceUseCases,
+    private val applicationScope: CoroutineScope
+) : BaseViewModel() {
 
-    private val manageDeviceUseCases: ManageDeviceUseCases by inject() // TODO add from constructor
-    private val applicationScope = CoroutineScope(Dispatchers.Default)
     val conflictBookingLiveData = MutableLiveData<Event<DomainErrorData?>>()
-
     val chooseCalendar: MutableLiveData<Calendar> by lazy { MutableLiveData<Calendar>().also {
         it.value = GregorianCalendar.getInstance()
     } }

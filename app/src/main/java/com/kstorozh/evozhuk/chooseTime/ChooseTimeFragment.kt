@@ -15,7 +15,6 @@ import android.view.ViewGroup
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,12 +30,13 @@ import java.util.*
 import kotlinx.android.synthetic.main.fragment_time_choose.view.*
 import kotlinx.android.synthetic.main.fragment_time_choose.view.buttonsRv
 import kotlinx.android.synthetic.main.logo_and_info.view.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class ChooseTimeFragment : Fragment(), HandleErrors, ConflictDialog {
 
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
-    private lateinit var modelChooseTime: ChooseTimeViewModel
+    private val modelChooseTime: ChooseTimeViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +54,6 @@ class ChooseTimeFragment : Fragment(), HandleErrors, ConflictDialog {
         view.deviceNameTv.text = context?.getDeviceName()
         view.youTakeDeviceLabelTv.text =
             "${resources.getString(R.string.time_choose_label)}${context?.getDeviceName()}?"
-        modelChooseTime = ViewModelProviders.of(activity!!).get(ChooseTimeViewModel::class.java)
         with(viewLifecycleOwner) {
             handleErrors(modelChooseTime, view)
         }

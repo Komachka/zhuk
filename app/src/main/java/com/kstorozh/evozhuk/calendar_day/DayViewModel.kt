@@ -9,20 +9,17 @@ import com.kstorozh.domainapi.model.Booking
 import com.kstorozh.domainapi.model.BookingInputData
 import com.kstorozh.evozhuk.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import java.util.*
 
-class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
+class DayViewModel(
+    private val getBookingsUseCase: GetBookingUseCase,
+    private val applicationScope: CoroutineScope
+) : BaseViewModel(), BookingParser {
 
-    private val getBookingsUseCase: GetBookingUseCase by inject()
-    private val applicationScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
-    val query = MutableLiveData<Pair<Long, Int>>()
-
+    private val query = MutableLiveData<Pair<Long, Int>>()
     val bookingSlotsPerDay: LiveData<List<TimeSlot>> = Transformations.switchMap(query, ::getBookingSlotsPerDay)
 
     val durationInMilisecLiveData = MutableLiveData<Long>().also { liveData ->
@@ -140,24 +137,23 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
 
     fun getNearbyBookings(timeSlot: TimeSlot): LiveData<Pair<Booking?, Booking?>> { // min booking and max booking
 
-        return Transformations.switchMap(bookingsLiveData, Function {
+        return Transformations.switchMap(bookingsLiveData, Function { bookings ->
 
             val liveData = MutableLiveData<Pair<Booking?, Booking?>>()
             var earlyBooking: Booking? = null
-
             var nextBooking: Booking? = null
 
             var closerMinTime = 0L
             var closerMaxTime = Long.MAX_VALUE
 
-            val earlyerBookings = mutableListOf<Booking>()
+            val earlierBookings = mutableListOf<Booking>()
             val nextBookings = mutableListOf<Booking>()
 
-            it.forEach { (k, v) ->
+            bookings.forEach { (k, v) ->
                 v.forEach {
 
                     if (it.endDate < timeSlot.range.first) {
-                        earlyerBookings.add(it)
+                        earlierBookings.add(it)
                     }
 
                     if (it.startDate > timeSlot.range.last) {
@@ -166,7 +162,7 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
                 }
             }
 
-            it.forEach { (k, v) ->
+            bookings.forEach { (k, v) ->
                 v.forEach {
 
                     if (it.endDate < timeSlot.range.first) {
@@ -184,8 +180,7 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
                     }
                 }
             }
-
-            liveData.value = earlyBooking to nextBooking //
+            liveData.value = earlyBooking to nextBooking
             return@Function liveData
         })
     }

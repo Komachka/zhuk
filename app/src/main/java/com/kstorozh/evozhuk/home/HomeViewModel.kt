@@ -8,15 +8,12 @@ import com.kstorozh.domainapi.model.DeviceInputData
 import com.kstorozh.evozhuk.BaseViewModel
 import com.kstorozh.evozhuk.Event
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 
-class HomeViewModel : BaseViewModel(), KoinComponent {
-
-    private val initDeviceUseCases: ManageDeviceUseCases by inject()
-    val applicationScope = CoroutineScope(Dispatchers.Default)
+class HomeViewModel(
+    private val initDeviceUseCases: ManageDeviceUseCases,
+    private val applicationScope: CoroutineScope
+) : BaseViewModel() {
 
     fun initDevice(deviceInputData: DeviceInputData): LiveData<Boolean> {
         val initDeviceLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()

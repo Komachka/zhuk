@@ -48,9 +48,7 @@ class MainActivity : AppCompatActivity(), ShakeDetector.OnShakeListener {
         sensorManager.unregisterListener(shakeDetector)
     }
 
-
-    private fun createDialog()
-    {
+    private fun createDialog() {
         val model = ViewModelProviders.of(this)[BaseViewModel::class.java]
         var state = WISH
         mBottomSheetDialog = BottomSheetDialog(this@MainActivity)
@@ -78,7 +76,7 @@ class MainActivity : AppCompatActivity(), ShakeDetector.OnShakeListener {
     }
 
     private fun showDialog() {
-        if(!mBottomSheetDialog.isShowing)
+        if (!mBottomSheetDialog.isShowing)
             mBottomSheetDialog.show()
     }
 }

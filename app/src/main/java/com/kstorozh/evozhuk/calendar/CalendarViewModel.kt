@@ -9,10 +9,7 @@ import com.kstorozh.domainapi.model.Booking
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.R
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import java.text.SimpleDateFormat
 
 class CalendarViewModel(

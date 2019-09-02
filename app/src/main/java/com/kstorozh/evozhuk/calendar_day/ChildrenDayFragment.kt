@@ -3,7 +3,6 @@ package com.kstorozh.evozhuk.calendar_day
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.utils.observe
@@ -12,11 +11,12 @@ import kotlinx.android.synthetic.main.fragment_calendar_day_view.*
 import kotlinx.android.synthetic.main.fragment_calendar_day_view.view.*
 import kotlinx.android.synthetic.main.fragment_calendar_parent_view.*
 import org.joda.time.DateTime
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 
 class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
 
-    lateinit var model: DayViewModel
+    val model: DayViewModel by viewModel()
 
     companion object {
         private const val USER_ID = "user_id"
@@ -43,12 +43,9 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
     }
 
     override fun onViewCreated(fragmentView: View, savedInstanceState: Bundle?) {
-        model = ViewModelProviders.of(this)[DayViewModel::class.java]
         viewLifecycleOwner.handleErrors(model, fragmentView)
-
         val milisec = arguments?.getLong(MILISEC) ?: 0
         val userId = arguments?.getInt(USER_ID) ?: 0
-
         fragmentView.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
