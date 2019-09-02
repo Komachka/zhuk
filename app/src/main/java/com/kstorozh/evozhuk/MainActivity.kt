@@ -18,10 +18,10 @@ import kotlinx.android.synthetic.main.bug_ot_wish_bottom_sheet_dialog.view.*
 class MainActivity : AppCompatActivity(), ShakeDetector.OnShakeListener {
     override fun onShake(count: Int) {
         showDialog()
-        // Toast.makeText(applicationContext, "Hello", Toast.LENGTH_LONG).show()
     }
 
     private lateinit var sensorManager: SensorManager
+    private lateinit var mBottomSheetDialog: BottomSheetDialog
     private var shake: Sensor? = null
     private var shakeDetector: ShakeDetector? = null
 
@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity(), ShakeDetector.OnShakeListener {
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         shake = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         shakeDetector = ShakeDetector(this)
+        createDialog()
     }
 
     override fun onResume() {
@@ -47,24 +48,25 @@ class MainActivity : AppCompatActivity(), ShakeDetector.OnShakeListener {
         sensorManager.unregisterListener(shakeDetector)
     }
 
-    fun showDialog() {
+
+    private fun createDialog()
+    {
         val model = ViewModelProviders.of(this)[BaseViewModel::class.java]
-        var state = "wish"
-        val mBottomSheetDialog = BottomSheetDialog(this@MainActivity)
+        var state = WISH
+        mBottomSheetDialog = BottomSheetDialog(this@MainActivity)
         val sheetView = LayoutInflater.from(this@MainActivity).inflate(R.layout.bug_ot_wish_bottom_sheet_dialog, null)
 
         sheetView.wish.isChecked = true
         sheetView.wishOrBug.setOnCheckedChangeListener { radiogroup, id ->
-            if (id == R.id.wish) {
-                state = "wish"
+            state = if (id == R.id.wish) {
+                WISH
             } else {
-                state = "bug"
+                BUG
             }
         }
-
         sheetView.sentBut.setOnClickListener { view ->
-            observe(model.sendReport(state, sheetView.editText.text.toString())) {
-                it.getContentIfNotHandled()?.let {
+            observe(model.sendReport(state, sheetView.editText.text.toString())) { event ->
+                event.getContentIfNotHandled()?.let {
                     if (it) {
                         view.showSnackbar(resources.getString(R.string.reportMessSuc))
                     }
@@ -73,6 +75,10 @@ class MainActivity : AppCompatActivity(), ShakeDetector.OnShakeListener {
             mBottomSheetDialog.cancel()
         }
         mBottomSheetDialog.setContentView(sheetView)
-        mBottomSheetDialog.show()
+    }
+
+    private fun showDialog() {
+        if(!mBottomSheetDialog.isShowing)
+            mBottomSheetDialog.show()
     }
 }
