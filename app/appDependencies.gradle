@@ -10,6 +10,7 @@ dependencies {
     implementation appDependencies.livecycleExtansion
     implementation appDependencies.deveseNames
     implementation appDependencies.calendar
+    implementation appDependencies.lottie
     implementation commonDependencies.files
     implementation commonDependencies.koin
     implementation commonDependencies.koinAX

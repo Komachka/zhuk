@@ -10,6 +10,7 @@ import INIT_ERROR
 import LOGIN_ERROR
 import REMIND_PIN_ERROR
 import RETURN_ERROR
+import SEND_REPORT_ERROR
 import UPDATE_ERROR
 import com.kstorozh.data.models.*
 import com.kstorozh.data.models.BookingBody
@@ -24,6 +25,12 @@ internal class RemoteDataImpl(
     private val userApi: UserApi,
     private val calendarApi: CalendarApi
 ) : RemoteData {
+    override suspend fun sendRepo(report: Report): ApiResult<BaseResponse> {
+        return getApiResult(SEND_REPORT_ERROR) {
+            deviceApi.sendReport(report)
+        }
+    }
+
     override suspend fun getNearbyBooking(id: String): ApiResult<NewarBookingResult> {
         return getApiResult(GET_NEARBY_BOOKING_ERROR) {
             calendarApi.getNearBooking(DeviceId(id.toInt()))

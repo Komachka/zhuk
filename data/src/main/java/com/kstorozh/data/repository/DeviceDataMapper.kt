@@ -4,8 +4,8 @@ import com.kstorozh.data.models.BookingBody
 import com.kstorozh.data.models.DeleteBookingBody
 import com.kstorozh.data.models.Device
 import com.kstorozh.data.models.ReturnDeviceBody
-import com.kstorozh.dataimpl.model.into.BookingParam
-import com.kstorozh.dataimpl.model.into.DeviceParam
+import com.kstorozh.dataimpl.model.BookingParam
+import com.kstorozh.dataimpl.model.DeviceParam
 
 internal class DeviceDataMapper {
 

@@ -1,7 +1,7 @@
 package com.kstorozh.domain.mapper
 
 import com.kstorozh.dataimpl.model.UserLoginParam
-import com.kstorozh.dataimpl.model.out.SlackUser
+import com.kstorozh.dataimpl.model.SlackUser
 import com.kstorozh.domainapi.model.User
 import com.kstorozh.domainapi.model.UserLoginInput
 

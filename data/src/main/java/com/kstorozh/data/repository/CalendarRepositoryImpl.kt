@@ -12,9 +12,10 @@ import com.kstorozh.dataimpl.CalendarRepository
 import com.kstorozh.dataimpl.DataError
 import com.kstorozh.dataimpl.ErrorStatus
 import com.kstorozh.dataimpl.model.NearbyBooking
-import com.kstorozh.dataimpl.model.out.CalendarBookingData
-import com.kstorozh.dataimpl.model.out.RepoResult
+import com.kstorozh.dataimpl.model.CalendarBookingData
+import com.kstorozh.dataimpl.model.RepoResult
 import org.koin.core.KoinComponent
+import java.lang.Exception
 import java.lang.NullPointerException
 
 internal class CalendarRepositoryImpl(
@@ -26,7 +27,8 @@ internal class CalendarRepositoryImpl(
 
     override suspend fun getNearbyBooking(): RepoResult<NearbyBooking> {
         val device = localDataStorage.getDeviceInfo()
-        val repoResult: RepoResult<NearbyBooking> = RepoResult()
+        val repoResult: RepoResult<NearbyBooking> =
+            RepoResult()
         device?.let {
             return when (val result = remoteData.getNearbyBooking(device.id)) {
                 is ApiResult.Success -> {
@@ -49,10 +51,13 @@ internal class CalendarRepositoryImpl(
     }
 
     override suspend fun getBookingFromLocal(): RepoResult<CalendarBookingData> {
-        val repoResult: RepoResult<CalendarBookingData> = RepoResult()
-        bookingStorage.data?.let {
-            repoResult.data = it
-            return repoResult
+        val repoResult: RepoResult<CalendarBookingData> =
+            RepoResult()
+        bookingStorage.data.let {
+            try {
+                repoResult.data = it[0]
+                return repoResult
+            } catch (e: Exception) {}
         }
         repoResult.apply {
             data = null
@@ -62,13 +67,18 @@ internal class CalendarRepositoryImpl(
     }
 
     override suspend fun getBookingByDate(startDate: String, endDate: String): RepoResult<CalendarBookingData> {
-        val repoResult: RepoResult<CalendarBookingData> = RepoResult()
+        val repoResult: RepoResult<CalendarBookingData> =
+            RepoResult()
         return when (val result = remoteData.getBookingByDate(startDate, endDate)) {
             is ApiResult.Success -> {
                 repoResult.apply {
                     try {
                         data = bookingDataMapper.mapBookingDataToCalendarData(result.data)
-                        bookingStorage.data = data
+
+                        data?.let {
+                            bookingStorage.data.clear()
+                            bookingStorage.data.add(0, it)
+                        }
                     } catch (e: Throwable) {
                         data = null
                         error = DataError(ErrorStatus.UNEXPECTED_ERROR, BOOKING_DATA_EMPTY_ERROR, e)

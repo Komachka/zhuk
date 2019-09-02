@@ -1,4 +1,4 @@
-package com.kstorozh.dataimpl.model.out
+package com.kstorozh.dataimpl.model
 import com.kstorozh.dataimpl.DataError
 
 class RepoResult<T> (

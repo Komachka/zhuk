@@ -4,14 +4,17 @@ import com.kstorozh.data.models.Booking
 import com.kstorozh.data.models.BookingDataByDay
 import com.kstorozh.data.models.Day
 import com.kstorozh.dataimpl.model.NearbyBooking
-import com.kstorozh.dataimpl.model.out.CalendarBookingData
-import com.kstorozh.dataimpl.model.out.CalendarDay
+import com.kstorozh.dataimpl.model.CalendarBookingData
+import com.kstorozh.dataimpl.model.CalendarDay
 
 internal class BookingDataMapper {
 
     fun mapBookingDataToCalendarData(bookingDataByDay: BookingDataByDay): CalendarBookingData {
         val days = bookingDataByDay.dayData
-        return CalendarBookingData(bookingDataByDay.slotDuration, mapToCalendarDay(days))
+        return CalendarBookingData(
+            bookingDataByDay.slotDuration,
+            mapToCalendarDay(days)
+        )
     }
 
     private fun mapToCalendarDay(days: Map<String, List<Day>>): Map<String, List<CalendarDay>> {

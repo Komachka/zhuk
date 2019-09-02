@@ -47,5 +47,8 @@ class BookOrTakeFragment : Fragment() {
                 }
             }
         }
+        view.exitTv.setOnClickListener {
+            Navigation.findNavController(view).popBackStack()
+        }
     }
 }

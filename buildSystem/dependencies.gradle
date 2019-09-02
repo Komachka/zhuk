@@ -19,6 +19,7 @@ ext {
     calendar = "1.6.0"
     jodaTime = "2.10.2"
     datePicker = "2.1.5"
+    lottie = "2.5.0"
 
     commonDependencies = [
             kotlin : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin",
@@ -44,7 +45,8 @@ ext {
             recycler: "com.android.support:recyclerview-v7:$recycler",
             deveseNames:"com.jaredrummler:android-device-names:$device_names",
             calendar:"com.applandeo:material-calendar-view:$calendar",
-            datePicker: "com.github.florent37:singledateandtimepicker:$datePicker"
+            datePicker: "com.github.florent37:singledateandtimepicker:$datePicker",
+            lottie: "com.airbnb.android:lottie:$lottie"
     ]
 
     domainDependencies = [

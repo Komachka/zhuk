@@ -21,6 +21,7 @@ interface BottomSheetDialogHandler {
             return
         if (item.range.first < System.currentTimeMillis()) return
         val mBottomSheetDialog = BottomSheetDialog(this.context!!)
+
         val sheetView = LayoutInflater.from(this.context).inflate(R.layout.bottom_sheet_dialog, null)
         var startDate = DateTime(item.range.first)
         var endDate = DateTime(item.range.last).plusMinutes(1)
@@ -54,6 +55,7 @@ interface BottomSheetDialogHandler {
         if (this.context == null)
             return
         val mBottomSheetDialog = BottomSheetDialog(this.context!!)
+
         val sheetView = LayoutInflater.from(this.context).inflate(R.layout.bottom_sheet_dialog, null)
         var startDate = DateTime(item.range.first)
         var endDate = DateTime(item.range.last)

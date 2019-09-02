@@ -3,14 +3,20 @@ package com.kstorozh.data.repository
 import com.kstorozh.data.models.User
 import com.kstorozh.data.models.UserLogin
 import com.kstorozh.dataimpl.model.UserLoginParam
-import com.kstorozh.dataimpl.model.out.SlackUser
+import com.kstorozh.dataimpl.model.SlackUser
 
 internal class UserDataMapper {
 
     fun mapSlackUserList(users: List<User>): List<SlackUser> {
         val slackUsers = mutableListOf<SlackUser>()
         users.forEach {
-            slackUsers.add(SlackUser(it.id, it.slackUid, it.slackUsername))
+            slackUsers.add(
+                SlackUser(
+                    it.id,
+                    it.slackUid,
+                    it.slackUsername
+                )
+            )
         }
         return slackUsers
     }

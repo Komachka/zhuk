@@ -5,8 +5,8 @@ import com.kstorozh.data.network.Endpoints
 import com.kstorozh.data.network.RemoteData
 import com.kstorozh.data.utils.createError
 import com.kstorozh.dataimpl.model.UserLoginParam
-import com.kstorozh.dataimpl.model.out.RepoResult
-import com.kstorozh.dataimpl.model.out.SlackUser
+import com.kstorozh.dataimpl.model.RepoResult
+import com.kstorozh.dataimpl.model.SlackUser
 import org.koin.core.KoinComponent
 
 internal class UserRepositoryImpl(
@@ -16,7 +16,8 @@ internal class UserRepositoryImpl(
 ) : UserRepository, KoinComponent {
 
     override suspend fun login(userLoginParam: UserLoginParam): RepoResult<String> {
-        val repoResult: RepoResult<String> = RepoResult()
+        val repoResult: RepoResult<String> =
+            RepoResult()
         return when (val result = remoteData.login(mapper.mapUserLoginParam(userLoginParam))) {
             is ApiResult.Success -> {
                 repoResult.data = result.data.data.userId.toString()
@@ -30,7 +31,8 @@ internal class UserRepositoryImpl(
     }
 
     override suspend fun getUsers(): RepoResult<List<SlackUser>> {
-        val repoResult: RepoResult<List<SlackUser>> = RepoResult()
+        val repoResult: RepoResult<List<SlackUser>> =
+            RepoResult()
         val users: ArrayList<SlackUser> = ArrayList()
         when (val result = remoteData.getUsers()) {
             is ApiResult.Success -> {
@@ -45,7 +47,8 @@ internal class UserRepositoryImpl(
     }
 
     override suspend fun remindPin(slackUserId: String): RepoResult<Boolean> {
-        val repoResult: RepoResult<Boolean> = RepoResult()
+        val repoResult: RepoResult<Boolean> =
+            RepoResult()
         return when (val result = remoteData.remindPin(slackUserId)) {
             is ApiResult.Success -> {
                 repoResult.data = true

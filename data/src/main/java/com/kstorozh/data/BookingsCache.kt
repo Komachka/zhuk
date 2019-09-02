@@ -1,7 +1,7 @@
 package com.kstorozh.data
 
-import com.kstorozh.dataimpl.model.out.CalendarBookingData
+import com.kstorozh.dataimpl.model.CalendarBookingData
 
 class BookingsCache {
-    var data: CalendarBookingData? = null
+    var data = ArrayList<CalendarBookingData>()
 }

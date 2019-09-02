@@ -5,17 +5,18 @@ import LOG_TAG
 import android.util.Log
 import com.kstorozh.data.database.LocalDataStorage
 import com.kstorozh.data.models.ApiResult
+import com.kstorozh.data.models.Report
 import com.kstorozh.data.network.Endpoints
 import com.kstorozh.data.network.RemoteData
 import com.kstorozh.data.network.TokenRepository
 import com.kstorozh.data.utils.*
 import com.kstorozh.dataimpl.DataError
-import com.kstorozh.dataimpl.model.into.BookingParam
-import com.kstorozh.dataimpl.model.into.DeviceParam
+import com.kstorozh.dataimpl.model.BookingParam
+import com.kstorozh.dataimpl.model.DeviceParam
 import com.kstorozh.dataimpl.DeviseRepository
 import com.kstorozh.dataimpl.ErrorStatus
-import com.kstorozh.dataimpl.model.out.BookingSessionData
-import com.kstorozh.dataimpl.model.out.RepoResult
+import com.kstorozh.dataimpl.model.BookingSessionData
+import com.kstorozh.dataimpl.model.RepoResult
 import org.koin.core.KoinComponent
 import java.lang.Exception
 import java.lang.NullPointerException
@@ -27,11 +28,37 @@ internal class DeviceRepositoryImpl(
     private val tokenRepository: TokenRepository
 ) : DeviseRepository, KoinComponent {
 
+    override suspend fun sendReport(state: String, msg: String): RepoResult<Boolean> {
+        var user: Int? = null
+        var deviceId = "0"
+        val repoResult: RepoResult<Boolean> =
+            RepoResult()
+        localData.getDeviceInfo()?.let { device ->
+            deviceId = device.id
+            localData.getBookingByDeviceId(device.id)?.let {
+                user = it.userId.toInt()
+            }
+        }
+        when (val result = remoteData.sendRepo(Report(user, state, msg, deviceId))) {
+            is ApiResult.Success -> {
+                repoResult.data = true
+            }
+            is ApiResult.Error<*> -> {
+                repoResult.apply {
+                    data = false
+                    error = createError(Endpoints.UPDATE_DEVICE, result, koin)
+                }
+            }
+        }
+        return repoResult
+    }
+
     private val koin = this as KoinComponent
 
     override suspend fun saveNote(note: String): RepoResult<Boolean> {
         val device = localData.getDeviceInfo()
-        val repoResult: RepoResult<Boolean> = RepoResult()
+        val repoResult: RepoResult<Boolean> =
+            RepoResult()
         device?.let {
             it.note = note
             localData.insertDevice(device)
@@ -52,7 +79,8 @@ internal class DeviceRepositoryImpl(
     }
 
     override suspend fun getDeviceInfo(): RepoResult<DeviceParam> {
-        val repoResult: RepoResult<DeviceParam> = RepoResult()
+        val repoResult: RepoResult<DeviceParam> =
+            RepoResult()
         localData.getDeviceInfo()?.let {
             return repoResult.apply { data = mapper.mapDeviceInfo(it) }
         }
@@ -66,10 +94,12 @@ internal class DeviceRepositoryImpl(
 
     override suspend fun getBookingSession(): RepoResult<BookingSessionData> {
         var bookingSessionData: BookingSessionData?
-        val result: RepoResult<BookingSessionData> = RepoResult()
+        val result: RepoResult<BookingSessionData> =
+            RepoResult()
         localData.getDeviceInfo()?.let { device ->
             localData.getBookingByDeviceId(device.id)?.let {
-                bookingSessionData = BookingSessionData(it.userId, it.endDate)
+                bookingSessionData =
+                    BookingSessionData(it.userId, it.endDate)
                 result.data = bookingSessionData
             }
         }
@@ -78,7 +108,8 @@ internal class DeviceRepositoryImpl(
 
     override suspend fun initDevice(deviceParam: DeviceParam): RepoResult<Boolean> {
         val device = mapper.mapDeviceData(deviceParam)
-        val repoResult: RepoResult<Boolean> = RepoResult()
+        val repoResult: RepoResult<Boolean> =
+            RepoResult()
         return when (val result = remoteData.initDevice(device)) {
             is ApiResult.Success -> {
                 device.id = result.data.data.deviceId.toString()
@@ -99,7 +130,8 @@ internal class DeviceRepositoryImpl(
 
     override suspend fun updateDevice(deviceParam: DeviceParam): RepoResult<Boolean> {
         val device = mapper.mapDeviceData(deviceParam)
-        val repoResult: RepoResult<Boolean> = RepoResult()
+        val repoResult: RepoResult<Boolean> =
+            RepoResult()
         return when (val result = remoteData.updateDevice(device, deviceParam.uid)) {
             is ApiResult.Success -> {
                 localData.updateDevice(device)
@@ -119,7 +151,8 @@ internal class DeviceRepositoryImpl(
     override suspend fun takeDevice(bookingParam: BookingParam): RepoResult<Boolean> {
 
         val device = localData.getDeviceInfo()
-        val repoResult: RepoResult<Boolean> = RepoResult()
+        val repoResult: RepoResult<Boolean> =
+            RepoResult()
         device?.let {
             val bookingBody = mapper.mapBookingDeviceInfo(bookingParam, device.id)
             return when (val result = remoteData.takeDevise(
@@ -147,7 +180,8 @@ internal class DeviceRepositoryImpl(
     }
 
     override suspend fun editCurrentBooking(startdate: String, endDate: String): RepoResult<Boolean> {
-        val repoResult: RepoResult<Boolean> = RepoResult()
+        val repoResult: RepoResult<Boolean> =
+            RepoResult()
         localData.getDeviceInfo()?.let { device ->
             val currentBooking = localData.getBookingByDeviceId(device.id)
             currentBooking?.let { bookingBody ->
@@ -178,7 +212,8 @@ internal class DeviceRepositoryImpl(
 
     override suspend fun bookDevice(bookingParam: BookingParam): RepoResult<Boolean> {
         val device = localData.getDeviceInfo()
-        val repoResult: RepoResult<Boolean> = RepoResult()
+        val repoResult: RepoResult<Boolean> =
+            RepoResult()
         device?.let {
             val bookingBody = mapper.mapBookingDeviceInfo(bookingParam, device.id, isActive = false)
             return when (val result = remoteData.takeDevise(
@@ -206,7 +241,8 @@ internal class DeviceRepositoryImpl(
     override suspend fun editBooking(bookingParam: BookingParam): RepoResult<Boolean> {
         Log.d(LOG_TAG, bookingParam.toString())
         val device = localData.getDeviceInfo()
-        val repoResult: RepoResult<Boolean> = RepoResult()
+        val repoResult: RepoResult<Boolean> =
+            RepoResult()
         device?.let {
             val bookingBody = mapper.mapBookingDeviceInfo(bookingParam, device.id, isActive = false)
             bookingBody.isForce = null
@@ -233,7 +269,8 @@ internal class DeviceRepositoryImpl(
 
     override suspend fun deleteBooking(bookingId: Int, userId: String): RepoResult<Boolean> {
         val device = localData.getDeviceInfo()
-        val repoResult: RepoResult<Boolean> = RepoResult()
+        val repoResult: RepoResult<Boolean> =
+            RepoResult()
         device?.let {
             val deleteBookingBody = mapper.mapToDeleteBookingModel(userId, device.id)
             return when (val result = remoteData.deleteBooking(
@@ -260,7 +297,8 @@ internal class DeviceRepositoryImpl(
     override suspend fun returnDevice(bookingParam: BookingParam): RepoResult<Boolean> {
         val device = localData.getDeviceInfo()
         val booking = localData.getBookingByDeviceId(device!!.id)
-        val repoResult: RepoResult<Boolean> = RepoResult()
+        val repoResult: RepoResult<Boolean> =
+            RepoResult()
         device?.let {
             return when (val result =
                 remoteData.returnDevice(mapper.mapBookingParamForReturn(bookingParam, device.id), booking!!.id)) {

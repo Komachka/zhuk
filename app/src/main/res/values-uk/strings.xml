@@ -106,5 +106,11 @@
     <string name="add_new_note">Додай нотатку про пристрій</string>
     <string name="storage_empty">Доступно</string>
 
+    <string name="problem_title">Опишиіть проблему</string>
+    <string name="problem_message">Ваш відгук допоможе нам покращити жука</string>
+    <string name="exit">Вийти</string>
+    <string name="send">Подтвердить</string>
+    <string name="reportMessage">Напиши свої думки тут</string>
+
 
 </resources>

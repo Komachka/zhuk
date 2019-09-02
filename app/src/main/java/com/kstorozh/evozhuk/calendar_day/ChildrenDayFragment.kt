@@ -39,7 +39,6 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.fragment_calendar_day_view, container, false)
     }
 
@@ -76,10 +75,21 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
                 }
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val milisec = arguments?.getLong(MILISEC) ?: 0
+        val userId = arguments?.getInt(USER_ID) ?: 0
         updateUI(milisec, userId)
     }
 
     fun updateUI(milisec: Long, userId: Int) {
+        val args = Bundle()
+        args.putLong(MILISEC, milisec)
+        args.putInt(USER_ID, userId)
+        args.putInt(FRAGMENT_ID, id)
+        arguments = args
         if (dateTV == null) return
         model.getBookingInfo(milisec, userId)
         dateTV.text = SimpleDateFormat(DAY_MONTH_FORMAT).format(milisec)

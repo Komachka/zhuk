@@ -33,6 +33,7 @@ class GetBookingUseCaseImpl(
 
     override suspend fun getUpdatedBookingData(startDate: Long, endDate: Long): DomainResult<BookingInfo> {
         val dateFormat = SimpleDateFormat(DAY_MONTH_YEAR_FORMAT)
+
         val repoResult = bookingRepository.getBookingByDate(
             dateFormat.format(startDate), dateFormat.format(endDate))
         val domainError = errorMapper.mapToDomainError(repoResult.error)
@@ -43,8 +44,9 @@ class GetBookingUseCaseImpl(
     override suspend fun createBooking(bookingInputData: BookingInputData, startDate: Long, endDate: Long): DomainResult<BookingInfo> {
         val repoResult = repository.bookDevice(deviceMapper.mapBookingParam(bookingInputData, bookingInputData.startDate))
         repoResult.data?.let {
-            if (it)
+            if (it) {
                 return getUpdatedBookingData(startDate, endDate)
+            }
         }
         return DomainResult(null, DomainErrors(message = BOOKING_NOT_CREATED))
     }
@@ -52,8 +54,9 @@ class GetBookingUseCaseImpl(
     override suspend fun deleteBooking(bookingId: Int, userId: String, startDate: Long, endDate: Long): DomainResult<BookingInfo> {
         val repoResult = repository.deleteBooking(bookingId, userId)
         repoResult.data?.let {
-            if (it)
+            if (it) {
                 return getUpdatedBookingData(startDate, endDate)
+            }
         }
         val domainError = errorMapper.mapToDomainError(repoResult.error)
         return DomainResult(null, domainError)
@@ -63,8 +66,9 @@ class GetBookingUseCaseImpl(
         val repoResult = repository
             .editBooking(deviceMapper.mapBookingParam(bookingInputData, bookingInputData.startDate, bookingId.toString()))
         repoResult.data?.let {
-            if (it)
+            if (it) {
                 return getUpdatedBookingData(startDate, endDate)
+            }
         }
         val domainError = errorMapper.mapToDomainError(repoResult.error)
         return DomainResult(null, domainError)
