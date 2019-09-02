@@ -1,9 +1,9 @@
 package com.kstorozh.domain.mapper
 
 import android.annotation.SuppressLint
-import com.kstorozh.dataimpl.model.into.BookingParam
-import com.kstorozh.dataimpl.model.into.DeviceParam
-import com.kstorozh.dataimpl.model.out.BookingSessionData
+import com.kstorozh.dataimpl.model.BookingParam
+import com.kstorozh.dataimpl.model.DeviceParam
+import com.kstorozh.dataimpl.model.BookingSessionData
 import com.kstorozh.domainapi.model.BookingInputData
 import com.kstorozh.domainapi.model.DeviceInfo
 import com.kstorozh.domainapi.model.DeviceInputData

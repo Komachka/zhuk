@@ -1,6 +1,5 @@
 package com.kstorozh.evozhuk.calendar_day
 
-import android.util.Log
 import androidx.arch.core.util.Function
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -37,10 +36,6 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
             }
         }
     }
-
-
-
-
 
     val bookingsLiveData = MutableLiveData<Map<String, List<Booking>>>().also { liveData ->
         applicationScope.launch {
@@ -155,8 +150,6 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
             var closerMinTime = 0L
             var closerMaxTime = Long.MAX_VALUE
 
-
-
             val earlyerBookings = mutableListOf<Booking>()
             val nextBookings = mutableListOf<Booking>()
 
@@ -172,9 +165,6 @@ class DayViewModel : BaseViewModel(), KoinComponent, BookingParser {
                     }
                 }
             }
-
-
-
 
             it.forEach { (k, v) ->
                 v.forEach {

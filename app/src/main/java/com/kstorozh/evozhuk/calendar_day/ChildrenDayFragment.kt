@@ -79,7 +79,6 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
         updateUI(milisec, userId)
     }
 
-
     override fun onResume() {
         super.onResume()
         val milisec = arguments?.getLong(MILISEC) ?: 0

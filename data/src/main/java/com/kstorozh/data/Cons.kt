@@ -33,7 +33,7 @@ internal const val DELETE_BOOKING_URL = "/api/mobile/booking/delete/{id}"
 internal const val EDIT_BOOKING_URL = "/api/mobile/booking/{id}"
 internal const val NEARBY_BOOKING_URL = "/api/mobile/booking/nearby"
 
-//internal const val BASE_URL = "http://evozhuk.tk"
+// internal const val BASE_URL = "http://evozhuk.tk"
 
 internal const val ERROR_STATUS_CODE = 422
 internal const val UNAUTHORIZED_STATUS_CODE = 401

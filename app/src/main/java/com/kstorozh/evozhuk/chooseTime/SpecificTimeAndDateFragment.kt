@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.utils.observe

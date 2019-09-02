@@ -1,4 +1,4 @@
-package com.kstorozh.dataimpl.model.out
+package com.kstorozh.dataimpl.model
 
 class SlackUser(
     val id: Int,

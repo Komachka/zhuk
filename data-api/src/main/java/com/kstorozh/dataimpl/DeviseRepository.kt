@@ -1,9 +1,9 @@
 package com.kstorozh.dataimpl
 
-import com.kstorozh.dataimpl.model.into.BookingParam
-import com.kstorozh.dataimpl.model.into.DeviceParam
-import com.kstorozh.dataimpl.model.out.BookingSessionData
-import com.kstorozh.dataimpl.model.out.RepoResult
+import com.kstorozh.dataimpl.model.BookingParam
+import com.kstorozh.dataimpl.model.DeviceParam
+import com.kstorozh.dataimpl.model.BookingSessionData
+import com.kstorozh.dataimpl.model.RepoResult
 
 interface DeviseRepository {
     suspend fun initDevice(deviceParam: DeviceParam): RepoResult<Boolean>

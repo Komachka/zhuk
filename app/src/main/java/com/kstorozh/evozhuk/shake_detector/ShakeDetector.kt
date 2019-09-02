@@ -6,22 +6,17 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import kotlin.math.sqrt
 
-
 class ShakeDetector(val mListener: OnShakeListener) : SensorEventListener {
 
     companion object {
-
 
         private val SHAKE_THRESHOLD_GRAVITY = 2.7f
         private val SHAKE_SLOP_TIME_MS = 500
         private val SHAKE_COUNT_RESET_TIME_MS = 3000
     }
 
-
-
     private var mShakeTimestamp: Long = 0
     private var mShakeCount: Int = 0
-
 
     interface OnShakeListener {
         fun onShake(count: Int)
@@ -62,5 +57,4 @@ class ShakeDetector(val mListener: OnShakeListener) : SensorEventListener {
                 mListener.onShake(mShakeCount)
             }
         }
-
 }

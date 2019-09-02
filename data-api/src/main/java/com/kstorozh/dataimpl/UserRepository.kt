@@ -2,8 +2,8 @@ package com.kstorozh.data.repository
 
 import com.kstorozh.dataimpl.model.UserLoginParam
 
-import com.kstorozh.dataimpl.model.out.RepoResult
-import com.kstorozh.dataimpl.model.out.SlackUser
+import com.kstorozh.dataimpl.model.RepoResult
+import com.kstorozh.dataimpl.model.SlackUser
 
 interface UserRepository {
     suspend fun getUsers(): RepoResult<List<SlackUser>>

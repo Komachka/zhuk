@@ -1,6 +1,5 @@
 package com.kstorozh.domain
 
-import android.util.Log
 import com.kstorozh.dataimpl.CalendarRepository
 import com.kstorozh.dataimpl.DeviseRepository
 import com.kstorozh.domain.mapper.CalendarMapper

@@ -1,8 +1,8 @@
 package com.kstorozh.domain.mapper
 
 import com.kstorozh.dataimpl.model.NearbyBooking
-import com.kstorozh.dataimpl.model.out.CalendarBookingData
-import com.kstorozh.dataimpl.model.out.CalendarDay
+import com.kstorozh.dataimpl.model.CalendarBookingData
+import com.kstorozh.dataimpl.model.CalendarDay
 import com.kstorozh.domainapi.model.Booking
 import com.kstorozh.domainapi.model.BookingInfo
 import com.kstorozh.domainapi.model.NearbyDomainBooking

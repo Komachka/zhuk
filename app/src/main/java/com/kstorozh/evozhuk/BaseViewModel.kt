@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.DomainErrors
-import com.kstorozh.domainapi.model.UserLoginInput
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,8 +19,7 @@ open class BaseViewModel : ViewModel(), KoinComponent {
     fun sendReport(state: String, msg: String): LiveData<Event<Boolean>> {
         val tryLoginLiveData: MutableLiveData<Event<Boolean>> = MutableLiveData<Event<Boolean>>()
         applicationScope.launch {
-            if (msg.isNotEmpty())
-            {
+            if (msg.isNotEmpty()) {
                 val domainRes = reportUseCases.sendReport(state, msg)
                 domainRes.data?.let {
                     tryLoginLiveData.postValue(Event(it))

@@ -1,4 +1,4 @@
-package com.kstorozh.dataimpl.model.into
+package com.kstorozh.dataimpl.model
 
 data class BookingParam(
     val bookingId: String? = null,
