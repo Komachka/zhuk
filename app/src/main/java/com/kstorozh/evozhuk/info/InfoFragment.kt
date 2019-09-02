@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,11 +16,13 @@ import com.kstorozh.evozhuk.utils.observe
 import kotlinx.android.synthetic.main.fragment_info.*
 import kotlinx.android.synthetic.main.fragment_info.view.*
 import kotlinx.android.synthetic.main.fragment_info.view.toolbar
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class InfoFragment : Fragment() {
 
     private lateinit var infoAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
+    private val model: InfoViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,8 +33,6 @@ class InfoFragment : Fragment() {
     }
 
     override fun onViewCreated(fragment: View, savedInstanceState: Bundle?) {
-
-        val model = ViewModelProviders.of(this)[InfoViewModel::class.java]
         model.getDeviceInfo()
         (activity as AppCompatActivity).setSupportActionBar(fragment.toolbar)
         toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_keyboard_backspace_black_24dp)

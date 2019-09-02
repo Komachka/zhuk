@@ -26,6 +26,8 @@ class ReturnDeviceFragment : Fragment(), BatteryLevelCheck {
     ): View? {
         val fragment = inflater.inflate(R.layout.fragment_return_device, container, false)
         fragment.deviceNameTv.text = context?.getDeviceName()
+        fragment.calendarImageBut.visibility = View.INVISIBLE
+        fragment.infoImageBut.visibility = View.INVISIBLE
         fragment.manageBatteryCharge()
             Handler().postDelayed({
                 try {

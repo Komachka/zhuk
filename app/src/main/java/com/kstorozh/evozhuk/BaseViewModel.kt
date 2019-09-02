@@ -5,16 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.DomainErrors
+import com.kstorozh.evozhuk.utils.Event
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
-import org.koin.core.inject
 
-open class BaseViewModel : ViewModel(), KoinComponent {
-
-    private val reportUseCases: ManageDeviceUseCases by inject()
-    private val applicationScope = CoroutineScope(Dispatchers.Default)
+open class BaseViewModel(
+    private val reportUseCases: ManageDeviceUseCases,
+    private val applicationScope: CoroutineScope
+) : ViewModel(), KoinComponent {
 
     fun sendReport(state: String, msg: String): LiveData<Event<Boolean>> {
         val tryLoginLiveData: MutableLiveData<Event<Boolean>> = MutableLiveData<Event<Boolean>>()

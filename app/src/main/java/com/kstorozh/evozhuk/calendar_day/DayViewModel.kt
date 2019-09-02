@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.kstorozh.domainapi.GetBookingUseCase
+import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.Booking
 import com.kstorozh.domainapi.model.BookingInputData
 import com.kstorozh.evozhuk.*
+import com.kstorozh.evozhuk.utils.Event
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
@@ -16,8 +18,9 @@ import java.util.*
 
 class DayViewModel(
     private val getBookingsUseCase: GetBookingUseCase,
+    private val reportUseCase: ManageDeviceUseCases,
     private val applicationScope: CoroutineScope
-) : BaseViewModel(), BookingParser {
+) : BaseViewModel(reportUseCase, applicationScope), BookingParser {
 
     private val query = MutableLiveData<Pair<Long, Int>>()
     val bookingSlotsPerDay: LiveData<List<TimeSlot>> = Transformations.switchMap(query, ::getBookingSlotsPerDay)

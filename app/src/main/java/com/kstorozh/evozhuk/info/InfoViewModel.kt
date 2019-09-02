@@ -2,18 +2,20 @@ package com.kstorozh.evozhuk.info
 
 import androidx.lifecycle.MutableLiveData
 import com.kstorozh.domainapi.InfoDeviceUseCases
+import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.evozhuk.*
+import com.kstorozh.evozhuk.utils.Event
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
-import org.koin.core.inject
 
-class InfoViewModel : BaseViewModel(), KoinComponent {
+class InfoViewModel(
+    private val applicationScope: CoroutineScope,
+    private val infoUseCase: InfoDeviceUseCases,
+    reportUseCase: ManageDeviceUseCases
+) : BaseViewModel(reportUseCase, applicationScope), KoinComponent {
 
     val deviceInfo = MutableLiveData<List<Pair<DeviceInfoName, DeviceInfoParam>>>()
-    private val applicationScope = CoroutineScope(Dispatchers.Default)
-    private val infoUseCase: InfoDeviceUseCases by inject()
 
     fun getDeviceInfo() {
         applicationScope.launch {

@@ -5,17 +5,20 @@ import androidx.lifecycle.*
 import com.applandeo.materialcalendarview.EventDay
 import java.util.*
 import com.kstorozh.domainapi.GetBookingUseCase
+import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.Booking
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.R
+import com.kstorozh.evozhuk.utils.Event
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
 class CalendarViewModel(
     private val getBookingsUseCase: GetBookingUseCase,
+    manageDiveceUseCase: ManageDeviceUseCases,
     private val applicationScope: CoroutineScope
-) : BaseViewModel() {
+) : BaseViewModel(manageDiveceUseCase, applicationScope) {
 
     private val bookingsLiveData = MutableLiveData<Map<String, List<Booking>>>()
     private var firstDay: Long = 0

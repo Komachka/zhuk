@@ -9,7 +9,7 @@ import com.kstorozh.domainapi.model.BookingInputData
 import com.kstorozh.domainapi.model.DomainErrorData
 import com.kstorozh.domainapi.model.ErrorStatus
 import com.kstorozh.evozhuk.BaseViewModel
-import com.kstorozh.evozhuk.Event
+import com.kstorozh.evozhuk.utils.Event
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -17,7 +17,7 @@ import java.util.*
 class ChooseTimeViewModel(
     private val manageDeviceUseCases: ManageDeviceUseCases,
     private val applicationScope: CoroutineScope
-) : BaseViewModel() {
+) : BaseViewModel(manageDeviceUseCases, applicationScope) {
 
     val conflictBookingLiveData = MutableLiveData<Event<DomainErrorData?>>()
     val chooseCalendar: MutableLiveData<Calendar> by lazy { MutableLiveData<Calendar>().also {

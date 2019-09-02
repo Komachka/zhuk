@@ -4,15 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.evozhuk.BaseViewModel
-import com.kstorozh.evozhuk.Event
+import com.kstorozh.evozhuk.utils.Event
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.util.*
 
 class SpecificTimeAndDateViewModel(
     private val manageDeviceUseCases: ManageDeviceUseCases,
     private val applicationScope: CoroutineScope
-) : BaseViewModel() {
+) : BaseViewModel(manageDeviceUseCases, applicationScope) {
 
     fun editCurrentBooking(endDate: Long): LiveData<Boolean> {
         val liveData = MutableLiveData<Boolean>()

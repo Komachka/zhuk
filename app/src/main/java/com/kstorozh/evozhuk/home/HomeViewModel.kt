@@ -6,14 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.DeviceInputData
 import com.kstorozh.evozhuk.BaseViewModel
-import com.kstorozh.evozhuk.Event
+import com.kstorozh.evozhuk.utils.Event
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val initDeviceUseCases: ManageDeviceUseCases,
     private val applicationScope: CoroutineScope
-) : BaseViewModel() {
+) : BaseViewModel(initDeviceUseCases, applicationScope) {
 
     fun initDevice(deviceInputData: DeviceInputData): LiveData<Boolean> {
         val initDeviceLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
