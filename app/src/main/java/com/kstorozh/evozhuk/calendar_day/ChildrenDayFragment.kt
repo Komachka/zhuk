@@ -76,11 +76,10 @@ class ChildrenDayFragment : Fragment(), BottomSheetDialogHandler, HandleErrors {
                 }
             }
         }
-        updateUI(milisec, userId)
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         val milisec = arguments?.getLong(MILISEC) ?: 0
         val userId = arguments?.getInt(USER_ID) ?: 0
         updateUI(milisec, userId)
