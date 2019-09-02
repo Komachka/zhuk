@@ -16,6 +16,7 @@ dependencies {
     implementation commonDependencies.koinAX
     implementation appDependencies.datePicker
     implementation appDependencies.livedataKTX
+    implementation appDependencies.koinVM
     implementation domainDependencies.jodaTime
     implementation project(':domain-api')
     implementation project(':di')

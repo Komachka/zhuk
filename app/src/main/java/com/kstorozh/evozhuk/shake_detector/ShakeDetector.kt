@@ -9,9 +9,10 @@ import kotlin.math.sqrt
 class ShakeDetector(private val mListener: OnShakeListener) : SensorEventListener {
 
     companion object {
+
         private const val SHAKE_THRESHOLD_GRAVITY = 2.7f
-        private const val SHAKE_SLOP_TIME_MS = 500
-        private const val SHAKE_COUNT_RESET_TIME_MS = 3000
+        private val SHAKE_SLOP_TIME_MS = 500
+        private val SHAKE_COUNT_RESET_TIME_MS = 3000
     }
 
     private var mShakeTimestamp: Long = 0
