@@ -5,22 +5,22 @@ import androidx.lifecycle.*
 import com.applandeo.materialcalendarview.EventDay
 import java.util.*
 import com.kstorozh.domainapi.GetBookingUseCase
+import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.Booking
 import com.kstorozh.evozhuk.*
 import com.kstorozh.evozhuk.R
+import com.kstorozh.evozhuk.utils.Event
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import java.text.SimpleDateFormat
 
-class CalendarViewModel : BaseViewModel(), KoinComponent {
+class CalendarViewModel(
+    private val getBookingsUseCase: GetBookingUseCase,
+    manageDiveceUseCase: ManageDeviceUseCases,
+    private val applicationScope: CoroutineScope
+) : BaseViewModel(manageDiveceUseCase, applicationScope) {
 
-    private val getBookingsUseCase: GetBookingUseCase by inject()
-    private val applicationScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
     private val bookingsLiveData = MutableLiveData<Map<String, List<Booking>>>()
-
     private var firstDay: Long = 0
     private var lastDay: Long = 0
 

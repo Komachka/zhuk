@@ -7,24 +7,25 @@ import com.kstorozh.domainapi.LoginUseCase
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.domainapi.model.*
 import com.kstorozh.evozhuk.BaseViewModel
-import com.kstorozh.evozhuk.Event
+import com.kstorozh.evozhuk.utils.Event
 import com.kstorozh.evozhuk.USER_ID_NOT_SET
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
-import org.koin.core.inject
 
-class LogInViewModel : BaseViewModel(), KoinComponent {
+class LogInViewModel(
+    private val loginUseCase: LoginUseCase,
+    private val getUserUseCase: GetUsersUseCases,
+    private val initDeviceUseCases: ManageDeviceUseCases,
+    private val applicationScope: CoroutineScope,
+    private val getBookingUseCase: GetBookingUseCase
+) : BaseViewModel(initDeviceUseCases, applicationScope), KoinComponent {
 
-    private val loginUseCase: LoginUseCase by inject()
-    private val getUserUseCase: GetUsersUseCases by inject()
-    private val initDeviceUseCases: ManageDeviceUseCases by inject()
-    private val applicationScope = CoroutineScope(Dispatchers.Default)
-    private val getBookingUseCase: GetBookingUseCase by inject()
-    private val users: MutableLiveData<List<User>> by lazy { MutableLiveData<List<User>>().also {
-        loadUsers()
-    } }
+    private val users: MutableLiveData<List<User>> by lazy {
+        MutableLiveData<List<User>>().also {
+            loadUsers()
+        }
+    }
 
     fun getUserNames(): LiveData<ArrayList<String>> {
         return Transformations.map(users, Function<List<User>, ArrayList<String>> {
@@ -83,7 +84,9 @@ class LogInViewModel : BaseViewModel(), KoinComponent {
         val isDeviceBookedLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
         applicationScope.launch {
             val result = initDeviceUseCases.getSession()
-            if (result.data != null) isDeviceBookedLiveData.postValue(true) else isDeviceBookedLiveData.postValue(false)
+            if (result.data != null) isDeviceBookedLiveData.postValue(true) else isDeviceBookedLiveData.postValue(
+                false
+            )
         }
         return isDeviceBookedLiveData
     }
@@ -93,7 +96,8 @@ class LogInViewModel : BaseViewModel(), KoinComponent {
         applicationScope.launch {
             val result = getBookingUseCase.getNearbyBooking()
             result.data?.let {
-                isBookingExistsliveData.postValue(it) }
+                isBookingExistsliveData.postValue(it)
+            }
             result.domainError?.let {
                 errors.postValue(Event(it))
             }

@@ -2,22 +2,16 @@ package com.kstorozh.evozhuk.chooseTime
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.kstorozh.domainapi.GetBookingUseCase
 import com.kstorozh.domainapi.ManageDeviceUseCases
 import com.kstorozh.evozhuk.BaseViewModel
-import com.kstorozh.evozhuk.Event
+import com.kstorozh.evozhuk.utils.Event
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.core.KoinComponent
-import org.koin.core.inject
-import java.util.*
 
-class SpecificTimeAndDateViewModel : BaseViewModel(), KoinComponent {
-
-    private val manageDeviceUseCases: ManageDeviceUseCases by inject()
-    private val applicationScope = CoroutineScope(Dispatchers.Default)
-    private val getBookingsUseCase: GetBookingUseCase by inject()
+class SpecificTimeAndDateViewModel(
+    private val manageDeviceUseCases: ManageDeviceUseCases,
+    private val applicationScope: CoroutineScope
+) : BaseViewModel(manageDeviceUseCases, applicationScope) {
 
     fun editCurrentBooking(endDate: Long): LiveData<Boolean> {
         val liveData = MutableLiveData<Boolean>()

@@ -13,6 +13,7 @@ class App : Application() {
         startKoin {
             androidContext(this@App)
             KoinLoader.loadKoin()
+            modules(appModule)
         }
         NotificationUtil.createNotificationChannel(this)
         JodaTimeAndroid.init(this)

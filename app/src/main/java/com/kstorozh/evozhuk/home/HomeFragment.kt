@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.kstorozh.domainapi.model.DeviceInputData
 import com.kstorozh.evozhuk.*
@@ -13,10 +12,13 @@ import com.kstorozh.evozhuk.utils.getInfoAboutDevice
 import com.kstorozh.evozhuk.utils.observe
 import com.kstorozh.evozhuk.utils.showSnackbar
 import kotlinx.android.synthetic.main.fragment_at_home.view.*
+import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.KoinComponent
 
-class HomeFragment : Fragment(), HandleErrors {
+class HomeFragment : Fragment(), HandleErrors, KoinComponent {
 
-    private lateinit var model: HomeViewModel
+    private val model: HomeViewModel by viewModel()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,7 +38,6 @@ class HomeFragment : Fragment(), HandleErrors {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        model = ViewModelProviders.of(this)[HomeViewModel::class.java]
         viewLifecycleOwner.handleErrors(model, view)
         val info = context?.applicationContext!!.getInfoAboutDevice()
         view.welcomeMessageTv.text = info.model

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.kstorozh.domainapi.model.SessionData
 import java.text.SimpleDateFormat
@@ -25,6 +24,7 @@ import kotlinx.android.synthetic.main.logo_and_info.*
 import kotlinx.android.synthetic.main.logo_and_info.view.*
 import kotlinx.android.synthetic.main.logo_and_info.view.infoImageBut
 import org.joda.time.DateTime
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.lang.Exception
 
 class BackDeviceFragment : Fragment(), HandleErrors {
@@ -38,6 +38,7 @@ class BackDeviceFragment : Fragment(), HandleErrors {
     }
 
     private var userId: String? = null
+    private val modelBackDevice: BackDeviceViewModel by viewModel()
     override fun onViewCreated(fragment: View, savedInstanceState: Bundle?) {
         super.onViewCreated(fragment, savedInstanceState)
         infoImageBut.setOnClickListener {
@@ -54,7 +55,6 @@ class BackDeviceFragment : Fragment(), HandleErrors {
         deviceNameTv.text = context?.getDeviceName()
         youTakeDeviceLabelTv.text =
             "${resources.getString(R.string.youTableDeviceLabel)} ${context?.getDeviceName()}"
-        val modelBackDevice = ViewModelProviders.of(this).get(BackDeviceViewModel::class.java)
         viewLifecycleOwner.handleErrors(modelBackDevice, fragment)
         viewLifecycleOwner.observe(modelBackDevice.getSessionData(), {
             it?.let {

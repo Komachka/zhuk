@@ -1,4 +1,4 @@
-package com.kstorozh.evozhuk
+package com.kstorozh.evozhuk.utils
 
 open class Event<out T>(private val content: T) {
 

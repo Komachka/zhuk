@@ -8,12 +8,12 @@ import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
 import android.hardware.SensorManager
 import android.view.LayoutInflater
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kstorozh.evozhuk.shake_detector.ShakeDetector
 import com.kstorozh.evozhuk.utils.observe
 import com.kstorozh.evozhuk.utils.showSnackbar
 import kotlinx.android.synthetic.main.bug_ot_wish_bottom_sheet_dialog.view.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), ShakeDetector.OnShakeListener {
     override fun onShake(count: Int) {
@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity(), ShakeDetector.OnShakeListener {
 
     private lateinit var sensorManager: SensorManager
     private lateinit var mBottomSheetDialog: BottomSheetDialog
+    private val model: BaseViewModel by viewModel()
     private var shake: Sensor? = null
     private var shakeDetector: ShakeDetector? = null
 
@@ -48,10 +49,7 @@ class MainActivity : AppCompatActivity(), ShakeDetector.OnShakeListener {
         sensorManager.unregisterListener(shakeDetector)
     }
 
-
-    private fun createDialog()
-    {
-        val model = ViewModelProviders.of(this)[BaseViewModel::class.java]
+    private fun createDialog() {
         var state = WISH
         mBottomSheetDialog = BottomSheetDialog(this@MainActivity)
         val sheetView = LayoutInflater.from(this@MainActivity).inflate(R.layout.bug_ot_wish_bottom_sheet_dialog, null)
@@ -78,7 +76,7 @@ class MainActivity : AppCompatActivity(), ShakeDetector.OnShakeListener {
     }
 
     private fun showDialog() {
-        if(!mBottomSheetDialog.isShowing)
+        if (!mBottomSheetDialog.isShowing)
             mBottomSheetDialog.show()
     }
 }
