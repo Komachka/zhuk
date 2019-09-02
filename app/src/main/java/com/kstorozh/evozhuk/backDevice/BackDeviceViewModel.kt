@@ -21,7 +21,7 @@ class BackDeviceViewModel(
     private val manageDeviceUseCases: ManageDeviceUseCases,
     private val getBookingUseCase: GetBookingUseCase,
     private val applicationScope:CoroutineScope
-) : BaseViewModel(), KoinComponent {
+) : BaseViewModel() {
 
     private val bookingSession: MutableLiveData<SessionData> by lazy {
         MutableLiveData<SessionData>()

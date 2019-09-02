@@ -19,9 +19,9 @@ import org.koin.dsl.module
 
 val useCaseModules = module(override = true) {
 
-    factory<GetUsersUseCases> { GetUsersUseCasesImpl(get<UserRepository>(), UserDataMapper(), ErrorMapper()) }
-    factory<LoginUseCase> { LoginUseCaseImpl(get(), UserDataMapper(), ErrorMapper()) }
-    factory<ManageDeviceUseCases> { ManageDeviceUseCasesImpl(get(), DeviceInfoMapper(), ErrorMapper()) }
-    factory<GetBookingUseCase> { GetBookingUseCaseImpl(get(), get(), ErrorMapper(), DeviceInfoMapper(), CalendarMapper()) }
-    factory <InfoDeviceUseCases> { InfoDeviceUseCasesImpl(get(), DeviceInfoMapper(), ErrorMapper()) }
+    single<GetUsersUseCases> { GetUsersUseCasesImpl(get<UserRepository>(), UserDataMapper(), ErrorMapper()) }
+    single<LoginUseCase> { LoginUseCaseImpl(get(), UserDataMapper(), ErrorMapper()) }
+    single<ManageDeviceUseCases> { ManageDeviceUseCasesImpl(get(), DeviceInfoMapper(), ErrorMapper()) }
+    single<GetBookingUseCase> { GetBookingUseCaseImpl(get(), get(), ErrorMapper(), DeviceInfoMapper(), CalendarMapper()) }
+    single <InfoDeviceUseCases> { InfoDeviceUseCasesImpl(get(), DeviceInfoMapper(), ErrorMapper()) }
 }

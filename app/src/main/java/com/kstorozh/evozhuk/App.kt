@@ -3,6 +3,7 @@ package com.kstorozh.evozhuk
 import android.app.Application
 import com.kstorozh.di.KoinLoader
 import com.kstorozh.evozhuk.backDevice.BackDeviceViewModel
+import com.kstorozh.evozhuk.calendar.CalendarViewModel
 import com.kstorozh.evozhuk.notifications.NotificationUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,5 +29,6 @@ class App : Application() {
     private val appModule = module {
         single { CoroutineScope(Dispatchers.Default) }
         viewModel { BackDeviceViewModel(get(), get(), get()) }
+        viewModel { CalendarViewModel(get(), get()) }
     }
 }

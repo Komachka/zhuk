@@ -15,12 +15,12 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.text.SimpleDateFormat
 
-class CalendarViewModel : BaseViewModel(), KoinComponent {
+class CalendarViewModel(
+    private val getBookingsUseCase: GetBookingUseCase,
+    private val applicationScope: CoroutineScope
+) : BaseViewModel() {
 
-    private val getBookingsUseCase: GetBookingUseCase by inject()
-    private val applicationScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
     private val bookingsLiveData = MutableLiveData<Map<String, List<Booking>>>()
-
     private var firstDay: Long = 0
     private var lastDay: Long = 0
 
