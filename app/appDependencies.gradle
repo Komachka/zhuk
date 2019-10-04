@@ -1,0 +1,24 @@
+dependencies {
+    implementation commonDependencies.kotlin
+    implementation appDependencies.appCompat
+    implementation appDependencies.coreKTX
+    implementation appDependencies.constraintlayout
+    implementation appDependencies.crashlytics
+    implementation appDependencies.viewModel
+    implementation appDependencies.navigation
+    implementation appDependencies.navigationktx
+    implementation appDependencies.livecycleExtansion
+    implementation appDependencies.deveseNames
+    implementation appDependencies.calendar
+    implementation appDependencies.lottie
+    implementation commonDependencies.files
+    implementation commonDependencies.koin
+    implementation commonDependencies.koinAX
+    implementation appDependencies.datePicker
+    implementation appDependencies.livedataKTX
+    implementation appDependencies.koinVM
+    implementation domainDependencies.jodaTime
+    implementation project(':domain-api')
+    implementation project(':di')
+}
+

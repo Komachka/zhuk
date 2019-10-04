@@ -1,0 +1,26 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply from: '../buildSystem/buildData.gradle'
+
+android {
+    compileSdkVersion buildVersions.targetSdkVersion
+    buildToolsVersion buildVersions.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion buildVersions.minSdkVersion
+        targetSdkVersion buildVersions.targetSdkVersion
+        versionCode buildVersions.versionCode
+        versionName buildVersions.versionName
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+apply from: 'domainapiDependencies.gradle'

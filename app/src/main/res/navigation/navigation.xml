@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/navigation" app:startDestination="@id/homeFragment">
+    <fragment android:id="@+id/homeFragment" android:name="com.evo.evozhuk.home.HomeFragment"
+              android:label="HomeFragment">
+        <action android:id="@+id/action_homeFragment_to_loginFragment" app:destination="@id/loginFragment"
+                app:popUpToInclusive="true" app:popUpTo="@+id/homeFragment"/>
+    </fragment>
+    <fragment android:id="@+id/loginFragment" android:name="com.evo.evozhuk.login.LoginFragment"
+              android:label="LoginFragment">
+        <action android:id="@+id/action_loginFragment_to_infoFragment" app:destination="@id/infoFragment"/>
+        <action android:id="@+id/action_loginFragment_to_backDeviceFragment" app:destination="@id/backDeviceFragment"
+                app:popUpTo="@+id/loginFragment" app:popUpToInclusive="false"/>
+        <action android:id="@+id/action_loginFragment_to_bookOrTakeFragment" app:destination="@id/bookOrTakeFragment"/>
+    </fragment>
+    <fragment android:id="@+id/chooseTimeFragment" android:name="com.evo.evozhuk.chooseTime.ChooseTimeFragment"
+              android:label="ChooseTimeFragment">
+        <action android:id="@+id/action_chooseTimeFragment_to_backDeviceFragment"
+                app:destination="@id/backDeviceFragment" app:popUpTo="@+id/loginFragment" app:popUpToInclusive="false"/>
+        <argument android:name="milisec" app:argType="long" android:defaultValue="0L"/>
+
+        <action android:id="@+id/action_chooseTimeFragment_to_specificTimeAndDate"
+                app:destination="@id/specificTimeAndDate" app:popUpTo="@+id/chooseTimeFragment"/>
+        <argument android:name="userId" app:argType="string"/>
+        <action android:id="@+id/action_chooseTimeFragment_to_infoFragment" app:destination="@id/infoFragment"/>
+        <action android:id="@+id/action_chooseTimeFragment_to_calendarFragment" app:destination="@id/calendarFragment"/>
+    </fragment>
+
+
+    <fragment android:id="@+id/backDeviceFragment" android:name="com.evo.evozhuk.backDevice.BackDeviceFragment"
+              android:label="BackDeviceFragment">
+        <argument android:name="userId" app:argType="string"/>
+        <argument android:name="endTime" app:argType="long"/>
+        <action android:id="@+id/action_backDeviceFragment_to_returnDeviceFragment"
+                app:destination="@id/returnDeviceFragment"
+                app:popUpTo="@+id/loginFragment" app:popUpToInclusive="false"/>
+        <action android:id="@+id/action_backDeviceFragment_to_infoFragment" app:destination="@id/infoFragment"/>
+        <action android:id="@+id/action_backDeviceFragment_to_calendarFragment" app:destination="@id/calendarFragment"/>
+        <action android:id="@+id/action_backDeviceFragment_to_specificTimeAndDate"
+                app:destination="@id/specificTimeAndDate" app:popUpTo="@+id/backDeviceFragment"/>
+    </fragment>
+
+
+    <fragment android:id="@+id/specificTimeAndDate" android:name="com.evo.evozhuk.chooseTime.SpecificTimeAndDateFragment"
+              android:label="SpecificTimeAndDate">
+
+        <action android:id="@+id/action_specificTimeAndDate_to_chooseTimeFragment"
+                app:destination="@id/chooseTimeFragment">
+        </action>
+        <argument android:name="currentMilisec" app:argType="long"/>
+        <argument android:name="maxMilisec" app:argType="long"/>
+        <argument android:name="backDiraction" app:argType="string"/>
+        <action android:id="@+id/action_specificTimeAndDate_to_backDeviceFragment"
+                app:destination="@id/backDeviceFragment"/>
+    </fragment>
+    <fragment android:id="@+id/returnDeviceFragment"
+              android:name="com.evo.evozhuk.returnDevice.ReturnDeviceFragment"
+              android:label="ReturnDeviceFragment"/>
+    <fragment android:id="@+id/infoFragment" android:name="com.evo.evozhuk.info.InfoFragment"
+              android:label="fragment_info" tools:layout="@layout/fragment_info"/>
+    <fragment android:id="@+id/bookOrTakeFragment" android:name="com.evo.evozhuk.calendar.BookOrTakeFragment"
+              android:label="fragment_book_or_take" tools:layout="@layout/fragment_book_or_take">
+        <argument android:name="userId" app:argType="string"/>
+        <action android:id="@+id/action_bookOrTakeFragment_to_chooseTimeFragment"
+                app:destination="@id/chooseTimeFragment"/>
+        <action android:id="@+id/action_bookOrTakeFragment_to_infoFragment" app:destination="@id/infoFragment"/>
+        <action android:id="@+id/action_bookOrTakeFragment_to_calendarFragment" app:destination="@id/calendarFragment"/>
+    </fragment>
+    <fragment android:id="@+id/calendarFragment" android:name="com.evo.evozhuk.calendar.CalendarFragment"
+              android:label="fragment_calendar" tools:layout="@layout/fragment_calendar">
+        <argument android:name="userId" app:argType="string"/>
+        <action android:id="@+id/action_calendarFragment_to_calendarDayView" app:destination="@id/calendarDayView"/>
+    </fragment>
+    <fragment android:id="@+id/calendarDayView" android:name="com.evo.evozhuk.calendar_day.CalendarDayFragment"
+              android:label="fragment_calendar_day_view" tools:layout="@layout/fragment_calendar_day_view">
+        <argument android:name="userId" app:argType="string"/>
+        <argument android:name="milisec" app:argType="long"/>
+        <action android:id="@+id/action_calendarDayView_to_infoFragment" app:destination="@id/infoFragment"/>
+    </fragment>
+</navigation>

@@ -1,0 +1,10 @@
+dependencies {
+    implementation commonDependencies.kotlin
+    implementation domainDependencies.coroutines
+    implementation domainDependencies.jodaTime
+    implementation commonDependencies.koin
+    implementation commonDependencies.koinAX
+    implementation project(':data-api')
+    implementation project(':domain-api')
+
+}

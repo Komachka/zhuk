@@ -1,0 +1,70 @@
+ext {
+    kotlin = '1.3.41'
+    androidX = '1.0.2'
+    retrofit = '2.6.0'
+    constraint = '1.1.3'
+    crashlytics = '2.8.0'
+    room = '2.1.0'
+    gson = '2.8.5'
+    lifecycle_version = '2.0.0'
+    coroutines = '0.30.1-eap13'
+    livedataKTX = '2.2.0-alpha01'
+    koin_version = '2.0.1'
+    material_version = '1.1.0-alpha05'
+    login_interseptor_okhttp = '3.12.1'
+    navigation = "2.1.0-beta02"
+    nav_dep = "1.0.0"
+    recycler = "28.0.0"
+    device_names = "1.1.9"
+    calendar = "1.6.0"
+    jodaTime = "2.10.2"
+    datePicker = "2.1.5"
+    lottie = "2.5.0"
+    koin_vm = "2.0.1"
+
+    commonDependencies = [
+            kotlin : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin",
+            files: fileTree(dir: 'libs', include: ['*.jar']),
+            koin: "org.koin:koin-core:$koin_version",
+            koinAX: "org.koin:koin-androidx-scope:$koin_version",
+
+    ]
+
+    appDependencies = [
+            appCompat : "androidx.appcompat:appcompat:$androidX",
+            coreKTX : "androidx.core:core-ktx:$androidX",
+            constraintlayout:"androidx.constraintlayout:constraintlayout:$constraint",
+            crashlytics: "com.crashlytics.sdk.android:crashlytics:$crashlytics",
+            livedata : "androidx.lifecycle:lifecycle-extensions:$lifecycle_version",
+            lifecycleKTX : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version",
+            livedataKTX : "androidx.lifecycle:lifecycle-livedata-ktx:$livedataKTX",
+            material: "com.google.android.material:material:$material_version",
+            livecycleExtansion: "android.arch.lifecycle:extensions:$lifecycle_version",
+            viewModel: "android.arch.lifecycle:viewmodel:$lifecycle_version",
+            navigation: "android.arch.navigation:navigation-fragment-ktx:$nav_dep",
+            navigationktx: "android.arch.navigation:navigation-ui-ktx:$nav_dep",
+            recycler: "com.android.support:recyclerview-v7:$recycler",
+            deveseNames:"com.jaredrummler:android-device-names:$device_names",
+            calendar:"com.applandeo:material-calendar-view:$calendar",
+            datePicker: "com.github.florent37:singledateandtimepicker:$datePicker",
+            lottie: "com.airbnb.android:lottie:$lottie",
+            koinVM:"org.koin:koin-android-viewmodel:$koin_vm"
+    ]
+
+    domainDependencies = [
+            coroutines : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines",
+            jodaTime: "net.danlew:android.joda:$jodaTime"
+    ]
+
+    dataDependencies = [
+        retrofit: "com.squareup.retrofit2:retrofit:$retrofit",
+        retrofitgson: "com.squareup.retrofit2:converter-gson:$retrofit",
+        room: "androidx.room:room-runtime:$room",
+        roomKTX: "androidx.room:room-ktx:$room",
+        gson: "com.google.code.gson:gson:$gson",
+        livedata : "androidx.lifecycle:lifecycle-extensions:$lifecycle_version",
+        lifecycleKTX : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version",
+        koinRoomCompiler: "androidx.room:room-compiler:$room",
+        logginInterseptor : "com.squareup.okhttp3:logging-interceptor:$login_interseptor_okhttp"
+    ]
+}
